@@ -1,0 +1,350 @@
+---
+title: <span style="color:#686868"> **Forma Matricial del Modelo**</span>
+author: "Métodos y Simulación Estadística"
+output:
+  html_document:
+    code_folding: hide
+    css: style.css
+---
+
+</br></br>
+<h2>Introducción</h2>
+
+La formulación matricial del modelo de **regresión lineal simple** permite expresar el problema de manera compacta y eficiente. Esto facilita la estimación de los coeficientes, el cálculo de valores ajustados y el análisis de los residuales.
+
+
+</br></br>
+<h2>Modelo</h2>
+
+El modelo de **regresión lineal simple** puede expresarse en términos matriciales como:
+
+\[
+\mathbf{Y} = \mathbf{X} \boldsymbol{\beta} + \boldsymbol{\varepsilon}
+\]
+
+donde:
+
+- \( \mathbf{Y} \) es el **vector de respuestas** (variable dependiente).
+
+- \( \mathbf{X} \) es la **matriz de diseño**, que en el caso de una sola variable predictora incluye una columna de unos para el intercepto.
+
+- \( \boldsymbol{\beta} \) es el **vector de parámetros del modelo** (intercepto y pendiente).
+
+- \( \boldsymbol{\varepsilon} \) es el **vector de errores aleatorios**.
+
+
+Para el caso de **regresión lineal simple**, donde hay **una única variable predictora \( X \)**, la forma matricial del modelo
+se representa como se muestra a continuación:
+
+\[
+\begin{bmatrix}
+Y_1 \\
+Y_2 \\
+\vdots \\
+Y_n
+\end{bmatrix}
+=
+\begin{bmatrix}
+1 & X_1 \\
+1 & X_2 \\
+\vdots & \vdots \\
+1 & X_n
+\end{bmatrix}
+\begin{bmatrix}
+\beta_0 \\
+\beta_1
+\end{bmatrix}
++
+\begin{bmatrix}
+\varepsilon_1 \\
+\varepsilon_2 \\
+\vdots \\
+\varepsilon_n
+\end{bmatrix}
+\]
+
+donde:
+
+- \( Y_i \) es la variable respuesta para la observación \( i \).
+
+- \( X_i \) es la variable predictora para la observación \( i \).
+
+- \( \beta_0 \) es el **intercepto**.
+
+- \( \beta_1 \) es la **pendiente**.
+
+- \( \varepsilon_i \) es el **error aleatorio** asociado a la observación \( i \).
+
+
+
+</br></br>
+<h2>Estimadores MCO</h2>
+
+Los coeficientes \( \beta_0 \) y \( \beta_1 \) se estiman mediante **mínimos cuadrados ordinarios (MCO)**, minimizando la suma de los cuadrados de los errores. La solución óptima en términos matriciales es:
+
+
+\[
+\hat{\boldsymbol{\beta}} = (\mathbf{X}^\top \mathbf{X})^{-1} \mathbf{X}^\top \mathbf{Y}
+\]
+
+Desglosando los cálculos:
+
+\[
+\hat{\beta}_1 = \frac{\sum_{i=1}^{n} (X_i - \bar{X})(Y_i - \bar{Y})}{\sum_{i=1}^{n} (X_i - \bar{X})^2}
+\]
+
+\[
+\hat{\beta}_0 = \bar{Y} - \hat{\beta}_1 \bar{X}
+\]
+
+donde \( \bar{X} \) y \( \bar{Y} \) son las medias muestrales de \( X \) y \( Y \).
+
+
+
+
+</br></br>
+<h2>Valores ajustados (predichos)</h2>
+
+
+Los valores ajustados (predichos) se determina como:
+
+\[
+\hat{\mathbf{Y}} = \mathbf{X} \hat{\boldsymbol{\beta}}
+\]
+
+lo que en términos escalares se expresa como:
+
+\[
+\hat{Y}_i = \hat{\beta}_0 + \hat{\beta}_1 X_i.
+\]
+
+
+</br></br>
+<h2>Errores del modelo</h2>
+
+Los errores se expresan como:
+
+\[
+\mathbf{e} = \mathbf{Y} - \hat{\mathbf{Y}}
+\]
+
+o, en términos escalares:
+
+\[
+e_i = Y_i - \hat{Y}_i.
+\]
+
+
+
+
+
+</br></br>
+<div class="caja-ejemplo">
+<h3>Ejemplo:</h3>
+<p>
+
+Continuando con el modelo de regresión lineal de la Resistencia y  la Edad.
+
+El modelo de **regresión lineal simple** se expresa en términos matriciales como:
+
+\[
+\mathbf{Y} = \mathbf{X} \boldsymbol{\beta} + \boldsymbol{\varepsilon}
+\]
+
+
+---
+
+
+1. **Matriz de diseño \( \mathbf{X} \)**
+
+\( \mathbf{X} \) es la **matriz de diseño**, con una columna de unos para el intercepto y otra con los valores de Edad.
+
+\[
+\mathbf{X} =
+\begin{bmatrix}
+1 & X_{1}\\
+1 & X_{2}\\
+1 & X_{3}\\
+1 & X_{4}\\
+1 & X_{5}\\
+1 & X_{6}\\
+1 & X_{7}\\
+1 & X_{8}\\
+1 & X_{9}\\
+1 & X_{10}\\
+1 & X_{11}\\
+1 & X_{12}\\
+1 & X_{13}\\
+1 & X_{14}\\
+1 & X_{15}\\
+1 & X_{16}\\
+1 & X_{17}\\
+1 & X_{18}\\
+1 & X_{19}\\
+1 & X_{20}
+\end{bmatrix}=
+\begin{bmatrix}
+1 & 15.50 \\
+1 & 23.75 \\
+1 & 8.00 \\
+1 & 17.00 \\
+1 & 5.50 \\
+1 & 19.00 \\
+1 & 24.00 \\
+1 & 2.50 \\
+1 & 7.50 \\
+1 & 11.00 \\
+1 & 13.00 \\
+1 & 3.75 \\
+1 & 25.00 \\
+1 & 9.75 \\
+1 & 22.00 \\
+1 & 18.00 \\
+1 & 6.00 \\
+1 & 12.50 \\
+1 & 2.00 \\
+1 & 21.50
+\end{bmatrix}
+\]
+
+
+2. **Vector de respuestas \( \mathbf{Y} \)**
+
+\( \mathbf{Y} \) es el **vector de respuestas** y corresponde a las resistencias observadas.
+
+
+\[
+\mathbf{Y} =
+\begin{bmatrix}
+Y_1\\    
+Y_2\\    
+Y_3\\    
+Y_4\\    
+Y_5\\    
+Y_6\\    
+Y_7\\    
+Y_8\\    
+Y_9\\    
+Y_{10}\\ 
+Y_{11}\\ 
+Y_{12}\\ 
+Y_{13}\\ 
+Y_{14}\\ 
+Y_{15}\\ 
+Y_{16}\\ 
+Y_{17}\\ 
+Y_{18}\\ 
+Y_{19}\\ 
+Y_{20}\\
+\end{bmatrix}=
+\begin{bmatrix}
+2158.70 \\
+1678.15 \\
+2316.00 \\
+2061.30 \\
+2207.50 \\
+1708.30 \\
+1784.70 \\
+2575.00 \\
+2357.90 \\
+2256.70 \\
+2165.20 \\
+2399.55 \\
+1779.80 \\
+2336.75 \\
+1765.30 \\
+2053.50 \\
+2414.40 \\
+2200.50 \\
+2654.20 \\
+1753.70
+\end{bmatrix}
+\]
+
+3. **Vector de coeficientes**
+
+\( \boldsymbol{\beta} \) es el **vector de coeficientes** del modelo (\(\beta_0\) y \(\beta_1\)).
+
+\[
+\boldsymbol{\beta} =
+\begin{bmatrix}
+\beta_0 \\
+\beta_1 \\
+\end{bmatrix}
+\]
+
+4. **Vector de errores**
+
+\( \boldsymbol{\varepsilon} \) es el **vector de errores**, donde cada componente
+se determina como:
+
+
+
+\[
+e_i = Y_i - \hat{Y}_i = Y_i - \hat{\beta}_0 - \hat{\beta}_1 X_i
+\]
+
+Expresando cada componente del vector de errores:
+
+\[
+\mathbf{e} =
+\begin{bmatrix}
+e_1    \\
+e_2    \\
+e_3    \\
+e_4    \\
+e_5    \\
+e_6    \\
+e_7    \\
+e_8    \\
+e_9    \\
+e_{10} \\
+e_{11} \\
+e_{12} \\
+e_{13} \\
+e_{14} \\
+e_{15} \\
+e_{16} \\
+e_{17} \\
+e_{18} \\
+e_{19} \\
+e_{20}
+\end{bmatrix}
+=
+\begin{bmatrix}
+Y_1 - \hat{\beta}_0 - \hat{\beta}_1 X_1 \\
+Y_2 - \hat{\beta}_0 - \hat{\beta}_1 X_2 \\
+Y_3 - \hat{\beta}_0 - \hat{\beta}_1 X_3 \\
+Y_4 - \hat{\beta}_0 - \hat{\beta}_1 X_4 \\
+Y_5 - \hat{\beta}_0 - \hat{\beta}_1 X_5 \\
+Y_6 - \hat{\beta}_0 - \hat{\beta}_1 X_6 \\
+Y_7 - \hat{\beta}_0 - \hat{\beta}_1 X_7 \\
+Y_8 - \hat{\beta}_0 - \hat{\beta}_1 X_8 \\
+Y_9 - \hat{\beta}_0 - \hat{\beta}_1 X_9 \\
+Y_{10} - \hat{\beta}_0 - \hat{\beta}_1 X_{10} \\
+Y_{11} - \hat{\beta}_0 - \hat{\beta}_1 X_{11} \\
+Y_{12} - \hat{\beta}_0 - \hat{\beta}_1 X_{12} \\
+Y_{13} - \hat{\beta}_0 - \hat{\beta}_1 X_{13} \\
+Y_{14} - \hat{\beta}_0 - \hat{\beta}_1 X_{14} \\
+Y_{15} - \hat{\beta}_0 - \hat{\beta}_1 X_{15} \\
+Y_{16} - \hat{\beta}_0 - \hat{\beta}_1 X_{16} \\
+Y_{17} - \hat{\beta}_0 - \hat{\beta}_1 X_{17} \\
+Y_{18} - \hat{\beta}_0 - \hat{\beta}_1 X_{18} \\
+Y_{19} - \hat{\beta}_0 - \hat{\beta}_1 X_{19} \\
+Y_{20} - \hat{\beta}_0 - \hat{\beta}_1 X_{20}
+\end{bmatrix}
+\]
+
+donde:
+
+- \( Y_i \) representa el valor observado de la variable respuesta (Resistencia).
+
+- \( X_i \) es la variable predictora (Edad).
+
+- \( \hat{\beta}_0 \) y \( \hat{\beta}_1 \) son las estimaciones de los coeficientes del modelo.
+
+
+
+</p>
+</div>
+

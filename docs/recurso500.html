@@ -1,0 +1,1769 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Métodos y Simulación Estadística" />
+
+
+<title> Transformaciones</title>
+
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"> </a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Métodos
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="index.html">Contenido</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Correlación
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso100.html">Análisis de Correlación</a>
+    </li>
+    <li>
+      <a href="recurso110.html">Coeficiente de Pearson</a>
+    </li>
+    <li>
+      <a href="recurso120.html">Coeficiente de Spearman</a>
+    </li>
+    <li>
+      <a href="recurso130.html">Coeficiente de Kendall</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Modelo
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso200.html">Modelo de Regresión Lineal Simple</a>
+    </li>
+    <li>
+      <a href="recurso210.html">Estimación Mínimos Cuadrados Ordinarios</a>
+    </li>
+    <li>
+      <a href="recurso220.html">Estimación de Máxima Verosimilitud</a>
+    </li>
+    <li>
+      <a href="recurso230.html">Forma Matricial del Modelo</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Diagnóstico
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso300.html">Supuestos</a>
+    </li>
+    <li>
+      <a href="recurso310.html">Residuales</a>
+    </li>
+    <li>
+      <a href="recurso320.html">Revisión de Supuestos</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Pruebas de Hipótesis
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso400.html">Sobre los Coeficientes</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Transformaciones
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso500.html">Transformaciones</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Modelos polinomiales
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso600.html">Modelos polinomiales</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Predicción
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso700.html">Intervalo de Confianza</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Intervalos de Confianza
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso800.html">Coeficientes y varianza</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Atípicos e Influyentes
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso900.html">Punto atípico e influyente</a>
+    </li>
+    <li>
+      <a href="recurso910.html">Distancia de Cook</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Referencias
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso1000.html">Referencias</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore"><span style="color:#686868">
+<strong>Transformaciones</strong></span></h1>
+<h4 class="author">Métodos y Simulación Estadística</h4>
+
+</div>
+
+
+<p></br></br></p>
+</br></br>
+<h2>
+Introducción
+</h2>
+<p>En regresión lineal, la transformación de la variable respuesta <span
+class="math inline">\(Y\)</span> o la predictora <span
+class="math inline">\(X\)</span> es una estrategia útil para mejorar el
+cumplimiento de los supuestos del modelo, como la normalidad de los
+errores y la homocedasticidad. Además, puede contribuir a mejorar el
+ajuste del modelo cuando la relación entre las variables no es
+estrictamente lineal.</p>
+</br></br>
+<h2>
+Transformaciones para linealizar el modelo
+</h2>
+<p>En ciertos casos, el modelo teórico que describe los datos presenta
+una <strong>estructura matemática no lineal en sus parámetros</strong>.
+Sin embargo, mediante <strong>transformaciones adecuadas</strong> de
+<span class="math inline">\(Y\)</span> o <span
+class="math inline">\(X\)</span>, es posible reformularlo en una
+<strong>forma lineal</strong>, permitiendo así la aplicación de métodos
+de regresión lineal estándar.</p>
+<p>La <strong>Tabla 3.9</strong> muestra algunos ejemplos de modelos que
+pueden ser <strong>linealizados</strong> mediante transformaciones
+específicas.</p>
+<br/><br/>
+<center>
+<strong>Tabla 3.9</strong> Ejemplos de transformaciones.
+</center>
+<table>
+<colgroup>
+<col width="17%" />
+<col width="25%" />
+<col width="30%" />
+<col width="26%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Modelo</strong></th>
+<th><strong>Denominación</strong></th>
+<th><strong>Transformación</strong></th>
+<th><strong>Forma Lineal</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(Y = \beta_0 e^{\beta_1 X}
+\varepsilon\)</span></td>
+<td>Modelo exponencial multiplicativo</td>
+<td><span class="math inline">\(Y^* = \ln(Y)\)</span></td>
+<td><span class="math inline">\(Y^* = \beta_0^* + \beta_1 X +
+\varepsilon^*\)</span> con <span class="math inline">\(\beta_0^* =
+\ln(\beta_0)\)</span> y <span class="math inline">\(\varepsilon^* =
+\ln(\varepsilon)\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(Y = \beta_0 X^{\beta_1}
+\varepsilon\)</span></td>
+<td>Modelo potencial multiplicativo</td>
+<td><span class="math inline">\(Y^* = \ln(Y)\)</span>, <span
+class="math inline">\(X^* = \ln(X)\)</span></td>
+<td><span class="math inline">\(Y^* = \beta_0^* + \beta_1 X^* +
+\varepsilon^*\)</span> con <span class="math inline">\(\beta_0^* =
+\ln(\beta_0)\)</span> y <span class="math inline">\(\varepsilon^* =
+\ln(\varepsilon)\)</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(Y = \beta_0 + \beta_1 \ln(X) +
+\varepsilon\)</span></td>
+<td>Modelo logarítmico</td>
+<td><span class="math inline">\(X^* = \ln(X)\)</span></td>
+<td><span class="math inline">\(Y = \beta_0 + \beta_1 X^* +
+\varepsilon\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(Y = \beta_0 + \beta_1(1/X) +
+\varepsilon\)</span></td>
+<td>Modelo recíproco</td>
+<td><span class="math inline">\(X^* = 1/X\)</span></td>
+<td><span class="math inline">\(Y = \beta_0 + \beta_1 X^* +
+\varepsilon\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>En la <strong>Figura 3.31</strong> se muestran los patrones de los
+modelos que se pueden linealizar.</p>
+<br/><br/>
+<center>
+<img src="img/fig331.png" width="100%" style="display: block; margin: auto;" />
+<strong>Figura 3.31</strong> Patrones de los modelos que se pueden
+linealizar.
+</center>
+<p><br/><br/></p>
+</br></br>
+<div class="caja-ejemplo">
+<h3>
+Ejemplo:
+</h3>
+<p>
+<p>Se busca modelar la <strong>cantidad de una sustancia
+radiactiva</strong> (en miligramos) en función del
+<strong>tiempo</strong> (en años), considerando su proceso de
+desintegración. Este fenómeno sigue un comportamiento exponencial
+decreciente, por lo que el ajuste de un modelo adecuado permitirá
+describir la relación entre ambas variables.</p>
+<p>Para este análisis, se dispone de un conjunto de <strong>50
+observaciones</strong> que contienen mediciones de la cantidad de la
+sustancia en diferentes momentos del tiempo. Los datos están disponibles
+en el siguiente enlace:</p>
+<p><a
+href="https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_tiempo.txt">Datos
+de desintegración radiactiva</a></p>
+<hr />
+<p>A continuación, se presentan los códigos en <strong>R</strong> para
+cargar la base de datos, generar el gráfico de dispersión y ajustar un
+modelo de regresión lineal, donde la variable de respuesta es la
+<strong>Cantidad</strong> y la variable predictora es el
+<strong>Tiempo</strong>.</p>
+<p>El modelo 1 (<span class="math inline">\(M_1\)</span>) que se va a
+ajustar se expresa de la siguiente manera:</p>
+<p><span class="math display">\[
+\text{Cantidad}_i = \beta_0 + \beta_1 \times \text{Tiempo}_i +
+\varepsilon_i \\
+\varepsilon_i \sim N(0, \sigma^2)
+\]</span></p>
+<pre>
+# Configurar el entorno para el uso del idioma español
+Sys.setlocale("LC_ALL", "es_ES.UTF-8")
+
+# Lectura de datos
+file <- "https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_tiempo.txt"
+datos <- read.table(file = file, header = TRUE)
+
+# Cargar librerías necesarias
+library(ggplot2)
+
+# Generar gráfico de dispersión para visualizar la relación entre tiempo y cantidad
+ggplot(datos, aes(x = Tiempo, y = Cantidad)) + 
+  geom_point(color = "blue", size = 2) + 
+  geom_smooth(method = "lm", color = "red", se = FALSE) +  # Agregar línea de tendencia
+  theme_light() +
+  xlim(0, 10) + 
+  labs(title = "Desintegración Radiactiva",
+       x = "Tiempo (años)", 
+       y = "Cantidad de sustancia (mg)")
+
+# Ajuste del modelo de regresión lineal
+m1 <- lm(Cantidad ~ Tiempo, data = datos)
+summary(m1)  # Resumen del modelo
+
+# Diagnóstico del modelo: Evaluación de residuos y ajuste
+par(mfrow = c(2, 2))  # Configurar la disposición de los gráficos
+plot(m1, las = 1, col = 'blue', which = 1:3, cex = 1.5, pch = 19)  # Gráficos de diagnóstico
+
+# Prueba de normalidad de los residuos con Shapiro-Wilk
+res_m1 <- residuals(m1)
+shapiro.test(res_m1)
+</pre>
+<pre class="r"><code># Configurar el entorno para el uso del idioma español
+Sys.setlocale(&quot;LC_ALL&quot;, &quot;es_ES.UTF-8&quot;)
+
+# Lectura de datos
+file &lt;- &quot;https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_tiempo.txt&quot;
+datos &lt;- read.table(file = file, header = TRUE)
+
+# Cargar librerías necesarias
+library(ggplot2)
+
+# Generar gráfico de dispersión para visualizar la relación entre tiempo y cantidad
+ggplot(datos, aes(x = Tiempo, y = Cantidad)) + 
+  geom_point(color = &quot;blue&quot;, size = 2) + 
+  geom_smooth(method = &quot;lm&quot;, color = &quot;red&quot;, se = FALSE) +  # Agregar línea de tendencia
+  theme_light() +
+  xlim(0, 10) + 
+  labs(title = &quot;Desintegración Radiactiva&quot;,
+       x = &quot;Tiempo (años)&quot;, 
+       y = &quot;Cantidad de sustancia (mg)&quot;)
+
+# Ajuste del modelo de regresión lineal
+m1 &lt;- lm(Cantidad ~ Tiempo, data = datos)
+summary(m1)  # Resumen del modelo
+
+# Diagnóstico del modelo: Evaluación de residuos y ajuste
+par(mfrow = c(2, 2))  # Configurar la disposición de los gráficos
+plot(m1, las = 1, col = &#39;blue&#39;, which = 1:3, cex = 1.5, pch = 19)  # Gráficos de diagnóstico
+
+# Prueba de normalidad de los residuos con Shapiro-Wilk
+res_m1 &lt;- residuals(m1)
+shapiro.test(res_m1)</code></pre>
+<br/><br/>
+<center>
+<img src="img/fig332.png" width="80%" style="display: block; margin: auto;" />
+<strong>Figura 3.32</strong> Relación cantidad (mg) y tiempo (años).
+</center>
+<p><br/><br/></p>
+<p>La <strong>Figura 3.32</strong> muestra que la cantidad de sustancia
+(mg) <strong>decrece</strong> a medida que transcurre el tiempo (años).
+Este comportamiento es consistente con el esperado en un proceso de
+desintegración radiactiva.</p>
+<p>La <strong>Figura 3.33</strong> muestra los gráficos de diagnóstico
+de los residuos del modelo de regresión lineal <span
+class="math inline">\(M_1\)</span>. Vamos a analizar cada uno:</p>
+<ul>
+<li><p><strong>Residuals vs Fitted (Residuos vs Valores
+Ajustados)</strong>: La forma de “U” en el gráfico indica que hay una
+relación no lineal entre las variables. Esto sugiere que el modelo
+lineal no es adecuado, ya que los residuos deberían estar distribuidos
+aleatoriamente alrededor de la línea horizontal (cero).</p></li>
+<li><p><strong>Q-Q Residuals (Gráfico de Cuantiles-Cuantiles)</strong>:
+Se observa una desviación de los puntos con respecto a la línea diagonal
+en los extremos.Esto indica que los residuos no siguen completamente una
+distribución normal, lo cual puede afectar la validez de los resultados
+asociados al modelo.</p></li>
+<li><p><strong>Scale-Location (Residuos Estandarizados vs Valores
+Ajustados)</strong>: La tendencia en forma de “U” sugiere que la
+varianza de los residuos no es constante (presencia de
+heterocedasticidad). Esto significa que el modelo puede no ser el más
+adecuado y se recomienda considerar una transformación logaritmo a la
+variable respuesta.</p></li>
+</ul>
+<br/><br/>
+<center>
+<img src="img/fig333.png" width="80%" style="display: block; margin: auto;" />
+<strong>Figura 3.33</strong> Residuales del modelo 1.
+</center>
+<p><br/><br/></p>
+<p>Dado que los supuestos de <strong>homocedasticidad</strong> y
+<strong>normalidad</strong> de los residuos <strong>no se
+cumplen</strong>, es necesario aplicar una transformación a la variable
+respuesta. En este caso, se emplea la transformación logarítmica, lo que
+implica trabajar con la nueva variable transformada:</p>
+<p><span class="math display">\[ Cantidad^* = \log(Cantidad)
+\]</span></p>
+<p>Si se supone que el modelo exponencial multiplicativo es el original
+por la forma de la curva en el gráfico donde <strong>Cantidad de la
+sustancia</strong> es la variable respuesta y <strong>Tiempo</strong> es
+la variable explicativa:</p>
+<p><span class="math display">\[
+Cantidad = \beta_0 e^{\beta_1 Tiempo} \varepsilon
+\]</span></p>
+<p>Al aplicar el logaritmo a ambos lados de la ecuación, se obtiene la
+forma lineal en términos de <span
+class="math inline">\(Cantidad^*\)</span> y <span
+class="math inline">\(Tiempo\)</span>:</p>
+<p><span class="math display">\[
+Cantidad^* = \beta_0^* + \beta_1 Tiempo + \varepsilon^* \\
+\varepsilon^*_i \sim N(0, \sigma^2)
+\]</span></p>
+<p>donde:</p>
+<ul>
+<li><p><span class="math inline">\(\beta_0^* = \log(\beta_0)\)</span>
+representa el nuevo intercepto del modelo transformado.</p></li>
+<li><p><span class="math inline">\(\varepsilon^* =
+\log(\varepsilon)\)</span> corresponde al nuevo término de
+error.</p></li>
+<li><p>El coeficiente <span class="math inline">\(\beta_1\)</span> se
+mantiene inalterado en ambos modelos, lo que permite interpretar su
+efecto de manera consistente.</p></li>
+</ul>
+<p>Esta transformación facilita el ajuste del modelo en
+<strong>R</strong>, asegurando una relación lineal entre la variable
+explicativa y la respuesta, además de mejorar la interpretación de los
+coeficientes en términos logarítmicos. Los códigos del nuevo modelo
+(<span class="math inline">\(M_2\)</span>) son los siguientes:</p>
+<pre>
+# Configurar el entorno para el uso del idioma español
+Sys.setlocale("LC_ALL", "es_ES.UTF-8")
+
+# Carga de librerías necesarias
+library(car)        # Para análisis de residuos
+library(ggplot2)    # Para visualización de datos
+library(lmtest)     # Para pruebas de supuestos en modelos de regresión
+
+# Lectura de datos desde un archivo en línea
+file <- "https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_tiempo.txt"
+datos <- read.table(file = file, header = TRUE)
+
+# Transformación de la variable respuesta (aplicación de logaritmo)
+datos$log_cantidad <- log(datos$Cantidad)
+
+# Creación del gráfico de dispersión con la variable transformada
+plot.reg <- ggplot(datos, aes(x = Tiempo, y = log_cantidad)) + 
+  geom_point(color = "black") + 
+  theme_light() + 
+  xlim(0, 10) + 
+  labs(x = "Tiempo (años)", y = "log(Cantidad)", 
+       title = "Relación entre Tiempo y la Cantidad (Transformada)")
+
+# Ajuste del modelo de regresión lineal sobre la variable transformada
+m2 <- lm(log_cantidad ~ Tiempo, data = datos)
+
+# Resumen del modelo ajustado
+summary(m2)
+
+# Diagnóstico gráfico de residuos
+par(mfrow = c(2, 2))  # Configurar la disposición de los gráficos en formato 2x2
+plot(m2, las = 1, col = "palegreen3", which = 1:3, cex = 1.5, pch = 19)
+
+# Evaluación de los supuestos del modelo
+
+# Prueba de normalidad de los residuos (Shapiro-Wilk)
+shapiro.test(residuals(m2))
+
+# Prueba de homocedasticidad (Breusch-Pagan)
+bptest(m2)
+
+# Prueba de independencia de los errores (Durbin-Watson)
+dwtest(m2)
+
+# Comparación de los modelos antes y después de la transformación
+
+# Configurar gráficos en una fila de dos columnas
+par(mfrow = c(1, 2))
+
+# Gráfico del modelo sin transformación (M1)
+plot(x = datos$Tiempo, y = datos$Cantidad, pch = 20, cex = 0.8,
+     xlab = "Tiempo (años)", ylab = "Cantidad", main = "Modelo sin Transformación (M1)")
+abline(lm(Cantidad ~ Tiempo, data = datos), col = "blue", lwd = 2)
+
+# Gráfico del modelo con transformación logarítmica (M2)
+plot(x = datos$Tiempo, y = log(datos$Cantidad), pch = 20, cex = 0.8,
+     xlab = "Tiempo (años)", ylab = "log(Cantidad)", main = "Modelo con Transformación (M2)")
+abline(m2, col = "palegreen3", lwd = 2)
+</pre>
+<pre class="r"><code># Configurar el entorno para el uso del idioma español
+Sys.setlocale(&quot;LC_ALL&quot;, &quot;es_ES.UTF-8&quot;)
+
+# Carga de librerías necesarias
+library(car)        # Para análisis de residuos
+library(ggplot2)    # Para visualización de datos
+library(lmtest)     # Para pruebas de supuestos en modelos de regresión
+
+# Lectura de datos desde un archivo en línea
+file &lt;- &quot;https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_tiempo.txt&quot;
+datos &lt;- read.table(file = file, header = TRUE)
+
+# Transformación de la variable respuesta (aplicación de logaritmo)
+datos$log_cantidad &lt;- log(datos$Cantidad)
+
+# Creación del gráfico de dispersión con la variable transformada
+plot.reg &lt;- ggplot(datos, aes(x = Tiempo, y = log_cantidad)) + 
+  geom_point(color = &quot;black&quot;) + 
+  theme_light() + 
+  xlim(0, 10) + 
+  labs(x = &quot;Tiempo (años)&quot;, y = &quot;log(Cantidad)&quot;, 
+       title = &quot;Relación entre Tiempo y la Cantidad (Transformada)&quot;)
+
+# Ajuste del modelo de regresión lineal sobre la variable transformada
+m2 &lt;- lm(log_cantidad ~ Tiempo, data = datos)
+
+# Resumen del modelo ajustado
+summary(m2)
+
+# Diagnóstico gráfico de residuos
+par(mfrow = c(2, 2))  # Configurar la disposición de los gráficos en formato 2x2
+plot(m2, las = 1, col = &quot;palegreen3&quot;, which = 1:3, cex = 1.5, pch = 19)
+
+# Evaluación de los supuestos del modelo
+
+# Prueba de normalidad de los residuos (Shapiro-Wilk)
+shapiro.test(residuals(m2))
+
+# Prueba de homocedasticidad (Breusch-Pagan)
+bptest(m2)
+
+# Prueba de independencia de los errores (Durbin-Watson)
+dwtest(m2)
+
+# Comparación de los modelos antes y después de la transformación
+
+# Configurar gráficos en una fila de dos columnas
+par(mfrow = c(1, 2))
+
+# Gráfico del modelo sin transformación (M1)
+plot(x = datos$Tiempo, y = datos$Cantidad, pch = 20, cex = 0.8,
+     xlab = &quot;Tiempo (años)&quot;, ylab = &quot;Cantidad&quot;, main = &quot;Modelo sin Transformación (M1)&quot;)
+abline(lm(Cantidad ~ Tiempo, data = datos), col = &quot;blue&quot;, lwd = 2)
+
+# Gráfico del modelo con transformación logarítmica (M2)
+plot(x = datos$Tiempo, y = log(datos$Cantidad), pch = 20, cex = 0.8,
+     xlab = &quot;Tiempo (años)&quot;, ylab = &quot;log(Cantidad)&quot;, main = &quot;Modelo con Transformación (M2)&quot;)
+abline(m2, col = &quot;palegreen3&quot;, lwd = 2)</code></pre>
+<br/><br/>
+<center>
+<img src="img/fig334.png" width="80%" style="display: block; margin: auto;" />
+<strong>Figura 3.34</strong> Relación log-cantidad y tiempo.
+</center>
+<p><br/><br/></p>
+<p>La <strong>Figura 3.34</strong> evidencia una relación lineal
+negativa entre el logaritmo de la cantidad de sustancia y el tiempo.</p>
+<br/><br/>
+<center>
+<img src="img/fig335.png" width="80%" style="display: block; margin: auto;" />
+<strong>Figura 3.35</strong> Residuales del modelo 2.
+</center>
+<p><br/><br/></p>
+<p>La <strong>Figura 3.35</strong> muestra los gráficos de diagnóstico
+de los residuos del modelo de regresión lineal <span
+class="math inline">\(M_2\)</span>. Vamos a analizar cada uno:</p>
+<ul>
+<li><p><strong>Residuals vs Fitted (Residuos vs Valores
+Ajustados)</strong>: Los residuos están distribuidos aleatoriamente
+alrededor de la línea horizontal, sin una tendencia clara, lo que indica
+que la relación entre las variables es adecuadamente modelada por una
+regresión lineal. Algunos valores atípicos (puntos 44, 45 y 48) podrían
+indicar observaciones con mayor influencia en el modelo.</p></li>
+<li><p><strong>Q-Q Residuals (Gráfico de Cuantiles-Cuantiles)</strong>:
+Los residuos siguen aproximadamente la línea diagonal, lo que sugiere
+que la normalidad de los errores se cumple en gran medida. Sin embargo,
+en los extremos hay algunas desviaciones, lo que indica la presencia de
+valores atípicos que podrían afectar la normalidad de los
+errores.</p></li>
+<li><p><strong>Scale-Location (Residuos Estandarizados vs Valores
+Ajustados)</strong>: No se observa una tendencia clara en los residuos
+estandarizados, sin embargo los puntos a la izquiera de 3.6 en el eje
+<span class="math inline">\(X\)</span> parecen mostrar mayor
+variabilidad. Los valores en los extremos (puntos 44, 45 y 48) podrían
+generar cierta variabilidad, en general la transformación logarítmica
+parece haber estabilizado la varianza.</p></li>
+</ul>
+<p>Los resultados de las pruebas estadísticas indican que los errores
+cumplen con los supuestos de <strong>normalidad</strong> e
+<strong>independencia</strong>, ya que los valores-p obtenidos en las
+pruebas de <strong>Shapiro-Wilk</strong> y
+<strong>Durbin-Watson</strong> son mayores a 0.10, lo que significa que
+no hay suficiente evidencia para rechazar la hipótesis nula en cada
+caso.</p>
+<p>Sin embargo, la prueba de <strong>Breusch-Pagan</strong> detecta la
+presencia de <strong>heterocedasticidad</strong> en los residuos, con un
+valor-p de <strong>0.0019</strong>, lo que indica que la varianza de los
+errores no es constante con un nivel de significancia del
+<strong>1%</strong>.</p>
+<pre>
+Shapiro-Wilk normality test
+
+data:  residuals(m2)
+W = 0.98745, p-value = 0.8696
+
+
+studentized Breusch-Pagan test
+
+data:  m2
+BP = 9.6197, df = 1, p-value = 0.001925
+
+Durbin-Watson test
+
+data:  m2
+DW = 2.122, p-value = 0.6121
+alternative hypothesis: true autocorrelation is greater than 0
+
+</pre>
+<p>Los resultados del <strong>modelo 2</strong> sugieren que existe una
+relación lineal significativa entre estas variables, respaldada por la
+<strong>estadística de prueba F</strong> de <span
+class="math inline">\(1.714 \times 10^4\)</span> y un <strong>valor-p
+&lt; <span class="math inline">\(2.2 \times
+e^{-16}\)</span></strong>.</p>
+<p>Adicionalmente:</p>
+<ul>
+<li><p><strong>La variable tiempo es altamente significativa</strong>,
+ya que su valor-p es menor a <span class="math inline">\(2 \times
+e^{-16}\)</span>.</p></li>
+<li><p><strong>El coeficiente de determinación (<span
+class="math inline">\(R^2\)</span>) es de 0.9972</strong>. En este caso,
+el valor de <span class="math inline">\(R^2 = 0.9972\)</span> indica que
+el <strong>99.72% de la variabilidad en la cantidad de la sustancia
+radiactiva</strong> puede explicarse por el tiempo transcurrido. Un
+<strong><span class="math inline">\(R^2\)</span> alto</strong> sugiere
+que el modelo tiene un <strong>buen ajuste a los datos</strong>, lo que
+significa que la relación entre la cantidad de la sustancia y el tiempo
+es fuerte y bien representada por la regresión lineal. Sin embargo, es
+importante complementar esta evaluación con <strong>análisis de los
+residuos</strong> para verificar el cumplimiento de los supuestos del
+modelo y evitar conclusiones erróneas.</p></li>
+</ul>
+<pre>
+Call:
+lm(formula = log(Cantidad) ~ Tiempo, data = datos)
+
+Residuals:
+      Min        1Q    Median        3Q       Max 
+-0.049859 -0.014259 -0.001082  0.014219  0.059930 
+
+Coefficients:
+             Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  4.604322   0.006194   743.4   <2e-16 ***
+Tiempo      -0.199581   0.001524  -130.9   <2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.02224 on 48 degrees of freedom
+Multiple R-squared:  0.9972,    Adjusted R-squared:  0.9971 
+F-statistic: 1.714e+04 on 1 and 48 DF,  p-value: < 2.2e-16
+</pre>
+<p>La <strong>Figura 3.36</strong> compara los modelos ajustados <span
+class="math inline">\(M_1\)</span> y <span
+class="math inline">\(M_2\)</span> mediante un diagrama de
+dispersión.</p>
+<ul>
+<li><p><strong>El modelo <span
+class="math inline">\(M_1\)</span></strong>, ajustado en términos de
+<strong>Cantidad</strong> y <strong>Tiempo</strong>, no representa
+adecuadamente la relación entre la cantidad de sustancia y el tiempo. El
+gráfico de dispersión sugiere una relación de tipo exponencial, lo que
+indica que un modelo lineal en su forma original no es
+apropiado.</p></li>
+<li><p><strong>El modelo <span
+class="math inline">\(M_2\)</span></strong>, <strong>basado en la
+regresión lineal de <span class="math inline">\(\log(Cantidad)\)</span>
+en función del Tiempo, proporciona un mejor ajuste aunque todavía no
+satisface todas las condiciones para confiar en el
+modelo</strong>.</p></li>
+</ul>
+<br/><br/>
+<center>
+<img src="img/fig336.png" width="80%" style="display: block; margin: auto;" />
+<strong>Figura 3.36</strong> Comparación de las rectas de los dos
+modelos ajustados <span class="math inline">\(M_1\)</span> y <span
+class="math inline">\(M_2\)</span>.
+</center>
+<p><br/><br/></p>
+</p>
+</div>
+</br></br>
+<h2>
+Transformación de Box-Cox
+</h2>
+<p>En modelos de regresión, la transformación de la variable respuesta
+<strong><span class="math inline">\(Y\)</span></strong> puede ser
+necesaria cuando se presentan problemas como:</p>
+<ul>
+<li><p><strong>No normalidad de los errores</strong>.</p></li>
+<li><p><strong>Heterocedasticidad</strong> (varianza no constante en los
+errores).</p></li>
+<li><p><strong>Relación no lineal entre <span
+class="math inline">\(Y\)</span> y <span
+class="math inline">\(X\)</span></strong>.</p></li>
+</ul>
+<p>Para abordar estos problemas, se emplea la <strong>transformación de
+Box-Cox</strong>, que busca encontrar una transformación óptima para
+<strong><span class="math inline">\(Y\)</span></strong> de la siguiente
+forma:</p>
+<p><span class="math display">\[
+g_{\lambda}(Y) =
+\begin{cases}
+\dfrac{Y^\lambda - 1}{\lambda}, &amp; \text{si } \lambda \neq 0, \\
+\ln(Y), &amp; \text{si } \lambda = 0.
+\end{cases}
+\]</span></p>
+<p>Donde:</p>
+<ul>
+<li><p><strong><span
+class="math inline">\(g_{\lambda}(Y)\)</span></strong> es la variable
+respuesta transformada.</p></li>
+<li><p><strong><span class="math inline">\(\lambda\)</span></strong> es
+un parámetro que define la transformación óptima.</p></li>
+<li><p>Si <strong><span class="math inline">\(\lambda =
+0\)</span></strong>, se utiliza la transformación logarítmica <span
+class="math inline">\(\ln(Y)\)</span>.</p></li>
+</ul>
+<p>La <strong>función <code>boxcox()</code></strong> en el paquete
+<code>MASS</code> ayuda a estimar el valor óptimo de <span
+class="math inline">\(\lambda\)</span>.</p>
+</br></br>
+<div class="caja-ejemplo">
+<h3>
+Ejemplo:
+</h3>
+<p>
+<p>En el ejemplo anterior, se determinó que la relación entre la
+<strong>Cantidad de sustancia</strong> y el <strong>Tiempo</strong>
+sigue un <strong>modelo exponencial multiplicativo</strong>, lo cual se
+identificó a partir de la forma curva observada en el gráfico de
+dispersión. El modelo se expresa como:</p>
+<p><span class="math display">\[
+\text{Cantidad} = \beta_0 e^{\beta_1 \cdot \text{Tiempo}} \varepsilon
+\]</span></p>
+<p>Debido a esta estructura exponencial, se aplicó una
+<strong>transformación logarítmica</strong> a la variable respuesta
+<strong>Cantidad</strong>, con el objetivo de linealizar el modelo y
+permitir su ajuste mediante regresión lineal.</p>
+<p>A continuación, se analizará esta transformación utilizando el
+<strong>método de Box-Cox</strong>, que permite determinar el valor
+óptimo del parámetro <span class="math inline">\(\lambda\)</span> para
+encontrar la transformación más adecuada de la variable respuesta.</p>
+<p>El código en <strong>R</strong> para implementar la transformación es
+el siguiente:</p>
+<pre>
+# Cargar librerías necesarias
+library(MASS)
+
+# Lectura de datos
+file <- "https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_tiempo.txt"
+datos <- read.table(file = file, header = TRUE)
+
+# Ajustar un modelo de regresión lineal
+mod1 <- lm(Cantidad~ Tiempo, data = datos)
+
+# Aplicar transformación Box-Cox para encontrar el mejor lambda
+boxcox(mod1, lambda = seq(-2, 2, by = 0.1))
+
+# Obtener el valor óptimo de lambda
+bc <- boxcox(mod1, lambda = seq(-2, 2, by = 0.1))
+lambda_optimo <- bc$x[which.max(bc$y)]
+lambda_optimo
+</pre>
+<pre class="r"><code># Cargar librerías necesarias
+library(MASS)
+
+# Lectura de datos
+file &lt;- &quot;https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_tiempo.txt&quot;
+datos &lt;- read.table(file = file, header = TRUE)
+
+# Ajustar un modelo de regresión lineal
+mod1 &lt;- lm(Cantidad~ Tiempo, data = datos)
+
+# Aplicar transformación Box-Cox para encontrar el mejor lambda
+boxcox(mod1, lambda = seq(-2, 2, by = 0.1))
+
+# Obtener el valor óptimo de lambda
+bc &lt;- boxcox(mod1, lambda = seq(-2, 2, by = 0.1))
+lambda_optimo &lt;- bc$x[which.max(bc$y)]
+lambda_optimo</code></pre>
+<br/><br/>
+<center>
+<img src="img/fig337.png" width="80%" style="display: block; margin: auto;" />
+<strong>Figura 3.37</strong> La <strong>log-verosimilitud</strong> en
+función del parámetro <span class="math inline">\(\lambda\)</span>.
+</center>
+<p><br/><br/></p>
+<p>El gráfico de la <strong>Figura 3.37</strong> muestra la
+<strong>log-verosimilitud</strong> en función del parámetro <span
+class="math inline">\(\lambda\)</span>. La curva alcanza su valor máximo
+en <span class="math inline">\(\lambda \approx 0.02\)</span>, lo que
+indica que la transformación óptima de la variable
+<strong>Cantidad</strong> está <strong>cercana a una transformación
+logarítmica</strong>, pero con una leve desviación hacia una
+transformación de potencia.</p>
+<p>En este caso, dado que <span class="math inline">\(\lambda \approx
+0.02\)</span>, la transformación sugerida es <strong>casi
+logarítmica</strong>, pero podría probarse también con otros valores
+cercanos dentro del intervalo de confianza para evaluar su efecto en el
+cumplimiento de los supuestos del modelo.</p>
+<p>Al aplicar la transformación de <strong>Box-Cox</strong> con <span
+class="math inline">\(\lambda \approx 0.02\)</span>, el modelo de
+regresión lineal se expresa como:</p>
+<p><span class="math display">\[
+\frac{\text{Cantidad}_i^{0.02} - 1}{0.02} = \beta_0 + \beta_1 \cdot
+\text{Tiempo}_i + \varepsilon_i
+\]</span></p>
+<p>donde:</p>
+<ul>
+<li><p><span class="math inline">\(\beta_0\)</span> es el intercepto del
+modelo.</p></li>
+<li><p><span class="math inline">\(\beta_1\)</span> es el coeficiente
+que mide el efecto del <strong>Tiempo</strong> sobre la
+<strong>Cantidad</strong> transformada.</p></li>
+<li><p><span class="math inline">\(\varepsilon_i\)</span> representa el
+error aleatorio del modelo.</p></li>
+</ul>
+<p>Si el valor óptimo de <span class="math inline">\(\lambda\)</span> es
+<strong>cercano a 0</strong>, la transformación se asemeja a la
+transformación logarítmica:</p>
+<p><span class="math display">\[
+  g(Y) = \ln(Y) \quad \text{cuando } \lambda = 0
+  \]</span></p>
+<p>En este caso, al obtener un valor de <span
+class="math inline">\(\lambda \approx 0.02\)</span>, la transformación
+aplicada se encuentra muy cerca de la logarítmica, lo que sugiere que
+los datos pueden comportarse de manera similar a un modelo exponencial
+en su forma original.</p>
+<p>A continuación, se analiza el ajuste del modelo de regresión lineal
+obtenido tras aplicar la transformación de Box-Cox con <span
+class="math inline">\(\lambda \approx 0.02\)</span>.</p>
+<pre>
+# Configurar el entorno para el uso del idioma español
+Sys.setlocale("LC_ALL", "es_ES.UTF-8")
+
+# Cargar librerías necesarias
+library(MASS)       # Para la transformación Box-Cox
+library(ggplot2)    # Para visualización de datos
+library(car)        # Para análisis de residuos y validación de supuestos
+library(lmtest)     # Para pruebas estadísticas como Breusch-Pagan y Durbin-Watson
+
+# Lectura de datos
+
+# Definir la URL del archivo con los datos
+file <- "https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_tiempo.txt"
+
+# Cargar el conjunto de datos desde la URL en un dataframe
+datos <- read.table(file = file, header = TRUE)
+
+# Mostrar las primeras filas del conjunto de datos para inspección rápida
+head(datos)
+
+
+# Definir el valor óptimo de lambda encontrado previamente con Box-Cox
+lambda_optimo <- 0.02020202
+
+# Aplicar la transformación de Box-Cox a la variable respuesta Cantidad
+if (lambda_optimo == 0) {
+  datos$Cantidad_trans <- log(datos$Cantidad)  # Si lambda es 0, se aplica logaritmo
+} else {
+  datos$Cantidad_trans <- (datos$Cantidad^lambda_optimo - 1) / lambda_optimo  # Transformación general
+}
+
+# Mostrar las primeras filas con la variable transformada
+head(datos)
+
+
+# Ajustar el modelo de regresión lineal con la cantidad transformada como variable respuesta
+mod_bc <- lm(Cantidad_trans ~ Tiempo, data = datos)
+
+# Mostrar el resumen del modelo ajustado
+summary(mod_bc)
+
+
+# Crear un gráfico de dispersión con la variable transformada y la recta de regresión ajustada
+ggplot(datos, aes(x = Tiempo, y = Cantidad_trans)) + 
+  geom_point(color = "blue") +  # Puntos en azul
+  theme_light() +  # Aplicar un tema claro para mejor visualización
+  xlim(0, 10) +  # Limitar el eje X a 10 unidades
+  labs(x = "Tiempo", y = "Cantidad Transformada") +  # Etiquetas de ejes
+  geom_smooth(method = "lm", color = "red", se = FALSE)  # Agregar la recta de regresión en rojo
+
+
+# Diagnóstico gráfico de residuos para evaluar la validez del modelo
+par(mfrow = c(2, 2))  # Configurar los gráficos en una cuadrícula de 2x2
+plot(mod_bc, las = 1, col = "palegreen3", which = 1:3, cex = 1.5, pch = 19)
+
+
+# Prueba de normalidad de los residuos usando Shapiro-Wilk
+shapiro.test(residuals(mod_bc))
+
+# Prueba de homocedasticidad de los residuos usando Breusch-Pagan
+bptest(mod_bc)
+
+# Prueba de independencia de los errores usando Durbin-Watson
+dwtest(mod_bc)
+</pre>
+<pre class="r"><code># Configurar el entorno para el uso del idioma español
+Sys.setlocale(&quot;LC_ALL&quot;, &quot;es_ES.UTF-8&quot;)
+
+# Cargar librerías necesarias
+library(MASS)       # Para la transformación Box-Cox
+library(ggplot2)    # Para visualización de datos
+library(car)        # Para análisis de residuos y validación de supuestos
+library(lmtest)     # Para pruebas estadísticas como Breusch-Pagan y Durbin-Watson
+
+# Lectura de datos
+
+# Definir la URL del archivo con los datos
+file &lt;- &quot;https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_tiempo.txt&quot;
+
+# Cargar el conjunto de datos desde la URL en un dataframe
+datos &lt;- read.table(file = file, header = TRUE)
+
+# Mostrar las primeras filas del conjunto de datos para inspección rápida
+head(datos)
+
+
+# Definir el valor óptimo de lambda encontrado previamente con Box-Cox
+lambda_optimo &lt;- 0.02020202
+
+# Aplicar la transformación de Box-Cox a la variable respuesta Cantidad
+if (lambda_optimo == 0) {
+  datos$Cantidad_trans &lt;- log(datos$Cantidad)  # Si lambda es 0, se aplica logaritmo
+} else {
+  datos$Cantidad_trans &lt;- (datos$Cantidad^lambda_optimo - 1) / lambda_optimo  # Transformación general
+}
+
+# Mostrar las primeras filas con la variable transformada
+head(datos)
+
+
+# Ajustar el modelo de regresión lineal con la cantidad transformada como variable respuesta
+mod_bc &lt;- lm(Cantidad_trans ~ Tiempo, data = datos)
+
+# Mostrar el resumen del modelo ajustado
+summary(mod_bc)
+
+
+# Crear un gráfico de dispersión con la variable transformada y la recta de regresión ajustada
+ggplot(datos, aes(x = Tiempo, y = Cantidad_trans)) + 
+  geom_point(color = &quot;blue&quot;) +  # Puntos en azul
+  theme_light() +  # Aplicar un tema claro para mejor visualización
+  xlim(0, 10) +  # Limitar el eje X a 10 unidades
+  labs(x = &quot;Tiempo&quot;, y = &quot;Cantidad Transformada&quot;) +  # Etiquetas de ejes
+  geom_smooth(method = &quot;lm&quot;, color = &quot;red&quot;, se = FALSE)  # Agregar la recta de regresión en rojo
+
+
+# Diagnóstico gráfico de residuos para evaluar la validez del modelo
+par(mfrow = c(2, 2))  # Configurar los gráficos en una cuadrícula de 2x2
+plot(mod_bc, las = 1, col = &quot;palegreen3&quot;, which = 1:3, cex = 1.5, pch = 19)
+
+
+# Prueba de normalidad de los residuos usando Shapiro-Wilk
+shapiro.test(residuals(mod_bc))
+
+# Prueba de homocedasticidad de los residuos usando Breusch-Pagan
+bptest(mod_bc)
+
+# Prueba de independencia de los errores usando Durbin-Watson
+dwtest(mod_bc)</code></pre>
+<br/><br/>
+<center>
+<img src="img/fig338.png" width="80%" style="display: block; margin: auto;" />
+<strong>Figura 3.38</strong>. Relación entre la Cantidad transformada y
+el Tiempo.
+</center>
+<p><br/><br/></p>
+<br/><br/>
+<center>
+<img src="img/fig339.png" width="80%" style="display: block; margin: auto;" />
+<strong>Figura 3.39</strong>. Residuales de modelo con variable
+respuesta transformada.
+</center>
+<p><br/><br/></p>
+<p>La <strong>Figura 3.38</strong> muestra que la relación entre la
+variable explicativa y la variable respuesta transformada con el
+<strong><span class="math inline">\(\lambda\)</span></strong> óptimo
+obtenido mediante <strong>Box-Cox</strong> es aproximadamente
+<strong>lineal</strong>, lo que sugiere que la transformación mejora el
+ajuste del modelo.</p>
+<p>Por otro lado, la <strong>Figura 3.39</strong> evidencia un posible
+problema de <strong>heterocedasticidad</strong> en los errores. Esta
+observación es consistente con los resultados de los <strong>tests
+estadísticos</strong>, que indican que los errores cumplen los supuestos
+de <strong>normalidad</strong> e <strong>independencia</strong>, pero
+rechazan la hipótesis de <strong>homocedasticidad</strong> con un nivel
+de significancia del <strong>1%</strong>.</p>
+<p>A continuación, se presentan los resultados detallados de las pruebas
+aplicadas:</p>
+<pre>
+Shapiro-Wilk normality test
+
+data:  residuals(mod_bc)
+W = 0.98612, p-value = 0.8186
+
+
+
+studentized Breusch-Pagan test
+
+data:  mod_bc
+BP = 8.7553, df = 1, p-value = 0.003087
+
+
+
+Durbin-Watson test
+
+data:  mod_bc
+DW = 2.0919, p-value = 0.5705
+alternative hypothesis: true autocorrelation is greater than 0
+
+</pre>
+</p>
+</div>
+</br></br>
+<h2>
+Transformación de Box-Tidwell
+</h2>
+<p>La <strong>transformación de Box-Tidwell</strong> permite encontrar
+la mejor forma funcional de la variable explicativa <span
+class="math inline">\(X\)</span> en un <strong>modelo de regresión
+lineal</strong>, cuando la relación entre <span
+class="math inline">\(X\)</span> y <span
+class="math inline">\(Y\)</span> no es estrictamente lineal.</p>
+<p>El modelo de regresión con la transformación se expresa como:</p>
+<p><span class="math display">\[
+Y = \beta_0 + \beta_1 X^\lambda + \varepsilon
+\]</span></p>
+<p>donde:</p>
+<ul>
+<li><p><span class="math inline">\(Y\)</span> es la <strong>variable
+respuesta</strong>.</p></li>
+<li><p><span class="math inline">\(X\)</span> es la <strong>variable
+explicativa</strong> que se va a transformar.</p></li>
+<li><p><span class="math inline">\(\lambda\)</span> es un
+<strong>parámetro desconocido</strong> que determina la mejor
+transformación de <span class="math inline">\(X\)</span>.</p></li>
+<li><p><span class="math inline">\(\varepsilon\)</span> es el
+<strong>término de error</strong>, con media cero y varianza
+constante.</p></li>
+</ul>
+<p>La transformación de Box-Tidwell busca encontrar una transformación
+óptima de la variable explicativa <span
+class="math inline">\(X\)</span>, cuando la relación entre <span
+class="math inline">\(X\)</span> y <span
+class="math inline">\(Y\)</span> no es estrictamente lineal. La
+transformación se define como:</p>
+<p><span class="math display">\[
+X^* = \left\{
+\begin{array}{ll}
+X^\lambda, &amp; \text{si } \lambda \neq 0 \\[10pt]
+\ln(X), &amp; \text{si } \lambda = 0
+\end{array}
+\right.
+\]</span></p>
+<p>La transformación de Box-Tidwell se aplica mediante la función
+<code>boxTidwell()</code> del paquete <strong>car</strong> en
+<strong>R</strong>.</p>
+</br></br>
+<div class="caja-ejemplo">
+<h3>
+Ejemplo:
+</h3>
+<p>
+<p>Continuando con el ejemplo anterior, ahora se analiza la
+transformación de la variable Tiempo de forma individual y
+posteriormente en conjunto con la variable Cantidad. A continuación, se
+presenta el código en <strong>R</strong> para aplicar la transformación
+a la variable Tiempo:</p>
+<pre>
+# Configurar el entorno para el uso del idioma español
+Sys.setlocale("LC_ALL", "es_ES.UTF-8")
+
+# Cargar librerías necesarias
+library(MASS)       # Para la transformación Box-Cox
+library(ggplot2)    # Para visualización de datos
+library(car)        # Para análisis de residuos y validación de supuestos
+library(lmtest)     # Para pruebas estadísticas como Breusch-Pagan y Durbin-Watson
+
+
+# Definir la URL del archivo con los datos
+file <- "https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_tiempo.txt"
+
+# Cargar el conjunto de datos desde la URL en un dataframe
+datos <- read.table(file = file, header = TRUE)
+
+# Agregar un pequeño desplazamiento a la variable Tiempo para evitar valores de 0 
+# (ya que log(0) no está definido y boxTidwell() requiere valores positivos)
+datos$Tiempo_ajustado <- datos$Tiempo + 0.01
+
+
+# Aplicar la transformación de Box-Tidwell para encontrar el lambda óptimo
+mod_bt <- boxTidwell(Cantidad ~ Tiempo_ajustado, other.x = ~1, data = datos)
+
+# Verificar la estructura del objeto mod_bt para asegurarnos de que contiene los resultados esperados
+print(mod_bt)
+
+# Extraer el valor óptimo de lambda correctamente
+lambda_x_optimo <- mod_bt$result[1]  # Extrae el primer elemento de la matriz resultante
+
+# Verificar el valor de lambda obtenido
+print(lambda_x_optimo)
+
+# Aplicar la transformación de Box-Tidwell a la variable explicativa (Tiempo)
+if (lambda_x_optimo == 0) {
+  datos$Tiempo_trans <- log(datos$Tiempo_ajustado)  # Transformación logarítmica si lambda = 0
+} else {
+  datos$Tiempo_trans <- datos$Tiempo_ajustado^lambda_x_optimo  # Transformación con el lambda óptimo
+}
+
+# Gráfico para revisar la relación entre la respuesta y al predictora
+ggplot(datos, aes(x = Tiempo_trans, y = Cantidad)) + 
+  geom_point(color = "blue") + 
+  theme_light() + 
+  labs(x = "Tiempo Transformado", y = "Cantidad") + 
+  geom_smooth(method = "lm", color = "red", se = FALSE)  # Agrega la línea de regresión ajustada
+
+
+# Ajustar un modelo de regresión lineal con la variable Tiempo transformada
+mod <- lm(Cantidad ~ Tiempo_trans, data = datos)
+
+# Mostrar el resumen del modelo ajustado
+summary(mod)
+
+# Configurar la visualización de los gráficos de diagnóstico en un formato 2x2
+par(mfrow = c(2, 2))
+
+# Generar los gráficos de diagnóstico del modelo
+plot(mod, las = 1, col = "dodgerblue3", which = 1:3, cex = 1.5, pch = 19)
+
+
+# Prueba de normalidad de los residuos (Shapiro-Wilk)
+shapiro.test(residuals(mod))  
+
+# Prueba de homocedasticidad (Breusch-Pagan)
+bptest(mod)                   
+
+# Prueba de independencia de los errores (Durbin-Watson)
+dwtest(mod)       
+</pre>
+<pre class="r"><code># Configurar el entorno para el uso del idioma español
+Sys.setlocale(&quot;LC_ALL&quot;, &quot;es_ES.UTF-8&quot;)
+
+# Cargar librerías necesarias
+library(MASS)       # Para la transformación Box-Cox
+library(ggplot2)    # Para visualización de datos
+library(car)        # Para análisis de residuos y validación de supuestos
+library(lmtest)     # Para pruebas estadísticas como Breusch-Pagan y Durbin-Watson
+
+
+# Definir la URL del archivo con los datos
+file &lt;- &quot;https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_tiempo.txt&quot;
+
+# Cargar el conjunto de datos desde la URL en un dataframe
+datos &lt;- read.table(file = file, header = TRUE)
+
+# Agregar un pequeño desplazamiento a la variable Tiempo para evitar valores de 0 
+# (ya que log(0) no está definido y boxTidwell() requiere valores positivos)
+datos$Tiempo_ajustado &lt;- datos$Tiempo + 0.01
+
+
+# Aplicar la transformación de Box-Tidwell para encontrar el lambda óptimo
+mod_bt &lt;- boxTidwell(Cantidad ~ Tiempo_ajustado, other.x = ~1, data = datos)
+
+# Verificar la estructura del objeto mod_bt para asegurarnos de que contiene los resultados esperados
+print(mod_bt)
+
+# Extraer el valor óptimo de lambda correctamente
+lambda_x_optimo &lt;- mod_bt$result[1]  # Extrae el primer elemento de la matriz resultante
+
+# Verificar el valor de lambda obtenido
+print(lambda_x_optimo)
+
+# Aplicar la transformación de Box-Tidwell a la variable explicativa (Tiempo)
+if (lambda_x_optimo == 0) {
+  datos$Tiempo_trans &lt;- log(datos$Tiempo_ajustado)  # Transformación logarítmica si lambda = 0
+} else {
+  datos$Tiempo_trans &lt;- datos$Tiempo_ajustado^lambda_x_optimo  # Transformación con el lambda óptimo
+}
+
+# Gráfico para revisar la relación entre la respuesta y al predictora
+ggplot(datos, aes(x = Tiempo_trans, y = Cantidad)) + 
+  geom_point(color = &quot;blue&quot;) + 
+  theme_light() + 
+  labs(x = &quot;Tiempo Transformado&quot;, y = &quot;Cantidad&quot;) + 
+  geom_smooth(method = &quot;lm&quot;, color = &quot;red&quot;, se = FALSE)  # Agrega la línea de regresión ajustada
+
+
+# Ajustar un modelo de regresión lineal con la variable Tiempo transformada
+mod &lt;- lm(Cantidad ~ Tiempo_trans, data = datos)
+
+# Mostrar el resumen del modelo ajustado
+summary(mod)
+
+# Configurar la visualización de los gráficos de diagnóstico en un formato 2x2
+par(mfrow = c(2, 2))
+
+# Generar los gráficos de diagnóstico del modelo
+plot(mod, las = 1, col = &quot;dodgerblue3&quot;, which = 1:3, cex = 1.5, pch = 19)
+
+
+# Prueba de normalidad de los residuos (Shapiro-Wilk)
+shapiro.test(residuals(mod))  
+
+# Prueba de homocedasticidad (Breusch-Pagan)
+bptest(mod)                   
+
+# Prueba de independencia de los errores (Durbin-Watson)
+dwtest(mod)       </code></pre>
+<p>La transformación de <strong>Box-Tidwell</strong> se aplicó a la
+variable explicativa <span class="math inline">\(X =
+\text{Tiempo}\)</span> utilizando el valor óptimo de <span
+class="math inline">\(\lambda\)</span>, determinado previamente
+como:</p>
+<p><span class="math display">\[
+\lambda = 0.6116531
+\]</span></p>
+<p>El modelo de regresión lineal con la variable transformada se expresa
+de la siguiente manera:</p>
+<p><span class="math display">\[
+Y = \beta_0 + \beta_1 \cdot X^* + \varepsilon
+\]</span></p>
+<p>donde la transformación de <span class="math inline">\(X\)</span> se
+define como:</p>
+<p><span class="math display">\[
+X^* = X^{0.6116531}
+\]</span></p>
+<p>Por lo tanto, el modelo ajustado queda formulado como:</p>
+<p><span class="math display">\[
+\text{Cantidad} = \beta_0 + \beta_1 \cdot \text{Tiempo}^{0.6116531} +
+\varepsilon \\
+\varepsilon \sim N(0, \sigma^2)
+\]</span></p>
+<br/><br/>
+<center>
+<img src="img/fig340.png" width="80%" style="display: block; margin: auto;" />
+<strong>Figura 3.40</strong>. Residuales de modelo con variable
+predictora transformada.
+</center>
+<p><br/><br/></p>
+<p>La <strong>Figura 3.40</strong> muestra que los <strong>supuestos
+distribucionales de los errores</strong> no se cumplen adecuadamente. En
+particular, los <strong>tests estadísticos</strong> indican que los
+errores del modelo presentan problemas de independencia y
+homocedasticidad. Los resultados de las pruebas son los siguientes:</p>
+<pre>
+Shapiro-Wilk normality test
+
+data:  residuals(mod)
+W = 0.98165, p-value = 0.6232
+
+
+studentized Breusch-Pagan test
+
+data:  mod
+BP = 6.4894, df = 1, p-value = 0.01085
+
+
+Durbin-Watson test
+
+data:  mod
+DW = 0.76703, p-value = 1.837e-07
+alternative hypothesis: true autocorrelation is greater than 0
+</pre>
+<p>A continuación, se presenta el código en <strong>R</strong> para
+aplicar la transformación a ambas variables:</p>
+<pre>
+# Configurar el entorno para el uso del idioma español
+Sys.setlocale("LC_ALL", "es_ES.UTF-8")
+
+# Cargar librerías necesarias
+library(MASS)       # Para la transformación Box-Cox
+library(car)        # Para la transformación Box-Tidwell
+library(ggplot2)    # Para visualización de datos
+library(lmtest)     # Para pruebas de supuestos de regresión
+
+#  Lectura de datos
+file <- "https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_tiempo.txt"
+datos <- read.table(file = file, header = TRUE)
+
+# Ajustar un modelo de regresión inicial
+mod_inicial <- lm(Cantidad ~ Tiempo, data = datos)
+
+
+# Encontrar el lambda óptimo para la transformación Box-Cox
+bc <- boxcox(mod_inicial, lambda = seq(-2, 2, by = 0.1))
+lambda_y_optimo <- bc$x[which.max(bc$y)]  # Obtener el mejor lambda
+
+# Aplicar la transformación a la variable respuesta
+if (lambda_y_optimo == 0) {
+  datos$Cantidad_trans <- log(datos$Cantidad)  # Si lambda = 0, aplicar logaritmo
+} else {
+  datos$Cantidad_trans <- (datos$Cantidad^lambda_y_optimo - 1) / lambda_y_optimo  # Transformación Box-Cox
+}
+
+
+# Ajustar valores de Tiempo para evitar problemas con valores de 0
+datos$Tiempo_ajustado <- datos$Tiempo + 0.01  
+
+# Aplicar la transformación Box-Tidwell para encontrar el mejor lambda para Tiempo
+mod_bt <- boxTidwell(Cantidad_trans ~ Tiempo_ajustado, other.x = ~1, data = datos)
+
+# Extraer el lambda óptimo de Tiempo
+lambda_x_optimo <- mod_bt$result[1]
+
+# Aplicar la transformación correcta de Box-Tidwell a la variable explicativa
+if (lambda_x_optimo == 0) {
+  datos$Tiempo_trans <- log(datos$Tiempo_ajustado)  # Si lambda = 0, aplicar logaritmo
+} else {
+  datos$Tiempo_trans <- datos$Tiempo_ajustado^lambda_x_optimo  # Box-Tidwell es solo X^lambda
+}
+
+# Ajustar el modelo con las variables transformadas 
+mod_final <- lm(Cantidad_trans ~ Tiempo_trans, data = datos)
+
+# Resumen del modelo transformado
+summary(mod_final)
+
+# Visualización de la relación transformada 
+ggplot(datos, aes(x = Tiempo_trans, y = Cantidad_trans)) +
+  geom_point(color = "blue") +
+  theme_light() +
+  labs(title = "Relación entre la Cantidad Transformada y el Tiempo Transformado",
+       x = "Tiempo Transformado",
+       y = "Cantidad Transformada") +
+  geom_smooth(method = "lm", color = "red", se = FALSE)
+
+# Diagnóstico gráfico de residuos 
+par(mfrow = c(2, 2))
+plot(mod_final, las = 1, col = "dodgerblue3", which = 1:3, cex = 1.5, pch = 19)
+
+# Pruebas de supuestos 
+shapiro.test(residuals(mod_final)) # Normalidad de residuos
+bptest(mod_final)                  # Homocedasticidad de residuos
+dwtest(mod_final)  
+</pre>
+<pre class="r"><code># Configurar el entorno para el uso del idioma español
+Sys.setlocale(&quot;LC_ALL&quot;, &quot;es_ES.UTF-8&quot;)
+
+# Cargar librerías necesarias
+library(MASS)       # Para la transformación Box-Cox
+library(car)        # Para la transformación Box-Tidwell
+library(ggplot2)    # Para visualización de datos
+library(lmtest)     # Para pruebas de supuestos de regresión
+
+#  Lectura de datos
+file &lt;- &quot;https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_tiempo.txt&quot;
+datos &lt;- read.table(file = file, header = TRUE)
+
+# Ajustar un modelo de regresión inicial
+mod_inicial &lt;- lm(Cantidad ~ Tiempo, data = datos)
+
+
+# Encontrar el lambda óptimo para la transformación Box-Cox
+bc &lt;- boxcox(mod_inicial, lambda = seq(-2, 2, by = 0.1))
+lambda_y_optimo &lt;- bc$x[which.max(bc$y)]  # Obtener el mejor lambda
+
+# Aplicar la transformación a la variable respuesta
+if (lambda_y_optimo == 0) {
+  datos$Cantidad_trans &lt;- log(datos$Cantidad)  # Si lambda = 0, aplicar logaritmo
+} else {
+  datos$Cantidad_trans &lt;- (datos$Cantidad^lambda_y_optimo - 1) / lambda_y_optimo  # Transformación Box-Cox
+}
+
+
+# Ajustar valores de Tiempo para evitar problemas con valores de 0
+datos$Tiempo_ajustado &lt;- datos$Tiempo + 0.01  
+
+# Aplicar la transformación Box-Tidwell para encontrar el mejor lambda para Tiempo
+mod_bt &lt;- boxTidwell(Cantidad_trans ~ Tiempo_ajustado, other.x = ~1, data = datos)
+
+# Extraer el lambda óptimo de Tiempo
+lambda_x_optimo &lt;- mod_bt$result[1]
+
+# Aplicar la transformación correcta de Box-Tidwell a la variable explicativa
+if (lambda_x_optimo == 0) {
+  datos$Tiempo_trans &lt;- log(datos$Tiempo_ajustado)  # Si lambda = 0, aplicar logaritmo
+} else {
+  datos$Tiempo_trans &lt;- datos$Tiempo_ajustado^lambda_x_optimo  # Box-Tidwell es solo X^lambda
+}
+
+# Ajustar el modelo con las variables transformadas 
+mod_final &lt;- lm(Cantidad_trans ~ Tiempo_trans, data = datos)
+
+# Resumen del modelo transformado
+summary(mod_final)
+
+# Visualización de la relación transformada 
+ggplot(datos, aes(x = Tiempo_trans, y = Cantidad_trans)) +
+  geom_point(color = &quot;blue&quot;) +
+  theme_light() +
+  labs(title = &quot;Relación entre la Cantidad Transformada y el Tiempo Transformado&quot;,
+       x = &quot;Tiempo Transformado&quot;,
+       y = &quot;Cantidad Transformada&quot;) +
+  geom_smooth(method = &quot;lm&quot;, color = &quot;red&quot;, se = FALSE)
+
+# Diagnóstico gráfico de residuos 
+par(mfrow = c(2, 2))
+plot(mod_final, las = 1, col = &quot;dodgerblue3&quot;, which = 1:3, cex = 1.5, pch = 19)
+
+# Pruebas de supuestos 
+shapiro.test(residuals(mod_final)) # Normalidad de residuos
+bptest(mod_final)                  # Homocedasticidad de residuos
+dwtest(mod_final)            # Independencia de residuos</code></pre>
+<p>Los valores óptimos de <strong><span
+class="math inline">\(\lambda\)</span></strong> obtenidos para la
+transformación de las variables son:</p>
+<ul>
+<li><p><strong>Cantidad</strong> (<span
+class="math inline">\(Y\)</span>): <span class="math inline">\(\lambda_Y
+= 0.02020202\)</span></p></li>
+<li><p><strong>Tiempo</strong> (<span class="math inline">\(X\)</span>):
+<span class="math inline">\(\lambda_X = 0.9816236\)</span></p></li>
+</ul>
+<p>Dado que:</p>
+<ul>
+<li><p><span class="math inline">\(\lambda_Y\)</span> es <strong>muy
+cercano a 0</strong>, la transformación aplicada a la variable respuesta
+es prácticamente equivalente a la transformación logarítmica.</p></li>
+<li><p><span class="math inline">\(\lambda_X\)</span> es <strong>muy
+cercano a 1</strong>, lo que significa que la variable
+<strong>Tiempo</strong> se mantiene casi sin cambios después de la
+transformación.</p></li>
+</ul>
+<p>Esto implica que el modelo ajustado con estas transformaciones
+<strong>es prácticamente idéntico</strong> al modelo en el que se
+transformó la <strong>Cantidad</strong> con el logaritmo y
+<strong>Tiempo</strong> se dejó sin transformar.</p>
+<p><span class="math display">\[
+log(Cantidad)= \beta_0 + \beta_1 Tiempo + \varepsilon \\
+\varepsilon_i \sim N(0, \sigma^2)
+\]</span></p>
+<p>El uso de las transformaciones de Box-Cox y Box-Tidwell confirmaron
+el modelo inicial propuesto.</p>
+</p>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

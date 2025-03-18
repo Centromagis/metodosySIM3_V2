@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Métodos y Simulación Estadística" />
+
+
+<title> Estimación por máxima verosimilitud</title>
+
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"> </a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Métodos
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="index.html">Contenido</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Correlación
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso100.html">Análisis de Correlación</a>
+    </li>
+    <li>
+      <a href="recurso110.html">Coeficiente de Pearson</a>
+    </li>
+    <li>
+      <a href="recurso120.html">Coeficiente de Spearman</a>
+    </li>
+    <li>
+      <a href="recurso130.html">Coeficiente de Kendall</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Modelo
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso200.html">Modelo de Regresión Lineal Simple</a>
+    </li>
+    <li>
+      <a href="recurso210.html">Estimación Mínimos Cuadrados Ordinarios</a>
+    </li>
+    <li>
+      <a href="recurso220.html">Estimación de Máxima Verosimilitud</a>
+    </li>
+    <li>
+      <a href="recurso230.html">Forma Matricial del Modelo</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Diagnóstico
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso300.html">Supuestos</a>
+    </li>
+    <li>
+      <a href="recurso310.html">Residuales</a>
+    </li>
+    <li>
+      <a href="recurso320.html">Revisión de Supuestos</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Pruebas de Hipótesis
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso400.html">Sobre los Coeficientes</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Transformaciones
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso500.html">Transformaciones</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Modelos polinomiales
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso600.html">Modelos polinomiales</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Predicción
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso700.html">Intervalo de Confianza</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Intervalos de Confianza
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso800.html">Coeficientes y varianza</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Atípicos e Influyentes
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso900.html">Punto atípico e influyente</a>
+    </li>
+    <li>
+      <a href="recurso910.html">Distancia de Cook</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Referencias
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso1000.html">Referencias</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore"><span style="color:#686868">
+<strong>Estimación por máxima verosimilitud</strong></span></h1>
+<h4 class="author">Métodos y Simulación Estadística</h4>
+
+</div>
+
+
+</br></br>
+<h3>
+Introducción
+</h3>
+<p>La <strong>estimación por máxima verosimilitud (EMV)</strong> es un
+enfoque probabilístico que busca determinar los valores de los
+parámetros desconocidos <span class="math inline">\(\beta_0,
+\beta_1\)</span> y <span class="math inline">\(\sigma^2\)</span> que
+<strong>maximizan la verosimilitud de haber observado los datos de la
+muestra</strong>.</p>
+<p>En el modelo de <strong>regresión lineal simple</strong>, se asume
+que la variable respuesta <span class="math inline">\(Y_i\)</span> sigue
+una <strong>distribución normal condicional</strong> a la variable
+explicativa <span class="math inline">\(X_i\)</span>, de la siguiente
+forma:</p>
+<p><span class="math display">\[
+Y_i \mid X_i \sim N(\mu_i, \sigma^2), \\ \text{donde} \quad \mu_i =E[Y_i
+\mid X_i] = \beta_0 + \beta_1 X_i, \quad \sigma^2 = \text{constante}.
+\]</span></p>
+<p><strong>¿Qué es variable y qué es fijo en este contexto?</strong></p>
+<ul>
+<li><p><strong><span class="math inline">\(Y_i\)</span> es una variable
+aleatoria</strong>, ya que su valor cambia en cada realización del
+experimento.</p></li>
+<li><p><strong><span class="math inline">\(X_i\)</span> es
+fijo</strong>, ya que se considera dado por el diseño del estudio o la
+muestra observada.</p></li>
+<li><p><strong>Los parámetros <span class="math inline">\(\beta_0,
+\beta_1, \sigma^2\)</span> son desconocidos</strong> y deben ser
+estimados.</p></li>
+<li><p><strong>Los errores <span class="math inline">\(\varepsilon_i =
+Y_i - (\beta_0 + \beta_1 X_i)\)</span> son variables aleatorias</strong>
+con distribución normal <span class="math inline">\(N(0,
+\sigma^2)\)</span>.</p></li>
+</ul>
+<p>Este modelo implica que, para cada valor fijo de <span
+class="math inline">\(X_i\)</span>, la variable respuesta <span
+class="math inline">\(Y_i\)</span> sigue una distribución normal con
+<strong>media condicional</strong> <span class="math inline">\(\mu_i =
+\beta_0 + \beta_1 X_i\)</span> y <strong>varianza constante</strong>
+<span class="math inline">\(\sigma^2\)</span>, independientemente del
+valor de <span class="math inline">\(X_i\)</span>.</p>
+<hr />
+<p><strong>¿Cómo se determinan los valores de los parámetros que hacen
+más probable la ocurrencia de la muestra?</strong></p>
+<p>Dado un conjunto de <strong><span class="math inline">\(n\)</span>
+observaciones <span class="math inline">\((X_i, Y_i)\)</span></strong>,
+y asumiendo independencia condicional entre las <span
+class="math inline">\(Y_i\)</span>, la <strong>función de verosimilitud
+conjunta</strong> se construye como el producto de las densidades
+normales de cada <span class="math inline">\(Y_i\)</span>, dado <span
+class="math inline">\(X_i\)</span>:</p>
+<p><span class="math display">\[
+L(\beta_0, \beta_1, \sigma^2) = \prod_{i=1}^{n}
+\frac{1}{\sqrt{2\pi\sigma^2}} \exp\left\{ -\frac{(Y_i - (\beta_0 +
+\beta_1 X_i))^2}{2\sigma^2} \right\}.
+\]</span></p>
+<p>Donde:</p>
+<ul>
+<li><p><strong><span class="math inline">\(\mu_i = \beta_0 + \beta_1
+X_i\)</span></strong> representa la media condicional de <span
+class="math inline">\(Y_i\)</span>.</p></li>
+<li><p><strong><span class="math inline">\(\sigma^2\)</span></strong> es
+constante y representa la varianza de los errores.</p></li>
+</ul>
+<hr />
+<p>El método consiste en encontrar los valores de <span
+class="math inline">\(\beta_0, \beta_1\)</span> y <span
+class="math inline">\(\sigma^2\)</span> que <strong>maximizan función de
+verosimilitud conjunta</strong> <span class="math inline">\(L(\beta_0,
+\beta_1, \sigma^2)\)</span>, es decir, los que hacen más probable haber
+observado los datos de la muestra.</p>
+<p>Bajo los supuestos de normalidad de los errores, se puede demostrar
+que los estimadores de máxima verosimilitud de <span
+class="math inline">\(\beta_0\)</span> y <span
+class="math inline">\(\beta_1\)</span> son <strong>idénticos</strong> a
+los obtenidos mediante <strong>mínimos cuadrados ordinarios
+(MCO)</strong>. Sin embargo, la <strong>estimación de la varianza <span
+class="math inline">\(\sigma^2\)</span> difiere</strong> entre ambos
+métodos:</p>
+<ul>
+<li><p><strong>En MCO</strong>, la varianza de los errores se estima
+como:</p>
+<p><span class="math display">\[
+\hat{\sigma}^2_{\text{MCO}} = \frac{1}{n-2} \sum_{i=1}^{n} (Y_i -
+\hat{\beta}_0 - \hat{\beta}_1 X_i)^2
+\]</span></p>
+<p>donde <span class="math inline">\(n-2\)</span> en el denominador
+garantiza que sea un <strong>estimador insesgado</strong>.</p></li>
+<li><p><strong>En EMV</strong>, la varianza se estima con:</p>
+<p><span class="math display">\[
+\hat{\sigma}^2_{\text{EMV}} = \frac{1}{n} \sum_{i=1}^{n} (Y_i -
+\hat{\beta}_0 - \hat{\beta}_1 X_i)^2
+\]</span></p>
+<p>donde el denominador es <span class="math inline">\(n\)</span>, lo
+que hace que sea un <strong>estimador sesgado</strong>, pero con menor
+varianza y, por lo tanto, más eficiente en términos de error cuadrático
+medio.</p></li>
+</ul>
+<p>Resumiendo:</p>
+<ul>
+<li><p>En la <strong>regresión lineal bajo el enfoque de máxima
+verosimilitud</strong>, <strong><span class="math inline">\(X_i\)</span>
+se considera fijo y <span class="math inline">\(Y_i\)</span> es una
+variable aleatoria</strong>.</p></li>
+<li><p><strong>Los estimadores EMV de <span
+class="math inline">\(\beta_0\)</span> y <span
+class="math inline">\(\beta_1\)</span> coinciden con los obtenidos por
+mínimos cuadrados ordinarios (MCO)</strong>.</p></li>
+<li><p><strong>La estimación de la varianza <span
+class="math inline">\(\sigma^2\)</span> es diferente entre ambos
+métodos</strong>: MCO usa <span class="math inline">\(n-2\)</span> para
+que sea insesgado, mientras que EMV usa <span
+class="math inline">\(n\)</span>, lo que introduce un pequeño sesgo pero
+mejora la eficiencia del estimador.</p></li>
+</ul>
+</br></br>
+<h3>
+Formulación
+</h3>
+<p>Una de las formas de representar el modelo de <strong>regresión
+lineal simple</strong> es mediante una formulación probabilística, que
+establece que la variable respuesta <span
+class="math inline">\(Y_i\)</span>, condicionada a un valor fijo de
+<span class="math inline">\(X_i\)</span>, sigue una <strong>distribución
+normal</strong>:</p>
+<p><span class="math display">\[
+Y_i \mid X_i \sim N(\mu_i, \sigma^2), \\ \text{donde} \quad \mu_i =E[Y_i
+\mid X_i] = \beta_0 + \beta_1 X_i, \quad \sigma^2 = \text{constante}.
+\]</span></p>
+<p>En la práctica, una muestra de datos observados consiste en un
+conjunto de <strong>pares de valores</strong>:</p>
+<p><span class="math display">\[
+(x_1, y_1), (x_2, y_2), \dots, (x_n, y_n).
+\]</span></p>
+<p>Donde:</p>
+<ul>
+<li><p><span class="math inline">\(x_i\)</span> es un <strong>valor
+fijo</strong> en la muestra.</p></li>
+<li><p><span class="math inline">\(y_i\)</span> es una
+<strong>realización observada</strong> de la variable aleatoria <span
+class="math inline">\(Y_i\)</span> para un valor concreto <span
+class="math inline">\(x_i\)</span>.</p></li>
+</ul>
+<p>Estos valores observados se utilizan para <strong>inferir los
+parámetros desconocidos</strong> <span class="math inline">\(\beta_0,
+\beta_1, \sigma^2\)</span> mediante métodos como <strong>máxima
+verosimilitud (EMV)</strong> o <strong>mínimos cuadrados ordinarios
+(MCO)</strong>.</p>
+</br></br>
+<h4>
+Función de verosimilitud
+</h4>
+<p>En el contexto de la <strong>estimación por máxima verosimilitud
+(EMV)</strong>, el objetivo es determinar los valores de los parámetros
+desconocidos <span class="math inline">\(\beta_0, \beta_1\)</span> y
+<span class="math inline">\(\sigma^2\)</span> que <strong>maximizan la
+verosimilitud de los datos observados</strong>, dada la estructura del
+modelo probabilístico.</p>
+<p>Dado que el modelo de regresión lineal simple se expresa como:</p>
+<p><span class="math display">\[
+Y_i \mid X_i \sim N(\beta_0 + \beta_1 X_i, \sigma^2), \quad \text{para }
+i = 1,2, \dots, n,
+\]</span></p>
+<p>la densidad condicional de cada <strong>variable aleatoria</strong>
+<span class="math inline">\(Y_i\)</span> dado <span
+class="math inline">\(X_i\)</span> está dada por:</p>
+<p><span class="math display">\[
+f(Y_i \mid X_i; \beta_0, \beta_1, \sigma^2) =
+\frac{1}{\sqrt{2\pi\sigma^2}}
+\exp \left\{ -\frac{(Y_i - \beta_0 - \beta_1 X_i)^2}{2\sigma^2}
+\right\}.
+\]</span></p>
+<p>En el modelo de regresión lineal, se asume que los <strong>errores
+<span class="math inline">\(\varepsilon_i\)</span> son
+independientes</strong>, es decir:</p>
+<p><span class="math display">\[
+\varepsilon_i \sim \text{i.i.d. } N(0, \sigma^2).
+\]</span></p>
+<p>Esto implica que las <strong>variables aleatorias <span
+class="math inline">\(Y_i\)</span> son condicionalmente
+independientes</strong> dado el conjunto de valores fijos <span
+class="math inline">\(X_1, \dots, X_n\)</span>, aunque no necesariamente
+sean independientes marginalmente. La independencia condicional permite
+escribir la <strong>función de verosimilitud</strong> como el producto
+de las densidades individuales:</p>
+<p><span class="math display">\[
+L(\beta_0, \beta_1, \sigma^2 | x_1, \dots, x_n, y_1, \dots, y_n) =
+\prod_{i=1}^{n} f(y_i \mid x_i; \beta_0, \beta_1, \sigma^2).
+\]</span></p>
+<p>Sustituyendo la densidad normal de cada <span
+class="math inline">\(Y_i\)</span>:</p>
+<p><span class="math display">\[
+L(\beta_0, \beta_1, \sigma^2| x_1, \dots, x_n, y_1, \dots, y_n) =
+\prod_{i=1}^{n} \frac{1}{\sqrt{2\pi\sigma^2}}
+\exp \left\{ -\frac{(y_i - \beta_0 - \beta_1 x_i)^2}{2\sigma^2}
+\right\}.
+\]</span></p>
+<p>Reescribiendo en una forma más compacta:</p>
+<p><span class="math display">\[
+L(\beta_0, \beta_1, \sigma^2| x_1, \dots, x_n, y_1, \dots, y_n) =
+\frac{1}{(2\pi\sigma^2)^{n/2}}
+\exp \left\{ -\frac{1}{2\sigma^2} \sum_{i=1}^{n} (y_i - \beta_0 -
+\beta_1 x_i)^2 \right\}.
+\]</span></p>
+<p>Respecto a esta función:</p>
+<ul>
+<li><p>La función de verosimilitud <strong>no representa una
+probabilidad</strong>, sino una <strong>densidad conjunta de los datos
+observados</strong> bajo los parámetros del modelo.</p></li>
+<li><p><strong>Las <span class="math inline">\(y_i\)</span> y <span
+class="math inline">\(x_i\)</span> representan valores
+observados</strong> en la muestra, mientras que <span
+class="math inline">\(Y_i\)</span> y <span
+class="math inline">\(X_i\)</span> son variables aleatorias.</p></li>
+<li><p>La independencia asumida en la construcción de la verosimilitud
+<strong>se refiere a la independencia condicional de los <span
+class="math inline">\(Y_i\)</span> dado <span
+class="math inline">\(X_i\)</span></strong>, no a su independencia
+marginal.</p></li>
+</ul>
+</br></br>
+<h4>
+Función de Log-Verosimilitud
+</h4>
+<p>Dado que la función de verosimilitud es un <strong>producto de
+términos exponenciales</strong>, es conveniente trabajar con su
+<strong>logaritmo natural</strong>, lo que transforma productos en sumas
+y facilita la maximización:</p>
+<p><span class="math display">\[
+\ln L(\beta_0, \beta_1, \sigma^2) = l(\beta_0, \beta_1, \sigma^2).
+\]</span></p>
+<p>Expandiendo la expresión:</p>
+<p><span class="math display">\[
+l(\beta_0, \beta_1, \sigma^2) = -\frac{n}{2} \ln(2\pi) - \frac{n}{2}
+\ln(\sigma^2) - \frac{1}{2\sigma^2} \sum_{i=1}^{n} (y_i - \beta_0 -
+\beta_1 x_i)^2.
+\]</span></p>
+<p>El uso del <strong>logaritmo de la verosimilitud</strong> simplifica
+la maximización de la función de verosimilitud, permitiendo obtener los
+<strong>estimadores de máxima verosimilitud (EMV)</strong>.</p>
+</br></br>
+<h4>
+Estimaciones máximo verosimil (EMV)
+</h4>
+<p>Para obtener los <strong>estimadores de máxima verosimilitud
+(EMV)</strong> de los parámetros <span class="math inline">\(\beta_0,
+\beta_1\)</span> y <span class="math inline">\(\sigma^2\)</span>, se
+resuelven las ecuaciones normales obtenidas al derivar la
+log-verosimilitud con respecto a cada parámetro e igualar a cero.
+<strong>Los datos observados <span class="math inline">\((x_i,
+y_i)\)</span> se utilizan para inferir los parámetros desconocidos del
+modelo</strong>, asegurando que la estimación se base en la mejor
+evidencia disponible.</p>
+<ol style="list-style-type: decimal">
+<li><p><strong>Estimadores de los coeficientes <span
+class="math inline">\(\beta_0\)</span> y <span
+class="math inline">\(\beta_1\)</span></strong><br />
+Derivando respecto a <span class="math inline">\(\beta_0\)</span> y
+<span class="math inline">\(\beta_1\)</span>, se obtiene que los EMV
+coinciden con los estimadores de <strong>mínimos cuadrados ordinarios
+(MCO)</strong>:</p>
+<p><span class="math display">\[
+\hat{\beta}_1 = \frac{\sum_{i=1}^{n} (x_i - \bar{x})(y_i -
+\bar{y})}{\sum_{i=1}^{n} (x_i - \bar{x})^2}, \quad
+\hat{\beta}_0 = \bar{y} - \hat{\beta}_1 \bar{x}.
+\]</span></p></li>
+<li><p><strong>Estimador de la varianza <span
+class="math inline">\(\sigma^2\)</span></strong><br />
+Derivando respecto a <span class="math inline">\(\sigma^2\)</span>, se
+obtiene el EMV de la varianza:</p>
+<p><span class="math display">\[
+\hat{\sigma}^2_{\text{EMV}} = \frac{1}{n} \sum_{i=1}^{n} (y_i -
+\hat{\beta}_0 - \hat{\beta}_1 x_i)^2.
+\]</span></p></li>
+</ol>
+<p>De lo anterior se concluye que <strong>los EMV de <span
+class="math inline">\(\beta_0\)</span> y <span
+class="math inline">\(\beta_1\)</span> coinciden con los estimadores
+obtenidos por MCO</strong>. <strong>El estimador EMV de <span
+class="math inline">\(\sigma^2\)</span> es ligeramente sesgado</strong>,
+pues usa <span class="math inline">\(n\)</span> en lugar de <span
+class="math inline">\(n-2\)</span>, pero es más eficiente en términos de
+varianza.</p>
+<hr />
+<p>La elección entre <strong>MCO</strong> y <strong>EMV</strong> depende
+del contexto y de si se busca una estimación insesgada o una basada en
+principios probabilísticos.</p>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

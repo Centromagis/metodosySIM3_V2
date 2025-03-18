@@ -1,0 +1,1138 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Métodos y Simulación Estadística" />
+
+
+<title> Coeficiente de correlación de Spearman</title>
+
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"> </a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Métodos
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="index.html">Contenido</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Correlación
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso100.html">Análisis de Correlación</a>
+    </li>
+    <li>
+      <a href="recurso110.html">Coeficiente de Pearson</a>
+    </li>
+    <li>
+      <a href="recurso120.html">Coeficiente de Spearman</a>
+    </li>
+    <li>
+      <a href="recurso130.html">Coeficiente de Kendall</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Modelo
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso200.html">Modelo de Regresión Lineal Simple</a>
+    </li>
+    <li>
+      <a href="recurso210.html">Estimación Mínimos Cuadrados Ordinarios</a>
+    </li>
+    <li>
+      <a href="recurso220.html">Estimación de Máxima Verosimilitud</a>
+    </li>
+    <li>
+      <a href="recurso230.html">Forma Matricial del Modelo</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Diagnóstico
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso300.html">Supuestos</a>
+    </li>
+    <li>
+      <a href="recurso310.html">Residuales</a>
+    </li>
+    <li>
+      <a href="recurso320.html">Revisión de Supuestos</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Pruebas de Hipótesis
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso400.html">Sobre los Coeficientes</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Transformaciones
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso500.html">Transformaciones</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Modelos polinomiales
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso600.html">Modelos polinomiales</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Predicción
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso700.html">Intervalo de Confianza</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Intervalos de Confianza
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso800.html">Coeficientes y varianza</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Atípicos e Influyentes
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso900.html">Punto atípico e influyente</a>
+    </li>
+    <li>
+      <a href="recurso910.html">Distancia de Cook</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Referencias
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso1000.html">Referencias</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore"><span style="color:#686868">
+<strong>Coeficiente de correlación de Spearman</strong></span></h1>
+<h4 class="author">Métodos y Simulación Estadística</h4>
+
+</div>
+
+
+</br></br>
+<h2>
+Coeficiente de correlación de Spearman
+</h2>
+<p>El <strong>coeficiente de correlación de Spearman</strong> (<span
+class="math inline">\(\gamma_s\)</span>) es una medida no paramétrica de
+la asociación entre dos variables cuantitativas o ordinales. Fue
+propuesto por <strong>Charles Spearman</strong> y se basa en los
+<strong>rangos de las observaciones</strong> en lugar de los valores
+originales, lo que lo hace más robusto ante la presencia de valores
+atípicos y relaciones no lineales.</p>
+</br></br>
+<h3>
+Fórmula de cálculo
+</h3>
+<p>El coeficiente de correlación de Spearman se basa en rangos en lugar
+de valores originales. En estadística, un <strong>rango</strong> es la
+<strong>posición relativa</strong> de un valor dentro de un conjunto de
+datos ordenados. Para calcular los rangos de un conjunto de valores, se
+sigue un procedimiento sistemático: primero, se ordenan los valores de
+menor a mayor; luego, se asigna un número de rango a cada valor, donde
+el menor recibe el rango 1, el siguiente menor recibe 2, y así
+sucesivamente. Si hay valores repetidos, se asigna el
+<strong>promedio</strong> de los rangos que les corresponderían. Este
+método permite analizar relaciones entre variables sin depender de
+distribuciones específicas ni de relaciones estrictamente lineales, lo
+que lo hace más robusto frente a valores atípicos y datos no
+normales.</p>
+<p>Supongamos que se dispone de los siguientes valores para una variable
+<span class="math inline">\(X\)</span>, donde se calculan los rangos
+correspondientes. La <strong>Tabla 3.3</strong> muestra el resultado del
+cálculo de los rangos:</p>
+<br/><br/>
+<center>
+<strong>Tabla 3.3</strong> Ejemplo de rangos.
+</center>
+<table>
+<thead>
+<tr class="header">
+<th>Observación</th>
+<th>Valor de <span class="math inline">\(X\)</span></th>
+<th>Rango <span class="math inline">\(R_{i}(x)\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>A</td>
+<td>15</td>
+<td>2</td>
+</tr>
+<tr class="even">
+<td>B</td>
+<td>17</td>
+<td>3.5</td>
+</tr>
+<tr class="odd">
+<td>C</td>
+<td>25</td>
+<td>5</td>
+</tr>
+<tr class="even">
+<td>D</td>
+<td>27</td>
+<td>6</td>
+</tr>
+<tr class="odd">
+<td>E</td>
+<td>17</td>
+<td>3.5</td>
+</tr>
+<tr class="even">
+<td>F</td>
+<td>12</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<p>Este procedimiento permite transformar los valores originales en
+posiciones relativas dentro del conjunto de datos, facilitando su uso en
+métodos no paramétricos como el coeficiente de correlación de
+Spearman.</p>
+<p>El coeficiente de <strong>correlación de Spearman</strong> para las
+variables <span class="math inline">\((X,Y)\)</span>, donde <span
+class="math inline">\(X = (x_1, ..., x_n)\)</span> y <span
+class="math inline">\(Y = (y_1, ..., y_n)\)</span>, se calcula
+utilizando la siguiente expresión:</p>
+<p><span class="math display">\[
+\gamma_{s} = \dfrac{ \sum_{i=1}^{n} \Big( R_{i}(x) - \overline{R}(x)
+\Big) \Big( R_{i}(y) - \overline{R}(y) \Big)}
+{\sqrt{\sum_{i=1}^{n} \Big( R_{i}(x) - \overline{R}(x) \Big)^2}
+\sqrt{\sum_{i=1}^{n} \Big( R_{i}(y) - \overline{R}(y) \Big)^2}}
+\]</span></p>
+<p>donde:</p>
+<ul>
+<li><p><span class="math inline">\(R_i(x)\)</span> y <span
+class="math inline">\(R_i(y)\)</span> representan los
+<strong>rangos</strong> asignados a las observaciones de las variables
+<span class="math inline">\(X\)</span> y <span
+class="math inline">\(Y\)</span>, respectivamente.</p></li>
+<li><p><span class="math inline">\(\overline{R}(x)\)</span> y <span
+class="math inline">\(\overline{R}(y)\)</span> son los <strong>promedios
+de los rangos</strong> de las variables.</p></li>
+<li><p><span class="math inline">\(n\)</span> es el número total de
+observaciones.</p></li>
+</ul>
+<p>Cuando no hay empates en los rangos, el coeficiente de correlación de
+Spearman puede calcularse mediante una expresión más simple:</p>
+<p><span class="math display">\[
+\gamma_s = 1 - \dfrac{6 \sum d_i^2}{n(n^2 - 1)}
+\]</span></p>
+<p>donde:</p>
+<ul>
+<li><p><span class="math inline">\(d_i = R_i(x) - R_i(y)\)</span>
+representa la diferencia entre los rangos de cada par de
+observaciones.</p></li>
+<li><p><span class="math inline">\(n\)</span> es el número total de
+observaciones en la muestra.</p></li>
+</ul>
+<p>Esta fórmula simplificada es válida únicamente cuando no existen
+valores repetidos en los datos, lo que garantiza que los rangos sean
+únicos. En presencia de empates, se debe recurrir a la versión general
+del coeficiente de Spearman, basada en la covarianza de los rangos.</p>
+</br></br>
+<h3>
+Interpretación
+</h3>
+<ul>
+<li><p><strong><span class="math inline">\(\gamma_s =
+1\)</span></strong>: Relación monótona positiva perfecta (cuando una
+variable aumenta, la otra también lo hace siempre).</p></li>
+<li><p><strong><span class="math inline">\(\gamma_s =
+-1\)</span></strong>: Relación monótona negativa perfecta (cuando una
+variable aumenta, la otra siempre disminuye).</p></li>
+<li><p><strong><span class="math inline">\(\gamma_s =
+0\)</span></strong>: No hay una relación monótona entre las
+variables.</p></li>
+</ul>
+</br></br>
+<h3>
+Ventajas del coeficiente de Spearman
+</h3>
+<ul>
+<li><p><strong>No requiere normalidad</strong>: A diferencia del
+coeficiente de Pearson, Spearman no asume que las variables sigan una
+distribución normal.</p></li>
+<li><p><strong>No necesita relación lineal</strong>: Puede capturar
+relaciones monótonas (crecientes o decrecientes), incluso si no son
+estrictamente lineales.</p></li>
+<li><p><strong>Es resistente a valores atípicos</strong>: Dado que se
+basa en rangos, los valores extremos tienen menor impacto en el cálculo
+del coeficiente.</p></li>
+<li><p><strong>Puede aplicarse a variables ordinales</strong>: Es útil
+cuando las variables representan categorías ordenadas en lugar de
+valores continuos.</p></li>
+</ul>
+</br></br>
+<h3>
+Pruebas de hipótesis
+</h3>
+<p>Para evaluar la existencia de una <strong>relación monótona</strong>
+significativa entre dos variables las variables <span
+class="math inline">\(X\)</span> y <span
+class="math inline">\(Y\)</span>, donde <span class="math inline">\(X =
+(x_1, ..., x_n)\)</span> y <span class="math inline">\(Y = (y_1, ...,
+y_n)\)</span>, la prueba de Spearman se formula de la siguiente
+manera:</p>
+<ul>
+<li><p><strong>Hipótesis nula (<span
+class="math inline">\(H_0\)</span>)</strong>: No existe asociación
+monótona entre las variables <span class="math inline">\(X\)</span> y
+<span class="math inline">\(Y\)</span>.</p></li>
+<li><p><strong>Hipótesis alternativa (<span
+class="math inline">\(H_1\)</span>)</strong>: Existe una asociación
+monótona significativa entre las variables <span
+class="math inline">\(X\)</span> y <span
+class="math inline">\(Y\)</span>.</p></li>
+</ul>
+<p>Aunque Spearman es un test <strong>no paramétrico</strong>, existen
+algunas condiciones a considerar:</p>
+<ol style="list-style-type: decimal">
+<li><p><strong>Escala de medición</strong>: Las variables deben ser al
+menos ordinales para permitir la asignación de rangos.</p></li>
+<li><p><strong>Relación monótona</strong>: Aunque no requiere
+linealidad, el coeficiente de Spearman solo captura relaciones
+<strong>monótonas</strong> (si una variable aumenta, la otra no debe
+cambiar de dirección varias veces).</p></li>
+<li><p><strong>Independencia de las observaciones</strong>: Cada
+observación debe ser independiente de las demás.</p></li>
+</ol>
+<p><strong>¿Cuándo usar Spearman en lugar de Pearson?</strong></p>
+<ul>
+<li><p>Cuando los datos <strong>no cumplen con el supuesto de
+normalidad</strong>.</p></li>
+<li><p>Si la relación entre las variables <strong>no es lineal</strong>,
+pero sigue una tendencia monótona.</p></li>
+<li><p>En presencia de <strong>valores atípicos</strong>, que podrían
+distorsionar la correlación de Pearson.</p></li>
+<li><p>Para <strong>variables ordinales</strong>, cuando los datos
+representan rangos en lugar de mediciones continuas.</p></li>
+</ul>
+<p>El <strong>coeficiente de Spearman</strong> es una buena herramienta
+para analizar relaciones en situaciones donde la <strong>correlación de
+Pearson</strong> no es adecuada. Su flexibilidad y resistencia a valores
+extremos lo hacen útil en diversos contextos, desde la investigación
+social hasta el análisis de datos financieros y biomédicos.</p>
+</br></br>
+<div class="caja-ejemplo">
+<h3>
+Ejemplo:
+</h3>
+<p>
+<p>En este análisis, se exploran posibles asociaciones entre las
+variables del conjunto de datos <code>biomasa</code>, utilizando la
+función <code>cor()</code> en <strong>R</strong>. Como se explicó
+previamente, todas las variables son <strong>cuantitativas
+continuas</strong>, lo que permite aplicar métodos de correlación para
+evaluar sus relaciones.</p>
+<p>Dado que las pruebas previas rechazaron la normalidad en algunas
+variables y se detectaron valores atípicos, se opta por utilizar la
+<strong>correlación de Spearman</strong> en lugar de la correlación de
+Pearson.</p>
+<p>El código en <strong>R</strong> para calcular la matriz de
+correlación de Spearman y realizar los test correspondientes es el
+siguiente:</p>
+<pre>
+# Cargar las librerías necesarias
+library(paqueteMETODOS)  # Paquete que contiene el conjunto de datos "biomasa"
+library(GGally)          # Para matriz de gráficos de dispersión y correlación
+library(dplyr)           # Para manipulación de datos
+library(ggplot2)         # Para visualización de datos
+
+# Cargar la base de datos "biomasa"
+data(biomasa)
+
+# **Calcular la matriz de correlación de Spearman**
+correlacion_spearman <- cor(biomasa[, 3:8], method = "spearman", use = "pairwise.complete.obs") %>% round(3)
+
+# Mostrar la matriz de correlación de Spearman
+print("Matriz de correlación de Spearman:")
+print(correlacion_spearman)
+
+# **Prueba de correlación de Spearman sin advertencias**
+print("Resultados de la prueba de correlación de Spearman:")
+for (i in 3:7) {
+  for (j in (i+1):8) {
+    test_result <- cor.test(
+      biomasa[[i]], biomasa[[j]],
+      method = "spearman",
+      exact = FALSE,      # Desactiva el método exacto
+      alternative = "two.sided"
+    )
+    cat("\nVariables:", colnames(biomasa)[i], "vs", colnames(biomasa)[j], "\n")
+    print(test_result)
+  }
+}
+
+# **Matriz de gráficos de dispersión con correlaciones de Spearman**
+ggpairs(
+  biomasa[, 3:8],  # Seleccionamos las 6 variables
+  title = "Matriz de Dispersion y Correlacion - Spearman",
+  upper = list(continuous = wrap("cor", size = 4, method = "spearman")),  # Correlaciones de Spearman
+  lower = list(continuous = wrap("points", alpha = 0.5, size = 1.5)),  # Dispersión en la parte inferior
+  diag = list(continuous = wrap("densityDiag", alpha = 0.6))  # Densidades en la diagonal
+)
+</pre>
+<pre class="r"><code># Cargar las librerías necesarias
+library(paqueteMETODOS)  # Paquete que contiene el conjunto de datos &quot;biomasa&quot;
+library(GGally)          # Para matriz de gráficos de dispersión y correlación
+library(dplyr)           # Para manipulación de datos
+library(ggplot2)         # Para visualización de datos
+
+# Cargar la base de datos &quot;biomasa&quot;
+data(biomasa)
+
+# **Calcular la matriz de correlación de Spearman**
+correlacion_spearman &lt;- cor(biomasa[, 3:8], method = &quot;spearman&quot;, use = &quot;pairwise.complete.obs&quot;) %&gt;% round(3)
+
+# Mostrar la matriz de correlación de Spearman
+print(&quot;Matriz de correlación de Spearman:&quot;)
+print(correlacion_spearman)
+
+# **Prueba de correlación de Spearman sin advertencias**
+print(&quot;Resultados de la prueba de correlación de Spearman:&quot;)
+for (i in 3:7) {
+  for (j in (i+1):8) {
+    test_result &lt;- cor.test(
+      biomasa[[i]], biomasa[[j]],
+      method = &quot;spearman&quot;,
+      exact = FALSE,      # Desactiva el método exacto
+      alternative = &quot;two.sided&quot;
+    )
+    cat(&quot;\nVariables:&quot;, colnames(biomasa)[i], &quot;vs&quot;, colnames(biomasa)[j], &quot;\n&quot;)
+    print(test_result)
+  }
+}
+
+# **Matriz de gráficos de dispersión con correlaciones de Spearman**
+ggpairs(
+  biomasa[, 3:8],  # Seleccionamos las 6 variables
+  title = &quot;Matriz de Dispersion y Correlacion - Spearman&quot;,
+  upper = list(continuous = wrap(&quot;cor&quot;, size = 4, method = &quot;spearman&quot;)),  # Correlaciones de Spearman
+  lower = list(continuous = wrap(&quot;points&quot;, alpha = 0.5, size = 1.5)),  # Dispersión en la parte inferior
+  diag = list(continuous = wrap(&quot;densityDiag&quot;, alpha = 0.6))  # Densidades en la diagonal
+)</code></pre>
+<p>La <strong>Tabla 3.4</strong> muestra la <strong>matriz de
+correlaciones de Spearman</strong> entre las variables del conjunto de
+datos <code>biomasa</code>. La correlación de Spearman mide la
+<strong>fuerza y dirección de la relación monótona</strong> entre dos
+variables, lo que significa que detecta asociaciones crecientes o
+decrecientes, incluso si no son estrictamente lineales.</p>
+<br/><br/>
+<center>
+<strong>Tabla 3.4</strong> Matriz de correlaciones de Spearman.
+</center>
+<pre>
+           bio_aerea bio_sub bio_total area_foliar diametro altura
+bio_aerea       1.000  -0.533     0.999       0.834    0.936  0.837
+bio_sub        -0.533   1.000    -0.510      -0.532   -0.603 -0.498
+bio_total       0.999  -0.510     1.000       0.828    0.932  0.837
+area_foliar     0.834  -0.532     0.828       1.000    0.692  0.504
+diametro        0.936  -0.603     0.932       0.692    1.000  0.930
+altura          0.837  -0.498     0.837       0.504    0.930  1.000
+</pre>
+<p>De acuerdo con los resultados de la matriz de correlación se puede
+interpretar lo siguiente:</p>
+<ul>
+<li><p>Entre las correlaciones fuertes:</p>
+<ul>
+<li><p><strong>Biomasa aérea vs. biomasa total</strong> (0.999) indica
+relación monótona positiva casi perfecta, indicando que un aumento en la
+biomasa aérea está directamente asociado con un aumento en la biomasa
+total.</p></li>
+<li><p><strong>Diámetro vs. biomasa aérea</strong> (0.936) y
+<strong>diámetro vs. biomasa total</strong> (0.932) sugieren que el
+diámetro es un fuerte predictor de la biomasa aérea y total.</p></li>
+<li><p><strong>Altura vs. diámetro</strong> (0.930) con relación
+monótona positiva fuerte, lo que indica que a medida que aumenta el
+diámetro, la altura también tiende a incrementarse.</p></li>
+</ul></li>
+<li><p>Entre las correlaciones moderadas:</p>
+<ul>
+<li><p><strong>Área foliar vs. biomasa aérea</strong> (0.834) y
+<strong>área foliar vs. biomasa total</strong> (0.828) indican que un
+mayor desarrollo del área foliar se asocia con un mayor peso en la
+biomasa total y aérea.</p></li>
+<li><p><strong>Área foliar vs. diámetro</strong> (0.692) muestra
+correlación positiva moderada, lo que sugiere que el diámetro del tronco
+también tiende a aumentar con el desarrollo del área foliar.</p></li>
+<li><p><strong>Área foliar vs. altura</strong> (0.504) indica relación
+positiva más débil, indicando que el crecimiento en altura tiene menor
+dependencia directa del área foliar.</p></li>
+<li><p><strong>Biomasa subterránea vs. biomasa aérea</strong> (-0.533) y
+<strong>biomasa subterránea vs. biomasa total</strong> (-0.510) lo que
+muestra una relación negativa moderada, esto sugiere un posible
+<strong>balance en la asignación de recursos</strong> entre el
+crecimiento aéreo y subterráneo de la planta.</p></li>
+<li><p><strong>Biomasa subterránea vs. diámetro</strong> (-0.603) tiene
+correlación negativa moderada, lo que indica que un mayor diámetro
+tiende a estar asociado con menor biomasa subterránea.</p></li>
+</ul></li>
+</ul>
+<p>La <strong>Figura 3.8</strong> permite visualizar los resultados de
+la correlación de Spearman junto con los gráficos de dispersión para
+analizar la asociación entre cada par de variables. Este tipo de
+visualización es similar a la utilizada en la correlación de Pearson,
+pero en este caso, la medida de asociación refleja la existencia de
+relaciones <strong>monótonas</strong>, sin requerir linealidad ni
+normalidad en los datos.</p>
+<br/><br/>
+<center>
+<img src="img/fig38.png" width="80%" style="display: block; margin: auto;" />
+<strong>Figura 3.8</strong>. Descripción de cada par de variables de la
+base de datos biomasa.
+</center>
+<p><br/><br/></p>
+<p>Dado que las variables <strong>biomasa aérea</strong>,
+<strong>biomasa total</strong> y <strong>área foliar</strong> no
+cumplieron con los supuestos de normalidad y presentaron valores
+atípicos, la correlación de Pearson podría no ser válida en estos casos.
+Por esta razón, se aplicó la <strong>correlación de Spearman</strong>
+con los siguientes resultados:</p>
+<pre>
+
+Variables: bio_aerea vs bio_sub 
+
+    Spearman's rank correlation rho
+
+data:  biomasa[[i]] and biomasa[[j]]
+S = 186220, p-value = 6.428e-08
+alternative hypothesis: true rho is not equal to 0
+sample estimates:
+       rho 
+-0.5328646 
+
+
+Variables: bio_aerea vs bio_total 
+
+    Spearman's rank correlation rho
+
+data:  biomasa[[i]] and biomasa[[j]]
+S = 131, p-value < 2.2e-16
+alternative hypothesis: true rho is not equal to 0
+sample estimates:
+      rho 
+0.9989216 
+
+
+Variables: bio_aerea vs area_foliar 
+
+    Spearman's rank correlation rho
+
+data:  biomasa[[i]] and biomasa[[j]]
+S = 20162, p-value < 2.2e-16
+alternative hypothesis: true rho is not equal to 0
+sample estimates:
+      rho 
+0.8340378 
+
+
+Variables: bio_aerea vs diametro 
+
+    Spearman's rank correlation rho
+
+data:  biomasa[[i]] and biomasa[[j]]
+S = 7788.2, p-value < 2.2e-16
+alternative hypothesis: true rho is not equal to 0
+sample estimates:
+      rho 
+0.9358914 
+
+
+Variables: bio_aerea vs altura 
+
+    Spearman's rank correlation rho
+
+data:  biomasa[[i]] and biomasa[[j]]
+S = 19842, p-value < 2.2e-16
+alternative hypothesis: true rho is not equal to 0
+sample estimates:
+      rho 
+0.8366698 
+
+
+Variables: bio_sub vs bio_total 
+
+    Spearman's rank correlation rho
+
+data:  biomasa[[i]] and biomasa[[j]]
+S = 183429, p-value = 2.85e-07
+alternative hypothesis: true rho is not equal to 0
+sample estimates:
+       rho 
+-0.5098871 
+
+
+Variables: bio_sub vs area_foliar 
+
+    Spearman's rank correlation rho
+
+data:  biomasa[[i]] and biomasa[[j]]
+S = 186110, p-value = 6.832e-08
+alternative hypothesis: true rho is not equal to 0
+sample estimates:
+       rho 
+-0.5319561 
+
+
+Variables: bio_sub vs diametro 
+
+    Spearman's rank correlation rho
+
+data:  biomasa[[i]] and biomasa[[j]]
+S = 194778, p-value = 3.109e-10
+alternative hypothesis: true rho is not equal to 0
+sample estimates:
+       rho 
+-0.6033073 
+
+
+Variables: bio_sub vs altura 
+
+    Spearman's rank correlation rho
+
+data:  biomasa[[i]] and biomasa[[j]]
+S = 181999, p-value = 5.861e-07
+alternative hypothesis: true rho is not equal to 0
+sample estimates:
+       rho 
+-0.4981199 
+
+
+Variables: bio_total vs area_foliar 
+
+    Spearman's rank correlation rho
+
+data:  biomasa[[i]] and biomasa[[j]]
+S = 20890, p-value < 2.2e-16
+alternative hypothesis: true rho is not equal to 0
+sample estimates:
+      rho 
+0.8280466 
+
+
+Variables: bio_total vs diametro 
+
+    Spearman's rank correlation rho
+
+data:  biomasa[[i]] and biomasa[[j]]
+S = 8270.4, p-value < 2.2e-16
+alternative hypothesis: true rho is not equal to 0
+sample estimates:
+      rho 
+0.9319228 
+
+
+Variables: bio_total vs altura 
+
+    Spearman's rank correlation rho
+
+data:  biomasa[[i]] and biomasa[[j]]
+S = 19769, p-value < 2.2e-16
+alternative hypothesis: true rho is not equal to 0
+sample estimates:
+      rho 
+0.8372723 
+
+
+Variables: area_foliar vs diametro 
+
+    Spearman's rank correlation rho
+
+data:  biomasa[[i]] and biomasa[[j]]
+S = 37385, p-value = 4.124e-14
+alternative hypothesis: true rho is not equal to 0
+sample estimates:
+      rho 
+0.6922685 
+
+
+Variables: area_foliar vs altura 
+
+    Spearman's rank correlation rho
+
+data:  biomasa[[i]] and biomasa[[j]]
+S = 60281, p-value = 4.151e-07
+alternative hypothesis: true rho is not equal to 0
+sample estimates:
+      rho 
+0.5038023 
+
+
+Variables: diametro vs altura 
+
+    Spearman's rank correlation rho
+
+data:  biomasa[[i]] and biomasa[[j]]
+S = 8445.9, p-value < 2.2e-16
+alternative hypothesis: true rho is not equal to 0
+sample estimates:
+      rho 
+0.9304776 
+</pre>
+</pre>
+<p>Respecto a los resultados del test:</p>
+<ul>
+<li><p><strong>Dado que todas las relaciones analizadas tienen valores
+<span class="math inline">\(valor-p &lt; 0.001\)</span>, se concluye que
+las asociaciones monótonas observadas son estadísticamente
+significativas.</strong></p></li>
+<li><p><strong>La correlación de Spearman confirma relaciones monótonas
+significativas</strong> en las variables <strong>biomasa aérea</strong>,
+<strong>biomasa total</strong> y <strong>área foliar</strong>, las
+cuales no cumplían con los supuestos de Pearson.</p></li>
+</ul>
+</p>
+</div>
+<!-- Para el caso de variables cualitativas existen varios indicadores para medir el grado de asociación entre ellas como son: -->
+<!-- * **Phi**, **Coeficiente de contingencia**, **V de Cramer**, **Lambda**,  **Kappa** : para tablas de contingencia con variables cualitativas en escala nominal. -->
+<!-- * **Gamma**, **Tau b de Kendall**, **Tau c de Kendal**, **D de Somers**  : para variables cualitativas en escala ordinal -->
+<!-- * **Eta** : para tablas con variables de intervalo y nominal  -->
+<!-- </br></br> -->
+<!-- Para el caso de variables cualitativas podemos utilizar los coeficientes $Phi$ o el de $Cramer$, a través de una tabla de contingencia o de doble entrada, por ejemplo: -->
+<!-- </br> -->
+<!-- <pre> -->
+<!-- tabla = c(80,9,30,21) %>%  -->
+<!--            matrix(., nrow = 2)  -->
+<!-- colnames(tabla)=c("Africa", "America") -->
+<!-- rownames(tabla)=c("si", "no") -->
+<!-- mosaicplot(tabla, cex = 1.1, col = c("#8ECAE6","#023047"), main = "Proyectos aprobados sistema alimentario") -->
+<!-- </pre> -->
+<!-- <center> -->
+<!-- ```{r, echo=FALSE, fig.align='center'} -->
+<!-- tabla = c(80,9,30,21) %>%  -->
+<!--            matrix(., nrow = 2)  -->
+<!-- colnames(tabla)=c("Africa", "America") -->
+<!-- rownames(tabla)=c("si", "no") -->
+<!-- mosaicplot(tabla, cex = 1.1, col = c("#8ECAE6","#023047"), main = "Proyectos aprobados sistema alimentario") -->
+<!-- ``` -->
+<!-- **Figura 3.7** Distribución de proyectos aprobados por continente <BR/> -->
+<!-- Fuente : Ejemplo simulado para fines académicos -->
+<!-- </center> -->
+<!-- </br></br> -->
+<!-- |           |   $y =1$      |  $y=0$         |  total           | -->
+<!-- |:---------:|:-------------:|:--------------:|:----------------:| -->
+<!-- | $x = 1$   |  $n_{11}$     | $n_{10}$       |  $n_{1*}$        | -->
+<!-- | $x =0$    |  $n_{01}$     | $n_{00}$       |  $n_{0*}$        | -->
+<!-- | **total** |  $n_{*1}$     | $n_{*0}$       |   $n$            | -->
+<!-- </br></br> -->
+<!-- ## <span style="color:#034a94">**Coeficiente Phi**</span> -->
+<!-- </br> -->
+<!-- Tambien llamado coeficiente de Mathews, corresponde a un indicador de asociación entre dos variables binarias y está basado en el estadístico chi-cuadrado producto de una tabla cruzada o tabla de contingencia $2 \times 2$ -->
+<!-- ```{r, echo=FALSE, out.width="60%", fig.align = "center"} -->
+<!-- knitr::include_graphics("img/tabla.png") -->
+<!-- ``` -->
+<!-- <div class="content-box-blue"> -->
+<!-- $$\phi = \dfrac{n_{11}\hspace{.1cm}n_{00}-n_{10}\hspace{.1cm}n_{01}}{\sqrt{n_{1*}\hspace{.1cm}n_{0*}\hspace{.1cm}n_{*0}\hspace{.1cm}n_{*1}}}$$ -->
+<!-- </div> -->
+<!-- * Se aplica a tablas de contingencia 2x2 -->
+<!-- * Si los elementos están concentrados en la diagonal de la tabla de contingencia, su valor será positivo, mientras que si se salen de esta diagonal su valor será negativo. -->
+<!-- * Está relacionado con el estadístico chi-cuadrado de las tablas de contingencia 2x2. $\phi = \sqrt{\chi^2/n}$ -->
+<!-- </br></br> -->
+<!-- ```{r} -->
+<!-- # install.packages("DescTools") -->
+<!-- library(DescTools) -->
+<!-- cat("Coeficiente Phi : ", Phi(tabla))  -->
+<!-- ``` -->
+<!-- <br/><br/> -->
+<!-- ## <span style="color:#034a94">**Coeficiente V de Cramer**</span> -->
+<!-- </br> -->
+<!-- Mide la inensidad de la relación entre dos variables categóricas en terminos del tamaño de la chi-cuadrado de independencia. -->
+<!-- * Es debil para valores inferiores a $0.2$  -->
+<!-- * Moderado para valores entre $0.2$ y $0.6$ -->
+<!-- * Es fuerte para valores superiores a $0.6$ -->
+<!-- <div class="content-box-blue"> -->
+<!-- $$V = \sqrt{\dfrac{\chi^2}{n(k-1)}}$$ -->
+<!-- </div> -->
+<!-- Donde : -->
+<!-- $n$ : total de observaciones en la tabla -->
+<!-- $k$ : menor valor entre el número de filas menos 1 y el número de columnas menos 1 -->
+<!-- * Valor de cero indica que no hay relación entre las variables -->
+<!-- * Valor de uno indica que existe una relación perfecta -->
+<!-- * Valores entre 0.6 y 1 , indica que existe una relación fuerte entre las variables -->
+<!-- </br></br> -->
+<!-- ```{r} -->
+<!-- # install.packages("DescTools") -->
+<!-- library(DescTools) -->
+<!-- cat("Coeficiente V de Cramer :", CramerV(tabla))  -->
+<!-- ``` -->
+<!-- Estos coeficientes varia entre $-1$  y $1$,  en este caso presentan un nivel bajo en  relación entre las variables. -->
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Métodos y Simulación Estadística" />
+
+
+<title> Predicciones</title>
+
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"> </a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Métodos
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="index.html">Contenido</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Correlación
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso100.html">Análisis de Correlación</a>
+    </li>
+    <li>
+      <a href="recurso110.html">Coeficiente de Pearson</a>
+    </li>
+    <li>
+      <a href="recurso120.html">Coeficiente de Spearman</a>
+    </li>
+    <li>
+      <a href="recurso130.html">Coeficiente de Kendall</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Modelo
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso200.html">Modelo de Regresión Lineal Simple</a>
+    </li>
+    <li>
+      <a href="recurso210.html">Estimación Mínimos Cuadrados Ordinarios</a>
+    </li>
+    <li>
+      <a href="recurso220.html">Estimación de Máxima Verosimilitud</a>
+    </li>
+    <li>
+      <a href="recurso230.html">Forma Matricial del Modelo</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Diagnóstico
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso300.html">Supuestos</a>
+    </li>
+    <li>
+      <a href="recurso310.html">Residuales</a>
+    </li>
+    <li>
+      <a href="recurso320.html">Revisión de Supuestos</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Pruebas de Hipótesis
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso400.html">Sobre los Coeficientes</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Transformaciones
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso500.html">Transformaciones</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Modelos polinomiales
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso600.html">Modelos polinomiales</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Predicción
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso700.html">Intervalo de Confianza</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Intervalos de Confianza
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso800.html">Coeficientes y varianza</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Atípicos e Influyentes
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso900.html">Punto atípico e influyente</a>
+    </li>
+    <li>
+      <a href="recurso910.html">Distancia de Cook</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Referencias
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso1000.html">Referencias</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore"><span style="color:#686868">
+<strong>Predicciones</strong></span></h1>
+<h4 class="author">Métodos y Simulación Estadística</h4>
+
+</div>
+
+
+</br></br>
+<h3>
+Intervalo de confianza para la respuesta media
+</h3>
+<p>En un modelo de <strong>regresión lineal simple</strong>, el objetivo
+es estimar la media de la variable respuesta <span
+class="math inline">\(Y\)</span> en un punto específico <span
+class="math inline">\(x_0\)</span>. Para ello, se construye un
+<strong>intervalo de confianza (IC)</strong> para la esperanza
+condicional de <span class="math inline">\(Y\)</span>, es decir:</p>
+<p><span class="math display">\[
+E(Y | x_0)
+\]</span></p>
+<p>Si denotamos por <span
+class="math inline">\(\hat{\mu}_{Y|x_0}\)</span> la media estimada de la
+variable respuesta cuando <span class="math inline">\(X = x_0\)</span>,
+entonces un <strong>intervalo de confianza del <span
+class="math inline">\((1 - \alpha)100\%\)</span></strong> para <span
+class="math inline">\(E(Y | x_0)\)</span> está dado por:</p>
+<p><span class="math display">\[
+\hat{\mu}_{Y|x_0} \pm t_{\alpha/2, n-p} \sqrt{MS_{Res} \left(
+\frac{1}{n} + \frac{(x_0 - \bar{x})^2}{\sum (x_i - \bar{x})^2} \right)}
+\]</span></p>
+<p>donde:</p>
+<ul>
+<li><p><span class="math inline">\(\hat{\mu}_{Y|x_0}\)</span> es el
+valor estimado de la media de la respuesta en <span
+class="math inline">\(x_0\)</span>.</p></li>
+<li><p><span class="math inline">\(t_{\alpha/2, n-p}\)</span> es el
+<strong>valor crítico</strong> de la distribución <span
+class="math inline">\(t\)</span> de Student con <span
+class="math inline">\(n - p\)</span> grados de libertad.</p></li>
+<li><p><span class="math inline">\(MS_{Res}\)</span> es el
+<strong>cuadrado medio del error residual</strong>, obtenido de la tabla
+ANOVA.</p></li>
+<li><p><span class="math inline">\(n\)</span> es el <strong>tamaño de la
+muestra</strong>.</p></li>
+<li><p><span class="math inline">\(\bar{x}\)</span> es la <strong>media
+de los valores de <span
+class="math inline">\(X\)</span></strong>.</p></li>
+<li><p><span class="math inline">\(\sum (x_i - \bar{x})^2\)</span> es la
+<strong>suma de cuadrados de la variable predictora</strong>.</p></li>
+</ul>
+<p>Este intervalo permite cuantificar la incertidumbre en la estimación
+de la media de la respuesta para un valor dado de <span
+class="math inline">\(x_0\)</span>, proporcionando un rango dentro del
+cual se espera que esté el verdadero valor de <span
+class="math inline">\(E(Y | x_0)\)</span> con una confianza del <span
+class="math inline">\((1-\alpha)100\%\)</span>.</p>
+</br></br>
+<h3>
+Intervalo de confianza para la predicción de nuevas observaciones
+</h3>
+<p>En un modelo de <strong>regresión lineal simple</strong>, además de
+estimar la media de la respuesta en un punto específico <span
+class="math inline">\(x_0\)</span>, también se puede predecir una
+<strong>nueva observación</strong> <span
+class="math inline">\(Y_0\)</span> en ese mismo valor de <span
+class="math inline">\(X\)</span>. Sin embargo, dado que las nuevas
+observaciones incluyen tanto la variabilidad de la media como la
+variabilidad del error residual, el intervalo de predicción será más
+amplio que el intervalo de confianza para la media.</p>
+<p>Si denotamos por <span class="math inline">\(\hat{Y}_0\)</span> el
+valor estimado de la variable respuesta cuando <span
+class="math inline">\(X = x_0\)</span>, entonces un <strong>intervalo de
+predicción del <span class="math inline">\((1 -
+\alpha)100\%\)</span></strong> para <span
+class="math inline">\(Y_0\)</span> está dado por:</p>
+<p><span class="math display">\[
+\hat{Y}_0 \pm t_{\alpha/2, n-p} \sqrt{MS_{Res} \left( 1 + \frac{1}{n} +
+\frac{(x_0 - \bar{x})^2}{\sum (x_i - \bar{x})^2} \right)}
+\]</span></p>
+<p>donde:</p>
+<ul>
+<li><p><span class="math inline">\(\hat{Y}_0\)</span> es la
+<strong>predicción del valor de <span
+class="math inline">\(Y\)</span></strong> en <span
+class="math inline">\(x_0\)</span>.</p></li>
+<li><p><span class="math inline">\(t_{\alpha/2, n-p}\)</span> es el
+<strong>valor crítico</strong> de la distribución <span
+class="math inline">\(t\)</span> de Student con <span
+class="math inline">\(n - p\)</span> grados de libertad.</p></li>
+<li><p><span class="math inline">\(MS_{Res}\)</span> es el
+<strong>cuadrado medio del error residual</strong>, obtenido de la tabla
+ANOVA.</p></li>
+<li><p><span class="math inline">\(n\)</span> es el <strong>tamaño de la
+muestra</strong>.</p></li>
+<li><p><span class="math inline">\(\bar{x}\)</span> es la <strong>media
+de los valores de <span
+class="math inline">\(X\)</span></strong>.</p></li>
+<li><p><span class="math inline">\(\sum (x_i - \bar{x})^2\)</span> es la
+<strong>suma de cuadrados de la variable predictora</strong>.</p></li>
+</ul>
+<p>Este intervalo de predicción es más amplio que el intervalo de
+confianza para la media de la respuesta, ya que incorpora la
+incertidumbre asociada a una <strong>nueva observación
+individual</strong>, reflejando tanto la variabilidad en la media como
+la variabilidad del error del modelo.</p>
+</br></br>
+<h3>
+La función <code>predict()</code>
+</h3>
+<p>La función <code>predict()</code> es una función que permite obtener
+los valores estimados de <span class="math inline">\(\hat{y}\)</span> a
+partir de un modelo ajustado. Su uso es fundamental para la predicción
+en modelos de regresión.</p>
+<p>A continuación, se muestra la estructura de la función
+<code>predict()</code> aplicada a modelos lineales (<code>lm</code>),
+junto con sus principales argumentos:</p>
+<pre>
+predict.lm(object, newdata, se.fit = FALSE, scale = NULL, df = Inf, 
+    interval = c("none", "confidence", "prediction"), 
+    level = 0.95, type = c("response", "terms"), 
+    terms = NULL, na.action = na.pass, pred.var = res.var/weights, 
+    weights = 1, ...)
+</pre>
+</br></br>
+<div class="caja-ejemplo">
+<h3>
+Ejemplo:
+</h3>
+<p>
+<p>En este ejemplo, se continua con el <strong>modelo de regresión
+lineal simple</strong> para analizar la relación entre la
+<strong>Resistencia de una soldadura (psi)</strong> y la <strong>Edad de
+la soldadura (semanas)</strong>. El modelo resultante es el
+siguiente:</p>
+<p><span class="math display">\[
+\widehat{\text{Resistencia}}_i \sim N(\hat{\mu}_i, \hat{\sigma}^2)
+\]</span> <span class="math display">\[
+\hat{\mu}_i = \hat{\beta}_0 + \hat{\beta}_1 \times \text{Edad}_i
+\]</span> <span class="math display">\[
+\hat{\mu}_i = 2627.82 - 37.15 \times \text{Edad}_i\\
+\hat{\sigma} = 96.11
+\]</span></p>
+<p>Considerando a <span class="math inline">\(Y\)</span> como la
+Resistencia y a <span class="math inline">\(X\)</span> como la Edad. En
+este análisis, se busca calcular los <strong>intervalos de confianza
+(IC)</strong> para la media de la respuesta <span
+class="math inline">\(E(Y | x_0)\)</span> y los <strong>intervalos de
+predicción (IP)</strong> para una nueva observación <span
+class="math inline">\(\hat{Y}_0\)</span> en valores específicos de la
+variable predictora <strong><span
+class="math inline">\(X\)</span></strong>.</p>
+<p>Los cálculos incluyen:</p>
+<ul>
+<li><p>IC del 95% para <span class="math inline">\(E(Y | x_0)\)</span>
+cuando <span class="math inline">\(x_0 = 13\)</span> semanas.</p></li>
+<li><p>IC del 95% para <span class="math inline">\(E(Y | x_0)\)</span>
+cuando <span class="math inline">\(x_0 = 2\)</span> semanas.</p></li>
+<li><p>IP del 90% para <span class="math inline">\(\hat{Y}_0\)</span>
+cuando <span class="math inline">\(x_0 = 10\)</span> semanas.</p></li>
+<li><p>Diagrama de dispersión con líneas de los intervalos de confianza
+y predicción.</p></li>
+</ul>
+<hr />
+<p>Para calcular el <strong>intervalo de confianza (IC)</strong> del
+<strong>95%</strong> para la media de la Resistencia <span
+class="math inline">\(E(Y \mid x_0)\)</span> en los valores de la Edad
+de <span class="math inline">\(x_0 = 13\)</span> y <span
+class="math inline">\(x_0 = 2\)</span>, se utiliza la función
+<code>predict()</code> con el argumento
+<code>interval = "confidence"</code>. Este intervalo proporciona un
+rango dentro del cual se espera que esté la <strong>media
+poblacional</strong> de la Resistencia para los valores específicos de
+la Edad <span class="math inline">\(x_0\)</span>, con un <strong>nivel
+de confianza del 95%</strong>.</p>
+<pre>
+# Definir la URL del archivo con los datos
+file <- "https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_reg1.txt"
+
+# Cargar el conjunto de datos desde la URL
+datos <- read.table(file = file, header = TRUE)
+
+# Ajustar un modelo de regresión lineal simple
+mod1 <- lm(Resistencia ~ Edad, data = datos)
+
+# Crear un nuevo conjunto de datos con los valores específicos de Edad para calcular el IC
+new_dt <- data.frame(Edad = c(13, 2))
+
+# Calcular el intervalo de confianza al 95% para la media de Resistencia en los valores seleccionados
+ic_result <- predict(object = mod1, newdata = new_dt, interval = "confidence", level = 0.95)
+
+# Mostrar los resultados
+ic_result
+</pre>
+<pre class="r"><code># Definir la URL del archivo con los datos
+file &lt;- &quot;https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_reg1.txt&quot;
+
+# Cargar el conjunto de datos desde la URL
+datos &lt;- read.table(file = file, header = TRUE)
+
+# Ajustar un modelo de regresión lineal simple
+mod1 &lt;- lm(Resistencia ~ Edad, data = datos)
+
+# Crear un nuevo conjunto de datos con los valores específicos de Edad para calcular el IC
+new_dt &lt;- data.frame(Edad = c(13, 2))
+
+# Calcular el intervalo de confianza al 95% para la media de Resistencia en los valores seleccionados
+ic_result &lt;- predict(object = mod1, newdata = new_dt, interval = &quot;confidence&quot;, level = 0.95)
+
+# Mostrar los resultados
+ic_result</code></pre>
+<p>Los <strong>intervalos de confianza del 95%</strong> para la
+<strong>resistencia media</strong> cuando la soldadura tiene <strong>13
+semanas</strong> y <strong>2 semanas</strong> de edad son los
+siguientes:</p>
+<ul>
+<li><p>Para <span class="math inline">\(E(Y \mid x_0 = 13)\)</span>, el
+intervalo de confianza es <strong>(2099.623,
+2190.028)</strong>.</p></li>
+<li><p>Para <span class="math inline">\(E(Y \mid x_0 = 2)\)</span>, el
+intervalo de confianza es <strong>(2471.083,
+2635.947)</strong>.</p></li>
+</ul>
+<p>Las salidas computacionales obtenidas en <strong>R</strong> son:</p>
+<pre>
+      fit      lwr      upr
+1 2144.826 2099.623 2190.028
+2 2553.515 2471.083 2635.947
+</pre>
+<p>Para obtener el <strong>intervalo de predicción (IC)</strong> del
+<strong>90%</strong> para una <strong>nueva observación</strong> <span
+class="math inline">\(Y_0\)</span> cuando <span
+class="math inline">\(x_0 = 10\)</span>, se utiliza la función
+<code>predict()</code> con el argumento
+<code>interval = "prediction"</code>. Este intervalo proporciona un
+rango donde se espera que caiga una futura observación individual con un
+<strong>90% de confianza</strong>.</p>
+<pre>
+# Definir la URL del archivo con los datos
+file <- "https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_reg1.txt"
+
+# Cargar el conjunto de datos desde la URL y almacenarlo en un dataframe
+datos <- read.table(file = file, header = TRUE)
+
+# Ajustar un modelo de regresión lineal simple con la variable Edad como predictor
+mod1 <- lm(Resistencia ~ Edad, data = datos)
+
+# Crear un nuevo conjunto de datos con la Edad = 10 para realizar la predicción
+new_dt <- data.frame(Edad = 10)
+
+# Obtener el intervalo de predicción del 90% para la resistencia cuando Edad = 10
+predict(object = mod1, newdata = new_dt, interval = "prediction", level = 0.90)
+
+</pre>
+<pre class="r"><code># Definir la URL del archivo con los datos
+file &lt;- &quot;https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_reg1.txt&quot;
+
+# Cargar el conjunto de datos desde la URL y almacenarlo en un dataframe
+datos &lt;- read.table(file = file, header = TRUE)
+
+# Ajustar un modelo de regresión lineal simple con la variable Edad como predictor
+mod1 &lt;- lm(Resistencia ~ Edad, data = datos)
+
+# Crear un nuevo conjunto de datos con la Edad = 10 para realizar la predicción
+new_dt &lt;- data.frame(Edad = 10)
+
+# Obtener el intervalo de predicción del 90% para la resistencia cuando Edad = 10
+predict(object = mod1, newdata = new_dt, interval = &quot;prediction&quot;, level = 0.90)</code></pre>
+<p>El <strong>intervalo de predicción del 90%</strong> para la
+resistencia cuando han transcurrido <strong>10 meses</strong> es el
+siguiente:</p>
+<pre>
+       fit      lwr      upr
+1 2256.286 2084.688 2427.885
+</pre>
+<p>Este intervalo indica que, con un <strong>90% de confianza</strong>,
+una <strong>nueva observación</strong> de la resistencia de la soldadura
+cuando la edad es de <strong>10 meses</strong> estará en el rango de
+<strong>2084.688 a 2427.885</strong>. A diferencia del <strong>intervalo
+de confianza para la media</strong>, este intervalo es más amplio, ya
+que captura la variabilidad inherente a futuras observaciones
+individuales.</p>
+<pre>
+       fit      lwr      upr
+1 2256.286 2084.688 2427.885
+</pre>
+<p>Con el siguiente código se genera el <strong>diagrama de
+dispersión</strong> y se añaden diferentes elementos para visualizar el
+ajuste del modelo y sus intervalos:</p>
+<ul>
+<li><p><strong>Línea de regresión</strong> (en azul) junto con los
+<strong>intervalos de confianza</strong> para la media esperada de <span
+class="math inline">\(Y \mid x_0\)</span> (en rosado), utilizando
+<code>geom_smooth()</code>.</p></li>
+<li><p><strong>Intervalos de predicción</strong> para <span
+class="math inline">\(\hat{Y}_0\)</span> (en rojo), agregados con
+<code>geom_line()</code>.</p></li>
+</ul>
+<p>Los códigos en <strong>R</strong> son:</p>
+<pre>
+# Definir la URL del archivo con los datos
+file <- "https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_reg1.txt"
+
+# Cargar el conjunto de datos desde la URL y almacenarlo en un dataframe
+datos <- read.table(file = file, header = TRUE)
+
+# Ajustar un modelo de regresión lineal simple con la variable Edad como predictor
+mod1 <- lm(Resistencia ~ Edad, data = datos)
+
+# Obtener los intervalos de predicción del 95% para cada observación en el conjunto de datos
+future_y <- predict(object = mod1, interval = "prediction", level = 0.95)
+
+# Agregar los intervalos de predicción al conjunto de datos original
+nuevos_datos <- cbind(datos, future_y)
+
+# Cargar la librería ggplot2 para la visualización de datos
+library(ggplot2)
+
+# Crear un gráfico de dispersión con intervalos de predicción y la línea de regresión ajustada
+ggplot(nuevos_datos, aes(x = Edad, y = Resistencia)) +
+    geom_point() +  # Puntos de los datos observados
+    geom_line(aes(y = lwr), color = "red", linetype = "dashed") +  # Límite inferior del intervalo de predicción
+    geom_line(aes(y = upr), color = "red", linetype = "dashed") +  # Límite superior del intervalo de predicción
+    geom_smooth(method = lm, formula = y ~ x, se = TRUE, level = 0.95, col = 'blue', fill = 'pink2') +  
+    # Línea de regresión con banda de confianza del 95%
+    theme_light()  # Aplicar un tema claro para mejorar la visualización
+
+</pre>
+<pre class="r"><code># Definir la URL del archivo con los datos
+file &lt;- &quot;https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_reg1.txt&quot;
+
+# Cargar el conjunto de datos desde la URL y almacenarlo en un dataframe
+datos &lt;- read.table(file = file, header = TRUE)
+
+# Ajustar un modelo de regresión lineal simple con la variable Edad como predictor
+mod1 &lt;- lm(Resistencia ~ Edad, data = datos)
+
+# Obtener los intervalos de predicción del 95% para cada observación en el conjunto de datos
+future_y &lt;- predict(object = mod1, interval = &quot;prediction&quot;, level = 0.95)
+
+# Agregar los intervalos de predicción al conjunto de datos original
+nuevos_datos &lt;- cbind(datos, future_y)
+
+# Cargar la librería ggplot2 para la visualización de datos
+library(ggplot2)
+
+# Crear un gráfico de dispersión con intervalos de predicción y la línea de regresión ajustada
+ggplot(nuevos_datos, aes(x = Edad, y = Resistencia)) +
+    geom_point() +  # Puntos de los datos observados
+    geom_line(aes(y = lwr), color = &quot;red&quot;, linetype = &quot;dashed&quot;) +  # Límite inferior del intervalo de predicción
+    geom_line(aes(y = upr), color = &quot;red&quot;, linetype = &quot;dashed&quot;) +  # Límite superior del intervalo de predicción
+    geom_smooth(method = lm, formula = y ~ x, se = TRUE, level = 0.95, col = &#39;blue&#39;, fill = &#39;pink2&#39;) +  
+    # Línea de regresión con banda de confianza del 95%
+    theme_light()  # Aplicar un tema claro para mejorar la visualización</code></pre>
+<p>En la <strong>Figura 3.43</strong> se puede observar que los
+<strong>intervalos de predicción</strong> para <span
+class="math inline">\(\hat{Y}_0\)</span> son siempre más amplios que los
+<strong>intervalos de confianza</strong> para <span
+class="math inline">\(E(Y \mid x_0)\)</span>. Esto se debe a que los
+intervalos de predicción consideran tanto la incertidumbre en la
+estimación de la media como la variabilidad individual de nuevas
+observaciones.</p>
+<br/><br/>
+<center>
+<img src="img/fig343.png" width="80%" style="display: block; margin: auto;" />
+<strong>Figura 3.43</strong> Intervalos de predicción para <span
+class="math inline">\(\hat{Y}_0\)</span> en rojo e intervalos de
+confianza para <span class="math inline">\(E(Y \mid x_0)\)</span> en
+rosado.
+</center>
+<p><br/><br/></p>
+</p>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

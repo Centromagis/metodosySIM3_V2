@@ -1,0 +1,73 @@
+---
+title: <span style="color:#686868"> **Supuestos**</span>
+author: "Métodos y Simulación Estadística"
+output:
+  html_document:
+    code_folding: hide
+    css: style.css
+---
+
+
+</br></br>
+<h2>Supuestos en un modelo de regresión lineal</h2>
+
+
+Los supuestos en un modelo de **regresión lineal** se pueden formular de dos maneras equivalentes:
+
+
+</br></br>
+<h2>Forma I: Supuestos sobre los errores \( \varepsilon_i \)</h2>
+
+Estos supuestos se enfocan en las propiedades de los **errores** del modelo:
+
+1. Los errores \( \varepsilon_i \) siguen una **distribución normal**:  
+   \[
+   \varepsilon_i \sim N(0, \sigma^2)
+   \]
+   
+2. La **media de los errores** es cero:  
+   \[
+   E[\varepsilon_i] = 0
+   \]
+
+3. Los errores tienen **varianza constante** (homocedasticidad):  
+   \[
+   \text{Var}(\varepsilon_i) = \sigma^2, \quad \forall i.
+   \]
+
+4. No hay correlación entre los errores (independencia).  
+   
+
+---
+
+
+</br></br>
+<h2>Forma II: Supuestos sobre la variable respuesta \( Y_i \)</h2>
+
+Estos supuestos se enfocan en la distribución de la **variable respuesta** \( Y \):
+
+1. La variable respuesta \( Y_i \) sigue una **distribución normal** condicional a \( X_i \):  
+   \[
+   Y_i | X_i \sim N(\beta_0 + \beta_1 X_i, \sigma^2).
+   \]
+
+2. La varianza de \( Y_i \) es **constante** en todos los valores de \( X_i \) (homocedasticidad):  
+   \[
+   \text{Var}(Y_i | X_i) = \sigma^2.
+   \]
+
+3. Las observaciones de \( Y_i \) son **independientes** entre sí.
+
+4. Existe una **relación lineal** entre la variable respuesta \( Y \) y las variables predictoras \( X \).
+
+---
+
+</br></br>
+<h2>Equivalencia entre ambas formas</h2>
+
+Ambos conjuntos de supuestos son **equivalentes**. La **Forma I** describe los supuestos en términos de los **errores \( \varepsilon_i \)**, mientras que la **Forma II** se enfoca en la **distribución de \( Y_i \)**. En general:
+
+- Si los errores cumplen los supuestos en la **Forma I**, entonces la variable \( Y \) cumplirá los supuestos en la **Forma II**.
+
+- La elección de una forma u otra depende de la interpretación que se desee resaltar en el análisis del modelo.
+

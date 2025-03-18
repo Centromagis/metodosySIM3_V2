@@ -1,0 +1,1468 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Métodos y Simulación Estadística" />
+
+
+<title> Coeficiente de correlación de Pearson</title>
+
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"> </a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Métodos
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="index.html">Contenido</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Correlación
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso100.html">Análisis de Correlación</a>
+    </li>
+    <li>
+      <a href="recurso110.html">Coeficiente de Pearson</a>
+    </li>
+    <li>
+      <a href="recurso120.html">Coeficiente de Spearman</a>
+    </li>
+    <li>
+      <a href="recurso130.html">Coeficiente de Kendall</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Modelo
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso200.html">Modelo de Regresión Lineal Simple</a>
+    </li>
+    <li>
+      <a href="recurso210.html">Estimación Mínimos Cuadrados Ordinarios</a>
+    </li>
+    <li>
+      <a href="recurso220.html">Estimación de Máxima Verosimilitud</a>
+    </li>
+    <li>
+      <a href="recurso230.html">Forma Matricial del Modelo</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Diagnóstico
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso300.html">Supuestos</a>
+    </li>
+    <li>
+      <a href="recurso310.html">Residuales</a>
+    </li>
+    <li>
+      <a href="recurso320.html">Revisión de Supuestos</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Pruebas de Hipótesis
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso400.html">Sobre los Coeficientes</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Transformaciones
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso500.html">Transformaciones</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Modelos polinomiales
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso600.html">Modelos polinomiales</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Predicción
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso700.html">Intervalo de Confianza</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Intervalos de Confianza
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso800.html">Coeficientes y varianza</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Atípicos e Influyentes
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso900.html">Punto atípico e influyente</a>
+    </li>
+    <li>
+      <a href="recurso910.html">Distancia de Cook</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Referencias
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso1000.html">Referencias</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore"><span style="color:#686868">
+<strong>Coeficiente de correlación de Pearson</strong></span></h1>
+<h4 class="author">Métodos y Simulación Estadística</h4>
+
+</div>
+
+
+</br></br>
+<h2>
+Coeficiente de correlación de Pearson
+</h2>
+<p>El <strong>coeficiente de correlación de Pearson</strong> (<span
+class="math inline">\(r = \hat{\rho}\)</span>) es una medida estadística
+que cuantifica el grado y la dirección de la relación lineal entre dos
+variables cuantitativas <span class="math inline">\(X\)</span> y <span
+class="math inline">\(Y\)</span>. Su valor oscila entre <span
+class="math inline">\(-1\)</span> y <span
+class="math inline">\(1\)</span>, y se interpreta de la siguiente
+manera:</p>
+<ul>
+<li><p><strong><span class="math inline">\(r \approx
+1\)</span>:</strong> Indica una <strong>asociación positiva
+fuerte</strong>, es decir, a medida que <span
+class="math inline">\(X\)</span> aumenta, <span
+class="math inline">\(Y\)</span> también tiende a aumentar.</p></li>
+<li><p><strong><span class="math inline">\(r \approx
+-1\)</span>:</strong> Indica una <strong>asociación negativa
+fuerte</strong>, lo que significa que a medida que <span
+class="math inline">\(X\)</span> aumenta, <span
+class="math inline">\(Y\)</span> tiende a disminuir.</p></li>
+<li><p><strong><span class="math inline">\(r \approx
+0\)</span>:</strong> Sugiere que no hay una asociación lineal
+significativa entre las variables.</p></li>
+</ul>
+<p><img src="img/correlacion2.png" width="100%" style="display: block; margin: auto;" /></p>
+</br></br>
+<h3>
+Fórmula de cálculo
+</h3>
+<p>El <strong>coeficiente de correlación de Pearson muestral</strong>
+para las variables <span class="math inline">\((X, Y)\)</span>, donde
+<span class="math inline">\(X = (x_1, ..., x_n)\)</span> y <span
+class="math inline">\(Y = (y_1, ..., y_n)\)</span>, se denota con la
+letra <span class="math inline">\(r\)</span> y se calcula utilizando la
+siguiente expresión:</p>
+<p><span class="math display">\[
+r = \dfrac{n \Bigg(\displaystyle\sum_{i=1}^{n} x_{i}y_{i} \Bigg) -
+\Bigg(\displaystyle\sum_{i=1}^{n} x_{i} \Bigg)
+\Bigg(\displaystyle\sum_{i=1}^{n} y_{i}\Bigg)}
+{\sqrt{n \Bigg(\displaystyle\sum_{i=1}^{n} x_{i}^{2} \Bigg) -
+\Bigg(\displaystyle\sum_{i=1}^{n} x_{i} \Bigg)^{2}}
+\quad \cdot \quad
+\sqrt{n \Bigg(\displaystyle\sum_{i=1}^{n} y_{i}^{2} \Bigg) -
+\Bigg(\displaystyle\sum_{i=1}^{n} y_{i} \Bigg)^{2}}}
+\]</span></p>
+<p>Alternativamente, se puede expresar en términos de la
+<strong>covarianza</strong> y las <strong>desviaciones estándar</strong>
+de las variables:</p>
+<p><span class="math display">\[
+r = \dfrac{cov(X, Y)}{s_X s_Y}
+\]</span></p>
+<p>donde:</p>
+<ul>
+<li><p><span class="math inline">\(cov(X, Y)\)</span> representa la
+<strong>covarianza</strong> entre <span class="math inline">\(X\)</span>
+y <span class="math inline">\(Y\)</span>.</p></li>
+<li><p><span class="math inline">\(s_X\)</span> y <span
+class="math inline">\(s_Y\)</span> son las <strong>desviaciones
+estándar</strong> de <span class="math inline">\(X\)</span> y <span
+class="math inline">\(Y\)</span>, respectivamente.</p></li>
+<li><p><span class="math inline">\(n\)</span> es el número total de
+observaciones.</p></li>
+</ul>
+</br></br>
+<h3>
+Consideraciones y supuestos
+</h3>
+<p>Este coeficiente fue desarrollado por <strong>Karl Pearson</strong>,
+y para su correcta aplicación se deben cumplir los siguientes
+supuestos:</p>
+<ul>
+<li><p><strong>Las variables <span class="math inline">\(X\)</span> y
+<span class="math inline">\(Y\)</span> deben ser cuantitativas</strong>,
+medidas en una escala de intervalo o de razón.</p></li>
+<li><p><strong>Se asume normalidad en las variables</strong>,
+especialmente para realizar inferencias estadísticas.</p></li>
+<li><p><strong>La relación entre las variables debe ser lineal</strong>,
+ya que la correlación de Pearson no captura relaciones no
+lineales.</p></li>
+</ul>
+<p>El coeficiente de correlación de Pearson es ampliamente utilizado en
+análisis exploratorios y en la validación de modelos estadísticos,
+proporcionando una primera aproximación sobre la relación entre dos
+variables antes de aplicar modelos de regresión.</p>
+</br></br>
+<h3>
+Interpretación
+</h3>
+<p>Los valores obtenidos del <strong>coeficiente de correlación de
+Pearson</strong> permiten clasificar la relación lineal entre dos
+variables según su intensidad y dirección. La <strong>Tabla 3.1</strong>
+presenta una clasificación comúnmente utilizada:</p>
+</br></br>
+<center>
+<strong>Tabla 3.1</strong> Clasificación de la relación lineal entre
+variables según el coeficiente de correlación.
+</center>
+<p><br/></p>
+<table>
+<colgroup>
+<col width="54%" />
+<col width="45%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Rango de <span
+class="math inline">\(r\)</span></strong></th>
+<th><strong>Grado de asociación lineal</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(-1.00 \leq r &lt; -0.90\)</span></td>
+<td>Negativa muy fuerte</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(-0.90 \leq r &lt; -0.75\)</span></td>
+<td>Negativa considerable</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(-0.75 \leq r &lt; -0.50\)</span></td>
+<td>Negativa media</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(-0.50 \leq r &lt; -0.25\)</span></td>
+<td>Negativa débil</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(-0.25 \leq r &lt; -0.10\)</span></td>
+<td>Negativa muy débil</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(-0.10 \leq r &lt; 0.10\)</span></td>
+<td>No existe correlación</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(0.10  \leq r &lt; 0.25\)</span></td>
+<td>Positiva muy débil</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(0.25  \leq r &lt; 0.50\)</span></td>
+<td>Positiva débil</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(0.50  \leq r &lt; 0.75\)</span></td>
+<td>Positiva media</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(0.75  \leq r &lt; 0.90\)</span></td>
+<td>Positiva considerable</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(0.90  \leq r \leq 1.00\)</span></td>
+<td>Positiva muy fuerte</td>
+</tr>
+</tbody>
+</table>
+<p>Las <strong>Figura 3.3</strong> y <strong>3.4</strong> muestra seis
+gráficos de dispersión, cada uno representando diferentes niveles de
+correlación entre dos variables <span class="math inline">\(X\)</span> y
+<span class="math inline">\(Y\)</span>.</p>
+<p>La <strong>Figura 3.3</strong> presenta:</p>
+<ul>
+<li><p><strong>Correlación <span class="math inline">\(r = -1\)</span>
+(Gráfico superior izquierdo):</strong> Existe una <strong>relación
+negativa perfecta</strong> entre <span class="math inline">\(X\)</span>
+y <span class="math inline">\(Y\)</span>. Todos los puntos se alinean
+exactamente sobre una línea recta descendente. Esto indica que un
+aumento en <span class="math inline">\(X\)</span> siempre se asocia con
+una disminución proporcional en <span
+class="math inline">\(Y\)</span>.</p></li>
+<li><p><strong>Correlación <span class="math inline">\(r = -0.9\)</span>
+(Gráfico superior central):</strong> Se observa una <strong>fuerte
+relación negativa</strong>, aunque no es perfecta. A medida que <span
+class="math inline">\(X\)</span> aumenta, <span
+class="math inline">\(Y\)</span> tiende a disminuir de manera
+consistente, pero con cierta dispersión en los datos.</p></li>
+<li><p><strong>Correlación <span class="math inline">\(r =
+-0.75\)</span> (Gráfico superior derecho):</strong> Existe una
+<strong>relación negativa moderada</strong>, con mayor dispersión en
+comparación con <span class="math inline">\(r = -0.9\)</span>. Aunque la
+tendencia descendente es clara, la variabilidad en los datos es
+mayor.</p></li>
+<li><p><strong>Correlación <span class="math inline">\(r = -0.5\)</span>
+(Gráfico inferior izquierdo):</strong> Relación <strong>negativa
+débil</strong> entre las variables. La tendencia descendente aún es
+visible, pero los puntos están más dispersos, lo que sugiere una menor
+asociación lineal.</p></li>
+<li><p><strong>Correlación <span class="math inline">\(r =
+-0.25\)</span> (Gráfico inferior central):</strong> Relación <strong>muy
+débil o casi inexistente</strong>. Aunque hay una ligera tendencia
+negativa, la dispersión es alta y no se puede concluir una relación
+lineal clara.</p></li>
+<li><p><strong>Correlación <span class="math inline">\(r = 0\)</span>
+(Gráfico inferior derecho):</strong> <strong>No existe relación
+lineal</strong> entre las variables. Los puntos están dispersos de
+manera aleatoria, sin un patrón discernible.</p></li>
+</ul>
+<img src="img/Rho1.png" width="100%" style="display: block; margin: auto;" />
+<center>
+<strong>Figura 3.3</strong> Correlaciones lineales negativas y nula (a)
+<span class="math inline">\(r = -1.0\)</span>. <span
+class="math inline">\(\hspace{.5cm}\)</span> (b) <span
+class="math inline">\(r = -0.90\)</span>. <br/> (c) <span
+class="math inline">\(r = -0.75\)</span>. <span
+class="math inline">\(\hspace{.5cm}\)</span>(d) <span
+class="math inline">\(r = -0.50\)</span>. <span
+class="math inline">\(\hspace{.5cm}\)</span> (e) <span
+class="math inline">\(r = -0.25\)</span>. <span
+class="math inline">\(\hspace{.5cm}\)</span> (f) <span
+class="math inline">\(r= 0.0\)</span>.
+</center>
+<p></br></p>
+<p>La <strong>Figura 3.4</strong> presenta:</p>
+<ul>
+<li><p><strong>Correlación <span class="math inline">\(r = 0.1\)</span>
+(Gráfico superior izquierdo):</strong> La relación entre <span
+class="math inline">\(X\)</span> y <span
+class="math inline">\(Y\)</span> es prácticamente nula. Los puntos están
+distribuidos de manera aleatoria, sin una tendencia clara. No se puede
+concluir que exista una asociación lineal significativa.</p></li>
+<li><p><strong>Correlación <span class="math inline">\(r = 0.25\)</span>
+(Gráfico superior central):</strong> Se observa una ligera tendencia
+ascendente, pero la dispersión de los puntos sigue siendo alta.</p></li>
+<li><p><strong>Correlación <span class="math inline">\(r = 0.5\)</span>
+(Gráfico superior derecho):</strong> Existe una <strong>relación
+positiva moderada</strong>. Aunque los puntos están dispersos, se
+empieza a notar una tendencia creciente en la relación entre <span
+class="math inline">\(X\)</span> y <span
+class="math inline">\(Y\)</span>.</p></li>
+<li><p><strong>Correlación <span class="math inline">\(r = 0.75\)</span>
+(Gráfico inferior izquierdo):</strong> La relación entre <span
+class="math inline">\(X\)</span> y <span
+class="math inline">\(Y\)</span> es <strong>positiva fuerte</strong>.
+Los puntos siguen una tendencia ascendente más clara, aunque aún hay
+cierta variabilidad.</p></li>
+<li><p><strong>Correlación <span class="math inline">\(r = 0.9\)</span>
+(Gráfico inferior central):</strong> La relación es <strong>muy fuerte y
+positiva</strong>. Los puntos están mucho más alineados en una dirección
+creciente, indicando una fuerte asociación lineal.</p></li>
+<li><p><strong>Correlación <span class="math inline">\(r = 1\)</span>
+(Gráfico inferior derecho):</strong> Existe una <strong>relación lineal
+perfecta positiva</strong>. Todos los puntos se alinean exactamente
+sobre una línea recta ascendente. Esto indica que un aumento en <span
+class="math inline">\(X\)</span> se asocia <strong>siempre</strong> con
+un aumento proporcional en <span
+class="math inline">\(Y\)</span>.</p></li>
+</ul>
+<img src="img/Rho2.png" width="100%" style="display: block; margin: auto;" />
+<center>
+<strong>Figura 3.4</strong> Correlaciones positivas (a) <span
+class="math inline">\(r= 0.10\)</span>.<span
+class="math inline">\(\hspace{.5cm}\)</span> (b) <span
+class="math inline">\(r = 0.25\)</span>. <br/> (c) <span
+class="math inline">\(r = 0.50\)</span>.<span
+class="math inline">\(\hspace{.5cm}\)</span> (d) <span
+class="math inline">\(r = 0.75\)</span>. <span
+class="math inline">\(\hspace{.5cm}\)</span> (e) <span
+class="math inline">\(r= 0.90\)</span>. <span
+class="math inline">\(\hspace{.5cm}\)</span> (f) <span
+class="math inline">\(r = 1.0\)</span>.
+</center>
+<p></br></br></p>
+<p>Estos gráficos ilustran cómo varía la fuerza de la relación lineal
+entre dos variables en función del coeficiente de correlación de
+Pearson:</p>
+<ul>
+<li><p>Valores <strong>cercanos a 0</strong> indican <strong>ausencia de
+relación lineal</strong>.</p></li>
+<li><p>Valores <strong>cercanos a 1 o -1</strong> representan
+<strong>asociaciones lineales cada vez más fuertes</strong>.</p></li>
+<li><p>Un coeficiente de <strong>1 o -1</strong> indica una relación
+<strong>perfectamente lineal</strong>.</p></li>
+</ul>
+</br></br>
+<div class="caja-ejemplo">
+<h3>
+Ejemplo:
+</h3>
+<p>
+<p>En este análisis, se busca evaluar si existe una relación entre el
+<strong>número de policías asignados a cada pueblo</strong> y el
+<strong>número de delitos registrados</strong>. Para ello, se cuenta con
+una muestra aleatoria en la que se han registrado ambas variables:</p>
+<ul>
+<li><strong><span class="math inline">\(X\)</span></strong>: Número de
+policías asignados a un pueblo.</li>
+<li><strong><span class="math inline">\(Y\)</span></strong>: Número de
+delitos registrados en un mes.</li>
+</ul>
+<p>El objetivo es determinar si existe una asociación lineal entre el
+número de policías en un pueblo y la cantidad de delitos reportados
+mensualmente.</p>
+<p>Los datos observados se encuentran disponibles en el siguiente
+enlace:</p>
+<p><a
+href="https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_pueblos.txt">Datos
+de delitos y policías por pueblo</a></p>
+<hr />
+<p>El gráfico de dispersión para revisar linealidad y la variabilidad de
+<span class="math inline">\(Y\)</span> respecto a <span
+class="math inline">\(X\)</span> asi como para calcular el coeficiente
+de correlación de Pearson se calcula en <strong>R</strong> de la
+siguiente manera:</p>
+<pre>
+# Configurar la codificación de caracteres a UTF-8 (Opcional, depende del sistema operativo)
+# Sys.setlocale("LC_ALL", "es_ES.UTF-8")  # Asegura el uso de UTF-8 en español en sistemas compatibles
+
+# Cargar librerías necesarias
+library(ggplot2)
+
+# Definición de los datos de la muestra
+# x: Número de policías en diferentes pueblos
+# y: Número de delitos registrados en esos pueblos
+
+# 1. Lectura de datos
+file <- "https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_pueblos.txt"
+datos <- read.table(file = file, header = TRUE)
+
+
+# Cálculo del coeficiente de correlación de Pearson
+correlacion <- cor(datos$Policias, datos$Delitos, method = "pearson")
+
+# Mostrar el coeficiente de correlación con un mensaje descriptivo
+print(paste("Coeficiente de correlación de Pearson:", round(correlacion, 4)))
+
+# Generación del gráfico de dispersión con línea de tendencia
+ggplot(datos, aes(x = Policias, y = Delitos)) +
+  geom_point(size = 3, color = "blue") +  # Puntos de los datos en color azul
+  geom_smooth(method = "lm", se = FALSE, color = "red", linetype = "dashed") +  # Línea de regresión lineal en rojo punteado
+  labs(title = "Relación entre Número de Policías y Delitos",
+       x = "Número de Policías",
+       y = "Número de Delitos") +
+  theme_minimal()  # Aplicar un diseño limpio al gráfico
+</pre>
+<pre class="r"><code># Configurar la codificación de caracteres a UTF-8 (Opcional, depende del sistema operativo)
+# Sys.setlocale(&quot;LC_ALL&quot;, &quot;es_ES.UTF-8&quot;)  # Asegura el uso de UTF-8 en español en sistemas compatibles
+
+# Cargar librerías necesarias
+library(ggplot2)
+
+# Definición de los datos de la muestra
+# x: Número de policías en diferentes pueblos
+# y: Número de delitos registrados en esos pueblos
+
+# 1. Lectura de datos
+file &lt;- &quot;https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_pueblos.txt&quot;
+datos &lt;- read.table(file = file, header = TRUE)
+
+
+# Cálculo del coeficiente de correlación de Pearson
+correlacion &lt;- cor(datos$Policias, datos$Delitos, method = &quot;pearson&quot;)
+
+# Mostrar el coeficiente de correlación con un mensaje descriptivo
+print(paste(&quot;Coeficiente de correlación de Pearson:&quot;, round(correlacion, 4)))
+
+# Generación del gráfico de dispersión con línea de tendencia
+ggplot(datos, aes(x = Policias, y = Delitos)) +
+  geom_point(size = 3, color = &quot;blue&quot;) +  # Puntos de los datos en color azul
+  geom_smooth(method = &quot;lm&quot;, se = FALSE, color = &quot;red&quot;, linetype = &quot;dashed&quot;) +  # Línea de regresión lineal en rojo punteado
+  labs(title = &quot;Relación entre Número de Policías y Delitos&quot;,
+       x = &quot;Número de Policías&quot;,
+       y = &quot;Número de Delitos&quot;) +
+  theme_minimal()  # Aplicar un diseño limpio al gráfico</code></pre>
+<p>La <strong>Figura 3.5</strong> muestra una <strong>asociación lineal
+negativa</strong> entre ambas variables a través de un <strong>gráfico
+de dispersión</strong>. Se observa que, a medida que aumenta el número
+de policías, el número de delitos tiende a disminuir de manera lineal.
+Además, la varianza de los valores de <span
+class="math inline">\(Y\)</span> parece mantenerse aproximadamente
+constante a lo largo de los valores de <span
+class="math inline">\(X\)</span>, lo que sugiere
+<strong>homocedasticidad</strong> en la relación entre ambas
+variables.</p>
+<br/><br/>
+<center>
+<img src="img/fig35.png" width="80%" style="display: block; margin: auto;" />
+<strong>Figura 3.5</strong> <strong>Número de policías</strong> versus
+el <strong>número de delitos</strong>.
+</center>
+<p><br/><br/></p>
+<p>El coeficiente de <strong>correlación de Pearson</strong> obtenido es
+<strong><span class="math inline">\(-0.8469\)</span></strong>, lo que
+indica una <strong>relación lineal negativa fuerte</strong> entre el
+número de policías y el número de delitos registrados en los pueblos.
+Esto sugiere que, a medida que aumenta el número de policías, el número
+de delitos tiende a <strong>disminuir de manera lineal</strong>.</p>
+</p>
+</div>
+</br></br>
+<h3>
+Pruebas de hipótesis
+</h3>
+<p>En el análisis de correlación de Pearson, es fundamental determinar
+si la <strong>correlación en la población</strong> (<span
+class="math inline">\(\rho\)</span>) es <strong>significativamente
+diferente de cero</strong> o si la asociación observada en la muestra es
+producto del azar. Para ello, se realiza una prueba de hipótesis
+utilizando el <strong>estadístico t de Student</strong>, con <span
+class="math inline">\(v = n - 2\)</span> grados de libertad.</p>
+<p>La prueba de hipótesis se plantea de la siguiente manera:</p>
+<ul>
+<li><p><strong>Hipótesis nula (<span
+class="math inline">\(H_0\)</span>)</strong>: <span
+class="math inline">\(\rho = 0\)</span><br />
+<em>(No existe correlación en la población, es decir, las variables no
+están linealmente asociadas)</em>.</p></li>
+<li><p><strong>Hipótesis alternativa (<span
+class="math inline">\(H_1\)</span>)</strong>: <span
+class="math inline">\(\rho \neq 0\)</span><br />
+<em>(Existe una correlación significativa en la población, es decir, las
+variables están linealmente asociadas)</em>.</p></li>
+</ul>
+<p>El estadístico de prueba utilizado sigue una distribución
+<strong>t-Student</strong> con <span class="math inline">\(v =
+n-2\)</span> grados de libertad y se calcula con la siguiente
+fórmula:</p>
+<p><span class="math display">\[
+U = \dfrac{r \sqrt{n-2}}{\sqrt{1 - r^{2}}} \sim t_{v=n-2}
+\]</span></p>
+<p>donde:</p>
+<ul>
+<li><p><span class="math inline">\(r\)</span> es el <strong>coeficiente
+de correlación muestral</strong>.</p></li>
+<li><p><span class="math inline">\(n\)</span> es el número de
+observaciones en la muestra.</p></li>
+<li><p><span class="math inline">\(v = n - 2\)</span> es el número de
+grados de libertad de la distribución t-Student.</p></li>
+</ul>
+<p>Para que la prueba de correlación de <strong>Pearson</strong>
+proporcione resultados válidos, es necesario que se cumplan los
+siguientes <strong>supuestos estadísticos</strong>:</p>
+<ol style="list-style-type: decimal">
+<li><p><strong>Linealidad de la relación entre las variables</strong>:
+Si la relación entre las variables es no lineal, el coeficiente de
+correlación puede subestimar o no reflejar la verdadera asociación. Es
+recomendable inspeccionar un <strong>gráfico de dispersión</strong>
+antes de aplicar la prueba para verificar la presencia de una tendencia
+lineal.</p></li>
+<li><p><strong>Normalidad de las variables</strong>: Se asume que ambas
+variables, <span class="math inline">\(X\)</span> y <span
+class="math inline">\(Y\)</span>, siguen una <strong>distribución
+normal</strong> en la población.</p></li>
+<li><p><strong>Homocedasticidad (Varianza constante de <span
+class="math inline">\(Y\)</span> en función de <span
+class="math inline">\(X\)</span>)</strong>: La dispersión de los valores
+de <span class="math inline">\(Y\)</span> debe ser aproximadamente
+constante para todos los valores de <span
+class="math inline">\(X\)</span>. Se recomienda inspeccionar un
+<strong>gráfico de dispersión</strong> para evaluar si la dispersión de
+<span class="math inline">\(Y\)</span> cambia a lo largo de los valores
+de <span class="math inline">\(X\)</span>.</p></li>
+<li><p><strong>Independencia de las observaciones</strong>: Cada par de
+observaciones <span class="math inline">\((X_i, Y_i)\)</span> debe ser
+<strong>independiente</strong> de las demás.</p></li>
+</ol>
+<p><strong>¿Qué hacer si los supuestos no se cumplen?</strong></p>
+<p>Si los datos <strong>no cumplen los supuestos de normalidad o
+linealidad</strong>, se pueden considerar alternativas como:</p>
+<ul>
+<li><p><strong>Usar la correlación de Spearman o Kendall</strong>, que
+no requieren normalidad y son más robustas a relaciones no
+lineales.</p></li>
+<li><p><strong>Transformar los datos</strong> (por ejemplo, con
+logaritmos o Box-Cox) para mejorar el cumplimiento de los
+supuestos.</p></li>
+<li><p><strong>Utilizar modelos de regresión no paramétrica</strong> si
+la relación entre las variables no es lineal.</p></li>
+</ul>
+<p>Cumplir estos supuestos es clave para garantizar la validez de la
+prueba de Pearson y la correcta interpretación de sus resultados.</p>
+</br></br>
+<div class="caja-ejemplo">
+<h3>
+Ejemplo:
+</h3>
+<p>
+<p>Continuando con el análisis de las variables:</p>
+<ul>
+<li><p><strong><span class="math inline">\(X\)</span></strong>: Número
+de policías en el pueblo.</p></li>
+<li><p><strong><span class="math inline">\(Y\)</span></strong>: Número
+de delitos registrados en el último mes.</p></li>
+</ul>
+<hr />
+<p>En el análisis previo, se verificó el <strong>supuesto de
+linealidad</strong> y la <strong>homocedasticidad</strong> mediante el
+<strong>gráfico de dispersión</strong>, donde se observó una tendencia
+lineal negativa entre el número de policías y el número de delitos
+registrados.</p>
+<p>Como siguiente paso, es necesario evaluar el <strong>supuesto de
+normalidad</strong> de ambas variables, lo cual es fundamental para
+garantizar la validez de la prueba de correlación de Pearson.</p>
+<p>A continuación, se implementan los <strong>tests de
+normalidad</strong> para ambas variables utilizando la prueba de
+<strong>Shapiro-Wilk</strong> en <strong>R</strong>.</p>
+<pre>
+# Configuración opcional de la codificación UTF-8 (Dependiendo del sistema operativo)
+# Sys.setlocale("LC_ALL", "es_ES.UTF-8")  # Asegura el uso de UTF-8 en español
+
+# Cargar la librería necesaria para la visualización de datos
+library(ggplot2)
+
+
+# Definición de los datos de la muestra
+# x: Número de policías en diferentes pueblos
+# y: Número de delitos registrados en esos pueblos
+
+# 1. Lectura de datos
+file <- "https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_pueblos.txt"
+datos <- read.table(file = file, header = TRUE)
+
+x<-datos$Policias
+y<-datos$Delitos
+
+# Prueba de normalidad de Shapiro-Wilk
+# Se usa para evaluar si los datos de cada variable siguen una distribución normal
+shapiro_x <- shapiro.test(x)  # Prueba para la variable X (Número de policías)
+shapiro_y <- shapiro.test(y)  # Prueba para la variable Y (Número de delitos)
+
+# Imprimir los resultados de la prueba de normalidad
+print("Resultados de la prueba de normalidad de Shapiro-Wilk:")
+print(shapiro_x)
+print(shapiro_y)
+
+# Prueba de hipótesis de correlación de Pearson
+# Evalúa la relación lineal entre el número de policías y el número de delitos
+cor_pearson <- cor.test(x, y, method = "pearson")
+
+# Imprimir el resultado de la correlación de Pearson
+print("Resultados de la prueba de correlación de Pearson:")
+print(cor_pearson)
+</pre>
+<pre class="r"><code># Configuración opcional de la codificación UTF-8 (Dependiendo del sistema operativo)
+# Sys.setlocale(&quot;LC_ALL&quot;, &quot;es_ES.UTF-8&quot;)  # Asegura el uso de UTF-8 en español
+
+# Cargar la librería necesaria para la visualización de datos
+library(ggplot2)
+
+
+# Definición de los datos de la muestra
+# x: Número de policías en diferentes pueblos
+# y: Número de delitos registrados en esos pueblos
+
+# 1. Lectura de datos
+file &lt;- &quot;https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_pueblos.txt&quot;
+datos &lt;- read.table(file = file, header = TRUE)
+
+x&lt;-datos$Policias
+y&lt;-datos$Delitos
+
+# Prueba de normalidad de Shapiro-Wilk
+# Se usa para evaluar si los datos de cada variable siguen una distribución normal
+shapiro_x &lt;- shapiro.test(x)  # Prueba para la variable X (Número de policías)
+shapiro_y &lt;- shapiro.test(y)  # Prueba para la variable Y (Número de delitos)
+
+# Imprimir los resultados de la prueba de normalidad
+print(&quot;Resultados de la prueba de normalidad de Shapiro-Wilk:&quot;)
+print(shapiro_x)
+print(shapiro_y)
+
+# Prueba de hipótesis de correlación de Pearson
+# Evalúa la relación lineal entre el número de policías y el número de delitos
+cor_pearson &lt;- cor.test(x, y, method = &quot;pearson&quot;)
+
+# Imprimir el resultado de la correlación de Pearson
+print(&quot;Resultados de la prueba de correlación de Pearson:&quot;)
+print(cor_pearson)</code></pre>
+<p>Los resultados del test de normalidad de Shapiro-Wilk para ambas
+variables no rechazan la hipotesis de normalidad con una significancia
+del 5%, valor-p = 0.264 valor-p = 0.9178 son mayores a 0.05.</p>
+<pre>
+Shapiro-Wilk normality test
+
+data:  x
+W = 0.95938, p-value = 0.264
+</pre>
+<pre>
+Shapiro-Wilk normality test
+
+data:  y
+W = 0.98466, p-value = 0.9178
+</pre>
+<p>Dado que los <strong>supuestos requeridos para la prueba de
+correlación de Pearson se cumplen</strong> —<strong>linealidad</strong>,
+<strong>normalidad</strong> y <strong>homocedasticidad</strong>—, se
+procede con la ejecución del test para evaluar la existencia de una
+relación lineal entre las variables:</p>
+<ul>
+<li><p><strong>Hipótesis nula (<span
+class="math inline">\(H_0\)</span>)</strong>: No existe asociación
+lineal entre el número de policías y el número de delitos en los
+pueblos, es decir, <span class="math inline">\(\rho =
+0\)</span>.</p></li>
+<li><p><strong>Hipótesis alternativa (<span
+class="math inline">\(H_1\)</span>)</strong>: Existe una asociación
+lineal significativa entre el número de policías y el número de delitos
+en los pueblos, es decir, <span class="math inline">\(\rho \neq
+0\)</span>.</p></li>
+</ul>
+<p>Si el valor-p=9.985e-10 obtenido en la prueba es menor que el nivel
+de significancia (<span class="math inline">\(\alpha = 0.05\)</span>),
+se rechazará la hipótesis nula, lo que indicaría que existe evidencia
+estadística suficiente para afirmar la existencia de una correlación
+lineal significativa entre ambas variables con una significancia del
+5%.</p>
+<pre>
+Pearson's product-moment correlation
+
+data:  x and y
+t = -8.7221, df = 30, p-value = 9.985e-10
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ -0.9230007 -0.7069253
+sample estimates:
+       cor 
+-0.8468662 
+</pre>
+<p>Dado que el coeficiente de correlación obtenido es
+<strong>negativo</strong> (<span class="math inline">\(r =
+-0.8468662\)</span>), se concluye que la relación es <strong>negativa
+fuerte</strong>, es decir, <strong>a mayor número de policías, el número
+de delitos registrados decrece linealmente</strong>.</p>
+</p>
+</div>
+</br></br>
+<div class="caja-ejemplo">
+<h3>
+Ejemplo:
+</h3>
+<p>
+<p>En este análisis, se calcula la <strong>matriz de
+correlación</strong> para las variables del conjunto de datos
+<code>biomasa</code>, utilizando la función <code>cor()</code> en
+<strong>R</strong>. Todas las variables son cuantitativas continuas.</p>
+<p>Por defecto, <code>cor()</code> calcula la <strong>correlación de
+Pearson</strong>, que mide la <strong>fuerza y dirección de la relación
+lineal</strong> entre dos variables cuantitativas.</p>
+<p>El código en <strong>R</strong> para el cálculo de la matriz de
+correlación y los gráficos de dispersión para cada par de variables en
+la base de datos es el siguiente:</p>
+<pre>
+# Cargar las librerías necesarias
+library(paqueteMETODOS)  # Paquete que contiene el conjunto de datos "biomasa"
+library(GGally)          # Para matriz de gráficos de dispersión y correlación
+library(dplyr)           # Para manipulación de datos
+library(tidyr)           # Para transformación de datos en formato long
+library(ggplot2)         # Para visualización de datos
+
+# Cargar la base de datos "biomasa" contenida en el paquete
+data(biomasa)
+
+# Mostrar los primeros registros del conjunto de datos
+print("Primeros registros del dataset:")
+head(biomasa)
+
+# Calcular la matriz de correlación para las variables de la columna 3 a la 8,
+# redondeando los valores a tres decimales para facilitar la lectura
+correlacion <- biomasa[, 3:8] %>% cor() %>% round(3)
+print("Matriz de correlación:")
+print(correlacion)
+
+# Pruebas de normalidad de Shapiro-Wilk para cada variable numérica en las columnas 3 a 8
+print("Resultados de la prueba de normalidad de Shapiro-Wilk:")
+shapiro_results <- lapply(biomasa[, 3:8], shapiro.test)
+
+# Mostrar los resultados de cada variable
+for (nombre in names(shapiro_results)) {
+  cat("\nVariable:", nombre, "\n")
+  print(shapiro_results[[nombre]])
+}
+
+# Transformar los datos a formato "long" para generar un único gráfico de cajas
+biomasa_long <- biomasa %>%
+  pivot_longer(cols = 3:8, names_to = "Variable", values_to = "Valor")
+
+# Gráfico de cajas para revisar la presencia de valores atípicos en todas las variables
+ggplot(biomasa_long, aes(x = Variable, y = Valor, fill = Variable)) +
+  geom_boxplot(alpha = 0.7) +  # Boxplot con transparencia
+  labs(title = "Distribución y Atípicos en las Variables de Biomasa",
+       x = "Variable",
+       y = "Valor") +
+  theme_minimal() +
+  theme(legend.position = "none")  # Ocultar la leyenda ya que cada caja representa una variable
+
+# **Matriz de gráficos de dispersión mejorada para 6 variables**
+ggpairs(
+  biomasa[, 3:8],  # Seleccionamos las 6 variables
+  title = "Matriz de Dispersión y Correlación - Biomasa",
+  upper = list(continuous = wrap("cor", size = 4)),  # Muestra correlaciones en la parte superior
+  lower = list(continuous = wrap("points", alpha = 0.5, size = 1.5)),  # Dispersión en la parte inferior
+  diag = list(continuous = wrap("densityDiag", alpha = 0.6))  # Densidades en la diagonal
+)
+</pre>
+<pre class="r"><code># Cargar las librerías necesarias
+library(paqueteMETODOS)  # Paquete que contiene el conjunto de datos &quot;biomasa&quot;
+library(GGally)          # Para matriz de gráficos de dispersión y correlación
+library(dplyr)           # Para manipulación de datos
+library(tidyr)           # Para transformación de datos en formato long
+library(ggplot2)         # Para visualización de datos
+
+# Cargar la base de datos &quot;biomasa&quot; contenida en el paquete
+data(biomasa)
+
+# Mostrar los primeros registros del conjunto de datos
+print(&quot;Primeros registros del dataset:&quot;)
+head(biomasa)
+
+# Calcular la matriz de correlación para las variables de la columna 3 a la 8,
+# redondeando los valores a tres decimales para facilitar la lectura
+correlacion &lt;- biomasa[, 3:8] %&gt;% cor() %&gt;% round(3)
+print(&quot;Matriz de correlación:&quot;)
+print(correlacion)
+
+# Pruebas de normalidad de Shapiro-Wilk para cada variable numérica en las columnas 3 a 8
+print(&quot;Resultados de la prueba de normalidad de Shapiro-Wilk:&quot;)
+shapiro_results &lt;- lapply(biomasa[, 3:8], shapiro.test)
+
+# Mostrar los resultados de cada variable
+for (nombre in names(shapiro_results)) {
+  cat(&quot;\nVariable:&quot;, nombre, &quot;\n&quot;)
+  print(shapiro_results[[nombre]])
+}
+
+# Transformar los datos a formato &quot;long&quot; para generar un único gráfico de cajas
+biomasa_long &lt;- biomasa %&gt;%
+  pivot_longer(cols = 3:8, names_to = &quot;Variable&quot;, values_to = &quot;Valor&quot;)
+
+# Gráfico de cajas para revisar la presencia de valores atípicos en todas las variables
+ggplot(biomasa_long, aes(x = Variable, y = Valor, fill = Variable)) +
+  geom_boxplot(alpha = 0.7) +  # Boxplot con transparencia
+  labs(title = &quot;Distribución y Atípicos en las Variables de Biomasa&quot;,
+       x = &quot;Variable&quot;,
+       y = &quot;Valor&quot;) +
+  theme_minimal() +
+  theme(legend.position = &quot;none&quot;)  # Ocultar la leyenda ya que cada caja representa una variable
+
+# **Matriz de gráficos de dispersión mejorada para 6 variables**
+ggpairs(
+  biomasa[, 3:8],  # Seleccionamos las 6 variables
+  title = &quot;Matriz de Dispersión y Correlación - Biomasa&quot;,
+  upper = list(continuous = wrap(&quot;cor&quot;, size = 4)),  # Muestra correlaciones en la parte superior
+  lower = list(continuous = wrap(&quot;points&quot;, alpha = 0.5, size = 1.5)),  # Dispersión en la parte inferior
+  diag = list(continuous = wrap(&quot;densityDiag&quot;, alpha = 0.6))  # Densidades en la diagonal
+)</code></pre>
+<p>La <strong>Tabla 3.2</strong> muestra la <strong>matriz de
+correlación de Pearson</strong> entre cada par de variables en el
+conjunto de datos <code>biomasa</code>. Cada celda contiene el
+coeficiente de correlación (<span class="math inline">\(r\)</span>)
+entre un par de variables, indicando la fuerza y dirección de la
+relación lineal entre ellas.</p>
+<br/><br/>
+<center>
+<strong>Tabla 3.2</strong> Matriz de correlación de Pearson.
+</center>
+<pre>
+           bio_aerea bio_sub bio_total area_foliar diametro altura
+bio_aerea       1.000  -0.561     0.999       0.865    0.914  0.861
+bio_sub        -0.561   1.000    -0.534      -0.590   -0.652 -0.550
+bio_total       0.999  -0.534     1.000       0.860    0.908  0.858
+area_foliar     0.865  -0.590     0.860       1.000    0.736  0.572
+diametro        0.914  -0.652     0.908       0.736    1.000  0.936
+altura          0.861  -0.550     0.858       0.572    0.936  1.000
+</pre>
+<p>De acuerdo con los resultados de la matriz de correlación se puede
+interpretar lo siguiente:</p>
+<ul>
+<li><p>Existe una <strong>correlación casi perfecta</strong> entre
+<strong>biomasa aérea</strong> y <strong>biomasa total</strong> (<span
+class="math inline">\(r = 0.999\)</span>), lo que sugiere que la biomasa
+aérea contribuye de manera casi total a la biomasa total.</p></li>
+<li><p><strong>Diámetro y altura</strong> tienen una <strong>correlación
+fuerte y positiva</strong> (<span class="math inline">\(r =
+0.936\)</span>), indicando que a mayor diámetro, mayor altura.</p></li>
+<li><p><strong>Diámetro y biomasa aérea</strong> están altamente
+correlacionados (<span class="math inline">\(r = 0.914\)</span>), lo que
+implica que el diámetro es un fuerte indicador de la biomasa
+aérea.</p></li>
+<li><p><strong>Área foliar y biomasa aérea</strong> presentan una
+correlación positiva considerable (<span class="math inline">\(r =
+0.865\)</span>), lo que indica que un mayor área foliar está asociada
+con mayor biomasa aérea.</p></li>
+<li><p><strong>Área foliar y biomasa total</strong> (<span
+class="math inline">\(r = 0.860\)</span>) también presentan una relación
+positiva similar.</p></li>
+<li><p><strong>Biomasa subterránea tiene correlaciones negativas con
+todas las demás variables</strong>. En particular, su relación con
+biomasa aérea (<span class="math inline">\(r = -0.561\)</span>) y
+biomasa total (<span class="math inline">\(r = -0.534\)</span>) indica
+que cuando aumenta la biomasa aérea o total, la biomasa subterránea
+tiende a disminuir.</p></li>
+<li><p><strong>Área foliar y biomasa subterránea</strong> también
+muestran una correlación negativa (<span class="math inline">\(r =
+-0.590\)</span>), sugiriendo que un mayor desarrollo foliar podría estar
+asociado con menor biomasa subterránea.</p></li>
+</ul>
+<br/><br/>
+<center>
+<img src="img/fig36.png" width="80%" style="display: block; margin: auto;" />
+<strong>Figura 3.6</strong>. Gráfico de dispersión por cada par de
+variables de la base de datos biomasa.
+</center>
+<p><br/><br/></p>
+<p>La <strong>Figura 3.6</strong> muestra una <strong>matriz de
+correlaciones y dispersión</strong> entre cada par de variables. La
+información se presenta de la siguiente manera:</p>
+<ul>
+<li><p><strong>Diagonal principal</strong>: Las curvas de densidad de
+cada variable, lo que permite visualizar su distribución.</p></li>
+<li><p><strong>Triángulo inferior</strong>: Contiene los
+<strong>gráficos de dispersión</strong> entre cada par de variables, lo
+que ayuda a identificar tendencias y patrones de relación.</p></li>
+<li><p><strong>Triángulo superior</strong>: Presenta los
+<strong>coeficientes de correlación de Pearson</strong> entre las
+variables, indicando la fuerza y dirección de la relación
+lineal.</p></li>
+</ul>
+<p>Los <strong>asteriscos (</strong>*<strong>, </strong>**<strong>,
+</strong>***<strong>)</strong> indican el <strong>nivel de significancia
+estadística</strong> del test de correlación:</p>
+<ul>
+<li><p><strong><span class="math inline">\(***\)</span> (tres
+asteriscos)</strong>: Correlación <strong>altamente
+significativa</strong> puesto que el <span class="math inline">\(valor-p
+&lt; 0.001\)</span>, lo que significa que la probabilidad de obtener
+esta correlación por azar es menor al 0.01.</p></li>
+<li><p><strong><span class="math inline">\(**\)</span> (dos
+asteriscos)</strong>: Correlación <strong>significativa</strong> ya que
+el <span class="math inline">\(valor-0 &lt; 0.01\)</span>, menos
+estricta pero aún con una probabilidad baja de ocurrencia por
+azar.</p></li>
+<li><p><strong><span class="math inline">\(*\)</span> (un
+asterisco)</strong>: Correlación <strong>moderadamente
+significativa</strong> debido a que el <span
+class="math inline">\(valor-p &lt; 0.05\)</span>, lo que implica que hay
+evidencia moderada para rechazar la hipótesis nula de
+independencia.</p></li>
+</ul>
+<p>A continuación se presentan las interpretaciones de la <strong>Figura
+3.6</strong>:</p>
+<ul>
+<li><p><strong>Biomasa total vs. diámetro</strong> (<span
+class="math inline">\(r = 0.908\)</span>***): Relación lineal positiva
+fuerte, lo que indica que a mayor diámetro, mayor biomasa
+total.</p></li>
+<li><p><strong>Diámetro vs. altura</strong> (<span
+class="math inline">\(r = 0.936\)</span>***): Relación muy fuerte y
+positiva, lo que sugiere que a medida que aumenta el diámetro, también
+lo hace la altura del individuo.</p></li>
+<li><p><strong>Área foliar vs. biomasa total</strong> (<span
+class="math inline">\(r = 0.860\)</span>***): Indica que un mayor
+desarrollo del área foliar está relacionado con un mayor peso de la
+biomasa total.</p></li>
+<li><p><strong>Altura vs. biomasa total</strong> (<span
+class="math inline">\(r = 0.858\)</span>***): Sugiere que el crecimiento
+en altura también está asociado con un aumento en la biomasa
+total.</p></li>
+<li><p><strong>Área foliar vs. diámetro</strong> (<span
+class="math inline">\(r = 0.736\)</span>***): Relación positiva
+moderada, indicando que el diámetro del tronco también tiende a aumentar
+con el desarrollo del área foliar.</p></li>
+<li><p><strong>Área foliar vs. altura</strong> (<span
+class="math inline">\(r = 0.572\)</span>***): Relación positiva más
+débil, lo que sugiere que el crecimiento en altura tiene menor
+dependencia directa del área foliar.</p></li>
+</ul>
+<p>En este gráfico, todas las correlaciones presentan <strong>tres
+asteriscos</strong>, lo que indica que son altamente significativas
+(<span class="math inline">\(valor-p &lt; 0.001\)</span>). Esto sugiere
+que las relaciones lineales observadas entre las variables no ocurren al
+azar.</p>
+<p>Para determinar la validez del <strong>test de correlación de
+Pearson</strong>, es necesario evaluar si se cumplen los supuestos
+requeridos:</p>
+<ul>
+<li><p>Todas las variables analizadas son numéricas, por lo que este
+supuesto se cumple.</p></li>
+<li><p>Los gráficos de dispersión muestran una <strong>relación
+lineal</strong> entre la mayoría de las variables. Existen algunas
+excepciones en las combinaciones <strong>área foliar vs. altura</strong>
+y <strong>área foliar vs. diámetro</strong>, donde la relación parece
+más débil.</p></li>
+<li><p>En la mayoría de los casos, la varianza de una variable respecto
+a la otra es <strong>aproximadamente constante</strong>. Se observan
+indicios de <strong>heterocedasticidad</strong> en <strong>área foliar
+vs. altura</strong> y <strong>área foliar vs. diámetro</strong>, lo que
+puede afectar la validez de la correlación de Pearson en estos
+casos.</p></li>
+<li><p>Se aplicó el <strong>test de Shapiro-Wilk</strong> para evaluar
+la hipótesis de normalidad en cada variable considerando un nivel de
+significancia del <strong>5%</strong> (<span
+class="math inline">\(\alpha = 0.05\)</span>). Los resultados muestran
+que las variables <strong>biomasa aérea</strong>, <strong>biomasa
+total</strong> y <strong>área foliar</strong> presentan valores-p
+menores a 0.05, lo que indica que sus distribuciones no siguen un
+comportamiento normal y, por lo tanto, se rechaza la hipótesis de
+normalidad en estos casos.</p></li>
+<li><p>La <strong>Figura 3.7</strong> presenta diagramas de caja que
+permiten visualizar la distribución y la presencia de valores atípicos
+en las variables <strong>biomasa aérea</strong>, <strong>biomasa
+total</strong> y <strong>área foliar</strong>.</p></li>
+</ul>
+<pre>
+Variable: bio_aerea 
+
+    Shapiro-Wilk normality test
+
+data:  X[[i]]
+W = 0.93207, p-value = 0.0001533
+
+
+Variable: bio_sub 
+
+    Shapiro-Wilk normality test
+
+data:  X[[i]]
+W = 0.98002, p-value = 0.1813
+
+
+Variable: bio_total 
+
+    Shapiro-Wilk normality test
+
+data:  X[[i]]
+W = 0.92778, p-value = 9.028e-05
+
+
+Variable: area_foliar 
+
+    Shapiro-Wilk normality test
+
+data:  X[[i]]
+W = 0.97133, p-value = 0.0439
+
+
+Variable: diametro 
+
+    Shapiro-Wilk normality test
+
+data:  X[[i]]
+W = 0.99109, p-value = 0.8079
+
+
+Variable: altura 
+
+    Shapiro-Wilk normality test
+
+data:  X[[i]]
+W = 0.97909, p-value = 0.156
+</pre>
+<br/><br/>
+<center>
+<img src="img/fig37.png" width="80%" style="display: block; margin: auto;" />
+<strong>Figura 3.7</strong>. Distribución por cada par de variables de
+la base de datos biomasa.
+</center>
+<p><br/><br/></p>
+<p>Dado que el test de normalidad rechaza la hipótesis de normalidad y
+se observa la presencia de valores atípicos en las variables
+<strong>biomasa aérea</strong>, <strong>biomasa total</strong> y
+<strong>área foliar</strong>, los resultados obtenidos mediante el test
+de correlación de Pearson pueden verse comprometidos y no ser
+completamente válidos. La correlación de Pearson asume que las variables
+siguen una distribución normal y que la relación entre ellas es lineal y
+homocedástica, condiciones que no se cumplen en este caso.</p>
+<p>Por esta razón, se recomienda el uso de métodos alternativos para
+evaluar la asociación entre estas variables. Una opción adecuada es la
+<strong>correlación de Spearman</strong>, la cual es más robusta ante la
+presencia de valores atípicos y no requiere que las variables sigan una
+distribución normal. También podría considerarse la <strong>correlación
+de Kendall</strong>, especialmente en casos donde los datos presentan
+muchos empates o no siguen una estructura monótona clara. Estas medidas
+proporcionan una evaluación más confiable de la relación entre las
+variables en presencia de datos no normales y atípicos.</p>
+</p>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

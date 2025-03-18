@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Métodos y Simulación Estadística" />
+
+
+<title> Tablero</title>
+
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"> </a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Métodos
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="index.html">Contenido</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Correlación
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso100.html">Análisis de Correlación</a>
+    </li>
+    <li>
+      <a href="recurso110.html">Coeficiente de Pearson</a>
+    </li>
+    <li>
+      <a href="recurso120.html">Coeficiente de Spearman</a>
+    </li>
+    <li>
+      <a href="recurso130.html">Coeficiente de Kendall</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Modelo
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso200.html">Modelo de Regresión Lineal Simple</a>
+    </li>
+    <li>
+      <a href="recurso210.html">Estimación Mínimos Cuadrados Ordinarios</a>
+    </li>
+    <li>
+      <a href="recurso220.html">Estimación de Máxima Verosimilitud</a>
+    </li>
+    <li>
+      <a href="recurso230.html">Forma Matricial del Modelo</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Diagnóstico
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso300.html">Supuestos</a>
+    </li>
+    <li>
+      <a href="recurso310.html">Residuales</a>
+    </li>
+    <li>
+      <a href="recurso320.html">Revisión de Supuestos</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Pruebas de Hipótesis
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso400.html">Sobre los Coeficientes</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Transformaciones
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso500.html">Transformaciones</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Modelos polinomiales
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso600.html">Modelos Polinomiales</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Predicción
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso700.html">Intervalo de Confianza</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Intervalos de Confianza
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso800.html">Coeficientes y Varianza</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Atípicos e Influyentes
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso900.html">Punto Atípico e Influyente</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Tablero
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso1000.html">Tablero usando Shiny</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Referencias
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso2000.html">Referencias</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore"><span style="color:#686868">
+<strong>Tablero</strong></span></h1>
+<h4 class="author">Métodos y Simulación Estadística</h4>
+
+</div>
+
+
+<div class="caja-nota">
+<blockquote>
+<p><em>“RMarkdown: Se utiliza principalmente para generar reportes
+reproducibles en formato HTML, PDF o Word, combinando código R con texto
+explicativo. Permite incluir análisis de datos, visualizaciones y
+explicaciones detalladas en un solo documento.”</em></p>
+</blockquote>
+</div>
+<div class="caja-nota">
+<blockquote>
+<p><em>“Shiny: Se usa para desarrollar aplicaciones interactivas en la
+web, donde los usuarios pueden explorar los datos y realizar análisis
+dinámicos sin necesidad de ejecutar código manualmente.”</em></p>
+</blockquote>
+</div>
+</br></br>
+<h2>
+Creación de un tablero usando <strong>R</strong> y
+<strong>Shiny</strong>
+</h2>
+<p><strong>Shiny</strong> es un paquete de <strong>R</strong> que
+permite desarrollar aplicaciones web interactivas sin necesidad de
+conocimientos avanzados en desarrollo web. Para construir un tablero con
+Shiny, se requiere definir dos componentes principales:</p>
+<ol style="list-style-type: decimal">
+<li><p><strong>Interfaz de usuario (UI)</strong>: Define cómo se verá la
+aplicación y qué elementos interactivos tendrá</p></li>
+<li><p><strong>Servidor (Server)</strong>: Contiene la lógica de la
+aplicación, como cálculos, generación de gráficos y actualización de
+datos en tiempo real.</p></li>
+</ol>
+<p>Finalmente, se ejecuta la aplicación con la función
+<code>shinyApp(ui, server)</code>.</p>
+</br></br>
+<div class="caja-ejemplo">
+<h3>
+Ejemplo:
+</h3>
+<p>
+<p>En este ejemplo, se continúa con el análisis de regresión lineal
+utilizando un conjunto de datos de medidas antropométricas, disponible
+en el siguiente enlace:</p>
+<p><a
+href="https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_atip.txt">Datos
+de medidas antropométricas</a></p>
+<p>A continuación, se describe el proceso para crear una interfaz
+interactiva con pestañas dinámicas, implementar elementos de entrada
+flexibles y generar gráficos y tablas interactivas. Estos elementos
+permiten explorar el modelo de regresión lineal que predice el peso de
+los estudiantes en función de distintas variables antropométricas.</p>
+<ol style="list-style-type: decimal">
+<li><strong>Configuración inicial y carga de datos</strong>: Se cargan
+las librerías necesarias para el desarrollo del tablero.
+<code>shiny</code> es el paquete base para crear la aplicación. El resto
+de librerías se usan para gráficos, tablas y pruebas estadísticas.
+Además, se carga la base de datos desde una URL. Los códigos de entrada
+son los siguientes:</li>
+</ol>
+<pre>
+# Librerías necesarias
+library(shiny)
+library(ggplot2)
+library(car)
+library(lmtest)
+library(DT)
+library(shinythemes)
+
+# Cargar datos
+datos <- read.table("https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_atip.txt", header = TRUE)
+</pre>
+<ol start="2" style="list-style-type: decimal">
+<li><strong>Creación de la interfaz de usuario (UI)</strong>: La
+interfaz de usuario define la apariencia y estructura del tablero. Se
+utiliza <code>fluidPage()</code> para una disposición flexible. a
+continución ejemplos del código:</li>
+</ol>
+<pre>
+# Interfaz de usuario
+ui <- fluidPage(
+  theme = shinytheme("flatly"),
+  titlePanel("Análisis de Regresión Lineal - Datos Corporales"),
+  
+  sidebarLayout(
+    sidebarPanel(
+      h3("Opciones del Modelo"),
+      selectInput("var_explicativa", "Variable Explicativa:",
+                  choices = c("circun_cuello", "Estatura", "circun_muneca"),
+                  selected = "circun_cuello"),
+      checkboxGroupInput("excluir_obs", "Excluir Observaciones:",
+                         choices = as.character(1:nrow(datos)),
+                         selected = c("11", "51")),
+      uiOutput("pred_input"),
+      actionButton("calcular", "Actualizar Modelo")
+    ),
+    
+    mainPanel(
+      tabsetPanel(
+        tabPanel("Correlaciones", 
+                 h3("Matriz de Correlaciones de Pearson"),
+                 plotOutput("correlaciones_pearson"),
+                 br(),
+                 h3("Matriz de Correlaciones de Kendall"),
+                 plotOutput("correlaciones_kendall")
+        ),
+        tabPanel("Resumen del Modelo", 
+                 h3("Ecuación del Modelo Estimado"),
+                 verbatimTextOutput("modelo_equacion"),
+                 br(),
+                 h3("Pruebas de Significancia"),
+                 DTOutput("tabla_hipotesis"),
+                 br(),
+                 h3("Métricas del Modelo"),
+                 DTOutput("tabla_metricas"),
+                 br(),
+                 h3("Intervalos de Confianza para Parámetros del Modelo"),
+                 DTOutput("tabla_ic_parametros")
+        ),
+        tabPanel("Diagnótico", 
+                 h3("Pruebas de Supuestos del Modelo"),
+                 DTOutput("tabla_tests"),
+                 br(),
+                 plotOutput("diagnostico_residuos"),
+                 plotOutput("cook_vs_leverage")
+        ),
+        tabPanel("Predicción", 
+                 h3("Predicción del Peso"),
+                 verbatimTextOutput("prediccion_resultado"),
+                 br(),
+                 h3("Gráfico de Intervalos de Confianza y Predicción"),
+                 plotOutput("intervalos_prediccion"))
+      )
+    )
+  )
+)
+</pre>
+<p>Entre los principales elementos en la UI se tiene:</p>
+<ul>
+<li><p><code>titlePanel("Análisis de Regresión Lineal - Datos Corporales")</code>
+: Define el título del tablero.</p></li>
+<li><p><code>sidebarLayout()</code> : Organiza la interfaz con un panel
+lateral (<code>sidebarPanel()</code>) y una área principal
+(<code>mainPanel()</code>).</p></li>
+<li><p><code>selectInput("var_explicativa", ...)</code> : Permite al
+usuario seleccionar la variable predictora.</p></li>
+<li><p><code>checkboxGroupInput("excluir_obs", ...)</code> : Permite al
+usuario excluir observaciones.</p></li>
+<li><p><code>uiOutput("pred_input")</code> : Se usa para generar
+dinámicamente una caja de entrada numérica para la predicción.</p></li>
+<li><p><code>tabsetPanel()</code> y <code>tabPanel()</code> : Organizan
+el contenido en pestañas dentro de la interfaz.</p></li>
+</ul>
+<ol start="3" style="list-style-type: decimal">
+<li><strong>Creación de la lógica en el servidor (Server)</strong>:</li>
+</ol>
+<ul>
+<li>El servidor (<code>server</code>) define cómo deben actualizarse los
+elementos interactivos en función de las selecciones del usuario. Por
+ejemplo:</li>
+</ul>
+<pre>
+server <- function(input, output) {
+  modelo_regresion <- reactive({
+    datos_filtrados <- datos[!rownames(datos) %in% input$excluir_obs, ]
+    lm(as.formula(paste("Peso ~", input$var_explicativa)), data = datos_filtrados)
+  })
+</pre>
+<ul>
+<li><p><code>reactive()</code>: Crea una función reactiva que se
+actualiza automáticamente cuando cambian las entradas.</p></li>
+<li><p><code>renderUI()</code>: Permite actualizar dinámicamente la caja
+de entrada de predicción según la variable seleccionada.</p></li>
+</ul>
+<pre>
+  # Actualizar el input de predicción dinámicamente
+  output$pred_input <- renderUI({
+    req(input$var_explicativa)
+    numericInput("pred_x", paste("Valor de", input$var_explicativa, "para predicción:"),
+                 value = mean(datos[[input$var_explicativa]], na.rm = TRUE),
+                 min = min(datos[[input$var_explicativa]], na.rm = TRUE),
+                 max = max(datos[[input$var_explicativa]], na.rm = TRUE))
+  })
+</pre>
+<ol start="4" style="list-style-type: decimal">
+<li><strong>Visualización de gráficos y tablas interactivas</strong>:
+Shiny permite mostrar gráficos y tablas que se actualizan en tiempo
+real. Por ejemplo, la visualización de ecuación del modelo:</li>
+</ol>
+<ul>
+<li><code>renderText()</code>: Muestra texto dinámico.</li>
+</ul>
+<pre>
+# **Ecuación del Modelo**
+  output$modelo_equacion <- renderText({
+    modelo <- modelo_regresion()
+    coef <- coef(modelo)
+    intercepto <- round(coef[1], 3)
+    pendiente <- round(coef[2], 3)
+    paste0("Peso = ", intercepto, " + ", pendiente, " × ", input$var_explicativa)
+  })
+</pre>
+<ul>
+<li><code>renderPlot()</code>: Genera gráficos reactivos.</li>
+</ul>
+<pre>
+# **Gráficos de correlaciones**
+  output$correlaciones_pearson <- renderPlot({
+    ggpairs(datos[, c("Peso", "Estatura", "circun_cuello", "circun_muneca")], 
+            title = "Correlaciones de Pearson")
+  })
+</pre>
+<ol start="5" style="list-style-type: decimal">
+<li><strong>Generación de predicciones y gráficos
+interactivos:</strong></li>
+</ol>
+<ul>
+<li><code>renderPrint()</code>: Muestra texto interactivo.</li>
+</ul>
+<pre>
+output$prediccion_resultado <- renderPrint({
+  modelo <- modelo_regresion()
+  nueva_obs <- setNames(list(input$pred_x), input$var_explicativa)
+  predict(modelo, newdata = as.data.frame(nueva_obs), interval = "prediction")
+})
+</pre>
+<p>Se genera una predicción con intervalos de confianza. Se usa
+<code>ggplot()</code> para mostrar gráficos dinámicos.</p>
+<pre>
+output$intervalos_prediccion <- renderPlot({
+  modelo <- modelo_regresion()
+  nuevos_datos <- setNames(list(seq(min(datos[[input$var_explicativa]], na.rm = TRUE), 
+                                    max(datos[[input$var_explicativa]], na.rm = TRUE), length.out = 100)),
+                           input$var_explicativa)
+  
+  ic_prediccion <- predict(modelo, newdata = as.data.frame(nuevos_datos), interval = "prediction")
+  
+  ggplot() +
+    geom_point(data = datos, aes_string(x = input$var_explicativa, y = "Peso"), color = "black", size = 2) +
+    geom_smooth(method = "lm", se = TRUE, color = "blue") +
+    theme_minimal()
+})
+</pre>
+<ol start="6" style="list-style-type: decimal">
+<li><strong>Ejecución de la aplicación</strong>:</li>
+</ol>
+<ul>
+<li><code>shinyApp</code>: Lanza la aplicación web. El código que se
+implementa es el siguiente:</li>
+</ul>
+<pre>
+shinyApp(ui, server)
+</pre>
+<p>El código completo que se debe renderizar en <strong>R</strong> es el
+siguiente:</p>
+<pre>
+# Librerías necesarias
+library(shiny)
+library(ggplot2)
+library(car)
+library(lmtest)
+library(DT)
+library(shinythemes)
+
+# Cargar datos
+datos <- read.table("https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_atip.txt", header = TRUE)
+
+# Interfaz de usuario
+ui <- fluidPage(
+  theme = shinytheme("flatly"),
+  titlePanel("Análisis de Regresión Lineal - Datos Corporales"),
+  
+  sidebarLayout(
+    sidebarPanel(
+      h3("Opciones del Modelo"),
+      selectInput("var_explicativa", "Variable Explicativa:",
+                  choices = c("circun_cuello", "Estatura", "circun_muneca"),
+                  selected = "circun_cuello"),
+      checkboxGroupInput("excluir_obs", "Excluir Observaciones:",
+                         choices = as.character(1:nrow(datos)),
+                         selected = c("11", "51")),
+      uiOutput("pred_input"),
+      actionButton("calcular", "Actualizar Modelo")
+    ),
+    
+    mainPanel(
+      tabsetPanel(
+        tabPanel("Correlaciones", 
+                 h3("Matriz de Correlaciones de Pearson"),
+                 plotOutput("correlaciones_pearson"),
+                 br(),
+                 h3("Matriz de Correlaciones de Kendall"),
+                 plotOutput("correlaciones_kendall")
+        ),
+        tabPanel("Resumen del Modelo", 
+                 h3("Ecuación del Modelo Estimado"),
+                 verbatimTextOutput("modelo_equacion"),
+                 br(),
+                 h3("Pruebas de Significancia"),
+                 DTOutput("tabla_hipotesis"),
+                 br(),
+                 h3("Métricas del Modelo"),
+                 DTOutput("tabla_metricas"),
+                 br(),
+                 h3("Intervalos de Confianza para Parámetros del Modelo"),
+                 DTOutput("tabla_ic_parametros")
+        ),
+        tabPanel("Diagnótico", 
+                 h3("Pruebas de Supuestos del Modelo"),
+                 DTOutput("tabla_tests"),
+                 br(),
+                 plotOutput("diagnostico_residuos"),
+                 plotOutput("cook_vs_leverage")
+        ),
+        tabPanel("Predicción", 
+                 h3("Predicción del Peso"),
+                 verbatimTextOutput("prediccion_resultado"),
+                 br(),
+                 h3("Gráfico de Intervalos de Confianza y Predicción"),
+                 plotOutput("intervalos_prediccion"))
+      )
+    )
+  )
+)
+
+# Servidor
+server <- function(input, output) {
+  modelo_regresion <- reactive({
+    datos_filtrados <- datos[!rownames(datos) %in% input$excluir_obs, ]
+    lm(as.formula(paste("Peso ~", input$var_explicativa)), data = datos_filtrados)
+  })
+  
+  # Actualizar el input de predicción dinámicamente
+  output$pred_input <- renderUI({
+    req(input$var_explicativa)
+    numericInput("pred_x", paste("Valor de", input$var_explicativa, "para predicción:"),
+                 value = mean(datos[[input$var_explicativa]], na.rm = TRUE),
+                 min = min(datos[[input$var_explicativa]], na.rm = TRUE),
+                 max = max(datos[[input$var_explicativa]], na.rm = TRUE))
+  })
+  
+  # **Ecuación del Modelo**
+  output$modelo_equacion <- renderText({
+    modelo <- modelo_regresion()
+    coef <- coef(modelo)
+    intercepto <- round(coef[1], 3)
+    pendiente <- round(coef[2], 3)
+    paste0("Peso = ", intercepto, " + ", pendiente, " × ", input$var_explicativa)
+  })
+  
+  # **Tabla de hipótesis nulas y valores-p**
+  output$tabla_hipotesis <- renderDT({
+    modelo <- modelo_regresion()
+    resumen <- summary(modelo)
+    
+    # Calcular correctamente el valor-p del test F
+    f_value <- resumen$fstatistic[1]
+    df1 <- resumen$fstatistic[2]
+    df2 <- resumen$fstatistic[3]
+    p_value_f <- pf(f_value, df1, df2, lower.tail = FALSE)
+    
+    # Valores-p de los tests F y t
+    hipotesis_nula <- c("El modelo es significativo (Test F)", "La variable explicativa es significativa (Test t)")
+    valores_p <- c(p_value_f, coef(summary(modelo))[2, 4])
+    
+    tabla <- data.frame(
+      `Hipótesis Nula` = hipotesis_nula,
+      `Valor p` = round(valores_p, 20)
+    )
+    
+    datatable(tabla, options = list(dom = 't', paging = FALSE, searching = FALSE))
+  })
+  
+  # **Tabla con métricas del modelo**
+  output$tabla_metricas <- renderDT({
+    modelo <- modelo_regresion()
+    resumen <- summary(modelo)
+    
+    tabla <- data.frame(
+      `Métrica` = c("R²", "R² Ajustado", "Desviación Estándar de Residuos"),
+      `Valor` = round(c(resumen$r.squared, resumen$adj.r.squared, resumen$sigma), 5)
+    )
+    
+    datatable(tabla, options = list(dom = 't', paging = FALSE, searching = FALSE))
+  })
+  
+  # **Tabla de intervalos de confianza para parámetros**
+  output$tabla_ic_parametros <- renderDT({
+    modelo <- modelo_regresion()
+    resumen <- summary(modelo)
+    
+    # Intervalos de confianza para los coeficientes del modelo (β₀ y β₁)
+    ic_coefs <- confint(modelo)
+    
+    # Intervalo de confianza para sigma del error
+    n <- nrow(modelo$model)
+    sigma_hat <- resumen$sigma
+    li_sigma <- sigma_hat * sqrt((n - 1) / qchisq(0.975, df = n - 1))
+    ls_sigma <- sigma_hat * sqrt((n - 1) / qchisq(0.025, df = n - 1))
+    
+    tabla_ic <- data.frame(
+      `Parámetro` = c("Pendiente (β₁)", "Desviación Estándar del Error (σ)"),
+      `Límite Inferior` = round(c(ic_coefs[2, 1], li_sigma), 4),
+      `Límite Superior` = round(c(ic_coefs[2, 2], ls_sigma), 4)
+    )
+    
+    datatable(tabla_ic, options = list(dom = 't', paging = FALSE, searching = FALSE))
+  })
+  
+  # **Tabla de pruebas de supuestos**
+  output$tabla_tests <- renderDT({
+    modelo <- modelo_regresion()
+    
+    hipotesis_nula <- c("Los errores siguen una distribución normal", "Los errores presentan homocedasticidad", "No hay autocorrelación en los errores")
+    valores_p <- c(shapiro.test(residuals(modelo))$p.value, bptest(modelo)$p.value, dwtest(modelo)$p.value)
+    
+    tabla_tests <- data.frame(
+      `Hipótesis Nula` = hipotesis_nula,
+      `Valor p` = round(valores_p, 5)
+    )
+    
+    datatable(tabla_tests, options = list(dom = 't', paging = FALSE, searching = FALSE))
+  })
+  
+  
+  
+  # **Gráficos de diagnóstico**
+  output$diagnostico_residuos <- renderPlot({
+    par(mfrow = c(2, 2))
+    plot(modelo_regresion())
+  })
+  
+  output$cook_vs_leverage <- renderPlot({
+    modelo <- modelo_regresion()
+    influencePlot(modelo, main = "Distancia de Cook vs. Leverage")
+  })
+  
+  # **Gráficos de correlaciones**
+  output$correlaciones_pearson <- renderPlot({
+    ggpairs(datos[, c("Peso", "Estatura", "circun_cuello", "circun_muneca")], 
+            title = "Correlaciones de Pearson")
+  })
+  
+  output$correlaciones_kendall <- renderPlot({
+    ggpairs(datos[, c("Peso", "Estatura", "circun_cuello", "circun_muneca")], 
+            title = "Correlaciones de Kendall", upper = list(continuous = "cor", method = "kendall"))
+  })
+  
+  # **Predicción de valores nuevos**
+  output$prediccion_resultado <- renderPrint({
+    modelo <- modelo_regresion()
+    nueva_obs <- setNames(list(input$pred_x), input$var_explicativa)
+    predict(modelo, newdata = as.data.frame(nueva_obs), interval = "prediction")
+  })
+  
+  # **Gráfico de dispersión con intervalos de confianza y predicción**
+  output$intervalos_prediccion <- renderPlot({
+    modelo <- modelo_regresion()
+    nuevos_datos <- setNames(list(seq(min(datos[[input$var_explicativa]], na.rm = TRUE), 
+                                      max(datos[[input$var_explicativa]], na.rm = TRUE), length.out = 100)),
+                             input$var_explicativa)
+    
+    ic_esperanza <- predict(modelo, newdata = as.data.frame(nuevos_datos), interval = "confidence")
+    ic_prediccion <- predict(modelo, newdata = as.data.frame(nuevos_datos), interval = "prediction")
+    
+    intervalos <- data.frame(x = nuevos_datos[[input$var_explicativa]], prediccion = ic_prediccion[, "fit"],
+                             li_pred = ic_prediccion[, "lwr"], ls_pred = ic_prediccion[, "upr"],
+                             li_conf = ic_esperanza[, "lwr"], ls_conf = ic_esperanza[, "upr"])
+    
+    ggplot() +
+      geom_point(data = datos, aes_string(x = input$var_explicativa, y = "Peso"), color = "black", size = 2) +
+      geom_line(data = intervalos, aes(x = x, y = prediccion), color = "blue", size = 1) +
+      geom_ribbon(data = intervalos, aes(x = x, ymin = li_conf, ymax = ls_conf, fill = "Esperanza de Y"), alpha = 0.2) +
+      geom_ribbon(data = intervalos, aes(x = x, ymin = li_pred, ymax = ls_pred, fill = "Predicción de Y"), alpha = 0.1) +
+      scale_fill_manual(name = "Intervalos", values = c("Esperanza de Y" = "blue", "Predicción de Y" = "red")) +
+      theme_minimal()
+  })
+}
+
+# Ejecutar la aplicación
+shinyApp(ui, server)
+
+</pre>
+</p>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

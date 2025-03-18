@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Métodos y Simulación Estadística" />
+
+
+<title> Estimación por mínimos cuadrados</title>
+
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"> </a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Métodos
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="index.html">Contenido</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Correlación
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso100.html">Análisis de Correlación</a>
+    </li>
+    <li>
+      <a href="recurso110.html">Coeficiente de Pearson</a>
+    </li>
+    <li>
+      <a href="recurso120.html">Coeficiente de Spearman</a>
+    </li>
+    <li>
+      <a href="recurso130.html">Coeficiente de Kendall</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Modelo
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso200.html">Modelo de Regresión Lineal Simple</a>
+    </li>
+    <li>
+      <a href="recurso210.html">Estimación Mínimos Cuadrados Ordinarios</a>
+    </li>
+    <li>
+      <a href="recurso220.html">Estimación de Máxima Verosimilitud</a>
+    </li>
+    <li>
+      <a href="recurso230.html">Forma Matricial del Modelo</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Diagnóstico
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso300.html">Supuestos</a>
+    </li>
+    <li>
+      <a href="recurso310.html">Residuales</a>
+    </li>
+    <li>
+      <a href="recurso320.html">Revisión de Supuestos</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Pruebas de Hipótesis
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso400.html">Sobre los Coeficientes</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Transformaciones
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso500.html">Transformaciones</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Modelos polinomiales
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso600.html">Modelos polinomiales</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Predicción
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso700.html">Intervalo de Confianza</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Intervalos de Confianza
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso800.html">Coeficientes y varianza</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Atípicos e Influyentes
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso900.html">Punto atípico e influyente</a>
+    </li>
+    <li>
+      <a href="recurso910.html">Distancia de Cook</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Referencias
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso1000.html">Referencias</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore"><span style="color:#686868">
+<strong>Estimación por mínimos cuadrados</strong></span></h1>
+<h4 class="author">Métodos y Simulación Estadística</h4>
+
+</div>
+
+
+</br></br>
+<h3>
+Introducción
+</h3>
+<p>En modelos de <strong>regresión lineal simple</strong>, el objetivo
+es encontrar la relación entre una <strong>variable predictora</strong>
+<span class="math inline">\(X\)</span> y una <strong>variable
+respuesta</strong> <span class="math inline">\(Y\)</span>, con una
+ecuación lineal de la forma:</p>
+<p><span class="math display">\[
+Y_i = \beta_0 + \beta_1 X_i + \varepsilon_i, \quad i = 1, 2, \dots, n
+\]</span></p>
+<p>donde:</p>
+<ul>
+<li><p><strong><span class="math inline">\(\beta_0\)</span></strong> es
+el <strong>intercepto</strong>, que representa el valor esperado de
+<span class="math inline">\(Y\)</span> cuando <span
+class="math inline">\(X = 0\)</span>.</p></li>
+<li><p><strong><span class="math inline">\(\beta_1\)</span></strong> es
+la <strong>pendiente</strong>, que indica cuánto cambia <span
+class="math inline">\(Y\)</span> en promedio por cada unidad de cambio
+en <span class="math inline">\(X\)</span>.</p></li>
+<li><p><strong><span
+class="math inline">\(\varepsilon_i\)</span></strong> es el
+<strong>término de error aleatorio</strong>, que captura la variabilidad
+en <span class="math inline">\(Y\)</span> no explicada por el
+modelo.</p></li>
+</ul>
+<p>Para estimar los coeficientes <span
+class="math inline">\(\beta_0\)</span> y <span
+class="math inline">\(\beta_1\)</span>, se utiliza el <strong>método de
+mínimos cuadrados ordinarios (MCO)</strong>, que busca encontrar la
+mejor línea de ajuste minimizando la <strong>suma de los cuadrados de
+los errores</strong>:</p>
+<p><span class="math display">\[
+S(\beta_0, \beta_1) = \sum_{i=1}^{n} (Y_i - \widehat{Y}_i)^2=
+\sum_{i=1}^{n} (Y_i - \beta_0 - \beta_1 X_i)^2.
+\]</span></p>
+<p>El criterio de mínimos cuadrados garantiza que la línea ajustada sea
+aquella que <strong>minimiza la distancia cuadrática total entre los
+valores observados <span class="math inline">\(Y_i\)</span> y los
+valores predichos <span
+class="math inline">\(\widehat{Y}_i\)</span></strong>.</p>
+<p>Este método es ampliamente utilizado debido a:</p>
+<ul>
+<li><p><strong>Su simplicidad y facilidad de
+interpretación</strong>.</p></li>
+<li><p><strong>La optimalidad de los estimadores bajo ciertos
+supuestos</strong>, como normalidad y homocedasticidad de los
+errores.</p></li>
+<li><p><strong>Su eficiencia computacional</strong>, permitiendo un
+ajuste rápido incluso en grandes conjuntos de datos.</p></li>
+</ul>
+<pre class="r"><code>Sys.setlocale(&quot;LC_ALL&quot;, &quot;es_ES.UTF-8&quot;)
+
+
+# Cargar las librerías necesarias
+library(ggplot2)
+
+# Definir la URL del archivo con los datos
+file &lt;- &quot;https://raw.githubusercontent.com/fhernanb/datos/master/propelente&quot;
+
+# Cargar el conjunto de datos desde la URL en un data frame
+datos &lt;- read.table(file = file, header = TRUE)
+
+# Ajustar el modelo de regresión lineal original (recta gris)
+mod1 &lt;- lm(Resistencia ~ Edad, data = datos)
+
+# Crear predicciones para cada modelo
+datos$pred1 &lt;- predict(mod1)  # Modelo original
+datos$pred2 &lt;- 2620 + (-35 * datos$Edad)  # Modelo con pendiente -35 e intercepto 2620 (Azul)
+datos$pred3 &lt;- 2627.822 + (-41 * datos$Edad)  # Modelo con pendiente -41 e intercepto 2627.822 (Verde)
+
+# Crear un gráfico de dispersión con las tres rectas de regresión
+plot.reg2&lt;-ggplot(datos, aes(x = Edad, y = Resistencia)) +
+  # **Modelo 1 - Gris (Original)**
+  geom_smooth(method = &quot;lm&quot;, se = FALSE, color = &quot;lightgrey&quot;) +  # Línea de regresión gris
+  geom_segment(aes(xend = Edad, yend = pred1), col = &#39;red&#39;, lty = &#39;dashed&#39;) +  # Residuales modelo 1 (líneas rojas punteadas)
+  geom_point() +  # Puntos de datos observados
+  geom_point(aes(y = pred1), col = &#39;red&#39;) +  # Puntos de predicción en rojo
+  
+  # **Modelo 2 - Azul (Intercepto: 2620, Pendiente: -35)**
+  geom_abline(intercept = 2620, slope = -35, color = &quot;blue&quot;, size = 1) +  # Línea azul
+  geom_segment(aes(xend = Edad, yend = pred2), col = &#39;blue&#39;, lty = &#39;dashed&#39;) +  # Residuales modelo 2
+  geom_point(aes(y = pred2), col = &#39;blue&#39;) +  # Puntos de predicción en azul
+
+  # **Modelo 3 - Verde (Intercepto: 2627.822, Pendiente: -41)**
+  geom_abline(intercept = 2627.822, slope = -41, color = &quot;green&quot;, size = 1) +  # Línea verde
+  geom_segment(aes(xend = Edad, yend = pred3), col = &#39;green&#39;, lty = &#39;dashed&#39;) +  # Residuales modelo 3
+  geom_point(aes(y = pred3), col = &#39;green&#39;) +  # Puntos de predicción en verde
+  
+  # **Configuración del tema**
+  labs(title = &quot;Estimación por Mínimos Cuadrados en Regresión Lineal&quot;,
+       x = &quot;Edad&quot;,
+       y = &quot;Resistencia&quot;) +
+  theme_light()  # Aplicar un tema ligero para mejorar la visualización</code></pre>
+<p>La <strong>Figura 3.15</strong> muestra la estimación de la recta de
+regresión mediante el <strong>método de mínimos cuadrados</strong>,
+ilustrando los valores observados, los valores ajustados y las posibles
+líneas de regresión obtenidas con diferentes estimaciones.</p>
+<p>Los <strong>puntos negros</strong> representan los valores observados
+de <strong>Resistencia</strong> para cada <strong>Edad</strong>,
+mientras que los <strong>puntos rojos</strong> corresponden a los
+valores ajustados por la <strong>recta de regresión óptima
+(gris)</strong> obtenida con el método de mínimos cuadrados. Los
+<strong>puntos verdes y azules</strong> representan los valores
+ajustados por las rectas verde y azul, respectivamente.</p>
+<p>La <strong>línea gris</strong> es la <strong>mejor recta de
+ajuste</strong>, ya que <strong>minimiza la suma de los cuadrados de los
+errores</strong>, proporcionando la mejor estimación de la relación
+entre Edad y Resistencia. En contraste, las <strong>líneas azul y
+verde</strong> representan posibles rectas de ajuste alternativas con
+pendientes distintas, pero que no minimizan los errores de manera
+óptima.</p>
+<p>Las <strong>líneas verticales punteadas rojas</strong> representan
+los <strong>residuales</strong> para la recta óptima, es decir, la
+diferencia entre los valores observados y los valores predichos por la
+regresión gris. Por otro lado, las <strong>líneas punteadas azules y
+verdes</strong> indican los errores para las regresiones azul y verde,
+respectivamente.</p>
+<p>Al comparar la longitud de las líneas verticales punteadas, se puede
+apreciar que las de color verde son las más largas, seguidas por las
+azules, y finalmente, las rojas, que corresponden a la regresión óptima.
+La suma de los cuadrados de estas diferencias es menor en el caso de la
+recta de regresión gris, lo que confirma su mejor ajuste bajo el
+criterio de mínimos cuadrados.</p>
+<br/><br/>
+<center>
+<img src="img/fig315.png" width="80%" style="display: block; margin: auto;" />
+<strong>Figura 3.15</strong> Comparación de la recta de regresión lineal
+con estimaciones por mínimos cuadrados (gris) con otras dos rectas de
+regresión lineal (verde y azul).
+</center>
+<p><br/><br/></p>
+<hr />
+</br></br>
+<h3>
+Formulación
+</h3>
+<p>Para estimar los parámetros <span
+class="math inline">\(\beta_0\)</span> y <span
+class="math inline">\(\beta_1\)</span> en un modelo de regresión lineal
+simple:</p>
+<p><span class="math display">\[
+Y_i = \beta_0 + \beta_1 X_i + \varepsilon_i
+\]</span></p>
+<p>se utiliza el <strong>método de mínimos cuadrados ordinarios
+(MCO)</strong>, que consiste en minimizar la <strong>suma de los
+cuadrados de los errores (SCE)</strong>:</p>
+<p><span class="math display">\[
+S(\beta_0, \beta_1) = \sum_{i=1}^{n} \varepsilon_i^2 = \sum_{i=1}^{n}
+(Y_i - \beta_0 - \beta_1 X_i)^2
+\]</span></p>
+<hr />
+<p>Para encontrar las estimaciones de <span
+class="math inline">\(\beta_0\)</span> y <span
+class="math inline">\(\beta_1\)</span>, se deriva la función de error
+<span class="math inline">\(S(\beta_0, \beta_1)\)</span> respecto a los
+parámetros y se iguala a cero:</p>
+<p><span class="math display">\[
+\frac{\partial S(\beta_0, \beta_1)}{\partial \beta_0} = 0, \quad
+\frac{\partial S(\beta_0, \beta_1)}{\partial \beta_1} = 0
+\]</span></p>
+<p>Resolviendo este sistema de ecuaciones y reemplazando los datos de
+una muestra aleatoria concreta se determinan las <strong>estimaciones de
+mínimos cuadrados</strong>:</p>
+<p><span class="math display">\[
+\widehat{\beta}_1 = \frac{S_{xy}}{S_{xx}}, \quad \widehat{\beta}_0 =
+\overline{y} - \widehat{\beta}_1 \overline{x}
+\]</span></p>
+<p>donde:</p>
+<p><span class="math display">\[
+S_{xx} = \sum_{i=1}^{n} (x_i - \overline{x})^2, \quad S_{yy} =
+\sum_{i=1}^{n} (y_i - \overline{y})^2, \quad S_{xy} = \sum_{i=1}^{n}
+(x_i - \overline{x}) (y_i - \overline{y})
+\]</span></p>
+<p>Donde una muestra de datos observados consiste en un conjunto de
+<strong>pares de valores</strong>:</p>
+<p><span class="math display">\[
+(x_1, y_1), (x_2, y_2), \dots, (x_n, y_n).
+\]</span></p>
+<p>Tal que:</p>
+<ul>
+<li><p><span class="math inline">\(x_i\)</span> es un <strong>valor
+fijo</strong> en la muestra.</p></li>
+<li><p><span class="math inline">\(y_i\)</span> es una
+<strong>realización observada</strong> de la variable aleatoria <span
+class="math inline">\(Y_i\)</span>.</p></li>
+</ul>
+<p>Estos valores observados se utilizan para <strong>inferir los
+parámetros desconocidos</strong> <span class="math inline">\(\beta_0,
+\beta_1, \sigma^2\)</span> mediante <strong>mínimos cuadrados ordinarios
+(MCO)</strong>. Además, <span
+class="math inline">\(\overline{x}\)</span> y <span
+class="math inline">\(\overline{y}\)</span> corresponden a los promedios
+muestrales.</p>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

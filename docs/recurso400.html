@@ -1,0 +1,1328 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Métodos y Simulación Estadística" />
+
+
+<title> Sobre los Coeficientes</title>
+
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"> </a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Métodos
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="index.html">Contenido</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Correlación
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso100.html">Análisis de Correlación</a>
+    </li>
+    <li>
+      <a href="recurso110.html">Coeficiente de Pearson</a>
+    </li>
+    <li>
+      <a href="recurso120.html">Coeficiente de Spearman</a>
+    </li>
+    <li>
+      <a href="recurso130.html">Coeficiente de Kendall</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Modelo
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso200.html">Modelo de Regresión Lineal Simple</a>
+    </li>
+    <li>
+      <a href="recurso210.html">Estimación Mínimos Cuadrados Ordinarios</a>
+    </li>
+    <li>
+      <a href="recurso220.html">Estimación de Máxima Verosimilitud</a>
+    </li>
+    <li>
+      <a href="recurso230.html">Forma Matricial del Modelo</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Diagnóstico
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso300.html">Supuestos</a>
+    </li>
+    <li>
+      <a href="recurso310.html">Residuales</a>
+    </li>
+    <li>
+      <a href="recurso320.html">Revisión de Supuestos</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Pruebas de Hipótesis
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso400.html">Sobre los Coeficientes</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Transformaciones
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso500.html">Transformaciones</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Modelos polinomiales
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso600.html">Modelos polinomiales</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Predicción
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso700.html">Intervalo de Confianza</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Intervalos de Confianza
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso800.html">Coeficientes y varianza</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Atípicos e Influyentes
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso900.html">Punto atípico e influyente</a>
+    </li>
+    <li>
+      <a href="recurso910.html">Distancia de Cook</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Referencias
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso1000.html">Referencias</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore"><span style="color:#686868"> <strong>Sobre
+los Coeficientes</strong></span></h1>
+<h4 class="author">Métodos y Simulación Estadística</h4>
+
+</div>
+
+
+</br></br>
+<h2>
+Pruebas sobre los coeficientes <span
+class="math inline">\(\beta\)</span>
+</h2>
+<p>La prueba explicada a continuación se conoce como la <strong>prueba
+de Wald</strong>, en honor a <strong>Abraham Wald (1902-1950)</strong>.
+Se utiliza para evaluar hipótesis sobre los coeficientes del modelo de
+regresión.</p>
+<p>En un modelo de regresión con <span class="math inline">\(k\)</span>
+variables en la matriz de diseño <span class="math inline">\(X\)</span>,
+donde la primera columna de <span class="math inline">\(X\)</span>
+representa el intercepto y no se cuenta como variable, se requiere
+evaluar hipótesis como las siguientes para cada coeficiente de cada una
+de las <span class="math inline">\(k\)</span> variables:</p>
+<p><span class="math display">\[
+H_0: \beta_j = 0
+\]</span></p>
+<p>frente a la hipótesis alternativas:</p>
+<p><span class="math display">\[
+  H_1: \beta_j \neq 0
+\]</span></p>
+<p>para algún <span class="math inline">\(j = 1, 2, \dots,
+k\)</span>.</p>
+<p>El <strong>estadístico de prueba</strong> utilizado en la
+<strong>prueba de Wald</strong> está dado por:</p>
+<p><span class="math display">\[
+t_0 = \frac{\hat{\beta}_j - \beta_{j0}}{s.e.(\hat{\beta}_j)}
+\]</span></p>
+<p>donde:</p>
+<ul>
+<li><p><span class="math inline">\(\hat{\beta}_j\)</span> es el
+estimador del coeficiente <span
+class="math inline">\(\beta_j\)</span>.</p></li>
+<li><p><span class="math inline">\(s.e.(\hat{\beta}_j)\)</span>
+representa el error estándar del estimador.</p></li>
+</ul>
+<p>Bajo la hipótesis nula, el estadístico de prueba sigue una
+distribución <span class="math inline">\(t\)</span> de
+<strong>Student</strong> con <span class="math inline">\(n - k -
+1\)</span> grados de libertad:</p>
+<p><span class="math display">\[
+t_0 \sim t_{n - k - 1}
+\]</span></p>
+<p>Esta prueba es fundamental en la inferencia de modelos de regresión,
+ya que permite evaluar si una variable predictora tiene un
+<strong>efecto significativo</strong> sobre la variable respuesta.</p>
+<div class="caja-actividad">
+<h3>
+Nota:
+</h3>
+<blockquote>
+<p>
+Cuando se desea realizar pruebas de hipótesis sobre los coeficientes del
+modelo de regresión y el valor de referencia es <strong><span
+class="math inline">\(\beta_{j0} = 0\)</span></strong>, se puede
+utilizar la función <code>summary()</code> en <strong>R</strong>.
+</p>
+</blockquote>
+</div>
+</br></br>
+<h2>
+Prueba sobre todos los coeficientes
+</h2>
+<p>En un modelo de <strong>regresión múltiple</strong>, la variable
+respuesta <span class="math inline">\(y_i\)</span> se modela como
+sigue:</p>
+<p><span class="math display">\[
+y_i \sim N(\mu_i, \sigma^2)
+\]</span></p>
+<p><span class="math display">\[
+\mu_i = \beta_0 + \beta_1 x_{1i} + \beta_2 x_{2i} + \dots + \beta_k
+x_{ki}
+\]</span></p>
+<p>donde <span class="math inline">\(\sigma^2\)</span> es constante, lo
+que implica la suposición de homocedasticidad.</p>
+<p>En este contexto, una pregunta clave en el análisis del modelo es
+determinar si alguna de las variables explicativas <span
+class="math inline">\(x_j\)</span> aporta información significativa a la
+predicción de <span class="math inline">\(y\)</span> o si, por el
+contrario, ninguna contribuye de manera relevante. Esto se traduce en la
+siguiente prueba de hipótesis:</p>
+<ul>
+<li><strong>Hipótesis nula (<span
+class="math inline">\(H_0\)</span>)</strong>: Ninguna de las variables
+explicativas tiene un efecto significativo en la variable respuesta. Es
+decir,</li>
+</ul>
+<p><span class="math display">\[
+H_0: \beta_1 = \beta_2 = \dots = \beta_k = 0
+\]</span></p>
+<ul>
+<li><strong>Hipótesis alternativa (<span
+class="math inline">\(H_1\)</span>)</strong>: Al menos una de las
+variables explicativas tiene un efecto significativo en la variable
+respuesta. Es decir,</li>
+</ul>
+<p><span class="math display">\[
+H_1: \text{al menos uno de los } \beta_j \neq 0, \quad \text{para algún
+} j = 1,2, \dots, k.
+\]</span></p>
+<p>Para evaluar estas hipótesis, se emplea la <strong>prueba de
+significancia de la regresión</strong>, la cual se basa en la
+descomposición de la variabilidad total en tres componentes
+fundamentales:</p>
+<ol style="list-style-type: decimal">
+<li><p><strong>Variabilidad total (<span
+class="math inline">\(SST\)</span>)</strong>: Representa la variabilidad
+total observada en los datos de <span
+class="math inline">\(y\)</span>.</p></li>
+<li><p><strong>Variabilidad explicada por el modelo (<span
+class="math inline">\(SSR\)</span>)</strong>: Corresponde a la parte de
+la variabilidad total que el modelo de regresión logra
+explicar.</p></li>
+<li><p><strong>Variabilidad residual (<span
+class="math inline">\(SSRes\)</span>)</strong>: Es la parte de la
+variabilidad total que no puede ser explicada por el modelo, es decir,
+los residuos.</p></li>
+</ol>
+<p>En esta prueba, el objetivo es determinar si la variabilidad
+explicada por el modelo de <strong>Regresión</strong> (<span
+class="math inline">\(SSR\)</span>) representa una parte significativa
+de la <strong>Variabilidad total</strong> (<span
+class="math inline">\(SST\)</span>), o si, por el contrario, la
+variabilidad residual (<span class="math inline">\(SSRes\)</span>) es
+tan grande que el modelo no explica adecuadamente la variable
+respuesta.</p>
+<p>Para evaluar esta relación, se construye la <strong>tabla ANOVA
+(Analysis of Variance)</strong>, la cual descompone la variabilidad
+total en sus componentes: <strong>Regresión</strong>,
+<strong>Residual</strong> y <strong>Total</strong>. La <strong>Tabla
+3.9</strong> resume la estructura de este análisis:</p>
+<br/><br/>
+<center>
+<strong>Tabla 3.9</strong> Tabla ANOVA.
+</center>
+<table style="width:100%;">
+<colgroup>
+<col width="16%" />
+<col width="21%" />
+<col width="14%" />
+<col width="22%" />
+<col width="16%" />
+<col width="8%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Fuente de variación</strong></th>
+<th><strong>Suma de cuadrados</strong></th>
+<th><strong>Grados de libertad</strong></th>
+<th><strong>Cuadrado medio</strong></th>
+<th><strong>Estadístico <span
+class="math inline">\(F_0\)</span></strong></th>
+<th><strong>Valor-P</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Regresión</strong></td>
+<td><span class="math inline">\(SS_R\)</span></td>
+<td><span class="math inline">\(k\)</span></td>
+<td><span class="math inline">\(MS_R = \frac{SS_R}{k}\)</span></td>
+<td><span class="math inline">\(F_0 =
+\frac{MS_R}{MS_{Res}}\)</span></td>
+<td>Valor-p</td>
+</tr>
+<tr class="even">
+<td><strong>Residual</strong></td>
+<td><span class="math inline">\(SS_{Res}\)</span></td>
+<td><span class="math inline">\(n - k - 1\)</span></td>
+<td><span class="math inline">\(MS_{Res} =
+\frac{SS_{Res}}{n-k-1}\)</span></td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr class="odd">
+<td><strong>Total</strong></td>
+<td><span class="math inline">\(SS_T\)</span></td>
+<td><span class="math inline">\(n - 1\)</span></td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<p>La relación entre las sumas de cuadrados en un modelo de regresión se
+define de la siguiente manera:</p>
+<ul>
+<li><p><strong>Suma de cuadrados total (<span
+class="math inline">\(SS_T\)</span>)</strong>:</p>
+<p><span class="math display">\[
+SS_T = \sum_{i=1}^{n} y_i^2 - \frac{\left(\sum_{i=1}^{n}
+y_i\right)^2}{n}
+\]</span></p>
+<p>Esta cantidad representa la variabilidad total en los datos de la
+variable respuesta <span class="math inline">\(Y\)</span>.</p></li>
+<li><p><strong>Suma de cuadrados de la regresión (<span
+class="math inline">\(SS_R\)</span>)</strong>:</p>
+<p><span class="math display">\[
+SS_R = \sum_{i=1}^{n} \hat{y}_i y_i - \frac{\left(\sum_{i=1}^{n}
+y_i\right)^2}{n}
+\]</span></p>
+<p>Donde <span class="math inline">\(\hat{y}_i\)</span> representa los
+valores ajustados por el modelo. Esta expresión mide la variabilidad
+explicada por el modelo de regresión.</p></li>
+<li><p><strong>Suma de cuadrados de los residuos (<span
+class="math inline">\(SS_{Res}\)</span>)</strong>:</p>
+<p><span class="math display">\[
+SS_{Res} = SS_T - SS_R = \sum_{i=1}^{n} (y_i - \hat{y}_i)^2
+\]</span></p>
+<p>Esto indica la variabilidad que no logra ser explicada por el modelo,
+es decir, la variabilidad atribuida a los errores del modelo.</p></li>
+</ul>
+<p>El estadístico de prueba se calcula como:</p>
+<p><span class="math display">\[
+F_0 = \frac{MS_R}{MS_{Res}}
+\]</span></p>
+<p>Bajo la hipótesis nula <span class="math inline">\(H_0\)</span>, el
+estadístico <span class="math inline">\(F_0\)</span> sigue una
+distribución <span class="math inline">\(F\)</span> con <strong><span
+class="math inline">\(k\)</span> y <span class="math inline">\(n - k -
+1\)</span> grados de libertad</strong>, es decir:</p>
+<p><span class="math display">\[
+F_0 \sim F_{k, n-k-1}
+\]</span></p>
+<p>Si el valor <span class="math inline">\(F_0\)</span> es
+suficientemente grande y su correspondiente <strong>valor-p</strong> es
+menor que un umbral de significancia (<span
+class="math inline">\(\alpha\)</span>), se <strong>rechaza <span
+class="math inline">\(H_0\)</span></strong> y se concluye que <strong>al
+menos una de las variables predictoras es significativa</strong>.</p>
+</br></br>
+<div class="caja-ejemplo">
+<h3>
+Ejemplo:
+</h3>
+<p>
+<p>En este ejemplo, se ajusta un <strong>modelo de regresión lineal
+simple</strong> para analizar la relación entre la <strong>Resistencia
+de una soldadura (psi)</strong> y la <strong>Edad de la soldadura
+(semanas)</strong>. En total, se cuenta con <strong>20
+observaciones</strong>.</p>
+<p>El modelo que se va a ajustar se expresa de la siguiente manera:</p>
+<p><span class="math display">\[
+\text{Resistencia}_i = \beta_0 + \beta_1 \times \text{Edad}_i +
+\varepsilon_i \\
+\varepsilon_i \sim N(0, \sigma^2)
+\]</span></p>
+<p>Para el modelo:</p>
+<ul>
+<li><p><strong><span class="math inline">\(\beta_0\)</span></strong>:
+Intercepto del modelo, que representa la resistencia esperada cuando la
+edad de la soldadura es <strong>cero</strong>.</p></li>
+<li><p><strong><span class="math inline">\(\beta_1\)</span></strong>:
+Coeficiente de regresión, que indica el <strong>cambio esperado</strong>
+en la resistencia por <strong>cada unidad</strong> de aumento en la edad
+de la soldadura.</p></li>
+<li><p><strong><span class="math inline">\(\sigma^2\)</span></strong>:
+Varianza del <strong>error</strong>, que se asume
+<strong>constante</strong> en todo el rango de los datos.</p></li>
+</ul>
+<p>Para que la regresión lineal proporcione resultados válidos, es
+necesario que el término de error <span
+class="math inline">\(\varepsilon\)</span> cumpla con los siguientes
+supuestos:</p>
+<ol style="list-style-type: decimal">
+<li><p><strong>Normalidad del error</strong>: Se asume que los errores
+siguen una distribución normal con media cero y varianza constante:</p>
+<p><span class="math display">\[
+\varepsilon \sim N(0, \sigma^2)
+\]</span></p></li>
+<li><p><strong>Homocedasticidad (varianza constante del error)</strong>:
+La varianza de los errores debe ser <strong>constante</strong> para
+todos los valores de la variable explicativa:</p>
+<p><span class="math display">\[
+\text{Var}(\varepsilon_i) = \sigma^2, \quad \forall i
+\]</span></p></li>
+<li><p><strong>Independencia de los errores</strong>: Los errores del
+modelo no deben estar correlacionados.</p></li>
+</ol>
+<p>El cumplimiento de estos supuestos es fundamental para la validez de
+las inferencias estadísticas realizadas a partir del modelo.</p>
+<hr />
+<p>En un análisis previo, se estudió la relación entre la variable
+<strong>Edad</strong> (semanas) y la <strong>Resistencia</strong> (psi).
+La <strong>Figura 3.28</strong> ilustra esta relación, donde se observa
+una tendencia <strong>lineal negativa</strong>.</p>
+<br/><br/>
+<center>
+<img src="img/fig328.png" width="80%" style="display: block; margin: auto;" />
+<strong>Figura 3.28</strong> Relación Resistencia (psi) versus Edad
+(semanas).
+</center>
+<p><br/><br/></p>
+<p>El código para generar el gráfico de dispersión, ajustar el modelo de
+regresión lineal simple y calcular la tabla ANOVA es el siguiente:</p>
+<pre>
+# Configurar el entorno para el uso del idioma español
+Sys.setlocale("LC_ALL", "es_ES.UTF-8")
+
+# Cargar paquetes necesarios
+library(ggplot2)   # Para visualización de datos
+library(lmtest)    # Para pruebas de independencia y homocedasticidad
+library(car)       # Para pruebas de normalidad y homocedasticidad
+library(nortest)   # Para pruebas adicionales de normalidad
+library(patchwork) # Para combinar gráficos en una sola figura
+
+# Definir la URL del archivo con los datos
+file <- "https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_reg1.txt"
+
+# Cargar el conjunto de datos desde la URL
+datos <- read.table(file = file, header = TRUE)
+
+# Crear un gráfico de dispersión para visualizar la relación entre Edad y Resistencia
+plot_reg <- ggplot(datos, aes(x = Edad, y = Resistencia)) + 
+  geom_point(color = "blue", size = 2) +  # Agregar puntos con color azul y tamaño adecuado
+  theme_light() +                         # Aplicar un tema ligero para mejorar la presentación
+  labs(title = "Relación entre Edad y Resistencia",
+       x = "Edad de la Soldadura (meses)",
+       y = "Resistencia de la Soldadura")
+
+# Ajustar un modelo de regresión lineal simple
+mod1 <- lm(Resistencia ~ Edad, data = datos)  # Se ajusta el modelo con la variable predictora "Edad"
+
+# Instalar el paquete "remotes" si no está instalado (para instalar paquetes desde GitHub)
+if (!require("remotes")) install.packages("remotes")
+
+# Instalar el paquete "model" desde GitHub (este paquete permite generar tablas ANOVA de manera simplificada)
+remotes::install_github("fhernanb/model")
+
+# Cargar el paquete "model"
+library(model)
+
+# Generar la tabla ANOVA para evaluar la significancia de la regresión
+anova_table_lm(mod1)  # Función del paquete "model" para mostrar la tabla ANOVA del modelo
+</pre>
+<pre class="r"><code># Configurar el entorno para el uso del idioma español
+Sys.setlocale(&quot;LC_ALL&quot;, &quot;es_ES.UTF-8&quot;)
+
+# Cargar paquetes necesarios
+library(ggplot2)   # Para visualización de datos
+library(lmtest)    # Para pruebas de independencia y homocedasticidad
+library(car)       # Para pruebas de normalidad y homocedasticidad
+library(nortest)   # Para pruebas adicionales de normalidad
+library(patchwork) # Para combinar gráficos en una sola figura
+
+# Definir la URL del archivo con los datos
+file &lt;- &quot;https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_reg1.txt&quot;
+
+# Cargar el conjunto de datos desde la URL
+datos &lt;- read.table(file = file, header = TRUE)
+
+# Crear un gráfico de dispersión para visualizar la relación entre Edad y Resistencia
+plot_reg &lt;- ggplot(datos, aes(x = Edad, y = Resistencia)) + 
+  geom_point(color = &quot;blue&quot;, size = 2) +  # Agregar puntos con color azul y tamaño adecuado
+  theme_light() +                         # Aplicar un tema ligero para mejorar la presentación
+  labs(title = &quot;Relación entre Edad y Resistencia&quot;,
+       x = &quot;Edad de la Soldadura (meses)&quot;,
+       y = &quot;Resistencia de la Soldadura&quot;)
+
+# Ajustar un modelo de regresión lineal simple
+mod1 &lt;- lm(Resistencia ~ Edad, data = datos)  # Se ajusta el modelo con la variable predictora &quot;Edad&quot;
+
+# Instalar el paquete &quot;remotes&quot; si no está instalado (para instalar paquetes desde GitHub)
+if (!require(&quot;remotes&quot;)) install.packages(&quot;remotes&quot;)
+
+# Instalar el paquete &quot;model&quot; desde GitHub (este paquete permite generar tablas ANOVA de manera simplificada)
+remotes::install_github(&quot;fhernanb/model&quot;)
+
+# Cargar el paquete &quot;model&quot;
+library(model)
+
+# Generar la tabla ANOVA para evaluar la significancia de la regresión
+anova_table_lm(mod1)  # Función del paquete &quot;model&quot; para mostrar la tabla ANOVA del modelo</code></pre>
+<p>La tabla ANOVA resultante del modelo de regresión lineal simple es la
+siguiente:</p>
+<pre>
+Anova Table
+            Sum Sq Df Mean Sq F value    Pr(>F)    
+Regression 1527483  1 1527483  165.38 1.643e-10 ***
+Residuals   166255 18    9236                      
+Total      1693738 19                              
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+</pre>
+<p>De la tabla ANOVA presentada anteriormente, se observa que el valor-p
+es 1.643e-10, lo que es extremadamente pequeño. Esto proporciona
+<strong>evidencia suficiente</strong> para rechazar la hipótesis nula
+con un nivel de significancia del 1%:</p>
+<p><span class="math display">\[
+H_0: \beta_{\text{Edad}} = 0
+\]</span></p>
+<p>Esto significa que la variable <strong>Edad</strong> tiene un efecto
+estadísticamente significativo en la explicación de la media de la
+variable respuesta <strong>Resistencia</strong>.</p>
+<hr />
+<p>Otra forma de aplicar la prueba de significancia de la regresión es
+utilizando la función <code>summary()</code>, la cual proporciona una
+parte de la tabla ANOVA, pero no la tabla completa.</p>
+<pre>
+# Definir la URL del archivo con los datos
+file <- "https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_reg1.txt"
+
+# Cargar el conjunto de datos desde la URL
+datos <- read.table(file = file, header = TRUE)
+
+# Ajustar un modelo de regresión lineal simple
+mod1 <- lm(Resistencia ~ Edad, data = datos)
+
+# Mostrar un resumen del modelo ajustado
+summary(mod1)
+</pre>
+<pre class="r"><code># Definir la URL del archivo con los datos
+file &lt;- &quot;https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_reg1.txt&quot;
+
+# Cargar el conjunto de datos desde la URL
+datos &lt;- read.table(file = file, header = TRUE)
+
+# Ajustar un modelo de regresión lineal simple
+mod1 &lt;- lm(Resistencia ~ Edad, data = datos)
+
+# Mostrar un resumen del modelo ajustado
+summary(mod1)</code></pre>
+<p>En la última línea de la salida siguiente, se encuentra la
+información sobre la <strong>prueba de hipótesis de significancia de la
+regresión</strong>. Se observa el <strong>estadístico de prueba <span
+class="math inline">\(F\)</span></strong> con un valor de 165.4 y el
+valor-p obtenido es <span class="math inline">\(1.643 \times
+10^{-10}\)</span>, lo que indica que se rechaza la hipótesis nula de que
+todos los coeficientes son ceros con un nivel de significancia del
+1%.</p>
+<pre>
+Call:
+lm(formula = Resistencia ~ Edad, data = datos)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-215.98  -50.68   28.74   66.61  106.76 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept) 2627.822     44.184   59.48  < 2e-16 ***
+Edad         -37.154      2.889  -12.86 1.64e-10 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 96.11 on 18 degrees of freedom
+Multiple R-squared:  0.9018,    Adjusted R-squared:  0.8964 
+F-statistic: 165.4 on 1 and 18 DF,  p-value: 1.643e-10
+</pre>
+<p>La función <code>summary()</code> también proporciona los resultados
+de las <strong>pruebas de hipótesis para cada coeficiente del
+modelo</strong>. En este caso, se evalúa la significancia del
+coeficiente de la variable <strong>Edad</strong>. Las hipótesis a
+evaluar son:</p>
+<p><span class="math display">\[
+H_0: \beta_{\text{Edad}} = 0
+\]</span></p>
+<p><span class="math display">\[
+H_1: \beta_{\text{Edad}} \neq 0
+\]</span></p>
+<p>La hipótesis nula establece que la variable <strong>Edad</strong> no
+tiene un efecto significativo en la variable respuesta
+<strong>Resistencia</strong>. Por otro lado, la hipótesis alternativa
+indica que <strong>Edad</strong> sí influye en la variabilidad de
+<strong>Resistencia</strong>.</p>
+<p>El <strong>estadístico de prueba <span
+class="math inline">\(t\)</span></strong> toma el valor
+<strong>-12.86</strong> con un valor-p de <span
+class="math inline">\(1.64 \times 10^{-10}\)</span>. Por lo tanto, se
+rechaza la hipótesis nula y se concluye, con una significancia del
+<strong>1%</strong>, que el coeficiente <span
+class="math inline">\(\beta_1\)</span> es <strong>distinto de
+cero</strong>. Esto implica que la variable <strong>Edad</strong> tiene
+un efecto significativo en la explicación de la variable respuesta
+<strong>Resistencia</strong>.</p>
+<hr />
+<p>A continuación, se presentan los códigos para la implementación del
+<strong>modelo de regresión lineal simple</strong>, la <strong>revisión
+de sus supuestos</strong> y la <strong>realización de pruebas de
+hipótesis</strong> sobre sus coeficientes.</p>
+<pre>
+# Configurar el entorno para el uso del idioma español
+Sys.setlocale("LC_ALL", "es_ES.UTF-8")
+
+# Cargar paquetes necesarios
+library(ggplot2)   # Para visualización de datos
+library(lmtest)    # Para pruebas de independencia y homocedasticidad
+library(car)       # Para pruebas de normalidad y homocedasticidad
+library(nortest)   # Para pruebas adicionales de normalidad
+library(patchwork) # Para combinar gráficos en una sola figura
+
+# Definir la URL del archivo con los datos
+file <- "https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_reg1.txt"
+
+# Cargar el conjunto de datos desde la URL
+datos <- read.table(file = file, header = TRUE)
+
+# Crear un gráfico de dispersión para visualizar la relación entre Edad y Resistencia
+plot_reg <- ggplot(datos, aes(x = Edad, y = Resistencia)) + 
+  geom_point(color = "blue", size = 2) +  # Agregar puntos con color azul y tamaño adecuado
+  theme_light() +                         # Aplicar un tema ligero para mejorar la presentación
+  labs(title = "Relación entre Edad y Resistencia",
+       x = "Edad de la Soldadura (meses)",
+       y = "Resistencia de la Soldadura")
+
+# Ajustar un modelo de regresión lineal simple
+mod1 <- lm(Resistencia ~ Edad, data = datos)
+
+# Mostrar un resumen del modelo ajustado
+summary(mod1)
+
+# Evaluación de los supuestos del modelo 
+
+## Verificación de homocedasticidad
+# Se generan gráficos de diagnóstico para evaluar la homocedasticidad y la normalidad
+par(mfrow=c(2, 2))  # Organiza los gráficos en una cuadrícula de 2x2
+plot(mod1, las=1, col='blue', which=1:3) 
+
+# Evaluación de normalidad de los errores
+ei <- residuals(mod1)  # Se extraen los residuos del modelo
+
+# Prueba de Shapiro-Wilk
+shapiro.test(ei)  # Prueba de normalidad para muestras pequeñas
+
+# Prueba de Anderson-Darling (más robusta para normalidad)
+ad.test(ei)
+
+# Prueba de Kolmogorov-Smirnov (para verificar normalidad)
+ks.test(ei, "pnorm", mean(ei), sd(ei))
+
+# Evaluación de independencia de los errores
+# Test de Durbin-Watson para detectar autocorrelación de primer orden
+dwtest(mod1)
+
+# Test de Breusch-Godfrey para correlación serial de orden superior
+bgtest(mod1)
+
+
+# Evaluación de homocedasticidad
+# Test de Breusch-Pagan (detecta heterocedasticidad)
+bptest(mod1)
+
+# Test de White (heterocedasticidad con términos no lineales)
+bptest(mod1, varformula = ~ poly(Edad, 2), data=datos)
+
+# Test de Goldfeld-Quandt (para heterocedasticidad en la mitad de los datos)
+gqtest(mod1)
+
+
+# Visualización adicional de los residuos 
+
+# Obtener residuos, valores ajustados e índice de observación
+residuos <- residuals(mod1)
+valores_ajustados <- fitted(mod1)
+residuos_estandarizados <- rstandard(mod1)
+indice_observacion <- 1:length(residuos)
+
+# Gráfico de Residuos vs Valores Ajustados
+grafico_residuos <- ggplot(data = data.frame(valores_ajustados, residuos), aes(x = valores_ajustados, y = residuos)) +
+  geom_point(color = "blue") +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
+  labs(title = "Residuos vs Valores Ajustados", x = "Valores Ajustados", y = "Residuos")
+
+# Gráfico Q-Q de Residuos
+grafico_qq <- ggplot(data = data.frame(residuos_estandarizados), aes(sample = residuos_estandarizados)) +
+  stat_qq(color = "blue") +
+  stat_qq_line(color = "red") +
+  labs(title = "Gráfico Q-Q de Residuos", x = "Cuantiles Teóricos", y = "Cuantiles Muestrales")
+
+# Gráfico Scale-Location (Raíz cuadrada de |Residuos Estandarizados| vs Valores Ajustados)
+grafico_scale <- ggplot(data = data.frame(valores_ajustados, residuos_estandarizados), 
+                        aes(x = valores_ajustados, y = sqrt(abs(residuos_estandarizados)))) +
+  geom_point(color = "blue") +
+  geom_smooth(method = "lm", se = FALSE, color = "red") +
+  labs(title = "Scale-Location", x = "Valores Ajustados", y = "√|Residuos Estandarizados|")
+
+# Gráfico de Residuos vs Índice de Observación (para independencia de los errores)
+grafico_residuos_index <- ggplot(data = data.frame(indice_observacion, residuos), aes(x = indice_observacion, y = residuos)) +
+  geom_point(color = "blue") +
+  geom_line(linetype = "dashed", color = "black") +
+  geom_hline(yintercept = 0, linetype = "solid", color = "red") +
+  labs(title = "Residuos vs Índice de Observación", x = "Índice de la Observación", y = "Residuos")
+
+# Visualización combinada
+(grafico_residuos + grafico_qq + grafico_scale) / grafico_residuos_index  # Organiza los gráficos en filas
+
+# Imprimir el gráfico de dispersión
+print(plot_reg)
+
+# Imprimir el objeto del modelo para visualizar los coeficientes estimados
+print(mod1)
+</pre>
+<pre class="r"><code># Configurar el entorno para el uso del idioma español
+Sys.setlocale(&quot;LC_ALL&quot;, &quot;es_ES.UTF-8&quot;)
+
+# Cargar paquetes necesarios
+library(ggplot2)   # Para visualización de datos
+library(lmtest)    # Para pruebas de independencia y homocedasticidad
+library(car)       # Para pruebas de normalidad y homocedasticidad
+library(nortest)   # Para pruebas adicionales de normalidad
+library(patchwork) # Para combinar gráficos en una sola figura
+
+# Definir la URL del archivo con los datos
+file &lt;- &quot;https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_reg1.txt&quot;
+
+# Cargar el conjunto de datos desde la URL
+datos &lt;- read.table(file = file, header = TRUE)
+
+# Crear un gráfico de dispersión para visualizar la relación entre Edad y Resistencia
+plot_reg &lt;- ggplot(datos, aes(x = Edad, y = Resistencia)) + 
+  geom_point(color = &quot;blue&quot;, size = 2) +  # Agregar puntos con color azul y tamaño adecuado
+  theme_light() +                         # Aplicar un tema ligero para mejorar la presentación
+  labs(title = &quot;Relación entre Edad y Resistencia&quot;,
+       x = &quot;Edad de la Soldadura (meses)&quot;,
+       y = &quot;Resistencia de la Soldadura&quot;)
+
+# Ajustar un modelo de regresión lineal simple
+mod1 &lt;- lm(Resistencia ~ Edad, data = datos)
+
+# Mostrar un resumen del modelo ajustado
+summary(mod1)
+
+# Evaluación de los supuestos del modelo 
+
+## Verificación de homocedasticidad
+# Se generan gráficos de diagnóstico para evaluar la homocedasticidad y la normalidad
+par(mfrow=c(2, 2))  # Organiza los gráficos en una cuadrícula de 2x2
+plot(mod1, las=1, col=&#39;blue&#39;, which=1:3) 
+
+# Evaluación de normalidad de los errores
+ei &lt;- residuals(mod1)  # Se extraen los residuos del modelo
+
+# Prueba de Shapiro-Wilk
+shapiro.test(ei)  # Prueba de normalidad para muestras pequeñas
+
+# Prueba de Anderson-Darling (más robusta para normalidad)
+ad.test(ei)
+
+# Prueba de Kolmogorov-Smirnov (para verificar normalidad)
+ks.test(ei, &quot;pnorm&quot;, mean(ei), sd(ei))
+
+# Evaluación de independencia de los errores
+# Test de Durbin-Watson para detectar autocorrelación de primer orden
+dwtest(mod1)
+
+# Test de Breusch-Godfrey para correlación serial de orden superior
+bgtest(mod1)
+
+
+# Evaluación de homocedasticidad
+# Test de Breusch-Pagan (detecta heterocedasticidad)
+bptest(mod1)
+
+# Test de White (heterocedasticidad con términos no lineales)
+bptest(mod1, varformula = ~ poly(Edad, 2), data=datos)
+
+# Test de Goldfeld-Quandt (para heterocedasticidad en la mitad de los datos)
+gqtest(mod1)
+
+
+# Visualización adicional de los residuos 
+
+# Obtener residuos, valores ajustados e índice de observación
+residuos &lt;- residuals(mod1)
+valores_ajustados &lt;- fitted(mod1)
+residuos_estandarizados &lt;- rstandard(mod1)
+indice_observacion &lt;- 1:length(residuos)
+
+# Gráfico de Residuos vs Valores Ajustados
+grafico_residuos &lt;- ggplot(data = data.frame(valores_ajustados, residuos), aes(x = valores_ajustados, y = residuos)) +
+  geom_point(color = &quot;blue&quot;) +
+  geom_hline(yintercept = 0, linetype = &quot;dashed&quot;, color = &quot;red&quot;) +
+  labs(title = &quot;Residuos vs Valores Ajustados&quot;, x = &quot;Valores Ajustados&quot;, y = &quot;Residuos&quot;)
+
+# Gráfico Q-Q de Residuos
+grafico_qq &lt;- ggplot(data = data.frame(residuos_estandarizados), aes(sample = residuos_estandarizados)) +
+  stat_qq(color = &quot;blue&quot;) +
+  stat_qq_line(color = &quot;red&quot;) +
+  labs(title = &quot;Gráfico Q-Q de Residuos&quot;, x = &quot;Cuantiles Teóricos&quot;, y = &quot;Cuantiles Muestrales&quot;)
+
+# Gráfico Scale-Location (Raíz cuadrada de |Residuos Estandarizados| vs Valores Ajustados)
+grafico_scale &lt;- ggplot(data = data.frame(valores_ajustados, residuos_estandarizados), 
+                        aes(x = valores_ajustados, y = sqrt(abs(residuos_estandarizados)))) +
+  geom_point(color = &quot;blue&quot;) +
+  geom_smooth(method = &quot;lm&quot;, se = FALSE, color = &quot;red&quot;) +
+  labs(title = &quot;Scale-Location&quot;, x = &quot;Valores Ajustados&quot;, y = &quot;√|Residuos Estandarizados|&quot;)
+
+# Gráfico de Residuos vs Índice de Observación (para independencia de los errores)
+grafico_residuos_index &lt;- ggplot(data = data.frame(indice_observacion, residuos), aes(x = indice_observacion, y = residuos)) +
+  geom_point(color = &quot;blue&quot;) +
+  geom_line(linetype = &quot;dashed&quot;, color = &quot;black&quot;) +
+  geom_hline(yintercept = 0, linetype = &quot;solid&quot;, color = &quot;red&quot;) +
+  labs(title = &quot;Residuos vs Índice de Observación&quot;, x = &quot;Índice de la Observación&quot;, y = &quot;Residuos&quot;)
+
+# Visualización combinada
+(grafico_residuos + grafico_qq + grafico_scale) / grafico_residuos_index  # Organiza los gráficos en filas
+
+# Imprimir el gráfico de dispersión
+print(plot_reg)
+
+# Imprimir el objeto del modelo para visualizar los coeficientes estimados
+print(mod1)</code></pre>
+<p>De acuerdo con los valores-p obtenidos en los <strong>tests de
+normalidad</strong>, los resultados indican lo siguiente:</p>
+<ul>
+<li><p>Los valores-p de las pruebas <strong>Shapiro-Wilk</strong> y
+<strong>Anderson-Darling</strong> son menores a 0.05, lo que proporciona
+<strong>evidencia suficiente</strong> para rechazar la hipótesis nula de
+normalidad en los errores.</p></li>
+<li><p>Aunque la prueba de <strong>Kolmogorov-Smirnov</strong> no
+rechaza la normalidad de los errores, en la <strong>Figura
+3.29</strong>, el <strong>QQ-plot de los residuos</strong> muestra que
+los valores extremos <strong>se desvían de la recta de
+referencia</strong>, lo que sugiere que la distribución de los errores
+podría no seguir una normalidad estricta.</p></li>
+</ul>
+<p>A continuación, se presentan los resultados detallados de cada prueba
+de normalidad:</p>
+<pre>
+Shapiro-Wilk normality test
+
+data:  ei
+W = 0.87514, p-value = 0.01449
+</pre>
+<pre>
+Anderson-Darling normality test
+
+data:  ei
+A = 0.81579, p-value = 0.0287
+</pre>
+<pre>
+Exact one-sample Kolmogorov-Smirnov test
+
+data:  ei
+D = 0.18718, p-value = 0.4325
+alternative hypothesis: two-sided
+</pre>
+<p>Los resultados de los <strong>tests de independencia</strong>
+muestran que <strong>no hay suficiente evidencia para rechazar la
+hipótesis nula de independencia de los errores</strong> con un nivel de
+significancia del <strong>5%</strong>.</p>
+<ul>
+<li><p>El <strong>valor-p</strong> obtenido en el <strong>test de
+Durbin-Watson</strong> es <strong>0.3874</strong>, lo que indica que no
+se detecta autocorrelación significativa en los errores.</p></li>
+<li><p>El <strong>test de Breusch-Godfrey</strong> para autocorrelación
+de orden 1 arroja un <strong>valor-p de 0.8921</strong>, confirmando la
+independencia de los errores.</p></li>
+</ul>
+<p>Además, en la <strong>Figura 3.29</strong>, el gráfico de
+<strong>Residuos vs Índice de Observación</strong> no muestra ningún
+patrón sistemático, lo que también sugiere que los errores se comportan
+de manera independiente.</p>
+<pre>
+Durbin-Watson test
+
+data:  mod1
+DW = 1.8418, p-value = 0.3874
+alternative hypothesis: true autocorrelation is greater than 0
+</pre>
+<pre>
+Breusch-Godfrey test for serial correlation of order up to 1
+
+data:  mod1
+LM test = 0.018392, df = 1, p-value = 0.8921
+</pre>
+<p>Los resultados de los <strong>tests de homocedasticidad</strong>
+indican que <strong>no hay suficiente evidencia para rechazar la
+hipótesis nula de varianza constante de los errores</strong> con un
+nivel de significancia del <strong>5%</strong>.</p>
+<pre>
+studentized Breusch-Pagan test
+
+data:  mod1
+BP = 0.013963, df = 2, p-value = 0.993
+</pre>
+<pre>
+studentized Breusch-Pagan test
+
+data:  mod1
+BP = 0.013963, df = 2, p-value = 0.993
+</pre>
+<pre>
+Goldfeld-Quandt test
+
+data:  mod1
+GQ = 0.38538, df1 = 8, df2 = 8, p-value = 0.9005
+alternative hypothesis: variance increases from segment 1 to 2
+</pre>
+<p>Sin embargo, al observar la <strong>Figura 3.29</strong>, se pueden
+notar algunos aspectos importantes:</p>
+<ul>
+<li><p>El gráfico de <strong>Residuos Estandarizados vs Valores
+Ajustados</strong> sugiere un <strong>leve aumento en la varianza de los
+residuos</strong> a medida que los valores ajustados crecen.</p></li>
+<li><p>Además, en los gráficos de residuos, se identifican por lo menos
+<strong>dos posibles valores atípicos</strong>, los cuales podrían
+influir en la varianza de los errores y en la estabilidad del
+modelo.</p></li>
+</ul>
+<br/><br/>
+<center>
+<img src="img/fig329.png" width="80%" style="display: block; margin: auto;" />
+<strong>Figura 3.29</strong> Gráficos de residuos del modelo de
+regresión lineal con variable respuesta la Resistencia y como predictora
+la Edad.
+</center>
+<p><br/><br/></p>
+<br/><br/>
+<center>
+<img src="img/fig330.png" width="80%" style="display: block; margin: auto;" />
+<strong>Figura 3.30</strong> Gráficos de residuos del modelo de
+regresión lineal con variable respuesta la Resistencia y como predictora
+la Edad.
+</center>
+<p><br/><br/></p>
+<p>Estos hallazgos sugieren que <strong>se cumplen los supuestos de
+independencia, homocedasticidad y normalidad</strong>, ya que los
+<strong>tests estadísticos no detectan problemas significativos</strong>
+en los errores del modelo.</p>
+<p>Sin embargo, al observar la <strong>Figura 3.30</strong>, se
+identifican <strong>tres posibles valores atípicos</strong> en los
+gráficos de residuos, estos son de las observaciones 5, 6 y 19, lo que
+<strong>podría afectar la estabilidad del modelo</strong> y la precisión
+de las estimaciones.</p>
+<hr />
+<p>El modelo de regresión lineal simple resultante se puede expresar
+como:</p>
+<p><span class="math display">\[
+\widehat{\text{Resistencia}}_i \sim N(\hat{\mu}_i, \hat{\sigma}^2)
+\]</span> <span class="math display">\[
+\hat{\mu}_i = \hat{\beta}_0 + \hat{\beta}_1 \times \text{Edad}_i
+\]</span> <span class="math display">\[
+\hat{\mu}_i = 2627.82 - 37.15 \times \text{Edad}_i\\
+\hat{\sigma} = 96.11
+\]</span></p>
+</p>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

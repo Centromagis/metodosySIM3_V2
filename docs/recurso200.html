@@ -1,0 +1,1135 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Métodos y Simulación Estadística" />
+
+
+<title> Modelo de regresión lineal simple</title>
+
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"> </a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Métodos
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="index.html">Contenido</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Correlación
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso100.html">Análisis de Correlación</a>
+    </li>
+    <li>
+      <a href="recurso110.html">Coeficiente de Pearson</a>
+    </li>
+    <li>
+      <a href="recurso120.html">Coeficiente de Spearman</a>
+    </li>
+    <li>
+      <a href="recurso130.html">Coeficiente de Kendall</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Modelo
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso200.html">Modelo de Regresión Lineal Simple</a>
+    </li>
+    <li>
+      <a href="recurso210.html">Estimación Mínimos Cuadrados Ordinarios</a>
+    </li>
+    <li>
+      <a href="recurso220.html">Estimación de Máxima Verosimilitud</a>
+    </li>
+    <li>
+      <a href="recurso230.html">Forma Matricial del Modelo</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Diagnóstico
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso300.html">Supuestos</a>
+    </li>
+    <li>
+      <a href="recurso310.html">Residuales</a>
+    </li>
+    <li>
+      <a href="recurso320.html">Revisión de Supuestos</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Pruebas de Hipótesis
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso400.html">Sobre los Coeficientes</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Transformaciones
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso500.html">Transformaciones</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Modelos polinomiales
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso600.html">Modelos polinomiales</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Predicción
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso700.html">Intervalo de Confianza</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Intervalos de Confianza
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso800.html">Coeficientes y varianza</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Atípicos e Influyentes
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso900.html">Punto atípico e influyente</a>
+    </li>
+    <li>
+      <a href="recurso910.html">Distancia de Cook</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Referencias
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso1000.html">Referencias</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore"><span style="color:#686868"> <strong>Modelo
+de regresión lineal simple</strong></span></h1>
+<h4 class="author">Métodos y Simulación Estadística</h4>
+
+</div>
+
+
+<br/><br/>
+<h2>
+Introducción
+</h2>
+<p>El <strong>modelo de regresión lineal</strong> es una de las
+herramientas estadísticas más utilizadas para analizar la relación entre
+una variable respuesta y una o más variables explicativas. Su
+simplicidad y facilidad de interpretación lo hacen fundamental en
+diversas áreas del conocimiento.</p>
+<p>La regresión lineal permite:</p>
+<ul>
+<li><p><strong>Identificar relaciones</strong> entre variables y
+cuantificar su intensidad.</p></li>
+<li><p><strong>Realizar predicciones</strong> sobre la variable
+respuesta con base en valores conocidos de la variable
+explicativa.</p></li>
+<li><p><strong>Evaluar el impacto</strong> de cambios en las variables
+explicativas sobre la respuesta.</p></li>
+<li><p><strong>Proporcionar inferencias</strong> sobre la significancia
+de los parámetros del modelo.</p></li>
+</ul>
+<p>El modelo de regresión lineal es ampliamente aplicado en diversos
+campos, entre ellos:</p>
+<ul>
+<li><p><strong>Economía y finanzas</strong>: análisis de tendencias en
+precios, estimación del impacto de políticas económicas y modelado del
+comportamiento del mercado.</p></li>
+<li><p><strong>Ingeniería y ciencias exactas</strong>: predicción de la
+resistencia de materiales, optimización de procesos industriales y
+modelado de datos experimentales.</p></li>
+<li><p><strong>Ciencias de la salud</strong>: relación entre factores de
+riesgo y enfermedades, análisis de eficacia de tratamientos médicos y
+estudios epidemiológicos.</p></li>
+<li><p><strong>Ciencias sociales</strong>: estudio de relaciones
+demográficas, comportamiento del consumidor y predicción de resultados
+electorales.</p></li>
+</ul>
+<div class="caja-nota">
+<blockquote>
+<p><em>“En esta unidad, el análisis se centrará en la <strong>regresión
+lineal simple</strong>, donde se modelará una única variable respuesta
+en función de una sola variable predictora. No se abordarán relaciones
+más complejas ni modelos con múltiples predictores.”</em></p>
+</blockquote>
+</div>
+<div class="caja-nota">
+<blockquote>
+<p><em>“En el siguiente curso de <strong>Estadística de la Maestría en
+Ciencia de Datos</strong>, se estudiará el <strong>modelo de regresión
+múltiple</strong>, el cual permite modelar una variable respuesta en
+términos de varias variables predictoras. Este modelo amplía las
+capacidades de análisis al considerar múltiples factores que pueden
+influir simultáneamente en la variable de interés.”</em></p>
+</blockquote>
+</div>
+<br/><br/>
+<h2>
+Formulación del modelo
+</h2>
+<p>El <strong>modelo de regresión lineal simple</strong> puede
+representarse de dos formas, cada una con una interpretación específica
+sobre la relación entre la variable explicativa <span
+class="math inline">\(X_i\)</span> y la variable respuesta <span
+class="math inline">\(Y_i\)</span>.</p>
+<p>En ambas formulaciones:</p>
+<ul>
+<li><p><span class="math inline">\(X_i\)</span> es <strong>una variable
+fija</strong>, determinada por el diseño del estudio o la muestra
+observada.</p></li>
+<li><p><span class="math inline">\(Y_i\)</span> es <strong>una variable
+aleatoria</strong>, cuya distribución depende de <span
+class="math inline">\(X_i\)</span>.</p></li>
+<li><p><span class="math inline">\(\beta_0\)</span> y <span
+class="math inline">\(\beta_1\)</span> son <strong>parámetros
+desconocidos</strong> que representan la intersección y la pendiente de
+la relación lineal.</p></li>
+<li><p><span class="math inline">\(\sigma^2\)</span> es <strong>la
+varianza constante</strong> de los errores aleatorios.</p></li>
+</ul>
+<br/><br/>
+<h3>
+Primera forma: Expresión en términos del error aleatorio
+</h3>
+<p>En esta representación, la variable respuesta <span
+class="math inline">\(Y_i\)</span> se expresa como la suma de un término
+<strong>determinístico</strong> <span class="math inline">\(\beta_0 +
+\beta_1 X_i\)</span> y un <strong>error aleatorio</strong> <span
+class="math inline">\(\varepsilon_i\)</span>, el cual sigue una
+<strong>distribución normal</strong> con <strong>media cero</strong> y
+<strong>varianza constante</strong>:</p>
+<p><span class="math display">\[
+Y_i = \beta_0 + \beta_1 X_i + \varepsilon_i, \quad \varepsilon_i \sim
+N(0, \sigma^2)
+\]</span></p>
+<ul>
+<li><p>En esta formulación, la variabilidad de <span
+class="math inline">\(Y_i\)</span> proviene tanto de la <strong>relación
+lineal con <span class="math inline">\(X_i\)</span></strong> como del
+<strong>componente aleatorio</strong> <span
+class="math inline">\(\varepsilon_i\)</span>.</p></li>
+<li><p>Se hace énfasis en que los errores <span
+class="math inline">\(\varepsilon_i\)</span> explican las desviaciones
+de <span class="math inline">\(Y_i\)</span> con respecto a la tendencia
+determinada por <span class="math inline">\(\beta_0 + \beta_1
+X_i\)</span>.</p></li>
+<li><p>Dado que <span class="math inline">\(X_i\)</span> es fijo,
+<strong>la aleatoriedad proviene exclusivamente de <span
+class="math inline">\(\varepsilon_i\)</span></strong>.</p></li>
+</ul>
+<br/><br/>
+<h3>
+Segunda forma: Expresión en términos de la distribución de <span
+class="math inline">\(Y\)</span>
+</h3>
+<p>En esta formulación, la variable respuesta <span
+class="math inline">\(Y_i\)</span> se modela directamente como una
+<strong>variable aleatoria normal</strong>, cuya <strong>esperanza
+condicional depende de</strong> <span
+class="math inline">\(X_i\)</span>, mientras que su <strong>varianza
+permanece constante</strong>:</p>
+<p><span class="math display">\[
+Y_i \mid X_i \sim N(E[Y_i | X_i], \sigma^2), \quad E[Y_i | X_i] =
+\beta_0 + \beta_1 X_i, \quad \sigma^2 = \text{constante}
+\]</span></p>
+<ul>
+<li><p>En esta representación, <span class="math inline">\(Y_i\)</span>
+se interpreta como <strong>una realización de una variable aleatoria
+normal</strong>, donde su media depende linealmente de <span
+class="math inline">\(X_i\)</span> y su varianza es fija.</p></li>
+<li><p>Para cada valor fijo de <span class="math inline">\(X_i\)</span>,
+la distribución de <span class="math inline">\(Y_i\)</span> se mantiene
+normal, pero con media variable según la ecuación <span
+class="math inline">\(\beta_0 + \beta_1 X_i\)</span>.</p></li>
+<li><p>Esta formulación enfatiza la <strong>distribución
+condicional</strong> de <span class="math inline">\(Y_i\)</span>,
+dejando claro que la varianza <span
+class="math inline">\(\sigma^2\)</span> no depende de <span
+class="math inline">\(X_i\)</span>.</p></li>
+</ul>
+<hr />
+<p>En el modelo de regresión, se asume que los <strong>errores <span
+class="math inline">\(\varepsilon_i\)</span> son independientes e
+idénticamente distribuidos</strong>:</p>
+<p><span class="math display">\[
+\varepsilon_i \sim \text{i.i.d} \quad N(0, \sigma^2), \quad \text{para }
+i = 1,2, \dots, n.
+\]</span></p>
+<p>Dado que el modelo se define como:</p>
+<p><span class="math display">\[
+Y_i = \beta_0 + \beta_1 X_i + \varepsilon_i,
+\]</span></p>
+<p>Si los errores son independientes, entonces <strong><span
+class="math inline">\(Y_i\)</span> y <span
+class="math inline">\(Y_j\)</span> son independientes condicionalmente a
+<span class="math inline">\(X_i\)</span> y <span
+class="math inline">\(X_j\)</span></strong>, pero no necesariamente
+marginalmente independientes. La razón es que cada <span
+class="math inline">\(Y_i\)</span> depende de <span
+class="math inline">\(X_i\)</span>, y si <span
+class="math inline">\(X_i\)</span> y <span
+class="math inline">\(X_j\)</span> están correlacionados en la muestra,
+esto puede inducir una dependencia entre los <span
+class="math inline">\(Y_i\)</span>.</p>
+<p>Por lo tanto, <strong>el supuesto de independencia en la regresión
+lineal se aplica a los errores <span
+class="math inline">\(\varepsilon_i\)</span>, no necesariamente a las
+respuestas <span class="math inline">\(Y_i\)</span></strong>.</p>
+<hr />
+<p>La <strong>Figura 3.10</strong> proporciona una representación clara
+del cumplimiento de supuestos fundamentales en el análisis de regresión.
+En particular, permite evaluar:</p>
+<ul>
+<li><p><strong>El supuesto de normalidad de la variable <span
+class="math inline">\(Y\)</span></strong>: La distribución de <span
+class="math inline">\(Y\)</span> indica un comportamiento
+aproximadamente normal.</p></li>
+<li><p><strong>La dependencia de la media <span
+class="math inline">\(\mu\)</span> con <span
+class="math inline">\(X\)</span></strong>: Se observa la relación entre
+<span class="math inline">\(X\)</span> y <span
+class="math inline">\(Y\)</span> es lineal.</p></li>
+<li><p><strong>La varianza constante (homocedasticidad)</strong>: Se
+analiza que la dispersión de los valores de <span
+class="math inline">\(Y\)</span> respecto a <span
+class="math inline">\(X\)</span> permanece constante a lo largo de toda
+la escala de <span class="math inline">\(X\)</span>.</p></li>
+</ul>
+<br/><br/>
+<center>
+<img src="img/fig310.png" width="80%" style="display: block; margin: auto;" />
+<strong>Figura 3.10</strong> Ejemplo donde se cumplen los supuestos de
+la regresión lineal simple.
+</center>
+<p><br/><br/></p>
+<p>La <strong>Figura 3.11</strong> muestra que la <strong>varianza de
+las distribuciones no es constante</strong>. Se observa que las curvas
+<strong>roja y azul</strong> presentan una varianza más pequeña en
+comparación con otras regiones del gráfico, lo que indica que la
+dispersión de los valores no es uniforme a lo largo de la variable
+explicativa <span class="math inline">\(X\)</span>. Esta condición puede
+afectar la validez de los estimadores en un modelo de regresión, ya que
+se incumple el supuesto de homocedasticidad.</p>
+<br/><br/>
+<center>
+<img src="img/fig311.png" width="80%" style="display: block; margin: auto;" />
+<strong>Figura 3.11</strong> Ejemplo donde el supuesto de varianza
+constante falla.
+</center>
+<p><br/><br/></p>
+<p>Por otro lado, en la <strong>Figura 3.12</strong>, la distribución de
+la curva <strong>roja</strong> no sigue una normal, sino que muestra un
+comportamiento más parecido a una <strong>distribución
+exponencial</strong>. Esta condición puede afectar la validez de los
+estimadores en un modelo de regresión, ya que se incumple el supuesto de
+normalidad.</p>
+<br/><br/>
+<center>
+<img src="img/fig312.png" width="80%" style="display: block; margin: auto;" />
+<strong>Figura 3.12</strong> Ejemplo donde el supuesto de distribución
+normal falla.
+</center>
+<p><br/><br/></p>
+<br/><br/>
+<h2>
+Función <code>lm</code> en <strong>R</strong>
+</h2>
+<p>La función <code>lm()</code> de <strong>R</strong> se utiliza para
+ajustar un <strong>modelo de regresión lineal simple o
+múltiple</strong>. Su estructura general es la siguiente:</p>
+<pre>
+lm(formula, data, subset, weights, na.action,
+   method = "qr", model = TRUE, x = FALSE, y = FALSE, qr = TRUE,
+   singular.ok = TRUE, contrasts = NULL, offset, ...)
+</pre>
+<p>A continuación, se presenta una breve descripción de los parámetros
+más utilizados epara ajustar un modelo de regresión lineal:</p>
+<ul>
+<li><p><strong><code>formula</code></strong>: Es un objeto de la clase
+<strong>fórmula</strong> que especifica la relación entre la variable
+respuesta y las covariables. Se expresa con la sintaxis:
+<code>formula = y ~ x1 + x2</code>.</p></li>
+<li><p><strong><code>data</code></strong>: Es el marco de datos donde se
+encuentran las variables utilizadas en la fórmula</p></li>
+</ul>
+</br></br>
+<div class="caja-ejemplo">
+<h3>
+Ejemplo:
+</h3>
+<p>
+<p>En este ejemplo, se ajusta un <strong>modelo de regresión lineal
+simple</strong> para analizar la relación entre la <strong>Resistencia
+de una soldadura (psi)</strong> y la <strong>Edad de la soldadura
+(semanas)</strong>. En total, se cuenta con <strong>20
+observaciones</strong>. El objetivo es determinar si la edad de la
+soldadura influye en su resistencia y, en caso afirmativo, cuantificar
+dicha relación.</p>
+<p>El modelo que se va a ajustar se expresa de la siguiente manera:</p>
+<p><span class="math display">\[
+\text{Resistencia}_i \sim N(\mu_i, \sigma^2)\\
+\mu_i =E(\text{Resistencia}_i \mid \text{Edad}_i) = \beta_0 + \beta_1
+\times \text{Edad}_i, \\
+\sigma^2 = \text{constante}
+\]</span></p>
+<p>Este modelo asume que la <strong>Resistencia de la soldadura</strong>
+sigue una distribución normal con media <span
+class="math inline">\(\mu_i\)</span> y varianza constante <span
+class="math inline">\(\sigma^2\)</span>. La media <span
+class="math inline">\(\mu_i\)</span> se modela como una función lineal
+de la <strong>Edad de la soldadura</strong> en términos de <span
+class="math inline">\(\beta_0\)</span> y <span
+class="math inline">\(\beta_1\)</span>.</p>
+<p>Otra opción para plantear el modelo de regresión lineal simple es la
+siguiente:</p>
+<p><span class="math display">\[
+\text{Resistencia}_i = \beta_0 + \beta_1 \times \text{Edad}_i +
+\varepsilon_i \\
+\varepsilon_i \sim N(0, \sigma^2)
+\]</span></p>
+<p>Para ambos planteamientos:</p>
+<ul>
+<li><p><strong><span class="math inline">\(\beta_0\)</span></strong>:
+Intercepto del modelo, que representa la resistencia esperada cuando la
+edad de la soldadura es <strong>cero</strong>.</p></li>
+<li><p><strong><span class="math inline">\(\beta_1\)</span></strong>:
+Coeficiente de regresión, que indica el <strong>cambio esperado</strong>
+en la resistencia por <strong>cada unidad</strong> de aumento en la edad
+de la soldadura.</p></li>
+<li><p><strong><span class="math inline">\(\sigma^2\)</span></strong>:
+Varianza del <strong>error</strong>, que se asume
+<strong>constante</strong> en todo el rango de los datos.</p></li>
+</ul>
+<hr />
+<p>Para que la regresión lineal proporcione resultados válidos, es
+necesario que el término de error <span
+class="math inline">\(\varepsilon\)</span> cumpla con los siguientes
+supuestos:</p>
+<ol style="list-style-type: decimal">
+<li><p><strong>Normalidad del error</strong>: Se asume que los errores
+siguen una distribución normal con media cero y varianza constante:</p>
+<p><span class="math display">\[
+\varepsilon \sim N(0, \sigma^2)
+\]</span></p></li>
+<li><p><strong>Homocedasticidad (varianza constante del error)</strong>:
+La varianza de los errores debe ser <strong>constante</strong> para
+todos los valores de la variable explicativa:</p>
+<p><span class="math display">\[
+\text{Var}(\varepsilon_i) = \sigma^2, \quad \forall i
+\]</span></p></li>
+<li><p><strong>Independencia de los errores</strong>: Los errores del
+modelo no deben estar correlacionados.</p></li>
+</ol>
+<p>El cumplimiento de estos supuestos es fundamental para la validez de
+las inferencias estadísticas realizadas a partir del modelo. En caso de
+que estos supuestos no se cumplan, se pueden considerar transformaciones
+de los datos o el uso de modelos alternativos.</p>
+<hr />
+<p>En este ejemplo, se mostrará cómo obtener usando <strong>R</strong>
+las <strong>estimaciones de los parámetros</strong> <span
+class="math inline">\(\beta_0\)</span> y <span
+class="math inline">\(\beta_1\)</span>, <strong>estimación de la
+desviación estándar del error</strong>, <strong>valores predichos de la
+resistencia</strong>, <strong>estimaciones de los errores
+(residuales)</strong> en un <strong>modelo de regresión lineal
+simple</strong>.</p>
+<p>El código en <strong>R</strong> para crear el gráfico de dispersión y
+estimar los parámetros del modelo de regresión lineal simple es el
+siguiente:</p>
+<pre>
+
+Sys.setlocale("LC_ALL", "es_ES.UTF-8")
+
+# Definir la URL del archivo con los datos
+file <- "https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_reg1.txt"
+
+# Cargar el conjunto de datos desde la URL
+datos <- read.table(file = file, header = TRUE)
+
+# Cargar la librería ggplot2 para visualización de datos
+library(ggplot2)
+
+# Crear un gráfico de dispersión para visualizar la relación entre Edad y Resistencia
+plot_reg <- ggplot(datos, aes(x = Edad, y = Resistencia)) + 
+  geom_point(color = "blue", size = 2) +  # Agregar puntos con color azul y tamaño adecuado
+  theme_light() +                         # Aplicar un tema ligero para mejorar la presentación
+  labs(title = "Relación entre Edad y Resistencia",
+       x = "Edad de la Soldadura (meses)",
+       y = "Resistencia de la Soldadura")
+
+# Ajustar un modelo de regresión lineal simple
+mod1 <- lm(Resistencia ~ Edad, data = datos)
+
+# Mostrar un resumen del modelo ajustado
+summary(mod1)
+
+# Imprimir el gráfico de dispersión
+print(plot_reg)
+
+# Imprimir el objeto del modelo para visualizar los coeficientes estimados
+print(mod1)
+</pre>
+<pre class="r"><code>Sys.setlocale(&quot;LC_ALL&quot;, &quot;es_ES.UTF-8&quot;)
+
+# Definir la URL del archivo con los datos
+file &lt;- &quot;https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_reg1.txt&quot;
+
+# Cargar el conjunto de datos desde la URL
+datos &lt;- read.table(file = file, header = TRUE)
+
+# Cargar la librería ggplot2 para visualización de datos
+library(ggplot2)
+
+# Crear un gráfico de dispersión para visualizar la relación entre Edad y Resistencia
+plot_reg &lt;- ggplot(datos, aes(x = Edad, y = Resistencia)) + 
+  geom_point(color = &quot;blue&quot;, size = 2) +  # Agregar puntos con color azul y tamaño adecuado
+  theme_light() +                         # Aplicar un tema ligero para mejorar la presentación
+  labs(title = &quot;Relación entre Edad y Resistencia&quot;,
+       x = &quot;Edad de la Soldadura (meses)&quot;,
+       y = &quot;Resistencia de la Soldadura&quot;)
+
+# Ajustar un modelo de regresión lineal simple
+mod1 &lt;- lm(Resistencia ~ Edad, data = datos)
+
+# Mostrar un resumen del modelo ajustado
+summary(mod1)
+
+# Imprimir el gráfico de dispersión
+print(plot_reg)
+
+# Imprimir el objeto del modelo para visualizar los coeficientes estimados
+print(mod1)</code></pre>
+<p>La <strong>Figura 3.13</strong> muestra claramente que, a medida que
+aumenta la <strong>edad de la soldadura</strong>, la <strong>resistencia
+que esta ofrece disminuye</strong>. Esta tendencia sugiere una relación
+<strong>negativa</strong> entre las variables, indicando que las
+soldaduras más antiguas presentan menor resistencia.</p>
+<p>Además, se observa que la relación entre la <strong>edad y la
+resistencia</strong> es aproximadamente <strong>lineal</strong>, lo que
+justifica el uso de un <strong>modelo de regresión lineal</strong> para
+describir esta asociación.</p>
+<p>Otro aspecto importante es que la <strong>dispersión de los puntos
+parece constante</strong> a lo largo de los valores de la edad, lo que
+sugiere que el supuesto de <strong>homocedasticidad</strong> (varianza
+constante del error) se cumple en el modelo.</p>
+<br/><br/>
+<center>
+<img src="img/fig313.png" width="80%" style="display: block; margin: auto;" />
+<strong>Figura 3.13</strong> Relación entre Resistencia y Edad.
+</center>
+<p><br/><br/></p>
+<p>La salida del ajuste del modelo con la función <code>lm()</code> y
+<code>summary</code> en <strong>R</strong> se presenta de la siguiente
+manera:</p>
+<pre>
+Call:
+lm(formula = Resistencia ~ Edad, data = datos)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-215.98  -50.68   28.74   66.61  106.76 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept) 2627.822     44.184   59.48  < 2e-16 ***
+Edad         -37.154      2.889  -12.86 1.64e-10 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 96.11 on 18 degrees of freedom
+Multiple R-squared:  0.9018,    Adjusted R-squared:  0.8964 
+F-statistic: 165.4 on 1 and 18 DF,  p-value: 1.643e-10
+</pre>
+<p>En esta salida se presentan los <strong>coeficientes
+estimados</strong> del modelo de regresión lineal simple, junto con la
+estimación de la <strong>desviación estándar del error</strong>.</p>
+<ul>
+<li><p><strong>Intercepto estimado (<span
+class="math inline">\(\hat{\beta}_0 = 2627.82\)</span>)</strong>: La
+resistencia esperada de la soldadura cuando la <strong>edad es
+cero</strong> es de 2627.82 psi.</p></li>
+<li><p><strong>Pendiente estimada (<span
+class="math inline">\(\hat{\beta}_1 = -37.15\)</span>)</strong>: Indica
+que, por cada <strong>semana de aumento en la edad de la
+soldadura</strong>, la resistencia <strong>disminuye en promedio en
+37.15 psi</strong>.</p></li>
+<li><p><strong>Desviación estándar estimada de los errores (<span
+class="math inline">\(\hat{\sigma} = 96.11\)</span>)</strong>: La
+dispersión de los residuos en torno a la línea de regresión es de 96.11
+psi.</p></li>
+</ul>
+<p>A partir de estos valores, el modelo de regresión se puede expresar
+de dos maneras:</p>
+<ol style="list-style-type: decimal">
+<li>En términos de la distribución de <span
+class="math inline">\(Y\)</span></li>
+</ol>
+<p><span class="math display">\[
+\widehat{\text{Resistencia}}_i \sim N(\hat{\mu}_i, \hat{\sigma}^2)
+\]</span> <span class="math display">\[
+\hat{\mu}_i = \hat{\beta}_0 + \hat{\beta}_1 \times \text{Edad}_i
+\]</span> <span class="math display">\[
+\hat{\mu}_i = 2627.82 - 37.15 \times \text{Edad}_i\\
+\hat{\sigma} = 96.11
+\]</span></p>
+<p>En este planteamiento, la resistencia de la soldadura sigue una
+<strong>distribución normal</strong> con media <span
+class="math inline">\(\hat{\mu}_i\)</span> dependiente de la edad y
+varianza constante <span
+class="math inline">\(\hat{\sigma}^2\)</span>.</p>
+<ol start="2" style="list-style-type: decimal">
+<li>En términos de la variable respuesta con el error</li>
+</ol>
+<p><span class="math display">\[
+\widehat{\text{Resistencia}}_i = \hat{\beta}_0 + \hat{\beta}_1 \times
+\text{Edad}_i
+\]</span> <span class="math display">\[
+\widehat{\text{Resistencia}}_i = 2627.82 - 37.15 \times \text{Edad}_i,
+\\ \varepsilon_i \sim N(0, \hat{\sigma}^2=96.11^2)
+\]</span></p>
+<p>Aquí, el término del error aleatorio <strong><span
+class="math inline">\(\varepsilon_i\)</span></strong> se incluye
+explícitamente, reflejando la variabilidad de la resistencia no
+explicada por la edad.</p>
+<hr />
+<p><strong>Expresión matemática de los valores predichos o
+ajustados</strong></p>
+<p>Matemáticamente, los valores ajustados en el modelo de regresión se
+expresan como:</p>
+<p><span class="math display">\[
+\widehat{Y}_i = \widehat{\beta}_0 + \widehat{\beta}_1 \times X_i
+\]</span></p>
+<p>Sustituyendo los valores estimados:</p>
+<p><span class="math display">\[
+\widehat{Y}_i = 2627.82 - 37.15 \times X_i
+\]</span></p>
+<p>Donde <strong><span
+class="math inline">\(\widehat{Y}_i\)</span></strong> representa la
+<strong>resistencia predicha</strong> para la edad <span
+class="math inline">\(X_i\)</span>.</p>
+<p>El objeto <code>mod1$fitted.values</code> en <strong>R</strong>
+almacena los valores ajustados del modelo de regresión para cada
+observación en los datos.</p>
+<p><strong>Expresión matemática de los residuales</strong></p>
+<p>Matemáticamente, los <strong>residuales (<span
+class="math inline">\(e_i\)</span>)</strong> en un modelo de regresión
+lineal se definen como:</p>
+<p><span class="math display">\[
+\widehat{\varepsilon}_i =e_i= Y_i - \widehat{Y}_i
+\]</span></p>
+<p>Los <strong>residuales son los estimadores del error</strong>. El
+objeto <code>mod1$residuals</code> en <strong>R</strong> almacena la
+diferencia entre los valores observados y los valores ajustados del
+modelo. El análisis de los residuales es fundamental para validar los
+supuestos del modelo de regresión y garantizar que las inferencias
+obtenidas sean confiables.</p>
+<p>Los siguientes códigos en <strong>R</strong> permiten obtener las
+<strong>predicciones de la resistencia</strong> para los valores de la
+<strong>edad</strong> y calcular los <strong>residuales del
+modelo</strong> de regresión después de su ajuste:</p>
+<pre>
+# Definir la URL del archivo con los datos
+file <- "https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_reg1.txt"
+
+# Cargar el conjunto de datos desde la URL en un data frame
+datos <- read.table(file = file, header = TRUE)
+
+# Ajustar un modelo de regresión lineal simple
+# Se modela la Resistencia de la soldadura en función de la Edad
+mod1 <- lm(Resistencia ~ Edad, data = datos)
+
+# Extraer los valores ajustados (predicciones del modelo)
+valores_ajustados <- mod1$fitted.values
+
+# Extraer los residuales (diferencia entre valores observados y predichos)
+residuales <- mod1$residuals
+
+# Agregar las predicciones al conjunto de datos original
+datos$predicciones <- predict(mod1)
+
+# Crear un data frame con la Edad, Resistencia observada, Predicciones y Residuales
+resultados <- data.frame(
+  Edad = datos$Edad,
+  Resistencia = datos$Resistencia,
+  Predicciones = valores_ajustados,
+  Residuales = residuales
+)
+
+# Mostrar las primeras filas del data frame con los resultados
+print(head(resultados))
+
+# Crear un gráfico de dispersión con la recta de regresión y los residuales
+ggplot(datos, aes(x = Edad, y = Resistencia)) +
+  geom_smooth(method = "lm", se = FALSE, color = "lightgrey") +  # Línea de regresión en gris
+  geom_segment(aes(xend = Edad, yend = predicciones), col = 'red', lty = 'dashed') +  # Residuales en líneas rojas
+  geom_point() +  # Puntos de datos observados
+  geom_point(aes(y = predicciones), col = 'red') +  # Puntos de predicción en rojo
+  theme_light()  # Aplicar un tema ligero para mejorar la visualización
+</pre>
+<pre class="r"><code># Definir la URL del archivo con los datos
+file &lt;- &quot;https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_reg1.txt&quot;
+
+# Cargar el conjunto de datos desde la URL en un data frame
+datos &lt;- read.table(file = file, header = TRUE)
+
+# Ajustar un modelo de regresión lineal simple
+# Se modela la Resistencia de la soldadura en función de la Edad
+mod1 &lt;- lm(Resistencia ~ Edad, data = datos)
+
+# Extraer los valores ajustados (predicciones del modelo)
+valores_ajustados &lt;- mod1$fitted.values
+
+# Extraer los residuales (diferencia entre valores observados y predichos)
+residuales &lt;- mod1$residuals
+
+# Agregar las predicciones al conjunto de datos original
+datos$predicciones &lt;- predict(mod1)
+
+# Crear un data frame con la Edad, Resistencia observada, Predicciones y Residuales
+resultados &lt;- data.frame(
+  Edad = datos$Edad,
+  Resistencia = datos$Resistencia,
+  Predicciones = valores_ajustados,
+  Residuales = residuales
+)
+
+# Mostrar las primeras filas del data frame con los resultados
+print(head(resultados))
+
+# Crear un gráfico de dispersión con la recta de regresión y los residuales
+ggplot(datos, aes(x = Edad, y = Resistencia)) +
+  geom_smooth(method = &quot;lm&quot;, se = FALSE, color = &quot;lightgrey&quot;) +  # Línea de regresión en gris
+  geom_segment(aes(xend = Edad, yend = predicciones), col = &#39;red&#39;, lty = &#39;dashed&#39;) +  # Residuales en líneas rojas
+  geom_point() +  # Puntos de datos observados
+  geom_point(aes(y = predicciones), col = &#39;red&#39;) +  # Puntos de predicción en rojo
+  theme_light()  # Aplicar un tema ligero para mejorar la visualización</code></pre>
+<p>La siguiente tabla muestra los resultados del modelo de regresión
+lineal simple, donde se incluyen: La edad de la soldadura en meses
+(Edad), el valor real medido de la resistencia en psi (Resistencia), el
+valor estimado de la resistencia según el modelo ajustado (Predichos),
+la diferencia entre la resistencia observada y la predicha
+(Residuales).</p>
+<pre>
+Edad      Resistencia Predicciones  Residuales
+1  15.50     2158.70  2051.942      106.758301
+2  23.75     1678.15  1745.425      -67.274574
+3   8.00     2316.00  2330.594      -14.593631
+4  17.00     2061.30  1996.211       65.088687
+5   5.50     2207.50  2423.478     -215.977609
+6  19.00     1708.30  1921.904     -213.604131
+7  24.00     1784.70  1736.136       48.563824
+8   2.50     2575.00  2534.938       40.061618
+9   7.50     2357.90  2349.170        8.729573
+10 11.00     2256.70  2219.133       37.567141
+11 13.00     2165.20  2144.826       20.374323
+12  3.75     2399.55  2488.496      -88.946393
+13 25.00     1779.80  1698.983       80.817415
+14  9.75     2336.75  2265.575       71.175153
+15 22.00     1765.30  1810.443      -45.143358
+16 18.00     2053.50  1959.058       94.442278
+17  6.00     2414.40  2404.901        9.499187
+18 12.50     2200.50  2163.402       37.097528
+19  2.00     2654.20  2553.515      100.684823
+20 21.50     1753.70  1829.020      -75.320154
+</pre>
+<br/><br/>
+<center>
+<img src="img/fig314.png" width="80%" style="display: block; margin: auto;" />
+<strong>Figura 3.14</strong> Resistencias originales (datos observados)
+en negro y predicciones con el modelo ajustado en rojo.
+</center>
+<p><br/><br/></p>
+<p>La <strong>Figura 3.14</strong> muestra lo siguiente:</p>
+<ul>
+<li><p><strong>Los puntos negros</strong> representan las observaciones
+originales <span class="math inline">\((X_i, Y_i)\)</span>.</p></li>
+<li><p><strong>Los puntos rojos</strong> corresponden a las estimaciones
+<span class="math inline">\((X_i, \widehat{Y}_i)\)</span>, los cuales
+coinciden con la <strong>recta de regresión estimada</strong> en color
+<strong>gris</strong>.</p></li>
+<li><p><strong>Los residuales <span
+class="math inline">\(e_i\)</span></strong> se visualizan como
+<strong>líneas rojas punteadas</strong>, conectando cada punto observado
+con su correspondiente predicción.</p></li>
+</ul>
+</p>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
