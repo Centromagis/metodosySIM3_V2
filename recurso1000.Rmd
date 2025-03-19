@@ -54,6 +54,7 @@ library(car)
 library(lmtest)
 library(DT)
 library(shinythemes)
+library(GGally)
 
 # Cargar datos
 datos <- read.table("https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_atip.txt", header = TRUE)
@@ -251,6 +252,7 @@ library(car)
 library(lmtest)
 library(DT)
 library(shinythemes)
+library(GGally)
 
 # Cargar datos
 datos <- read.table("https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_atip.txt", header = TRUE)
