@@ -1,5 +1,5 @@
 ---
-title: <span style="color:#686868"> **Sobre los Coeficientes**</span>
+title: <span style="color:#686868"> **Pruebas de Hipótesis y R Cuadrado**</span>
 author: "Métodos y Simulación Estadística"
 output:
   html_document:
@@ -162,7 +162,7 @@ Bajo la hipótesis nula \( H_0 \), el estadístico \( F_0 \) sigue una distribuc
 F_0 \sim F_{k, n-k-1}
 \]
 
-Si el valor \( F_0 \) es suficientemente grande y su correspondiente **valor-p** es menor que un umbral de significancia (\(\alpha\)), se **rechaza \( H_0 \)** y se concluye que **al menos una de las variables predictoras es significativa**.
+Si el valor \( F_0 \) es suficientemente grande y su correspondiente \(valor-p \) es menor que un umbral de significancia (\(\alpha\)), se **rechaza \( H_0 \)** y se concluye que **al menos una de las variables predictoras es significativa**.
 
 
 
@@ -195,7 +195,7 @@ Para que la regresión lineal proporcione resultados válidos, es necesario que 
 1. **Normalidad del error**: Se asume que los errores siguen una distribución normal con media cero y varianza constante:
 
    \[
-   \varepsilon \sim N(0, \sigma^2)
+   \varepsilon_i \sim N(0, \sigma^2)
    \]
 
 2. **Homocedasticidad (varianza constante del error)**: La varianza de los errores debe ser **constante** para todos los valores de la variable explicativa:
@@ -327,7 +327,7 @@ Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’
 </pre>
 
 
-De la tabla ANOVA presentada anteriormente, se observa que el valor-p  es 1.643e-10, lo que  es extremadamente pequeño. Esto proporciona **evidencia suficiente** para rechazar la hipótesis nula con un nivel de significancia del 1%:
+De la tabla ANOVA presentada anteriormente, se observa que el \(valor-p \)  es \(1.64 \times 10^{-10}\), lo que  es extremadamente pequeño. Esto proporciona **evidencia suficiente** para rechazar la hipótesis nula con un nivel de significancia del 1%:
 
 \[
 H_0: \beta_{\text{Edad}} = 0
@@ -371,7 +371,7 @@ summary(mod1)
 ```
 
 
-En la última línea de la salida siguiente, se encuentra la información sobre la  **prueba de hipótesis de significancia de la regresión**. Se observa el **estadístico de prueba \( F \)** con un valor de 165.4 y  el valor-p obtenido es \(1.643 \times 10^{-10}\), lo que indica que se rechaza la hipótesis nula de que todos los coeficientes son ceros con un nivel de significancia del 1%.
+En la última línea de la salida siguiente, se encuentra la información sobre la  **prueba de hipótesis de significancia de la regresión**. Se observa el **estadístico de prueba \( F \)** con un valor de 165.4 y  el \(valor-p \) obtenido es \(1.643 \times 10^{-10}\), lo que indica que se rechaza la hipótesis nula de que todos los coeficientes son ceros con un nivel de significancia del 1%.
 
 <pre>
 Call:
@@ -407,7 +407,7 @@ H_1: \beta_{\text{Edad}} \neq 0
 
 La hipótesis nula establece que la variable **Edad** no tiene un efecto significativo en la variable respuesta **Resistencia**. Por otro lado, la hipótesis alternativa indica que **Edad** sí influye en la variabilidad de **Resistencia**.  
 
-El **estadístico de prueba \( t \)** toma el valor **-12.86** con un valor-p de  \(1.64 \times 10^{-10}\). Por lo tanto, se rechaza la hipótesis nula y se concluye, con una significancia del **1%**, que el coeficiente \( \beta_1 \) es **distinto de cero**. Esto implica que la variable **Edad** tiene un efecto significativo en la explicación de la variable respuesta **Resistencia**.
+El **estadístico de prueba \( t \)** toma el valor -12.86 con un \(valor-p \) de  \(1.64 \times 10^{-10}\). Por lo tanto, se rechaza la hipótesis nula y se concluye, con una significancia del 1%, que el coeficiente \( \beta_1 \) es **distinto de cero**. Esto implica que la variable **Edad** tiene un efecto significativo en la explicación de la variable respuesta **Resistencia**.
 
 
 
@@ -648,7 +648,7 @@ De acuerdo con los valores-p obtenidos en los **tests de normalidad**, los resul
 
 - Los valores-p de las pruebas **Shapiro-Wilk** y **Anderson-Darling** son menores a 0.05, lo que proporciona **evidencia suficiente** para rechazar la hipótesis nula de normalidad en los errores.
 
-- Aunque la prueba de **Kolmogorov-Smirnov** no rechaza la normalidad de los errores, en la **Figura 3.29**, el **QQ-plot de los residuos** muestra que los valores extremos **se desvían de la recta de referencia**, lo que sugiere que la distribución de los errores podría no seguir una normalidad estricta.
+- Aunque la prueba de **Kolmogorov-Smirnov** no rechaza la normalidad de los errores, en la **Figura 3.29**, el **QQ-plot de los residuos** muestra que los valores extremos **se desvían de la recta de referencia**, lo que sugiere que la distribución de los errores podría no seguir una distribución normal.
 
 A continuación, se presentan los resultados detallados de cada prueba de normalidad:
 
@@ -679,9 +679,9 @@ alternative hypothesis: two-sided
 
 Los resultados de los **tests de independencia** muestran que **no hay suficiente evidencia para rechazar la hipótesis nula de independencia de los errores** con un nivel de significancia del **5%**. 
 
-- El **valor-p** obtenido en el **test de Durbin-Watson** es **0.3874**, lo que indica que no se detecta autocorrelación significativa en los errores.
+- El \(valor-p \) obtenido en el **test de Durbin-Watson** es **0.3874**, lo que indica que no se detecta autocorrelación significativa en los errores.
 
-- El **test de Breusch-Godfrey** para autocorrelación de orden 1 arroja un **valor-p de 0.8921**, confirmando la independencia de los errores.
+- El **test de Breusch-Godfrey** para autocorrelación de orden 1 arroja un \(valor-p \) de 0.8921, sugiriendo la independencia de los errores.
 
 Además, en la **Figura 3.29**, el gráfico de **Residuos vs Índice de Observación** no muestra ningún patrón sistemático, lo que también sugiere que los errores se comportan de manera independiente.
 
@@ -764,7 +764,7 @@ knitr::include_graphics("img/fig330.png")
 
 Estos hallazgos sugieren que **se cumplen los supuestos de independencia, homocedasticidad y normalidad**, ya que los **tests estadísticos no detectan problemas significativos** en los errores del modelo. 
 
-Sin embargo, al observar la **Figura 3.30**, se identifican **tres posibles valores atípicos** en los gráficos de residuos, estos son de las observaciones 5, 6 y 19, lo que **podría afectar la estabilidad del modelo** y la precisión de las estimaciones. 
+Sin embargo, al observar la **Figura 3.30**, se identifican **tres posibles valores atípicos o influyentes en el modelo** en los gráficos de residuos, estos son de las observaciones 5, 6 y 19, lo que **podría afectar la estabilidad del modelo** y la precisión de las estimaciones. 
 
 ---
 
@@ -782,7 +782,7 @@ El modelo de regresión lineal simple resultante se puede expresar como:
 \]
 
 
-
 </p>
 </div>
+
 

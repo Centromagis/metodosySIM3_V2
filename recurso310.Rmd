@@ -116,8 +116,6 @@ donde:
 
 Este residual ajusta la escala de los errores en función de la **influencia de cada observación en el modelo**. Es útil para identificar **valores atípicos**, ya que valores absolutos grandes de \( d_i \) sugieren que una observación se aleja significativamente del patrón general del modelo.
 
-Cuando los residuales estandarizados **siguen una distribución normal**, se espera que aproximadamente el **95% de los valores estandarizados estén dentro del rango \( [-2,2] \)**, y el **99% dentro del rango \( [-3,3] \)**. Valores fuera de estos rangos pueden indicar **posibles valores atípicos o problemas de ajuste** en el modelo.
-
 
 
 </br></br>
@@ -224,18 +222,6 @@ Si \( e_{(i)} \) es grande en valor absoluto, significa que la observación \( i
 
 ---
 
-Si un modelo lineal está **correctamente especificado**, los **residuales de Pearson** deben cumplir las siguientes condiciones:
-
-1. **Independencia con los valores ajustados**: Los residuales de Pearson no deben mostrar patrones sistemáticos en función de los valores ajustados \( \hat{y}_i \).
-
-2. **Independencia con los predictores**: La distribución de los residuales de Pearson no debe depender de los valores de las variables predictoras \( x_i \).
-
-3. **Comportamiento aleatorio**: Los residuales deben dispersarse aleatoriamente alrededor de cero sin formar patrones estructurados.
-
-Si estas condiciones se cumplen, los gráficos de residuales generados deben ser **"gráficos nulos"**, es decir, **gráficos sin características sistemáticas**. Esto significa que la **distribución condicional de los residuos** en el eje vertical del gráfico **no debe cambiar** con respecto a los valores ajustados o con una variable predictora en el eje horizontal.
-
----
-
 </br></br>
 <h2>Funciones en **R** para obtener residuales</h2>
 
@@ -314,31 +300,31 @@ y<-datos$y
 w<-datos$w
 
 
-#  Ajuste del Modelo de Regresión Lineal Ponderada ---
+#  Ajuste del Modelo de Regresión Lineal Ponderada 
 # Se ajusta el modelo de regresión ponderada usando los valores de 'w' como pesos
 modelo_ponderado <- lm(y ~ x, weights = w)  
 
 # Se pueden visualizar los resultados del modelo con:
 summary(modelo_ponderado)
 
-# Extraer Coeficientes del Modelo ---
+# Extraer Coeficientes del Modelo 
 # Se obtienen los coeficientes estimados del modelo ajustado
 beta_0 <- coef(modelo_ponderado)[1]  # Intercepto estimado
 beta_1 <- coef(modelo_ponderado)[2]  # Pendiente estimada
 
-# Cálculo de los Valores Ajustados Manualmente ---
+# Cálculo de los Valores Ajustados Manualmente 
 # Se calculan los valores ajustados manualmente utilizando la ecuación del modelo
 y_hat_manual <- beta_0 + beta_1 * x  
 
-# Cálculo de los Residuales ---
+# Cálculo de los Residuales 
 # Los residuales ordinarios representan la diferencia entre los valores observados y los valores ajustados
 residuales_ordinarios <- y - y_hat_manual  
 
-# Cálculo de los Residuales de Pearson ---
+# Cálculo de los Residuales de Pearson
 # Los residuales de Pearson ajustan el error ordinario usando la raíz cuadrada del peso
 residuales_pearson_manual <- residuales_ordinarios * sqrt(w) 
 
-# Crear una Tabla con los Resultados ---
+# Crear una Tabla con los Resultados 
 # Se crea un data frame con las variables, predicciones y residuales
 resultados <- data.frame(
   X = x,
@@ -365,31 +351,31 @@ y<-datos$y
 w<-datos$w
 
 
-#  Ajuste del Modelo de Regresión Lineal Ponderada ---
+#  Ajuste del Modelo de Regresión Lineal Ponderada 
 # Se ajusta el modelo de regresión ponderada usando los valores de 'w' como pesos
 modelo_ponderado <- lm(y ~ x, weights = w)  
 
 # Se pueden visualizar los resultados del modelo con:
 summary(modelo_ponderado)
 
-# Extraer Coeficientes del Modelo ---
+# Extraer Coeficientes del Modelo 
 # Se obtienen los coeficientes estimados del modelo ajustado
 beta_0 <- coef(modelo_ponderado)[1]  # Intercepto estimado
 beta_1 <- coef(modelo_ponderado)[2]  # Pendiente estimada
 
-# Cálculo de los Valores Ajustados Manualmente ---
+# Cálculo de los Valores Ajustados Manualmente 
 # Se calculan los valores ajustados manualmente utilizando la ecuación del modelo
 y_hat_manual <- beta_0 + beta_1 * x  
 
-# Cálculo de los Residuales ---
+# Cálculo de los Residuales 
 # Los residuales ordinarios representan la diferencia entre los valores observados y los valores ajustados
 residuales_ordinarios <- y - y_hat_manual  
 
-# Cálculo de los Residuales de Pearson ---
+# Cálculo de los Residuales de Pearson 
 # Los residuales de Pearson ajustan el error ordinario usando la raíz cuadrada del peso
 residuales_pearson_manual <- residuales_ordinarios * sqrt(w) 
 
-# Crear una Tabla con los Resultados ---
+# Crear una Tabla con los Resultados 
 # Se crea un data frame con las variables, predicciones y residuales
 resultados <- data.frame(
   X = x,
@@ -430,11 +416,11 @@ x<-datos$x
 y<-datos$y
 w<-datos$w
 
-# Ajuste del Modelo de Regresión Lineal Ponderada ---
+# Ajuste del Modelo de Regresión Lineal Ponderada 
 # Se ajusta un modelo de regresión lineal ponderada usando 'w' como pesos
 modelo_ponderado <- lm(y ~ x, weights = w)  
 
-# Obtención de Valores Ajustados y Residuales ---
+# Obtención de Valores Ajustados y Residuales 
 # Valores ajustados (predicciones) obtenidos a partir del modelo ajustado por R
 y_hat_r <- fitted(modelo_ponderado)
 
@@ -444,7 +430,7 @@ residuales_r <- residuals(modelo_ponderado)
 # Residuales de Pearson: Residuales ordinarios escalados por la varianza estimada
 residuales_pearson_r <- residuals(modelo_ponderado, type = "pearson")
 
-# Comparación de Resultados Manuales y de R ---
+# Comparación de Resultados Manuales y de R 
 # Se verifica si los cálculos manuales coinciden con los generados por R
 
 comparacion_resultados <- data.frame(
@@ -473,11 +459,11 @@ x<-datos$x
 y<-datos$y
 w<-datos$w
 
-# Ajuste del Modelo de Regresión Lineal Ponderada ---
+# Ajuste del Modelo de Regresión Lineal Ponderada 
 # Se ajusta un modelo de regresión lineal ponderada usando 'w' como pesos
 modelo_ponderado <- lm(y ~ x, weights = w)  
 
-# Obtención de Valores Ajustados y Residuales ---
+# Obtención de Valores Ajustados y Residuales 
 # Valores ajustados (predicciones) obtenidos a partir del modelo ajustado por R
 y_hat_r <- fitted(modelo_ponderado)
 
@@ -487,7 +473,7 @@ residuales_r <- residuals(modelo_ponderado)
 # Residuales de Pearson: Residuales ordinarios escalados por la varianza estimada
 residuales_pearson_r <- residuals(modelo_ponderado, type = "pearson")
 
-# Comparación de Resultados Manuales y de R ---
+# Comparación de Resultados Manuales y de R 
 # Se verifica si los cálculos manuales coinciden con los generados por R
 
 comparacion_resultados <- data.frame(
@@ -540,20 +526,27 @@ Los pesos \( w_i \) pueden interpretarse de diferentes maneras según el context
   
   - Las observaciones con **mayor variabilidad o ruido** tienen **menor peso**, reduciendo su impacto en el ajuste.
 
----
-
-**Casos especiales**: Por ejemplo, si todos los pesos son iguales** (\( w_i = 1 \) para todas las observaciones), la regresión ponderada **equivale a la regresión lineal ordinaria**.
 
 </p>
 </div>
 
 
 
+
+<div class="caja-actividad">
+<h3>Nota:</h3>
+>
+<p>
+**Caso especial**: Si todos los pesos son iguales **(\( w_i = 1 \)** para todas las observaciones), la regresión ponderada **equivale a la regresión lineal ordinaria**.
+</p>
+>
+</div>
+
 <div class="caja-actividad">
 <h3>Actividad:</h3>
-
 >
 <p>
 - Repite el ejemplo anterior considerando una regresión lineal simple ordinaria. Compara los distintos tipos de residuales. 
 </p>
 >
+</div>

@@ -14,47 +14,85 @@ La formulación matricial del modelo de **regresión lineal simple** permite exp
 
 
 </br></br>
-<h2>Modelo</h2>
+<h2>Regresión Lineal Simple en Forma Matricial</h2>
 
-El modelo de **regresión lineal simple** puede expresarse en términos matriciales como:
+La **regresión lineal simple** en forma matricial se expresa como:  
 
 \[
 \mathbf{Y} = \mathbf{X} \boldsymbol{\beta} + \boldsymbol{\varepsilon}
 \]
 
-donde:
+donde:  
 
-- \( \mathbf{Y} \) es el **vector de respuestas** (variable dependiente).
+- \( \mathbf{Y} \) es el **vector de respuesta** de dimensión \( n \times 1 \), que contiene las observaciones de la variable dependiente. 
 
-- \( \mathbf{X} \) es la **matriz de diseño**, que en el caso de una sola variable predictora incluye una columna de unos para el intercepto.
+- \( \mathbf{X} \) es la **matriz de diseño** de dimensión \( n \times 2 \), que incluye una columna de unos (para el intercepto) y una columna con los valores de la variable independiente.  
 
-- \( \boldsymbol{\beta} \) es el **vector de parámetros del modelo** (intercepto y pendiente).
+- \( \boldsymbol{\beta} \) es el **vector de coeficientes** de dimensión \( 2 \times 1 \), que contiene el intercepto \( \beta_0 \) y la pendiente \( \beta_1 \).  
 
-- \( \boldsymbol{\varepsilon} \) es el **vector de errores aleatorios**.
+- \( \boldsymbol{\varepsilon} \) es el **vector de errores** de dimensión \( n \times 1 \).
 
 
-Para el caso de **regresión lineal simple**, donde hay **una única variable predictora \( X \)**, la forma matricial del modelo
-se representa como se muestra a continuación:
+
+</br></br>
+<h2>Matrices en detalle</h2>
+
+</br></br>
+<h3>Matriz de diseño \( \mathbf{X} \)</h3>
+
+
 
 \[
-\begin{bmatrix}
-Y_1 \\
-Y_2 \\
-\vdots \\
-Y_n
-\end{bmatrix}
-=
+\mathbf{X} =
 \begin{bmatrix}
 1 & X_1 \\
 1 & X_2 \\
 \vdots & \vdots \\
 1 & X_n
 \end{bmatrix}
+\]
+
+La primera columna es de unos para representar el intercepto \( \beta_0 \), y la segunda columna contiene los valores de la variable independiente \( X \).
+
+
+</br></br>
+<h3>Vector de coeficientes \( \boldsymbol{\beta} \)</h3>
+
+
+\[
+\boldsymbol{\beta} =
 \begin{bmatrix}
 \beta_0 \\
 \beta_1
 \end{bmatrix}
-+
+\]
+
+Este vector contiene los parámetros del modelo, que deben estimarse a partir de los datos.
+
+
+</br></br>
+<h3>Vector de respuesta \( \mathbf{Y} \)</h3>
+
+
+\[
+\mathbf{Y} =
+\begin{bmatrix}
+Y_1 \\
+Y_2 \\
+\vdots \\
+Y_n
+\end{bmatrix}
+\]
+
+Este es el vector de valores observados de la variable dependiente.
+
+
+</br></br>
+<h3>Vector de errores \( \boldsymbol{\varepsilon} \)</h3>
+
+
+\[
+\boldsymbol{\varepsilon} =
 \begin{bmatrix}
 \varepsilon_1 \\
 \varepsilon_2 \\
@@ -63,77 +101,28 @@ Y_n
 \end{bmatrix}
 \]
 
-donde:
-
-- \( Y_i \) es la variable respuesta para la observación \( i \).
-
-- \( X_i \) es la variable predictora para la observación \( i \).
-
-- \( \beta_0 \) es el **intercepto**.
-
-- \( \beta_1 \) es la **pendiente**.
-
-- \( \varepsilon_i \) es el **error aleatorio** asociado a la observación \( i \).
-
+Los errores representan la diferencia entre los valores observados \( Y_i \) y la verdadera relación lineal de la población. **No son observables**, ya que dependen de los coeficientes poblacionales \( \beta_0 \) y \( \beta_1 \), que son desconocidos.
 
 
 </br></br>
-<h2>Estimadores MCO</h2>
+<h3>Estimación de los coeficientes</h3>
 
-Los coeficientes \( \beta_0 \) y \( \beta_1 \) se estiman mediante **mínimos cuadrados ordinarios (MCO)**, minimizando la suma de los cuadrados de los errores. La solución óptima en términos matriciales es:
 
+La forma matricial de los estimadores de los coeficientes del modelo es la siguiente:
 
 \[
 \hat{\boldsymbol{\beta}} = (\mathbf{X}^\top \mathbf{X})^{-1} \mathbf{X}^\top \mathbf{Y}
 \]
 
-Desglosando los cálculos:
-
-\[
-\hat{\beta}_1 = \frac{\sum_{i=1}^{n} (X_i - \bar{X})(Y_i - \bar{Y})}{\sum_{i=1}^{n} (X_i - \bar{X})^2}
-\]
-
-\[
-\hat{\beta}_0 = \bar{Y} - \hat{\beta}_1 \bar{X}
-\]
-
-donde \( \bar{X} \) y \( \bar{Y} \) son las medias muestrales de \( X \) y \( Y \).
-
-
-
-
-</br></br>
-<h2>Valores ajustados (predichos)</h2>
-
-
-Los valores ajustados (predichos) se determina como:
+Con esta estimación, los valores ajustados (\(\hat{\mathbf{Y}}\)) y los residuales (\(\hat{\boldsymbol{\varepsilon}}\)) se calculan como:
 
 \[
 \hat{\mathbf{Y}} = \mathbf{X} \hat{\boldsymbol{\beta}}
 \]
 
-lo que en términos escalares se expresa como:
-
 \[
-\hat{Y}_i = \hat{\beta}_0 + \hat{\beta}_1 X_i.
+\hat{\boldsymbol{\varepsilon}} = \mathbf{Y} - \hat{\mathbf{Y}}
 \]
-
-
-</br></br>
-<h2>Errores del modelo</h2>
-
-Los errores se expresan como:
-
-\[
-\mathbf{e} = \mathbf{Y} - \hat{\mathbf{Y}}
-\]
-
-o, en términos escalares:
-
-\[
-e_i = Y_i - \hat{Y}_i.
-\]
-
 
 
 
@@ -143,21 +132,31 @@ e_i = Y_i - \hat{Y}_i.
 <h3>Ejemplo:</h3>
 <p>
 
-Continuando con el modelo de regresión lineal de la Resistencia y  la Edad.
-
-El modelo de **regresión lineal simple** se expresa en términos matriciales como:
+Continuando con el modelo de regresión lineal entre la **Resistencia** y la **Edad**, su representación en términos matriciales es:
 
 \[
 \mathbf{Y} = \mathbf{X} \boldsymbol{\beta} + \boldsymbol{\varepsilon}
 \]
 
+donde:
+
+- \( \mathbf{Y} \) es el **vector de respuesta**, que contiene los valores observados de la **Resistencia**.
+
+- \( \mathbf{X} \) es la **matriz de diseño**, que incluye una columna de unos (para el intercepto) y una columna con los valores de la **Edad**.
+
+- \( \boldsymbol{\beta} \) es el **vector de coeficientes**, que contiene el intercepto \( \beta_0 \) y la pendiente \( \beta_1 \).
+
+- \( \boldsymbol{\varepsilon} \) es el **vector de errores**.
+
+
+
 
 ---
 
-
+<br/>
 1. **Matriz de diseño \( \mathbf{X} \)**
 
-\( \mathbf{X} \) es la **matriz de diseño**, con una columna de unos para el intercepto y otra con los valores de Edad.
+Matemáticamente, la **matriz de diseño** \( \mathbf{X} \) se expresa como:  
 
 \[
 \mathbf{X} =
@@ -182,7 +181,7 @@ El modelo de **regresión lineal simple** se expresa en términos matriciales co
 1 & X_{18}\\
 1 & X_{19}\\
 1 & X_{20}
-\end{bmatrix}=
+\end{bmatrix} =
 \begin{bmatrix}
 1 & 15.50 \\
 1 & 23.75 \\
@@ -208,10 +207,13 @@ El modelo de **regresión lineal simple** se expresa en términos matriciales co
 \]
 
 
+<br/>
 2. **Vector de respuestas \( \mathbf{Y} \)**
 
-\( \mathbf{Y} \) es el **vector de respuestas** y corresponde a las resistencias observadas.
 
+El **vector de respuestas** \( \mathbf{Y} \) contiene las **resistencias observadas**, que representan la variable dependiente del modelo de **regresión lineal simple**.  
+
+Matemáticamente, se expresa como:  
 
 \[
 \mathbf{Y} =
@@ -235,8 +237,8 @@ Y_{16}\\
 Y_{17}\\ 
 Y_{18}\\ 
 Y_{19}\\ 
-Y_{20}\\
-\end{bmatrix}=
+Y_{20}
+\end{bmatrix} =
 \begin{bmatrix}
 2158.70 \\
 1678.15 \\
@@ -260,31 +262,56 @@ Y_{20}\\
 1753.70
 \end{bmatrix}
 \]
+ 
 
+<br/>
 3. **Vector de coeficientes**
 
-\( \boldsymbol{\beta} \) es el **vector de coeficientes** del modelo (\(\beta_0\) y \(\beta_1\)).
+El **vector de coeficientes** \( \boldsymbol{\beta} \) contiene los **parámetros del modelo**, que incluyen el **intercepto** (\(\beta_0\)) y la **pendiente** (\(\beta_1\)).  
 
 \[
 \boldsymbol{\beta} =
 \begin{bmatrix}
 \beta_0 \\
-\beta_1 \\
+\beta_1
 \end{bmatrix}
 \]
 
-4. **Vector de errores**
-
-\( \boldsymbol{\varepsilon} \) es el **vector de errores**, donde cada componente
-se determina como:
-
-
+Sustituyendo los valores estimados en el modelo:
 
 \[
-e_i = Y_i - \hat{Y}_i = Y_i - \hat{\beta}_0 - \hat{\beta}_1 X_i
+\widehat{\boldsymbol{\beta}} =
+\begin{bmatrix}
+2627.82 \\
+-37.15
+\end{bmatrix}
 \]
 
-Expresando cada componente del vector de errores:
+donde:
+
+- \( \widehat{\beta}_0 = 2627.82 \) representa el **intercepto**, es decir, la resistencia estimada cuando la edad es cero.
+
+- \( \widehat{\beta}_1 = -37.15 \) representa la **pendiente**, indicando que por cada unidad adicional en la **edad**, la resistencia disminuye en promedio 37.15 unidades.
+
+
+<br/>
+4. **Vector de residuos**
+
+Nuevamente, insistiendo en la diferencia, en un modelo de regresión, es importante diferenciar entre los **errores** y los **residuales**:  
+
+- **Errores \( \boldsymbol{\varepsilon} \)**: Representan la diferencia entre los valores observados \( Y_i \) y la verdadera relación lineal de la población. 
+
+\[
+\varepsilon_i = Y_i - \beta_0 - \beta_1 X_i
+\]
+
+- **Residuos o residuales \( \mathbf{e} \)**: Son la diferencia entre los valores observados \( Y_i \) y los valores ajustados \( \hat{Y}_i \) obtenidos con los coeficientes estimados \( \hat{\beta}_0 \) y \( \hat{\beta}_1 \). Los residuales se pueden calcular y analizar, a diferencia de los errores.
+
+\[
+\hat{\boldsymbol{\varepsilon}_i}= e_i = Y_i - \hat{Y}_i = Y_i - \hat{\beta}_0 - \hat{\beta}_1 X_i
+\]
+
+El vector de residuos se expresa como:
 
 \[
 \mathbf{e} =
@@ -335,13 +362,39 @@ Y_{20} - \hat{\beta}_0 - \hat{\beta}_1 X_{20}
 \end{bmatrix}
 \]
 
-donde:
+El vector de residuos se expresa como:
 
-- \( Y_i \) representa el valor observado de la variable respuesta (Resistencia).
+\[
+\mathbf{e} =
+\begin{bmatrix}
+106.7583  \\
+-67.2746  \\
+-14.5936  \\
+65.0887   \\
+-215.9776 \\
+-213.6041 \\
+48.5638   \\
+40.0616   \\
+8.7296    \\
+37.5671   \\
+20.3743   \\
+-88.9464  \\
+80.8174   \\
+71.1752   \\
+-45.1434  \\
+94.4423   \\
+9.4992    \\
+37.0975   \\
+100.6848  \\
+-75.3202
+\end{bmatrix}
+\]
 
-- \( X_i \) es la variable predictora (Edad).
+donde cada residuo \( e_i \) se obtiene como la diferencia entre la resistencia observada \( Y_i \) y la predicción del modelo \( \hat{Y}_i \):
 
-- \( \hat{\beta}_0 \) y \( \hat{\beta}_1 \) son las estimaciones de los coeficientes del modelo.
+\[
+e_i = Y_i - \hat{Y}_i
+\]
 
 
 

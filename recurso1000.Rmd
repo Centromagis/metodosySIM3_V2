@@ -241,6 +241,21 @@ output$intervalos_prediccion <- renderPlot({
 shinyApp(ui, server)
 </pre>
 
+</p>
+</div>
+
+
+</br></br>
+<h3>Tablero interactivo</h3>
+
+
+El tablero interactivo está disponible en:  
+<https://sandra-milena-ramirez-buelvas.shinyapps.io/tablero/>
+
+
+
+</br></br>
+<h3>Código del tablero interactivo</h3>
 
 El código completo que se debe renderizar en **R** es el siguiente:
 
@@ -476,6 +491,4 @@ shinyApp(ui, server)
 
 
 
-</p>
-</div>
 

@@ -477,7 +477,7 @@ print("Resultados de la prueba de correlación de Pearson:")
 print(cor_pearson)
 ```
 
-Los resultados del test de normalidad de Shapiro-Wilk para ambas variables no rechazan la hipotesis de normalidad con una significancia del 5%, valor-p = 0.264 valor-p = 0.9178 son mayores a 0.05.
+Los resultados del test de normalidad de Shapiro-Wilk para ambas variables no rechazan la hipotesis de normalidad con una significancia del 5%, \( valor-p = 0.264 \) y   \( valor-p = 0.9178 \)  son mayores a \( 0.05 \).
 
 
 <pre>
@@ -501,7 +501,7 @@ Dado que los **supuestos requeridos para la prueba de correlación de Pearson se
 
 - **Hipótesis alternativa (\(H_1\))**: Existe una asociación lineal significativa entre el número de policías y el número de delitos en los pueblos, es decir, \( \rho \neq 0 \).
 
-Si el valor-p=9.985e-10 obtenido en la prueba es menor que el nivel de significancia (\(\alpha = 0.05\)), se rechazará la hipótesis nula, lo que indicaría que existe evidencia estadística suficiente para afirmar la existencia de una correlación lineal significativa entre ambas variables con una significancia del 5%.
+Si el \( valor-p = 9.985 \times 10^{-10} \) obtenido en la prueba es menor que el nivel de significancia (\(\alpha = 0.05\)), se rechazará la hipótesis nula, lo que indicaría que existe evidencia estadística suficiente para afirmar la existencia de una correlación lineal significativa entre ambas variables con una significancia del 5%.
 
 <pre>
 Pearson's product-moment correlation
@@ -703,7 +703,7 @@ Los **asteriscos (**\***, **\*\***, **\*\*\***)** indican el **nivel de signific
 
 
 -  **\( *** \) (tres asteriscos)**: Correlación **altamente significativa** puesto que
-el \( valor-p < 0.001 \), lo que significa que la probabilidad de obtener esta correlación por azar es menor al 0.01.
+el \( valor-p < 0.001 \), lo que significa que la probabilidad de obtener esta correlación por azar es menor al \( 0.01 \).
 
 - **\( ** \) (dos asteriscos)**: Correlación **significativa** ya que 
 el \( valor-0 < 0.01 \), menos estricta pero aún con una probabilidad baja de ocurrencia por azar.
@@ -738,7 +738,7 @@ Para determinar la validez del **test de correlación de Pearson**, es necesario
 
 - En la mayoría de los casos, la varianza de una variable respecto a la otra es **aproximadamente constante**. Se observan indicios de **heterocedasticidad** en **área foliar vs. altura** y **área foliar vs. diámetro**, lo que puede afectar la validez de la correlación de Pearson en estos casos.
 
-- Se aplicó el **test de Shapiro-Wilk** para evaluar la hipótesis de normalidad en cada variable considerando un nivel de significancia del **5%** (\( \alpha = 0.05 \)). Los resultados muestran que las variables **biomasa aérea**, **biomasa total** y **área foliar** presentan valores-p menores a 0.05, lo que indica que sus distribuciones no siguen un comportamiento normal y, por lo tanto, se rechaza la hipótesis de normalidad en estos casos.
+- Se aplicó el **test de Shapiro-Wilk** para evaluar la hipótesis de normalidad en cada variable considerando un nivel de significancia del **5%** (\( \alpha = 0.05 \)). Los resultados muestran que las variables **biomasa aérea**, **biomasa total** y **área foliar** presentan valores-p menores a \( 0.05 \), lo que indica que sus distribuciones no siguen un comportamiento normal y, por lo tanto, se rechaza la hipótesis de normalidad en estos casos.
 
 - La **Figura 3.7** presenta diagramas de caja que permiten visualizar la distribución y la presencia de valores atípicos en las variables **biomasa aérea**, **biomasa total** y **área foliar**.
 

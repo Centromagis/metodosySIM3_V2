@@ -716,7 +716,7 @@ Se ajusta un **modelo de regresión lineal simple** para explicar la variable **
 El modelo estimado es el siguiente:
 
 \[
-\hat{\text{Peso}} = -37.1552 + 2.9002 \times \text{Circunferencia del cuello}
+\hat{\text{Peso}} = -37.1552 + 2.9002 \times \text{Circunferencia del cuello}\\ \varepsilon_i \sim N(0, \hat{\sigma}^2=5.936^2)
 \]
 
 Ambos coeficientes son **estadísticamente significativos**, con valores-p de **\(5.33 \times 10^{-5}\)** y **\( < 2 \times 10^{-16}\)**, respectivamente.
@@ -787,7 +787,7 @@ knitr::include_graphics("img/fig348.png")
 
 Dado que existe una observación alejada de la nube de datos, se realizan gráficos de residuales y se calcula la distancia de Cook para todas las observaciones. Representar gráficamente estas distancias permite identificar posibles puntos influyentes que podrían afectar significativamente los coeficientes del modelo.
 
-Las **Figuras 3.49** muestran que las observaciones **11 y 51** presentan los valores más altos de **distancia de Cook**. Sin embargo, dichos valores son inferiores a 1, lo que sugiere que no ejercen una influencia significativa en el ajuste del modelo.
+Las **Figuras 3.49** muestran que las observaciones **11 y 51** presentan los valores más altos de **distancia de Cook**. Sin embargo, en principio se puede decir que dichos valores son inferiores a 1, lo que sugiere que no ejercen una influencia significativa en el ajuste del modelo.
 
 
 <pre>
@@ -827,8 +827,6 @@ knitr::include_graphics("img/fig349.png")
 
 
 ---
-
-El análisis de residuos es una herramienta fundamental para verificar el cumplimiento de los **supuestos de la regresión lineal**. 
 
 La **Figura 3.50** presenta los **gráficos de diagnóstico de residuos**, en los cuales se identifican varias observaciones que requieren un análisis más detallado: **11, 51, 8 y 40**. 
 
@@ -955,7 +953,7 @@ knitr::include_graphics("img/fig351.png")
 
 
 
-La **Figura 3.52** muestra la relación entre la **distancia de Cook** y el **leverage** para cada observación en el modelo. Se incluyen **líneas de referencia** para los umbrales de leverage y distancia de Cook. La figura mmuestra que las observaciones **11 y 51** se destacan sobre el resto, en particular la **51** con mayor leverage y distancia de Cook.  
+La **Figura 3.52** muestra la relación entre la **distancia de Cook** y el **leverage** para cada observación en el modelo. Se incluyen **líneas de referencia** para los umbrales de leverage y distancia de Cook. La figura muestra que las observaciones **11 y 51** se destacan sobre el resto, en particular la **51** con mayor leverage y distancia de Cook.  
 
 
 <pre>
