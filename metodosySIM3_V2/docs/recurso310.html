@@ -313,13 +313,16 @@ $(document).ready(function () {
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Pruebas de Hipótesis
+    Tests y R Cuadrado
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="recurso400.html">Sobre los Coeficientes</a>
+      <a href="recurso400.html">Pruebas de Hipótesis</a>
+    </li>
+    <li>
+      <a href="recurso410.html">R Cuadrado</a>
     </li>
   </ul>
 </li>
@@ -833,7 +836,7 @@ beta_1 <- coef(modelo_ponderado)[2]  # Pendiente estimada
 # Se calculan los valores ajustados manualmente utilizando la ecuación del modelo
 y_hat_manual <- beta_0 + beta_1 * x  
 
-# Cálculo de los Residuales ---
+# Cálculo de los Residuales 
 # Los residuales ordinarios representan la diferencia entre los valores observados y los valores ajustados
 residuales_ordinarios <- y - y_hat_manual  
 
@@ -924,11 +927,11 @@ x<-datos$x
 y<-datos$y
 w<-datos$w
 
-# Ajuste del Modelo de Regresión Lineal Ponderada ---
+# Ajuste del Modelo de Regresión Lineal Ponderada 
 # Se ajusta un modelo de regresión lineal ponderada usando 'w' como pesos
 modelo_ponderado <- lm(y ~ x, weights = w)  
 
-# Obtención de Valores Ajustados y Residuales ---
+# Obtención de Valores Ajustados y Residuales 
 # Valores ajustados (predicciones) obtenidos a partir del modelo ajustado por R
 y_hat_r <- fitted(modelo_ponderado)
 
@@ -938,7 +941,7 @@ residuales_r <- residuals(modelo_ponderado)
 # Residuales de Pearson: Residuales ordinarios escalados por la varianza estimada
 residuales_pearson_r <- residuals(modelo_ponderado, type = "pearson")
 
-# Comparación de Resultados Manuales y de R ---
+# Comparación de Resultados Manuales y de R 
 # Se verifica si los cálculos manuales coinciden con los generados por R
 
 comparacion_resultados <- data.frame(
@@ -964,11 +967,11 @@ x&lt;-datos$x
 y&lt;-datos$y
 w&lt;-datos$w
 
-# Ajuste del Modelo de Regresión Lineal Ponderada ---
+# Ajuste del Modelo de Regresión Lineal Ponderada 
 # Se ajusta un modelo de regresión lineal ponderada usando &#39;w&#39; como pesos
 modelo_ponderado &lt;- lm(y ~ x, weights = w)  
 
-# Obtención de Valores Ajustados y Residuales ---
+# Obtención de Valores Ajustados y Residuales 
 # Valores ajustados (predicciones) obtenidos a partir del modelo ajustado por R
 y_hat_r &lt;- fitted(modelo_ponderado)
 
@@ -978,7 +981,7 @@ residuales_r &lt;- residuals(modelo_ponderado)
 # Residuales de Pearson: Residuales ordinarios escalados por la varianza estimada
 residuales_pearson_r &lt;- residuals(modelo_ponderado, type = &quot;pearson&quot;)
 
-# Comparación de Resultados Manuales y de R ---
+# Comparación de Resultados Manuales y de R 
 # Se verifica si los cálculos manuales coinciden con los generados por R
 
 comparacion_resultados &lt;- data.frame(
