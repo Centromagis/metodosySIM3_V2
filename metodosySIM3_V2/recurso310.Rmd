@@ -316,7 +316,7 @@ beta_1 <- coef(modelo_ponderado)[2]  # Pendiente estimada
 # Se calculan los valores ajustados manualmente utilizando la ecuación del modelo
 y_hat_manual <- beta_0 + beta_1 * x  
 
-# Cálculo de los Residuales ---
+# Cálculo de los Residuales 
 # Los residuales ordinarios representan la diferencia entre los valores observados y los valores ajustados
 residuales_ordinarios <- y - y_hat_manual  
 
@@ -416,11 +416,11 @@ x<-datos$x
 y<-datos$y
 w<-datos$w
 
-# Ajuste del Modelo de Regresión Lineal Ponderada ---
+# Ajuste del Modelo de Regresión Lineal Ponderada 
 # Se ajusta un modelo de regresión lineal ponderada usando 'w' como pesos
 modelo_ponderado <- lm(y ~ x, weights = w)  
 
-# Obtención de Valores Ajustados y Residuales ---
+# Obtención de Valores Ajustados y Residuales 
 # Valores ajustados (predicciones) obtenidos a partir del modelo ajustado por R
 y_hat_r <- fitted(modelo_ponderado)
 
@@ -430,7 +430,7 @@ residuales_r <- residuals(modelo_ponderado)
 # Residuales de Pearson: Residuales ordinarios escalados por la varianza estimada
 residuales_pearson_r <- residuals(modelo_ponderado, type = "pearson")
 
-# Comparación de Resultados Manuales y de R ---
+# Comparación de Resultados Manuales y de R 
 # Se verifica si los cálculos manuales coinciden con los generados por R
 
 comparacion_resultados <- data.frame(
@@ -459,11 +459,11 @@ x<-datos$x
 y<-datos$y
 w<-datos$w
 
-# Ajuste del Modelo de Regresión Lineal Ponderada ---
+# Ajuste del Modelo de Regresión Lineal Ponderada 
 # Se ajusta un modelo de regresión lineal ponderada usando 'w' como pesos
 modelo_ponderado <- lm(y ~ x, weights = w)  
 
-# Obtención de Valores Ajustados y Residuales ---
+# Obtención de Valores Ajustados y Residuales 
 # Valores ajustados (predicciones) obtenidos a partir del modelo ajustado por R
 y_hat_r <- fitted(modelo_ponderado)
 
@@ -473,7 +473,7 @@ residuales_r <- residuals(modelo_ponderado)
 # Residuales de Pearson: Residuales ordinarios escalados por la varianza estimada
 residuales_pearson_r <- residuals(modelo_ponderado, type = "pearson")
 
-# Comparación de Resultados Manuales y de R ---
+# Comparación de Resultados Manuales y de R 
 # Se verifica si los cálculos manuales coinciden con los generados por R
 
 comparacion_resultados <- data.frame(

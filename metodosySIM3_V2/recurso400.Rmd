@@ -1,5 +1,5 @@
 ---
-title: <span style="color:#686868"> **Sobre los Coeficientes**</span>
+title: <span style="color:#686868"> **Pruebas de Hipótesis y R Cuadrado**</span>
 author: "Métodos y Simulación Estadística"
 output:
   html_document:
@@ -786,63 +786,3 @@ El modelo de regresión lineal simple resultante se puede expresar como:
 </div>
 
 
-
-
-</br></br>
-<h2>Coeficiente de determinación</h2>
-
-En una **regresión lineal**, el **coeficiente de determinación** ($R^2$) y el **$R^2$ ajustado** son medidas que evalúan qué tan bien el modelo explica la variabilidad de la variable respuesta ($Y$). Mientras que el $R^2$ mide la proporción de variabilidad explicada, el $R^2$ ajustado penaliza la inclusión de variables irrelevantes.
-
-
-</br></br>
-<h3>Definición de $R^2$</h3>
-
-El coeficiente de determinación $R^2$ se define como:
-
-$$
-R^2 = 1 - \frac{\sum_{i=1}^{n} (y_i - \hat{y}_i)^2}{\sum_{i=1}^{n} (y_i - \bar{y})^2}
-$$
-
-donde:
-
-- $y_i$ son los valores observados de la variable respuesta.
-
-- $\hat{y}_i$ son los valores predichos por el modelo.
-
-- $\bar{y}$ es el promedio de los valores observados de la variable respuesta.
-
-</br>
-El $R^2$ varía entre **0 y 1**:
-
-- $R^2 = 0.9$ indica que el modelo explica el 90% de la variabilidad de $Y$.
-
-- $R^2 = 0$ significa que el modelo no explica nada de la variabilidad de $Y$.
-
-Un problema con $R^2$ es que **siempre aumenta** cuando se añaden más variables al modelo, incluso si esas variables no son útiles. Para corregir esto, se usa el **$R^2$ ajustado**.
-
-
-</br></br>
-<h3>Definición de $R^2$ ajustado</h3>
-
-El **$R^2$ ajustado** penaliza la inclusión de variables irrelevantes y se calcula como:
-
-$$
-R^2_{\text{ajustado}} = 1 - \left( \frac{(1 - R^2)(n - 1)}{n - k - 1} \right)
-$$
-
-donde:
-
-- $n$ es el número de observaciones.
-
-- $k$ es el número de variables explicativas (excluyendo la constante).
-
-
-</br></br>
-<div class="caja-ejemplo">
-<h3>Ejemplo:</h3>
-<p>
-
-En el ejemplo anterior, la variable Edad explica el 89.64% de la Resistencia.
-
-</p>
-</div>

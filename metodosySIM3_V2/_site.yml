@@ -33,10 +33,12 @@ navbar:
           href: recurso310.html 
         - text: "Revisión de Supuestos"
           href: recurso320.html  
-    - text: "Pruebas de Hipótesis"
+    - text: "Tests y R Cuadrado"
       menu:
-        - text: "Sobre los Coeficientes"
-          href: recurso400.html   
+        - text: "Pruebas de Hipótesis"
+          href: recurso400.html 
+        - text: "R Cuadrado"
+          href: recurso410.html   
     - text: "Transformaciones"
       menu:
         - text: "Transformaciones"
