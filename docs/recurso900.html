@@ -300,15 +300,6 @@ $(document).ready(function () {
     <li>
       <a href="recurso230.html">Forma Matricial del Modelo</a>
     </li>
-  </ul>
-</li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Diagnóstico
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
     <li>
       <a href="recurso300.html">Supuestos</a>
     </li>
@@ -322,13 +313,16 @@ $(document).ready(function () {
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Pruebas de Hipótesis
+    Tests y R Cuadrado
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="recurso400.html">Sobre los Coeficientes</a>
+      <a href="recurso400.html">Pruebas de Hipótesis</a>
+    </li>
+    <li>
+      <a href="recurso410.html">R Cuadrado</a>
     </li>
   </ul>
 </li>
@@ -342,15 +336,6 @@ $(document).ready(function () {
     <li>
       <a href="recurso500.html">Transformaciones</a>
     </li>
-  </ul>
-</li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Modelos polinomiales
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
     <li>
       <a href="recurso600.html">Modelos Polinomiales</a>
     </li>
@@ -358,7 +343,7 @@ $(document).ready(function () {
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Predicción
+    Predicción e Intervalos
      
     <span class="caret"></span>
   </a>
@@ -366,17 +351,8 @@ $(document).ready(function () {
     <li>
       <a href="recurso700.html">Intervalo de Confianza</a>
     </li>
-  </ul>
-</li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Intervalos de Confianza
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="recurso800.html">Coeficientes y Varianza</a>
+      <a href="recurso800.html">Intervalos de C. de Coeficientes y Varianza</a>
     </li>
   </ul>
 </li>
@@ -1139,7 +1115,7 @@ explicar la variable <strong>Peso</strong> en función de la
 <p>El modelo estimado es el siguiente:</p>
 <p><span class="math display">\[
 \hat{\text{Peso}} = -37.1552 + 2.9002 \times \text{Circunferencia del
-cuello}
+cuello}\\ \varepsilon_i \sim N(0, \hat{\sigma}^2=5.936^2)
 \]</span></p>
 <p>Ambos coeficientes son <strong>estadísticamente
 significativos</strong>, con valores-p de <strong><span
@@ -1210,9 +1186,9 @@ permite identificar posibles puntos influyentes que podrían afectar
 significativamente los coeficientes del modelo.</p>
 <p>Las <strong>Figuras 3.49</strong> muestran que las observaciones
 <strong>11 y 51</strong> presentan los valores más altos de
-<strong>distancia de Cook</strong>. Sin embargo, dichos valores son
-inferiores a 1, lo que sugiere que no ejercen una influencia
-significativa en el ajuste del modelo.</p>
+<strong>distancia de Cook</strong>. Sin embargo, en principio se puede
+decir que dichos valores son inferiores a 1, lo que sugiere que no
+ejercen una influencia significativa en el ajuste del modelo.</p>
 <pre>
 # Calcular residuos estandarizados
 residuos_est <- rstandard(mod1)
@@ -1243,9 +1219,6 @@ influenceIndexPlot(mod1, vars="Cook", main="Índice de Influencia - Distancia de
 </center>
 <p><br/><br/></p>
 <hr />
-<p>El análisis de residuos es una herramienta fundamental para verificar
-el cumplimiento de los <strong>supuestos de la regresión
-lineal</strong>.</p>
 <p>La <strong>Figura 3.50</strong> presenta los <strong>gráficos de
 diagnóstico de residuos</strong>, en los cuales se identifican varias
 observaciones que requieren un análisis más detallado: <strong>11, 51, 8
@@ -1370,7 +1343,7 @@ regresión.
 <strong>distancia de Cook</strong> y el <strong>leverage</strong> para
 cada observación en el modelo. Se incluyen <strong>líneas de
 referencia</strong> para los umbrales de leverage y distancia de Cook.
-La figura mmuestra que las observaciones <strong>11 y 51</strong> se
+La figura muestra que las observaciones <strong>11 y 51</strong> se
 destacan sobre el resto, en particular la <strong>51</strong> con mayor
 leverage y distancia de Cook.</p>
 <pre>

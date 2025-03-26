@@ -82,7 +82,8 @@ En ambas formulaciones:
 En esta representación, la variable respuesta \( Y_i \) se expresa como la suma de un término **determinístico** \( \beta_0 + \beta_1 X_i \) y un **error aleatorio** \( \varepsilon_i \), el cual sigue una **distribución normal** con **media cero** y **varianza constante**:
 
 $$
-Y_i = \beta_0 + \beta_1 X_i + \varepsilon_i, \quad \varepsilon_i \sim N(0, \sigma^2)
+Y_i = \beta_0 + \beta_1 X_i + \varepsilon_i \\
+\varepsilon_i \sim N(0, \sigma^2)
 $$
 
 - En esta formulación, la variabilidad de \( Y_i \) proviene tanto de la **relación lineal con \( X_i \)** como del **componente aleatorio** \( \varepsilon_i \).
@@ -102,7 +103,8 @@ $$
 En esta formulación, la variable respuesta \( Y_i \) se modela directamente como una **variable aleatoria normal**, cuya **esperanza condicional depende de** \( X_i \), mientras que su **varianza permanece constante**:
 
 $$
-Y_i \mid X_i \sim N(E[Y_i | X_i], \sigma^2), \quad E[Y_i | X_i] = \beta_0 + \beta_1 X_i, \quad \sigma^2 = \text{constante}
+Y_i \mid X_i \sim N(E[Y_i | X_i], \sigma^2) \\ 
+\mu_i=E[Y_i | X_i] = \beta_0 + \beta_1 X_i \\ \sigma^2 = \text{constante}
 $$
 
 - En esta representación, \( Y_i \) se interpreta como **una realización de una variable aleatoria normal**, donde su media depende linealmente de \( X_i \) y su varianza es fija.
@@ -110,6 +112,13 @@ $$
 - Para cada valor fijo de \( X_i \), la distribución de \( Y_i \) se mantiene normal, pero con media variable según la ecuación \( \beta_0 + \beta_1 X_i \).
 
 - Esta formulación enfatiza la **distribución condicional** de \( Y_i \), dejando claro que la varianza \( \sigma^2 \) no depende de \( X_i \).
+
+
+<div class="caja-nota">
+> *"En ambos enfoques, el vector de parámetros del modelo está dado por  
+\(\theta = (\beta_0, \beta_1, \sigma)^\top\).  Para estimar estos parámetros, se emplean comúnmente dos métodos: **mínimos cuadrados** y **máxima verosimilitud**"*
+</div>
+ 
 
 
 ---
@@ -136,11 +145,11 @@ Por lo tanto, **el supuesto de independencia en la regresión lineal se aplica a
 
 La **Figura 3.10** proporciona una representación clara del cumplimiento de supuestos fundamentales en el análisis de regresión. En particular, permite evaluar:
 
-- **El supuesto de normalidad de la variable \( Y \)**: La distribución de \( Y \) indica un comportamiento aproximadamente normal.
+- **El supuesto de normalidad de la variable  respuesta condicionada a cada valor de la variable predictora**: La distribución de \( Y_i \) condicionada a \( X_i \) indica un comportamiento aproximadamente normal.
 
-- **La dependencia de la media \( \mu \) con \( X \)**: Se observa  la relación entre \( X \) y \( Y \) es lineal.
+- **La  media de la variable respuesta cambia de acuerdo con la ecuación de la recta determinada por la variable predictora**:   La media condicional cambia según la ecuación \( \beta_0 + \beta_1 X_i \).
 
--  **La varianza constante (homocedasticidad)**: Se analiza que la dispersión de los valores de \( Y \) respecto a \( X \) permanece constante a lo largo de toda la escala de \( X \).
+-  **La varianza constante (homocedasticidad)**: Se analiza que la dispersión de los valores de \( Y_i \) respecto a \( X_i \) permanece constante a lo largo de toda la escala de los valores de la variable predictora.
 
 
 ```{r,eval=FALSE,warning=FALSE,message=FALSE,include=FALSE}
@@ -273,7 +282,7 @@ knitr::include_graphics("img/fig311.png")
 
 
 
-Por otro lado, en la **Figura 3.12**, la distribución de la curva **roja** no sigue una normal, sino que muestra un comportamiento más parecido a una **distribución exponencial**. Esta condición puede afectar la validez de los estimadores en un modelo de regresión, ya que se incumple el supuesto de normalidad.
+Por otro lado, en la **Figura 3.12**, la distribución de la curva **roja** no sigue una normal, sino que muestra un comportamiento más parecido a una **distribución gamma**. Esta condición puede afectar la validez de los estimadores en un modelo de regresión, ya que se incumple el supuesto de normalidad.
 
 ```{r,eval=FALSE,warning=FALSE,message=FALSE,include=FALSE}
 Sys.setlocale("LC_ALL", "es_ES.UTF-8")
@@ -303,7 +312,7 @@ for (i in seq_along(selected_x)) {
   if (x_val == 10) {  # Aplicar la distribución exponencial solo para X = 10
     rate <- 1 / 20  # Parámetro de la exponencial para tener media 20
     y_vals <- seq(min(y), max(y) + 10, length.out = 100)  # Ajustar el rango para una mejor forma
-    density <- dexp(y_vals - min(y_vals) + 1, rate = rate)  # Evitar valores negativos
+    density <- dgamma(y_vals - min(y_vals) + 0.5, shape=2.9,scale=7)  # Evitar valores negativos
     density <- density / max(density) * 5  # Escalar la densidad para mejor visualización
   } else {
     var_factor <- ifelse(i == 2, sd_error * 0.7, sd_error)
@@ -316,7 +325,7 @@ for (i in seq_along(selected_x)) {
   density_data <- rbind(density_data, temp_data)
 }
 
-plot3_norm<-ggplot() +
+ggplot() +
   geom_line(data = data, aes(x = x, y = y_pred), color = "black", linewidth = 1) +
   geom_line(data = density_data, aes(x = x + density, y = y, group = x, color = factor(x)), linewidth = 0.8) +
   scale_color_manual(values = c("red", "blue", "green", "purple", "orange", "brown")) +
@@ -327,9 +336,10 @@ plot3_norm<-ggplot() +
    coord_cartesian(xlim = c(min(x), 28)) +
   theme(legend.position = "bottom")
 
-print(plot3_norm)
 
 ```
+
+
 
 <br/><br/>
 <center>
@@ -397,12 +407,12 @@ Otra opción para plantear el modelo de regresión lineal simple es la siguiente
 
 ---
 
-Para que la regresión lineal proporcione resultados válidos, es necesario que el término de error \(\varepsilon\) cumpla con los siguientes supuestos:
+Para que la regresión lineal proporcione resultados válidos, es necesario que el término de error \(\varepsilon_i\) cumpla con los siguientes supuestos:
 
 1. **Normalidad del error**: Se asume que los errores siguen una distribución normal con media cero y varianza constante:
 
    \[
-   \varepsilon \sim N(0, \sigma^2)
+   \varepsilon_i \sim N(0, \sigma^2)
    \]
 
 2. **Homocedasticidad (varianza constante del error)**: La varianza de los errores debe ser **constante** para todos los valores de la variable explicativa:
@@ -414,6 +424,19 @@ Para que la regresión lineal proporcione resultados válidos, es necesario que 
 3. **Independencia de los errores**: Los errores del modelo no deben estar correlacionados.
 
 El cumplimiento de estos supuestos es fundamental para la validez de las inferencias estadísticas realizadas a partir del modelo. En caso de que estos supuestos no se cumplan, se pueden considerar transformaciones de los datos o el uso de modelos alternativos.
+
+
+<div class="caja-nota">
+> "Los **supuestos** del modelo de regresión lineal son:
+>
+- Los errores tienen distribución normal.
+>
+- Los errores tienen media cero.
+>
+- Los errores tienen varianza constante.
+>
+- Los errores no están correlacionados."
+</div>
 
 ---
 
@@ -503,7 +526,7 @@ Otro aspecto importante es que la **dispersión de los puntos parece constante**
 ```{r, echo=FALSE, out.width="80%", fig.align = "center"}
 knitr::include_graphics("img/fig313.png")
 ```
-**Figura 3.13** Relación entre Resistencia y Edad.
+**Figura 3.13** Relación lineal entre las variables Resistencia y Edad.
 </center>
 <br/><br/>
 
@@ -534,13 +557,13 @@ En esta salida se presentan los **coeficientes estimados** del modelo de regresi
 
 - **Intercepto estimado (\(\hat{\beta}_0 = 2627.82\))**: La resistencia esperada de la soldadura cuando la **edad es cero** es de 2627.82 psi.
 
-- **Pendiente estimada (\(\hat{\beta}_1 = -37.15\))**: Indica que, por cada **semana de aumento en la edad de la soldadura**, la resistencia **disminuye en promedio en 37.15 psi**.
+- **Pendiente estimada (\(\hat{\beta}_1 = -37.15\))**: Indica que, por cada **semana de aumento en la edad de la soldadura**, la resistencia disminuye en promedio en 37.15 psi.
 
-- **Desviación estándar estimada de los errores (\(\hat{\sigma} = 96.11\))**: La dispersión de los residuos en torno a la línea de regresión es de 96.11 psi. 
+- **Desviación estándar estimada de los errores (\(\hat{\sigma} = 96.11\))**: La dispersión estimada de los errores en torno a la línea de regresión es de aproximadamente 96.11 psi. 
 
 A partir de estos valores, el modelo de regresión se puede expresar de dos maneras:
 
- 1. En términos de la distribución de \( Y \) 
+ 1. En términos de la distribución de la variable respuesta: 
 
 \[
 \widehat{\text{Resistencia}}_i \sim N(\hat{\mu}_i, \hat{\sigma}^2)
@@ -570,7 +593,7 @@ Aquí, el término del error aleatorio **\(\varepsilon_i\)** se incluye explíci
 
 **Expresión matemática de los valores predichos o ajustados**
 
-Matemáticamente, los valores ajustados en el modelo de regresión se expresan como:
+Matemáticamente, los **valores ajustados** o **predichos** en el modelo de regresión se expresan como:
 
 \[
 \widehat{Y}_i = \widehat{\beta}_0 + \widehat{\beta}_1 \times X_i
@@ -588,15 +611,17 @@ Donde **\(\widehat{Y}_i\)** representa la **resistencia predicha** para la edad 
 
 El objeto `mod1$fitted.values` en **R** almacena los valores ajustados del modelo de regresión para cada observación en los datos. 
 
+---
+
 **Expresión matemática de los residuales**
 
-Matemáticamente, los **residuales (\(e_i\))** en un modelo de regresión lineal se definen como:
+Los **residuales del modelo ajustado** permiten analizar el comportamiento de los **errores del modelo**. Matemáticamente, los **residuales (\(e_i\))** en un modelo de regresión lineal se definen como:
 
 \[
 \widehat{\varepsilon}_i =e_i= Y_i - \widehat{Y}_i
 \]
 
-Los **residuales son los estimadores del error**. El objeto `mod1$residuals` en **R** almacena la diferencia entre los valores observados y los valores ajustados del modelo. El análisis de los residuales es fundamental para validar los supuestos del modelo de regresión  y garantizar que las inferencias obtenidas sean confiables.
+El objeto `mod1$residuals` en **R** almacena la diferencia entre los valores observados y los valores ajustados del modelo. El análisis de los residuales es fundamental para validar los supuestos del modelo de regresión  y garantizar que las inferencias obtenidas sean confiables.
 
 Los siguientes códigos en **R** permiten obtener las **predicciones de la resistencia** para los valores de la **edad** y calcular los **residuales del modelo** de regresión después de su ajuste:
 
@@ -728,5 +753,10 @@ La **Figura 3.14** muestra lo siguiente:
 
 
 </p>
+</div>
+
+
+<div class="caja-nota">
+> *"Los **residuales del modelo de regresión lineal ajustado no corresponden exactamente a los errores**, sino que representan una estimación de estos. Su análisis permite evaluar si los supuestos sobre los errores del modelo se cumplen, proporcionando información clave sobre su comportamiento."*
 </div>
 

@@ -300,15 +300,6 @@ $(document).ready(function () {
     <li>
       <a href="recurso230.html">Forma Matricial del Modelo</a>
     </li>
-  </ul>
-</li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Diagnóstico
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
     <li>
       <a href="recurso300.html">Supuestos</a>
     </li>
@@ -322,13 +313,16 @@ $(document).ready(function () {
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Pruebas de Hipótesis
+    Tests y R Cuadrado
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="recurso400.html">Sobre los Coeficientes</a>
+      <a href="recurso400.html">Pruebas de Hipótesis</a>
+    </li>
+    <li>
+      <a href="recurso410.html">R Cuadrado</a>
     </li>
   </ul>
 </li>
@@ -342,23 +336,14 @@ $(document).ready(function () {
     <li>
       <a href="recurso500.html">Transformaciones</a>
     </li>
-  </ul>
-</li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Modelos polinomiales
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="recurso600.html">Modelos polinomiales</a>
+      <a href="recurso600.html">Modelos Polinomiales</a>
     </li>
   </ul>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Predicción
+    Predicción e Intervalos
      
     <span class="caret"></span>
   </a>
@@ -366,17 +351,8 @@ $(document).ready(function () {
     <li>
       <a href="recurso700.html">Intervalo de Confianza</a>
     </li>
-  </ul>
-</li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Intervalos de Confianza
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="recurso800.html">Coeficientes y varianza</a>
+      <a href="recurso800.html">Intervalos de C. de Coeficientes y Varianza</a>
     </li>
   </ul>
 </li>
@@ -388,10 +364,19 @@ $(document).ready(function () {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="recurso900.html">Punto atípico e influyente</a>
+      <a href="recurso900.html">Punto Atípico e Influyente</a>
     </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Tablero
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="recurso910.html">Distancia de Cook</a>
+      <a href="recurso1000.html">Tablero usando Shiny</a>
     </li>
   </ul>
 </li>
@@ -403,7 +388,7 @@ $(document).ready(function () {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="recurso1000.html">Referencias</a>
+      <a href="recurso2000.html">Referencias</a>
     </li>
   </ul>
 </li>
@@ -444,49 +429,90 @@ eficiente. Esto facilita la estimación de los coeficientes, el cálculo
 de valores ajustados y el análisis de los residuales.</p>
 </br></br>
 <h2>
-Modelo
+Regresión Lineal Simple en Forma Matricial
 </h2>
-<p>El modelo de <strong>regresión lineal simple</strong> puede
-expresarse en términos matriciales como:</p>
+<p>La <strong>regresión lineal simple</strong> en forma matricial se
+expresa como:</p>
 <p><span class="math display">\[
 \mathbf{Y} = \mathbf{X} \boldsymbol{\beta} + \boldsymbol{\varepsilon}
 \]</span></p>
 <p>donde:</p>
 <ul>
 <li><p><span class="math inline">\(\mathbf{Y}\)</span> es el
-<strong>vector de respuestas</strong> (variable dependiente).</p></li>
+<strong>vector de respuesta</strong> de dimensión <span
+class="math inline">\(n \times 1\)</span>, que contiene las
+observaciones de la variable dependiente.</p></li>
 <li><p><span class="math inline">\(\mathbf{X}\)</span> es la
-<strong>matriz de diseño</strong>, que en el caso de una sola variable
-predictora incluye una columna de unos para el intercepto.</p></li>
+<strong>matriz de diseño</strong> de dimensión <span
+class="math inline">\(n \times 2\)</span>, que incluye una columna de
+unos (para el intercepto) y una columna con los valores de la variable
+independiente.</p></li>
 <li><p><span class="math inline">\(\boldsymbol{\beta}\)</span> es el
-<strong>vector de parámetros del modelo</strong> (intercepto y
-pendiente).</p></li>
+<strong>vector de coeficientes</strong> de dimensión <span
+class="math inline">\(2 \times 1\)</span>, que contiene el intercepto
+<span class="math inline">\(\beta_0\)</span> y la pendiente <span
+class="math inline">\(\beta_1\)</span>.</p></li>
 <li><p><span class="math inline">\(\boldsymbol{\varepsilon}\)</span> es
-el <strong>vector de errores aleatorios</strong>.</p></li>
+el <strong>vector de errores</strong> de dimensión <span
+class="math inline">\(n \times 1\)</span>.</p></li>
 </ul>
-<p>Para el caso de <strong>regresión lineal simple</strong>, donde hay
-<strong>una única variable predictora <span
-class="math inline">\(X\)</span></strong>, la forma matricial del modelo
-se representa como se muestra a continuación:</p>
+</br></br>
+<h2>
+Matrices en detalle
+</h2>
+</br></br>
+<h3>
+Matriz de diseño <span class="math inline">\(\mathbf{X}\)</span>
+</h3>
 <p><span class="math display">\[
-\begin{bmatrix}
-Y_1 \\
-Y_2 \\
-\vdots \\
-Y_n
-\end{bmatrix}
-=
+\mathbf{X} =
 \begin{bmatrix}
 1 &amp; X_1 \\
 1 &amp; X_2 \\
 \vdots &amp; \vdots \\
 1 &amp; X_n
 \end{bmatrix}
+\]</span></p>
+<p>La primera columna es de unos para representar el intercepto <span
+class="math inline">\(\beta_0\)</span>, y la segunda columna contiene
+los valores de la variable independiente <span
+class="math inline">\(X\)</span>.</p>
+</br></br>
+<h3>
+Vector de coeficientes <span
+class="math inline">\(\boldsymbol{\beta}\)</span>
+</h3>
+<p><span class="math display">\[
+\boldsymbol{\beta} =
 \begin{bmatrix}
 \beta_0 \\
 \beta_1
 \end{bmatrix}
-+
+\]</span></p>
+<p>Este vector contiene los parámetros del modelo, que deben estimarse a
+partir de los datos.</p>
+</br></br>
+<h3>
+Vector de respuesta <span class="math inline">\(\mathbf{Y}\)</span>
+</h3>
+<p><span class="math display">\[
+\mathbf{Y} =
+\begin{bmatrix}
+Y_1 \\
+Y_2 \\
+\vdots \\
+Y_n
+\end{bmatrix}
+\]</span></p>
+<p>Este es el vector de valores observados de la variable
+dependiente.</p>
+</br></br>
+<h3>
+Vector de errores <span
+class="math inline">\(\boldsymbol{\varepsilon}\)</span>
+</h3>
+<p><span class="math display">\[
+\boldsymbol{\varepsilon} =
 \begin{bmatrix}
 \varepsilon_1 \\
 \varepsilon_2 \\
@@ -494,69 +520,31 @@ Y_n
 \varepsilon_n
 \end{bmatrix}
 \]</span></p>
-<p>donde:</p>
-<ul>
-<li><p><span class="math inline">\(Y_i\)</span> es la variable respuesta
-para la observación <span class="math inline">\(i\)</span>.</p></li>
-<li><p><span class="math inline">\(X_i\)</span> es la variable
-predictora para la observación <span
-class="math inline">\(i\)</span>.</p></li>
-<li><p><span class="math inline">\(\beta_0\)</span> es el
-<strong>intercepto</strong>.</p></li>
-<li><p><span class="math inline">\(\beta_1\)</span> es la
-<strong>pendiente</strong>.</p></li>
-<li><p><span class="math inline">\(\varepsilon_i\)</span> es el
-<strong>error aleatorio</strong> asociado a la observación <span
-class="math inline">\(i\)</span>.</p></li>
-</ul>
+<p>Los errores representan la diferencia entre los valores observados
+<span class="math inline">\(Y_i\)</span> y la verdadera relación lineal
+de la población. <strong>No son observables</strong>, ya que dependen de
+los coeficientes poblacionales <span
+class="math inline">\(\beta_0\)</span> y <span
+class="math inline">\(\beta_1\)</span>, que son desconocidos.</p>
 </br></br>
-<h2>
-Estimadores MCO
-</h2>
-<p>Los coeficientes <span class="math inline">\(\beta_0\)</span> y <span
-class="math inline">\(\beta_1\)</span> se estiman mediante
-<strong>mínimos cuadrados ordinarios (MCO)</strong>, minimizando la suma
-de los cuadrados de los errores. La solución óptima en términos
-matriciales es:</p>
+<h3>
+Estimación de los coeficientes
+</h3>
+<p>La forma matricial de los estimadores de los coeficientes del modelo
+es la siguiente:</p>
 <p><span class="math display">\[
 \hat{\boldsymbol{\beta}} = (\mathbf{X}^\top \mathbf{X})^{-1}
 \mathbf{X}^\top \mathbf{Y}
 \]</span></p>
-<p>Desglosando los cálculos:</p>
-<p><span class="math display">\[
-\hat{\beta}_1 = \frac{\sum_{i=1}^{n} (X_i - \bar{X})(Y_i -
-\bar{Y})}{\sum_{i=1}^{n} (X_i - \bar{X})^2}
-\]</span></p>
-<p><span class="math display">\[
-\hat{\beta}_0 = \bar{Y} - \hat{\beta}_1 \bar{X}
-\]</span></p>
-<p>donde <span class="math inline">\(\bar{X}\)</span> y <span
-class="math inline">\(\bar{Y}\)</span> son las medias muestrales de
-<span class="math inline">\(X\)</span> y <span
-class="math inline">\(Y\)</span>.</p>
-</br></br>
-<h2>
-Valores ajustados (predichos)
-</h2>
-<p>Los valores ajustados (predichos) se determina como:</p>
+<p>Con esta estimación, los valores ajustados (<span
+class="math inline">\(\hat{\mathbf{Y}}\)</span>) y los residuales (<span
+class="math inline">\(\hat{\boldsymbol{\varepsilon}}\)</span>) se
+calculan como:</p>
 <p><span class="math display">\[
 \hat{\mathbf{Y}} = \mathbf{X} \hat{\boldsymbol{\beta}}
 \]</span></p>
-<p>lo que en términos escalares se expresa como:</p>
 <p><span class="math display">\[
-\hat{Y}_i = \hat{\beta}_0 + \hat{\beta}_1 X_i.
-\]</span></p>
-</br></br>
-<h2>
-Errores del modelo
-</h2>
-<p>Los errores se expresan como:</p>
-<p><span class="math display">\[
-\mathbf{e} = \mathbf{Y} - \hat{\mathbf{Y}}
-\]</span></p>
-<p>o, en términos escalares:</p>
-<p><span class="math display">\[
-e_i = Y_i - \hat{Y}_i.
+\hat{\boldsymbol{\varepsilon}} = \mathbf{Y} - \hat{\mathbf{Y}}
 \]</span></p>
 </br></br>
 <div class="caja-ejemplo">
@@ -564,21 +552,33 @@ e_i = Y_i - \hat{Y}_i.
 Ejemplo:
 </h3>
 <p>
-<p>Continuando con el modelo de regresión lineal de la Resistencia y la
-Edad.</p>
-<p>El modelo de <strong>regresión lineal simple</strong> se expresa en
-términos matriciales como:</p>
+<p>Continuando con el modelo de regresión lineal entre la
+<strong>Resistencia</strong> y la <strong>Edad</strong>, su
+representación en términos matriciales es:</p>
 <p><span class="math display">\[
 \mathbf{Y} = \mathbf{X} \boldsymbol{\beta} + \boldsymbol{\varepsilon}
 \]</span></p>
+<p>donde:</p>
+<ul>
+<li><p><span class="math inline">\(\mathbf{Y}\)</span> es el
+<strong>vector de respuesta</strong>, que contiene los valores
+observados de la <strong>Resistencia</strong>.</p></li>
+<li><p><span class="math inline">\(\mathbf{X}\)</span> es la
+<strong>matriz de diseño</strong>, que incluye una columna de unos (para
+el intercepto) y una columna con los valores de la
+<strong>Edad</strong>.</p></li>
+<li><p><span class="math inline">\(\boldsymbol{\beta}\)</span> es el
+<strong>vector de coeficientes</strong>, que contiene el intercepto
+<span class="math inline">\(\beta_0\)</span> y la pendiente <span
+class="math inline">\(\beta_1\)</span>.</p></li>
+<li><p><span class="math inline">\(\boldsymbol{\varepsilon}\)</span> es
+el <strong>vector de errores</strong>.</p></li>
+</ul>
 <hr />
-<ol style="list-style-type: decimal">
-<li><strong>Matriz de diseño <span
-class="math inline">\(\mathbf{X}\)</span></strong></li>
-</ol>
-<p><span class="math inline">\(\mathbf{X}\)</span> es la <strong>matriz
-de diseño</strong>, con una columna de unos para el intercepto y otra
-con los valores de Edad.</p>
+<p><br/> 1. <strong>Matriz de diseño <span
+class="math inline">\(\mathbf{X}\)</span></strong></p>
+<p>Matemáticamente, la <strong>matriz de diseño</strong> <span
+class="math inline">\(\mathbf{X}\)</span> se expresa como:</p>
 <p><span class="math display">\[
 \mathbf{X} =
 \begin{bmatrix}
@@ -602,7 +602,7 @@ con los valores de Edad.</p>
 1 &amp; X_{18}\\
 1 &amp; X_{19}\\
 1 &amp; X_{20}
-\end{bmatrix}=
+\end{bmatrix} =
 \begin{bmatrix}
 1 &amp; 15.50 \\
 1 &amp; 23.75 \\
@@ -626,12 +626,13 @@ con los valores de Edad.</p>
 1 &amp; 21.50
 \end{bmatrix}
 \]</span></p>
-<ol start="2" style="list-style-type: decimal">
-<li><strong>Vector de respuestas <span
-class="math inline">\(\mathbf{Y}\)</span></strong></li>
-</ol>
-<p><span class="math inline">\(\mathbf{Y}\)</span> es el <strong>vector
-de respuestas</strong> y corresponde a las resistencias observadas.</p>
+<p><br/> 2. <strong>Vector de respuestas <span
+class="math inline">\(\mathbf{Y}\)</span></strong></p>
+<p>El <strong>vector de respuestas</strong> <span
+class="math inline">\(\mathbf{Y}\)</span> contiene las
+<strong>resistencias observadas</strong>, que representan la variable
+dependiente del modelo de <strong>regresión lineal simple</strong>.</p>
+<p>Matemáticamente, se expresa como:</p>
 <p><span class="math display">\[
 \mathbf{Y} =
 \begin{bmatrix}
@@ -654,8 +655,8 @@ Y_{16}\\
 Y_{17}\\
 Y_{18}\\
 Y_{19}\\
-Y_{20}\\
-\end{bmatrix}=
+Y_{20}
+\end{bmatrix} =
 \begin{bmatrix}
 2158.70 \\
 1678.15 \\
@@ -679,30 +680,67 @@ Y_{20}\\
 1753.70
 \end{bmatrix}
 \]</span></p>
-<ol start="3" style="list-style-type: decimal">
-<li><strong>Vector de coeficientes</strong></li>
-</ol>
-<p><span class="math inline">\(\boldsymbol{\beta}\)</span> es el
-<strong>vector de coeficientes</strong> del modelo (<span
-class="math inline">\(\beta_0\)</span> y <span
-class="math inline">\(\beta_1\)</span>).</p>
+<p><br/> 3. <strong>Vector de coeficientes</strong></p>
+<p>El <strong>vector de coeficientes</strong> <span
+class="math inline">\(\boldsymbol{\beta}\)</span> contiene los
+<strong>parámetros del modelo</strong>, que incluyen el
+<strong>intercepto</strong> (<span
+class="math inline">\(\beta_0\)</span>) y la <strong>pendiente</strong>
+(<span class="math inline">\(\beta_1\)</span>).</p>
 <p><span class="math display">\[
 \boldsymbol{\beta} =
 \begin{bmatrix}
 \beta_0 \\
-\beta_1 \\
+\beta_1
 \end{bmatrix}
 \]</span></p>
-<ol start="4" style="list-style-type: decimal">
-<li><strong>Vector de errores</strong></li>
-</ol>
-<p><span class="math inline">\(\boldsymbol{\varepsilon}\)</span> es el
-<strong>vector de errores</strong>, donde cada componente se determina
-como:</p>
+<p>Sustituyendo los valores estimados en el modelo:</p>
 <p><span class="math display">\[
-e_i = Y_i - \hat{Y}_i = Y_i - \hat{\beta}_0 - \hat{\beta}_1 X_i
+\widehat{\boldsymbol{\beta}} =
+\begin{bmatrix}
+2627.82 \\
+-37.15
+\end{bmatrix}
 \]</span></p>
-<p>Expresando cada componente del vector de errores:</p>
+<p>donde:</p>
+<ul>
+<li><p><span class="math inline">\(\widehat{\beta}_0 = 2627.82\)</span>
+representa el <strong>intercepto</strong>, es decir, la resistencia
+estimada cuando la edad es cero.</p></li>
+<li><p><span class="math inline">\(\widehat{\beta}_1 = -37.15\)</span>
+representa la <strong>pendiente</strong>, indicando que por cada unidad
+adicional en la <strong>edad</strong>, la resistencia disminuye en
+promedio 37.15 unidades.</p></li>
+</ul>
+<p><br/> 4. <strong>Vector de residuos</strong></p>
+<p>Nuevamente, insistiendo en la diferencia, en un modelo de regresión,
+es importante diferenciar entre los <strong>errores</strong> y los
+<strong>residuales</strong>:</p>
+<ul>
+<li><strong>Errores <span
+class="math inline">\(\boldsymbol{\varepsilon}\)</span></strong>:
+Representan la diferencia entre los valores observados <span
+class="math inline">\(Y_i\)</span> y la verdadera relación lineal de la
+población.</li>
+</ul>
+<p><span class="math display">\[
+\varepsilon_i = Y_i - \beta_0 - \beta_1 X_i
+\]</span></p>
+<ul>
+<li><strong>Residuos o residuales <span
+class="math inline">\(\mathbf{e}\)</span></strong>: Son la diferencia
+entre los valores observados <span class="math inline">\(Y_i\)</span> y
+los valores ajustados <span class="math inline">\(\hat{Y}_i\)</span>
+obtenidos con los coeficientes estimados <span
+class="math inline">\(\hat{\beta}_0\)</span> y <span
+class="math inline">\(\hat{\beta}_1\)</span>. Los residuales se pueden
+calcular y analizar, a diferencia de los errores.</li>
+</ul>
+<p><span class="math display">\[
+\hat{\boldsymbol{\varepsilon}_i}= e_i = Y_i - \hat{Y}_i = Y_i -
+\hat{\beta}_0 - \hat{\beta}_1 X_i
+\]</span></p>
+<p>El vector de residuos se expresa como:</p>
 <p><span class="math display">\[
 \mathbf{e} =
 \begin{bmatrix}
@@ -751,16 +789,39 @@ Y_{19} - \hat{\beta}_0 - \hat{\beta}_1 X_{19} \\
 Y_{20} - \hat{\beta}_0 - \hat{\beta}_1 X_{20}
 \end{bmatrix}
 \]</span></p>
-<p>donde:</p>
-<ul>
-<li><p><span class="math inline">\(Y_i\)</span> representa el valor
-observado de la variable respuesta (Resistencia).</p></li>
-<li><p><span class="math inline">\(X_i\)</span> es la variable
-predictora (Edad).</p></li>
-<li><p><span class="math inline">\(\hat{\beta}_0\)</span> y <span
-class="math inline">\(\hat{\beta}_1\)</span> son las estimaciones de los
-coeficientes del modelo.</p></li>
-</ul>
+<p>El vector de residuos se expresa como:</p>
+<p><span class="math display">\[
+\mathbf{e} =
+\begin{bmatrix}
+106.7583  \\
+-67.2746  \\
+-14.5936  \\
+65.0887   \\
+-215.9776 \\
+-213.6041 \\
+48.5638   \\
+40.0616   \\
+8.7296    \\
+37.5671   \\
+20.3743   \\
+-88.9464  \\
+80.8174   \\
+71.1752   \\
+-45.1434  \\
+94.4423   \\
+9.4992    \\
+37.0975   \\
+100.6848  \\
+-75.3202
+\end{bmatrix}
+\]</span></p>
+<p>donde cada residuo <span class="math inline">\(e_i\)</span> se
+obtiene como la diferencia entre la resistencia observada <span
+class="math inline">\(Y_i\)</span> y la predicción del modelo <span
+class="math inline">\(\hat{Y}_i\)</span>:</p>
+<p><span class="math display">\[
+e_i = Y_i - \hat{Y}_i
+\]</span></p>
 </p>
 </div>
 

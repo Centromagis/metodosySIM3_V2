@@ -27,33 +27,29 @@ navbar:
           href: recurso220.html 
         - text: "Forma Matricial del Modelo"
           href: recurso230.html           
-    - text: "Diagnóstico"
-      menu:
         - text: "Supuestos"
           href: recurso300.html
         - text: "Residuales"
           href: recurso310.html 
         - text: "Revisión de Supuestos"
           href: recurso320.html  
-    - text: "Pruebas de Hipótesis"
+    - text: "Tests y R Cuadrado"
       menu:
-        - text: "Sobre los Coeficientes"
-          href: recurso400.html   
+        - text: "Pruebas de Hipótesis"
+          href: recurso400.html 
+        - text: "R Cuadrado"
+          href: recurso410.html   
     - text: "Transformaciones"
       menu:
         - text: "Transformaciones"
           href: recurso500.html  
-    - text: "Modelos polinomiales"
-      menu:
         - text: "Modelos Polinomiales"
           href: recurso600.html  
-    - text: "Predicción"
+    - text: "Predicción e Intervalos"
       menu:
         - text: "Intervalo de Confianza"
           href: recurso700.html                 
-    - text: "Intervalos de Confianza"
-      menu:
-        - text: "Coeficientes y Varianza"
+        - text: "Intervalos de C. de Coeficientes y Varianza"
           href: recurso800.html         
     - text: "Atípicos e Influyentes"
       menu:

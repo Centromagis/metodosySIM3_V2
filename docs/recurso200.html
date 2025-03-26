@@ -300,15 +300,6 @@ $(document).ready(function () {
     <li>
       <a href="recurso230.html">Forma Matricial del Modelo</a>
     </li>
-  </ul>
-</li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Diagnóstico
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
     <li>
       <a href="recurso300.html">Supuestos</a>
     </li>
@@ -322,13 +313,16 @@ $(document).ready(function () {
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Pruebas de Hipótesis
+    Tests y R Cuadrado
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="recurso400.html">Sobre los Coeficientes</a>
+      <a href="recurso400.html">Pruebas de Hipótesis</a>
+    </li>
+    <li>
+      <a href="recurso410.html">R Cuadrado</a>
     </li>
   </ul>
 </li>
@@ -342,23 +336,14 @@ $(document).ready(function () {
     <li>
       <a href="recurso500.html">Transformaciones</a>
     </li>
-  </ul>
-</li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Modelos polinomiales
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="recurso600.html">Modelos polinomiales</a>
+      <a href="recurso600.html">Modelos Polinomiales</a>
     </li>
   </ul>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Predicción
+    Predicción e Intervalos
      
     <span class="caret"></span>
   </a>
@@ -366,17 +351,8 @@ $(document).ready(function () {
     <li>
       <a href="recurso700.html">Intervalo de Confianza</a>
     </li>
-  </ul>
-</li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Intervalos de Confianza
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="recurso800.html">Coeficientes y varianza</a>
+      <a href="recurso800.html">Intervalos de C. de Coeficientes y Varianza</a>
     </li>
   </ul>
 </li>
@@ -388,10 +364,19 @@ $(document).ready(function () {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="recurso900.html">Punto atípico e influyente</a>
+      <a href="recurso900.html">Punto Atípico e Influyente</a>
     </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Tablero
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="recurso910.html">Distancia de Cook</a>
+      <a href="recurso1000.html">Tablero usando Shiny</a>
     </li>
   </ul>
 </li>
@@ -403,7 +388,7 @@ $(document).ready(function () {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="recurso1000.html">Referencias</a>
+      <a href="recurso2000.html">Referencias</a>
     </li>
   </ul>
 </li>
@@ -525,8 +510,8 @@ class="math inline">\(\varepsilon_i\)</span>, el cual sigue una
 <strong>distribución normal</strong> con <strong>media cero</strong> y
 <strong>varianza constante</strong>:</p>
 <p><span class="math display">\[
-Y_i = \beta_0 + \beta_1 X_i + \varepsilon_i, \quad \varepsilon_i \sim
-N(0, \sigma^2)
+Y_i = \beta_0 + \beta_1 X_i + \varepsilon_i \\
+\varepsilon_i \sim N(0, \sigma^2)
 \]</span></p>
 <ul>
 <li><p>En esta formulación, la variabilidad de <span
@@ -555,8 +540,9 @@ condicional depende de</strong> <span
 class="math inline">\(X_i\)</span>, mientras que su <strong>varianza
 permanece constante</strong>:</p>
 <p><span class="math display">\[
-Y_i \mid X_i \sim N(E[Y_i | X_i], \sigma^2), \quad E[Y_i | X_i] =
-\beta_0 + \beta_1 X_i, \quad \sigma^2 = \text{constante}
+Y_i \mid X_i \sim N(E[Y_i | X_i], \sigma^2) \\
+\mu_i=E[Y_i | X_i] = \beta_0 + \beta_1 X_i \\ \sigma^2 =
+\text{constante}
 \]</span></p>
 <ul>
 <li><p>En esta representación, <span class="math inline">\(Y_i\)</span>
@@ -573,6 +559,16 @@ dejando claro que la varianza <span
 class="math inline">\(\sigma^2\)</span> no depende de <span
 class="math inline">\(X_i\)</span>.</p></li>
 </ul>
+<div class="caja-nota">
+<blockquote>
+<p><em>“En ambos enfoques, el vector de parámetros del modelo está dado
+por<br />
+<span class="math inline">\(\theta = (\beta_0, \beta_1,
+\sigma)^\top\)</span>. Para estimar estos parámetros, se emplean
+comúnmente dos métodos: <strong>mínimos cuadrados</strong> y
+<strong>máxima verosimilitud</strong>”</em></p>
+</blockquote>
+</div>
 <hr />
 <p>En el modelo de regresión, se asume que los <strong>errores <span
 class="math inline">\(\varepsilon_i\)</span> son independientes e
@@ -606,20 +602,20 @@ respuestas <span class="math inline">\(Y_i\)</span></strong>.</p>
 del cumplimiento de supuestos fundamentales en el análisis de regresión.
 En particular, permite evaluar:</p>
 <ul>
-<li><p><strong>El supuesto de normalidad de la variable <span
-class="math inline">\(Y\)</span></strong>: La distribución de <span
-class="math inline">\(Y\)</span> indica un comportamiento
+<li><p><strong>El supuesto de normalidad de la variable respuesta
+condicionada a cada valor de la variable predictora</strong>: La
+distribución de <span class="math inline">\(Y_i\)</span> condicionada a
+<span class="math inline">\(X_i\)</span> indica un comportamiento
 aproximadamente normal.</p></li>
-<li><p><strong>La dependencia de la media <span
-class="math inline">\(\mu\)</span> con <span
-class="math inline">\(X\)</span></strong>: Se observa la relación entre
-<span class="math inline">\(X\)</span> y <span
-class="math inline">\(Y\)</span> es lineal.</p></li>
+<li><p><strong>La media de la variable respuesta cambia de acuerdo con
+la ecuación de la recta determinada por la variable predictora</strong>:
+La media condicional cambia según la ecuación <span
+class="math inline">\(\beta_0 + \beta_1 X_i\)</span>.</p></li>
 <li><p><strong>La varianza constante (homocedasticidad)</strong>: Se
 analiza que la dispersión de los valores de <span
-class="math inline">\(Y\)</span> respecto a <span
-class="math inline">\(X\)</span> permanece constante a lo largo de toda
-la escala de <span class="math inline">\(X\)</span>.</p></li>
+class="math inline">\(Y_i\)</span> respecto a <span
+class="math inline">\(X_i\)</span> permanece constante a lo largo de
+toda la escala de los valores de la variable predictora.</p></li>
 </ul>
 <br/><br/>
 <center>
@@ -645,10 +641,9 @@ constante falla.
 <p><br/><br/></p>
 <p>Por otro lado, en la <strong>Figura 3.12</strong>, la distribución de
 la curva <strong>roja</strong> no sigue una normal, sino que muestra un
-comportamiento más parecido a una <strong>distribución
-exponencial</strong>. Esta condición puede afectar la validez de los
-estimadores en un modelo de regresión, ya que se incumple el supuesto de
-normalidad.</p>
+comportamiento más parecido a una <strong>distribución gamma</strong>.
+Esta condición puede afectar la validez de los estimadores en un modelo
+de regresión, ya que se incumple el supuesto de normalidad.</p>
 <br/><br/>
 <center>
 <img src="img/fig312.png" width="80%" style="display: block; margin: auto;" />
@@ -729,13 +724,13 @@ Varianza del <strong>error</strong>, que se asume
 <hr />
 <p>Para que la regresión lineal proporcione resultados válidos, es
 necesario que el término de error <span
-class="math inline">\(\varepsilon\)</span> cumpla con los siguientes
+class="math inline">\(\varepsilon_i\)</span> cumpla con los siguientes
 supuestos:</p>
 <ol style="list-style-type: decimal">
 <li><p><strong>Normalidad del error</strong>: Se asume que los errores
 siguen una distribución normal con media cero y varianza constante:</p>
 <p><span class="math display">\[
-\varepsilon \sim N(0, \sigma^2)
+\varepsilon_i \sim N(0, \sigma^2)
 \]</span></p></li>
 <li><p><strong>Homocedasticidad (varianza constante del error)</strong>:
 La varianza de los errores debe ser <strong>constante</strong> para
@@ -750,6 +745,18 @@ modelo no deben estar correlacionados.</p></li>
 las inferencias estadísticas realizadas a partir del modelo. En caso de
 que estos supuestos no se cumplan, se pueden considerar transformaciones
 de los datos o el uso de modelos alternativos.</p>
+<div class="caja-nota">
+<blockquote>
+<p>“Los <strong>supuestos</strong> del modelo de regresión lineal
+son:</p>
+<ul>
+<li><p>Los errores tienen distribución normal.</p></li>
+<li><p>Los errores tienen media cero.</p></li>
+<li><p>Los errores tienen varianza constante.</p></li>
+<li><p>Los errores no están correlacionados.”</p></li>
+</ul>
+</blockquote>
+</div>
 <hr />
 <p>En este ejemplo, se mostrará cómo obtener usando <strong>R</strong>
 las <strong>estimaciones de los parámetros</strong> <span
@@ -841,7 +848,8 @@ constante del error) se cumple en el modelo.</p>
 <br/><br/>
 <center>
 <img src="img/fig313.png" width="80%" style="display: block; margin: auto;" />
-<strong>Figura 3.13</strong> Relación entre Resistencia y Edad.
+<strong>Figura 3.13</strong> Relación lineal entre las variables
+Resistencia y Edad.
 </center>
 <p><br/><br/></p>
 <p>La salida del ajuste del modelo con la función <code>lm()</code> y
@@ -877,18 +885,17 @@ cero</strong> es de 2627.82 psi.</p></li>
 <li><p><strong>Pendiente estimada (<span
 class="math inline">\(\hat{\beta}_1 = -37.15\)</span>)</strong>: Indica
 que, por cada <strong>semana de aumento en la edad de la
-soldadura</strong>, la resistencia <strong>disminuye en promedio en
-37.15 psi</strong>.</p></li>
+soldadura</strong>, la resistencia disminuye en promedio en 37.15
+psi.</p></li>
 <li><p><strong>Desviación estándar estimada de los errores (<span
 class="math inline">\(\hat{\sigma} = 96.11\)</span>)</strong>: La
-dispersión de los residuos en torno a la línea de regresión es de 96.11
-psi.</p></li>
+dispersión estimada de los errores en torno a la línea de regresión es
+de aproximadamente 96.11 psi.</p></li>
 </ul>
 <p>A partir de estos valores, el modelo de regresión se puede expresar
 de dos maneras:</p>
 <ol style="list-style-type: decimal">
-<li>En términos de la distribución de <span
-class="math inline">\(Y\)</span></li>
+<li>En términos de la distribución de la variable respuesta:</li>
 </ol>
 <p><span class="math display">\[
 \widehat{\text{Resistencia}}_i \sim N(\hat{\mu}_i, \hat{\sigma}^2)
@@ -920,8 +927,9 @@ explicada por la edad.</p>
 <hr />
 <p><strong>Expresión matemática de los valores predichos o
 ajustados</strong></p>
-<p>Matemáticamente, los valores ajustados en el modelo de regresión se
-expresan como:</p>
+<p>Matemáticamente, los <strong>valores ajustados</strong> o
+<strong>predichos</strong> en el modelo de regresión se expresan
+como:</p>
 <p><span class="math display">\[
 \widehat{Y}_i = \widehat{\beta}_0 + \widehat{\beta}_1 \times X_i
 \]</span></p>
@@ -936,16 +944,18 @@ class="math inline">\(X_i\)</span>.</p>
 <p>El objeto <code>mod1$fitted.values</code> en <strong>R</strong>
 almacena los valores ajustados del modelo de regresión para cada
 observación en los datos.</p>
+<hr />
 <p><strong>Expresión matemática de los residuales</strong></p>
-<p>Matemáticamente, los <strong>residuales (<span
+<p>Los <strong>residuales del modelo ajustado</strong> permiten analizar
+el comportamiento de los <strong>errores del modelo</strong>.
+Matemáticamente, los <strong>residuales (<span
 class="math inline">\(e_i\)</span>)</strong> en un modelo de regresión
 lineal se definen como:</p>
 <p><span class="math display">\[
 \widehat{\varepsilon}_i =e_i= Y_i - \widehat{Y}_i
 \]</span></p>
-<p>Los <strong>residuales son los estimadores del error</strong>. El
-objeto <code>mod1$residuals</code> en <strong>R</strong> almacena la
-diferencia entre los valores observados y los valores ajustados del
+<p>El objeto <code>mod1$residuals</code> en <strong>R</strong> almacena
+la diferencia entre los valores observados y los valores ajustados del
 modelo. El análisis de los residuales es fundamental para validar los
 supuestos del modelo de regresión y garantizar que las inferencias
 obtenidas sean confiables.</p>
@@ -1079,6 +1089,15 @@ class="math inline">\(e_i\)</span></strong> se visualizan como
 con su correspondiente predicción.</p></li>
 </ul>
 </p>
+</div>
+<div class="caja-nota">
+<blockquote>
+<p><em>“Los <strong>residuales del modelo de regresión lineal ajustado
+no corresponden exactamente a los errores</strong>, sino que representan
+una estimación de estos. Su análisis permite evaluar si los supuestos
+sobre los errores del modelo se cumplen, proporcionando información
+clave sobre su comportamiento.”</em></p>
+</blockquote>
 </div>
 
 

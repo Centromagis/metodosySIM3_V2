@@ -70,7 +70,7 @@ Donde:
 El método consiste en encontrar los valores de \( \beta_0, \beta_1 \) y \( \sigma^2 \) que **maximizan función de verosimilitud conjunta** \( L(\beta_0, \beta_1, \sigma^2) \), es decir, los que hacen más probable haber observado los datos de la muestra.
 
 
-Bajo los supuestos de normalidad de los errores, se puede demostrar que los estimadores de máxima verosimilitud de \( \beta_0 \) y \( \beta_1 \) son **idénticos** a los obtenidos mediante **mínimos cuadrados ordinarios (MCO)**. Sin embargo, la **estimación de la varianza \( \sigma^2 \) difiere** entre ambos métodos:
+Bajo los supuestos de normalidad de los errores, se puede demostrar que los estimadores de máxima verosimilitud de \( \beta_0 \) y \( \beta_1 \) son **idénticos** a los obtenidos mediante **mínimos cuadrados ordinarios (MCO)**. Sin embargo, el **estimador de la varianza \( \sigma^2 \) difiere** entre ambos métodos:
 
 - **En MCO**, la varianza de los errores se estima como:
 
@@ -92,9 +92,9 @@ Resumiendo:
 
 - En la **regresión lineal bajo el enfoque de máxima verosimilitud**, **\( X_i \) se considera fijo y \( Y_i \) es una variable aleatoria**.
 
-- **Los estimadores EMV de \( \beta_0 \) y \( \beta_1 \) coinciden con los obtenidos por mínimos cuadrados ordinarios (MCO)**.
+- **Los estimadores EMV de \( \beta_0 \) y \( \beta_1 \), bajo normalidad,  coinciden con los obtenidos por mínimos cuadrados ordinarios (MCO)**.
 
-- **La estimación de la varianza \( \sigma^2 \) es diferente entre ambos métodos**: MCO usa \( n-2 \) para que sea insesgado, mientras que EMV usa \( n \), lo que introduce un pequeño sesgo pero mejora la eficiencia del estimador.
+- **El estimador de la varianza \( \sigma^2 \) es diferente entre ambos métodos**: MCO usa \( n-2 \)  y resulta un estimador insesgado, mientras que EMV usa \( n \), lo que introduce un pequeño sesgo pero mejora la eficiencia del estimador.
 
 
 
@@ -140,7 +140,7 @@ f(Y_i \mid X_i; \beta_0, \beta_1, \sigma^2) = \frac{1}{\sqrt{2\pi\sigma^2}}
 \exp \left\{ -\frac{(Y_i - \beta_0 - \beta_1 X_i)^2}{2\sigma^2} \right\}.
 $$
 
-En el modelo de regresión lineal, se asume que los **errores \( \varepsilon_i \) son independientes**, es decir:
+En el modelo de regresión lineal, se asume que los **errores \( \varepsilon_i \) son independientes e identicamente distribuidos**, es decir:
 
 $$
 \varepsilon_i \sim \text{i.i.d. } N(0, \sigma^2).
@@ -201,7 +201,7 @@ El uso del **logaritmo de la verosimilitud** simplifica la maximización de la f
 </br></br>
 <h4>Estimaciones máximo verosimil (EMV)</h4>
 
-Para obtener los **estimadores de máxima verosimilitud (EMV)** de los parámetros \( \beta_0, \beta_1 \) y \( \sigma^2 \), se resuelven las ecuaciones normales obtenidas al derivar la log-verosimilitud con respecto a cada parámetro e igualar a cero. **Los datos observados \( (x_i, y_i) \) se utilizan para inferir los parámetros desconocidos del modelo**, asegurando que la estimación se base en la mejor evidencia disponible.
+Para obtener los **estimadores de máxima verosimilitud (EMV)** de los parámetros \( \beta_0, \beta_1 \) y \( \sigma^2 \), se resuelven las ecuaciones normales obtenidas al derivar la log-verosimilitud con respecto a cada parámetro e igualar a cero. **Los datos observados \( (x_i, y_i) \) se utilizan para inferir los parámetros desconocidos del modelo**.
 
 1. **Estimadores de los coeficientes \( \beta_0 \) y \( \beta_1 \)**  
    Derivando respecto a \( \beta_0 \) y \( \beta_1 \), se obtiene que los EMV coinciden con los estimadores de **mínimos cuadrados ordinarios (MCO)**:
@@ -219,10 +219,18 @@ Para obtener los **estimadores de máxima verosimilitud (EMV)** de los parámetr
    $$
 
    
-De lo anterior se concluye que **los EMV de \( \beta_0 \) y \( \beta_1 \) coinciden con los estimadores obtenidos por MCO**.
+De lo anterior se concluye que bajo el supuesto de normalidad, **los EMV de \( \beta_0 \) y \( \beta_1 \) coinciden con los estimadores obtenidos por MCO**.
 **El estimador EMV de \( \sigma^2 \) es ligeramente sesgado**, pues usa \( n \) en lugar de \( n-2 \), pero es más eficiente en términos de varianza.
 
 
+<div class="caja-nota">
+> "Bajo el supuesto de normalidad, los EMV de \( \beta_0 \) y \( \beta_1 \) coinciden con los estimadores obtenidos por MCO."
+</div>
+
+
+<div class="caja-nota">
+> "El estimador EMV de \( \sigma^2 \) es ligeramente sesgado, pues usa \( n \) en lugar de \( n-2 \), pero es más eficiente en términos de varianza."
+</div>
 
 ---
 

@@ -129,7 +129,7 @@ knitr::include_graphics("img/fig317.png")
 
 La **Figura 3.17** presenta diferentes patrones que pueden observarse en un **QQ-Plot**:
 
-- **Gráfico con normalidad**:  Los puntos están alineados con la **línea de referencia** (recta roja), lo que indica que los errores siguen una **distribución normal**.
+- **Gráfico con normalidad**:  Los puntos están alineados con la **línea de referencia** (recta roja), lo que indica que los errores podrían seguir una **distribución normal**.
 
 - **Gráficos con "no normalidad"**: Entre los gráficos se observa que se presenta **curvatura en los extremos**  lo que indica **colas pesadas** o **distribución sesgada**. También hay **saturación de puntos en un extremo** lo que muestra la **presencia de valores atípicos** o distribución no simétrica. Adicionalmente se aprecia una **S marcada** lo que señala de una distribución bimodal o de una transformación incorrecta de los datos.
 
@@ -146,7 +146,7 @@ Para determinar **inferencialmente** si los errores del modelo de regresión sig
 
 - **\(H_1\)**: Los errores **no** siguen una distribución normal.
 
-Si el **valor-p** obtenido en el test es **mayor** que un nivel de significancia establecido \(\alpha\), no se rechaza \(H_0\), lo que sugiere que los errores pueden considerarse normales. Por el contrario, si el **valor-p** es menor que el nivel de significancia, se rechaza \(H_0\) en favor de \(H_1\), indicando que los errores **no** siguen una distribución normal.
+Si el \(valor-p \) obtenido en el test es **mayor** que un nivel de significancia establecido \(\alpha\), no se rechaza \(H_0\), lo que sugiere que los errores pueden considerarse normales. Por el contrario, si el \(valor-p \) es menor que el nivel de significancia, se rechaza \(H_0\) en favor de \(H_1\), indicando que los errores **no** siguen una distribución normal.
 
 **Algunos de los tests de normalidad antes estudiados son:**
  
@@ -165,7 +165,7 @@ Si el **valor-p** obtenido en el test es **mayor** que un nivel de significancia
 <h3>Ejemplo:</h3>
 <p>
 
-En este análisis, se busca modelar la variable respuesta \( Y \) en función de la variable predictora \( X \). Para garantizar la validez del modelo de regresión, es fundamental verificar el cumplimiento de los **supuestos estadísticos**, entre ellos el supuesto de **normalidad de los errores**.
+En este análisis, se busca modelar la variable respuesta \( Y \) en función de la variable predictora \( X \). Para analizar la validez del modelo de regresión, es fundamental verificar el cumplimiento de los **supuestos estadísticos**, entre ellos el supuesto de **normalidad de los errores**.
 
 Para ello, se utilizarán dos enfoques:
 
@@ -246,7 +246,7 @@ ei <- residuals(mod)
 shapiro.test(ei)
 ```
 
-La **Figura 3.18** muestra que los puntos del **gráfico de normalidad de los residuales estandarizados** (\( d_i \)) se alejan de la línea de referencia. Esto sugiere que los residuos no siguen aproximadamente una distribución normal, lo que **no apoya el supuesto de normalidad** de los errores.
+La **Figura 3.18** muestra que los puntos del **gráfico de normalidad de los residuales estandarizados** (\( d_i \)) se alejan de la línea de referencia. Esto sugiere que los errores no siguen aproximadamente una distribución normal, lo que **no apoya el supuesto de normalidad** de los errores.
 
 <br/><br/>
 <center>
@@ -277,7 +277,7 @@ W = 0.93259, p-value = 3.119e-14
 </pre>
 
 
-De la salida anterior se aprecia que el valor-p=3.119e-14 es menor que un nivel de significancia del 0.001, eso significa que  hay fuerte evidencia para rechazar  la hipótesis de normalidad de los errores.
+De la salida anterior se aprecia que el \(valor-p =3.119 \times 10^{-14} \) es menor que un nivel de significancia del \( 0.001 \), eso significa que  hay fuerte evidencia para rechazar  la hipótesis de normalidad de los errores.
 
 
 </p>
@@ -321,7 +321,7 @@ library(gridExtra)  # Para organizar múltiples gráficos
 
 set.seed(123)
 
-# --- 1. Simulación de datos con diferentes patrones de residuales ---
+# --- 1. Simulación de datos con diferentes patrones de residuales 
 
 # Homocedasticidad
 x1 <- seq(1, 100, length.out = 100)
@@ -348,7 +348,7 @@ modelo4 <- lm(y4 ~ x1)
 residuales4 <- residuals(modelo4)
 valores_ajustados4 <- fitted(modelo4)
 
-# --- 2. Crear gráficos de dispersión de residuales vs valores ajustados ---
+# --- 2. Crear gráficos de dispersión de residuales vs valores ajustados 
 
 grafico1 <- ggplot(data.frame(Ajustados = valores_ajustados1, Residuales = residuales1), aes(x = Ajustados, y = Residuales)) +
   geom_point(color = "black") +
@@ -543,7 +543,7 @@ library(lmtest)
 
 El siguiente análisis ajusta un **modelo de regresión lineal múltiple** para explicar \( Y \) en función de \( X_1 \) y \( X_2 \), y evalúa el **supuesto de homocedasticidad** mediante la **prueba de Breusch-Pagan**, tanto de forma manual como con la función `bptest()` del paquete `lmtest`. 
 
-Primero, se extraen los **residuales** del modelo ajustado y se construye un **modelo auxiliar** que modela la varianza de los residuos en función de las variables predictoras. Luego, se calcula el **estadístico de prueba** y su respectivo **valor-p** para determinar si los errores presentan varianza constante. 
+Primero, se extraen los **residuales** del modelo ajustado y se construye un **modelo auxiliar** que modela la varianza de los residuos en función de las variables predictoras. Luego, se calcula el **estadístico de prueba** y su respectivo \(valor-p \) para determinar si los errores presentan varianza constante. 
 
 Adicionalmente, se generan dos gráficos para visualizar la posible heterocedasticidad:
 
@@ -600,7 +600,7 @@ plot1.bt<-ggplot(data = datos, aes(x = y_ajustados, y = ei)) +
        y = "Residuales") +
   theme_minimal()
 
-#Gráfico de Raíz de Valor Absoluto de Residuales vs Valores Ajustados ---
+#Gráfico de Raíz de Valor Absoluto de Residuales vs Valores Ajustados 
 plot2.bt<-ggplot(data = datos, aes(x = y_ajustados, y = sqrt(abs(ei)))) +
   geom_point(color = "blue") +  # Puntos
   geom_smooth(method = "lm", se = FALSE, color = "red") +  # Línea de tendencia
@@ -662,7 +662,7 @@ plot1.bt<-ggplot(data = datos, aes(x = y_ajustados, y = ei)) +
        y = "Residuales") +
   theme_minimal()
 
-#Gráfico de Raíz de Valor Absoluto de Residuales vs Valores Ajustados ---
+#Gráfico de Raíz de Valor Absoluto de Residuales vs Valores Ajustados 
 plot2.bt<-ggplot(data = datos, aes(x = y_ajustados, y = sqrt(abs(ei)))) +
   geom_point(color = "blue") +  # Puntos
   geom_smooth(method = "lm", se = FALSE, color = "red") +  # Línea de tendencia
@@ -710,7 +710,7 @@ knitr::include_graphics("img/fig321.png")
 
 
 
-Los gráficos de las **Figura 3.20** y **3.21** se observa una estructura no aleatoria en los residuos, y el valor-p=0.01416 es menor a 0.02, por tanto se concluye la presencia de **heterocedasticidad** con una significancia del 2%.
+Los gráficos de las **Figura 3.20** y **3.21** se observa una estructura no aleatoria en los residuos, y el \(valor-p =0.01416 \) es menor a \( 0.02 \), por tanto se concluye la presencia de **heterocedasticidad** con una significancia del 2%.
 
 
 </p>
@@ -909,11 +909,11 @@ data:  mod
 BP = 10.446, df = 5, p-value = 0.06355
 </pre>
 
-Como el valor-p=0.06355 es mayor a 0.05, no hay  evidencia suficiente  para rechazar la hipótesis de homocedasticidad con una significancia del 5%.
+Como el \(valor-p=0.06355 \) es mayor a \(0.05\), no hay  evidencia suficiente  para rechazar la hipótesis de homocedasticidad con una significancia del 5%.
 
 El test de White se basa en modelar la varianza de los errores en función de los regresores y sus términos no lineales. Sin embargo, no todas las formas de heterocedasticidad pueden ser captadas por este modelo auxiliar.
 
-A pesar de la presencia de heterocedasticidad en los gráficos, el test no siempre produce un valor-p significativo, especialmente si la relación entre la varianza de los errores y los regresores es débil o no es bien representada por el modelo auxiliar.
+A pesar de la presencia de heterocedasticidad en los gráficos, el test no siempre produce un \(valor-p \) significativo, especialmente si la relación entre la varianza de los errores y los regresores es débil o no es bien representada por el modelo auxiliar.
 
 
 Para confirmar qué variable está realmente generando la heterocedasticidad, se deben analizar de manera separada los efectos de $X_1$ y $X_2$. A continuación se aplica el test de White considerando: solo a $X_1$ y solo a $X_2$.
@@ -937,7 +937,7 @@ datos <- read.table(file = file, header = TRUE)
 mod <- lm(y ~ x1 + x2, data = datos)
 residuos <- resid(mod)  # Residuos del modelo conjunto
 
-# Aplicación del Test de White considerando los residuos del modelo conjunto ----
+# Aplicación del Test de White considerando los residuos del modelo conjunto 
 
 # Test de White para X1
 fit_x1 <- lm(I(residuos^2) ~ x1 + I(x1^2), data = datos)
@@ -953,7 +953,7 @@ estadistico_x2 <- nrow(datos) * R2_x2
 valorP_x2 <- pchisq(q = estadistico_x2, df = 2, lower.tail = FALSE)
 cbind(estadistico_x2, valorP_x2)  # Mostrar resultados del test para X2
 
-# Visualización de los residuales al cuadrado vs X1 y X2 ----
+# Visualización de los residuales al cuadrado vs X1 y X2 
 
 # Gráfico de Residuales al cuadrado vs X1
 grafico_x1 <- ggplot(datos, aes(x = x1, y = residuos^2)) +
@@ -996,7 +996,7 @@ datos <- read.table(file = file, header = TRUE)
 mod <- lm(y ~ x1 + x2, data = datos)
 residuos <- resid(mod)  # Residuos del modelo conjunto
 
-# Aplicación del Test de White considerando los residuos del modelo conjunto ----
+# Aplicación del Test de White considerando los residuos del modelo conjunto 
 
 # Test de White para X1
 fit_x1 <- lm(I(residuos^2) ~ x1 + I(x1^2), data = datos)
@@ -1012,7 +1012,7 @@ estadistico_x2 <- nrow(datos) * R2_x2
 valorP_x2 <- pchisq(q = estadistico_x2, df = 2, lower.tail = FALSE)
 cbind(estadistico_x2, valorP_x2)  # Mostrar resultados del test para X2
 
-# Visualización de los residuales al cuadrado vs X1 y X2 ----
+# Visualización de los residuales al cuadrado vs X1 y X2 
 
 # Gráfico de Residuales al cuadrado vs X1
 grafico_x1 <- ggplot(datos, aes(x = x1, y = residuos^2)) +

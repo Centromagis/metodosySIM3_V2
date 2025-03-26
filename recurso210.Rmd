@@ -44,21 +44,14 @@ donde:
 Para estimar los coeficientes \(\beta_0\) y \(\beta_1\), se utiliza el **método de mínimos cuadrados ordinarios (MCO)**, que busca encontrar la mejor línea de ajuste minimizando la **suma de los cuadrados de los errores**:
 
 \[
-S(\beta_0, \beta_1) = \sum_{i=1}^{n} (Y_i - \widehat{Y}_i)^2= \sum_{i=1}^{n} (Y_i - \beta_0 - \beta_1 X_i)^2.
+S(\beta_0, \beta_1) = \sum_{i=1}^{n} (Y_i - \beta_0 - \beta_1 X_i)^2.
 \]
 
-El criterio de mínimos cuadrados garantiza que la línea ajustada sea aquella que **minimiza la distancia cuadrática total entre los valores observados \( Y_i \) y los valores predichos \( \widehat{Y}_i \)**.
-
-Este método es ampliamente utilizado debido a:
-
-- **Su simplicidad y facilidad de interpretación**.
-
-- **La optimalidad de los estimadores bajo ciertos supuestos**, como normalidad y homocedasticidad de los errores.
-
-- **Su eficiencia computacional**, permitiendo un ajuste rápido incluso en grandes conjuntos de datos.
+El criterio de mínimos cuadrados garantiza que la línea ajustada sea aquella que **minimiza la distancia cuadrática total entre los valores observados de la variable respuesta y los valores predichos por el modelo**.
 
 
-```{r,eval=FALSE,warning=FALSE,message=FALSE}
+
+```{r,eval=FALSE,warning=FALSE,message=FALSE,include=FALSE}
 Sys.setlocale("LC_ALL", "es_ES.UTF-8")
 
 
@@ -110,11 +103,11 @@ La **Figura 3.15** muestra la estimación de la recta de regresión mediante el 
 
 Los **puntos negros** representan los valores observados de **Resistencia** para cada **Edad**, mientras que los **puntos rojos** corresponden a los valores ajustados por la **recta de regresión óptima (gris)** obtenida con el método de mínimos cuadrados. Los **puntos verdes y azules** representan los valores ajustados por las rectas verde y azul, respectivamente.
 
-La **línea gris** es la **mejor recta de ajuste**, ya que **minimiza la suma de los cuadrados de los errores**, proporcionando la mejor estimación de la relación entre Edad y Resistencia. En contraste, las **líneas azul y verde** representan posibles rectas de ajuste alternativas con pendientes distintas, pero que no minimizan los errores de manera óptima.
+La **línea gris** es la **"mejor recta de ajuste"** para la muestra, ya que **minimiza la suma de los cuadrados de los residuos**, proporcionando la "mejor estimación de la relación entre Edad y Resistencia" para la muestra tomada. En contraste, las **líneas azul y verde** representan posibles rectas de ajuste alternativas con pendientes distintas, pero que no minimizan la suma de cuadrado de los residuos de manera óptima para la muestra analizada.
 
-Las **líneas verticales punteadas rojas** representan los **residuales** para la recta óptima, es decir, la diferencia entre los valores observados y los valores predichos por la regresión gris. Por otro lado, las **líneas punteadas azules y verdes** indican los errores para las regresiones azul y verde, respectivamente.
+Las **líneas verticales punteadas rojas** representan los **residuales** para la recta óptima, es decir, la diferencia entre los valores observados y los valores predichos por la regresión gris. Por otro lado, las **líneas punteadas azules y verdes** indican los residuos para las regresiones azul y verde, respectivamente.
 
-Al comparar la longitud de las líneas verticales punteadas, se puede apreciar que las de color verde son las más largas, seguidas por las azules, y finalmente, las rojas, que corresponden a la regresión óptima. La suma de los cuadrados de estas diferencias es menor en el caso de la recta de regresión gris, lo que confirma su mejor ajuste bajo el criterio de mínimos cuadrados.
+Al comparar la longitud de las líneas verticales punteadas, se observa que las de color verde son las más largas, seguidas por las azules, y finalmente las rojas, que corresponden a la denominada "regresión óptima". La suma de los cuadrados de estas diferencias es menor en el caso de la recta de regresión gris, lo que indica que esta proporciona el mejor ajuste según el criterio de mínimos cuadrados.
 
 
 
@@ -186,7 +179,11 @@ Tal que:
 
 - \( y_i \) es una **realización observada** de la variable aleatoria \( Y_i \).
 
-Estos valores observados se utilizan para **inferir los parámetros desconocidos** \( \beta_0, \beta_1, \sigma^2 \) mediante **mínimos cuadrados ordinarios (MCO)**. Además, \( \overline{x} \) y \( \overline{y} \) corresponden a los promedios muestrales.
+- \( \overline{x} \) y \( \overline{y} \) corresponden a los promedios muestrales.
 
+  
 
+<div class="caja-nota">
+> *"\( x_i \) y  \( y_i \) son valores observados que se utilizan para **inferir los parámetros desconocidos** \( \beta_0, \beta_1, \sigma^2 \) mediante **mínimos cuadrados ordinarios (MCO)**."*
+</div>
 

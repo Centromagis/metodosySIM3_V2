@@ -12,7 +12,7 @@
 <meta name="author" content="Métodos y Simulación Estadística" />
 
 
-<title> Sobre los Coeficientes</title>
+<title> Pruebas de Hipótesis y R Cuadrado</title>
 
 <script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -300,15 +300,6 @@ $(document).ready(function () {
     <li>
       <a href="recurso230.html">Forma Matricial del Modelo</a>
     </li>
-  </ul>
-</li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Diagnóstico
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
     <li>
       <a href="recurso300.html">Supuestos</a>
     </li>
@@ -322,13 +313,16 @@ $(document).ready(function () {
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Pruebas de Hipótesis
+    Tests y R Cuadrado
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="recurso400.html">Sobre los Coeficientes</a>
+      <a href="recurso400.html">Pruebas de Hipótesis</a>
+    </li>
+    <li>
+      <a href="recurso410.html">R Cuadrado</a>
     </li>
   </ul>
 </li>
@@ -342,23 +336,14 @@ $(document).ready(function () {
     <li>
       <a href="recurso500.html">Transformaciones</a>
     </li>
-  </ul>
-</li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Modelos polinomiales
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="recurso600.html">Modelos polinomiales</a>
+      <a href="recurso600.html">Modelos Polinomiales</a>
     </li>
   </ul>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Predicción
+    Predicción e Intervalos
      
     <span class="caret"></span>
   </a>
@@ -366,17 +351,8 @@ $(document).ready(function () {
     <li>
       <a href="recurso700.html">Intervalo de Confianza</a>
     </li>
-  </ul>
-</li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Intervalos de Confianza
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="recurso800.html">Coeficientes y varianza</a>
+      <a href="recurso800.html">Intervalos de C. de Coeficientes y Varianza</a>
     </li>
   </ul>
 </li>
@@ -388,10 +364,19 @@ $(document).ready(function () {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="recurso900.html">Punto atípico e influyente</a>
+      <a href="recurso900.html">Punto Atípico e Influyente</a>
     </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Tablero
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="recurso910.html">Distancia de Cook</a>
+      <a href="recurso1000.html">Tablero usando Shiny</a>
     </li>
   </ul>
 </li>
@@ -403,7 +388,7 @@ $(document).ready(function () {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="recurso1000.html">Referencias</a>
+      <a href="recurso2000.html">Referencias</a>
     </li>
   </ul>
 </li>
@@ -427,8 +412,8 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore"><span style="color:#686868"> <strong>Sobre
-los Coeficientes</strong></span></h1>
+<h1 class="title toc-ignore"><span style="color:#686868">
+<strong>Pruebas de Hipótesis y R Cuadrado</strong></span></h1>
 <h4 class="author">Métodos y Simulación Estadística</h4>
 
 </div>
@@ -660,11 +645,12 @@ class="math inline">\(k\)</span> y <span class="math inline">\(n - k -
 F_0 \sim F_{k, n-k-1}
 \]</span></p>
 <p>Si el valor <span class="math inline">\(F_0\)</span> es
-suficientemente grande y su correspondiente <strong>valor-p</strong> es
-menor que un umbral de significancia (<span
-class="math inline">\(\alpha\)</span>), se <strong>rechaza <span
-class="math inline">\(H_0\)</span></strong> y se concluye que <strong>al
-menos una de las variables predictoras es significativa</strong>.</p>
+suficientemente grande y su correspondiente <span
+class="math inline">\(valor-p\)</span> es menor que un umbral de
+significancia (<span class="math inline">\(\alpha\)</span>), se
+<strong>rechaza <span class="math inline">\(H_0\)</span></strong> y se
+concluye que <strong>al menos una de las variables predictoras es
+significativa</strong>.</p>
 </br></br>
 <div class="caja-ejemplo">
 <h3>
@@ -703,7 +689,7 @@ supuestos:</p>
 <li><p><strong>Normalidad del error</strong>: Se asume que los errores
 siguen una distribución normal con media cero y varianza constante:</p>
 <p><span class="math display">\[
-\varepsilon \sim N(0, \sigma^2)
+\varepsilon_i \sim N(0, \sigma^2)
 \]</span></p></li>
 <li><p><strong>Homocedasticidad (varianza constante del error)</strong>:
 La varianza de los errores debe ser <strong>constante</strong> para
@@ -819,10 +805,12 @@ Total      1693738 19
 ---
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 </pre>
-<p>De la tabla ANOVA presentada anteriormente, se observa que el valor-p
-es 1.643e-10, lo que es extremadamente pequeño. Esto proporciona
-<strong>evidencia suficiente</strong> para rechazar la hipótesis nula
-con un nivel de significancia del 1%:</p>
+<p>De la tabla ANOVA presentada anteriormente, se observa que el <span
+class="math inline">\(valor-p\)</span> es <span
+class="math inline">\(1.64 \times 10^{-10}\)</span>, lo que es
+extremadamente pequeño. Esto proporciona <strong>evidencia
+suficiente</strong> para rechazar la hipótesis nula con un nivel de
+significancia del 1%:</p>
 <p><span class="math display">\[
 H_0: \beta_{\text{Edad}} = 0
 \]</span></p>
@@ -861,10 +849,10 @@ summary(mod1)</code></pre>
 información sobre la <strong>prueba de hipótesis de significancia de la
 regresión</strong>. Se observa el <strong>estadístico de prueba <span
 class="math inline">\(F\)</span></strong> con un valor de 165.4 y el
-valor-p obtenido es <span class="math inline">\(1.643 \times
-10^{-10}\)</span>, lo que indica que se rechaza la hipótesis nula de que
-todos los coeficientes son ceros con un nivel de significancia del
-1%.</p>
+<span class="math inline">\(valor-p\)</span> obtenido es <span
+class="math inline">\(1.643 \times 10^{-10}\)</span>, lo que indica que
+se rechaza la hipótesis nula de que todos los coeficientes son ceros con
+un nivel de significancia del 1%.</p>
 <pre>
 Call:
 lm(formula = Resistencia ~ Edad, data = datos)
@@ -901,15 +889,14 @@ tiene un efecto significativo en la variable respuesta
 indica que <strong>Edad</strong> sí influye en la variabilidad de
 <strong>Resistencia</strong>.</p>
 <p>El <strong>estadístico de prueba <span
-class="math inline">\(t\)</span></strong> toma el valor
-<strong>-12.86</strong> con un valor-p de <span
+class="math inline">\(t\)</span></strong> toma el valor -12.86 con un
+<span class="math inline">\(valor-p\)</span> de <span
 class="math inline">\(1.64 \times 10^{-10}\)</span>. Por lo tanto, se
-rechaza la hipótesis nula y se concluye, con una significancia del
-<strong>1%</strong>, que el coeficiente <span
-class="math inline">\(\beta_1\)</span> es <strong>distinto de
-cero</strong>. Esto implica que la variable <strong>Edad</strong> tiene
-un efecto significativo en la explicación de la variable respuesta
-<strong>Resistencia</strong>.</p>
+rechaza la hipótesis nula y se concluye, con una significancia del 1%,
+que el coeficiente <span class="math inline">\(\beta_1\)</span> es
+<strong>distinto de cero</strong>. Esto implica que la variable
+<strong>Edad</strong> tiene un efecto significativo en la explicación de
+la variable respuesta <strong>Resistencia</strong>.</p>
 <hr />
 <p>A continuación, se presentan los códigos para la implementación del
 <strong>modelo de regresión lineal simple</strong>, la <strong>revisión
@@ -1149,7 +1136,7 @@ rechaza la normalidad de los errores, en la <strong>Figura
 3.29</strong>, el <strong>QQ-plot de los residuos</strong> muestra que
 los valores extremos <strong>se desvían de la recta de
 referencia</strong>, lo que sugiere que la distribución de los errores
-podría no seguir una normalidad estricta.</p></li>
+podría no seguir una distribución normal.</p></li>
 </ul>
 <p>A continuación, se presentan los resultados detallados de cada prueba
 de normalidad:</p>
@@ -1177,12 +1164,13 @@ muestran que <strong>no hay suficiente evidencia para rechazar la
 hipótesis nula de independencia de los errores</strong> con un nivel de
 significancia del <strong>5%</strong>.</p>
 <ul>
-<li><p>El <strong>valor-p</strong> obtenido en el <strong>test de
-Durbin-Watson</strong> es <strong>0.3874</strong>, lo que indica que no
-se detecta autocorrelación significativa en los errores.</p></li>
+<li><p>El <span class="math inline">\(valor-p\)</span> obtenido en el
+<strong>test de Durbin-Watson</strong> es <strong>0.3874</strong>, lo
+que indica que no se detecta autocorrelación significativa en los
+errores.</p></li>
 <li><p>El <strong>test de Breusch-Godfrey</strong> para autocorrelación
-de orden 1 arroja un <strong>valor-p de 0.8921</strong>, confirmando la
-independencia de los errores.</p></li>
+de orden 1 arroja un <span class="math inline">\(valor-p\)</span> de
+0.8921, sugiriendo la independencia de los errores.</p></li>
 </ul>
 <p>Además, en la <strong>Figura 3.29</strong>, el gráfico de
 <strong>Residuos vs Índice de Observación</strong> no muestra ningún
@@ -1256,10 +1244,10 @@ independencia, homocedasticidad y normalidad</strong>, ya que los
 <strong>tests estadísticos no detectan problemas significativos</strong>
 en los errores del modelo.</p>
 <p>Sin embargo, al observar la <strong>Figura 3.30</strong>, se
-identifican <strong>tres posibles valores atípicos</strong> en los
-gráficos de residuos, estos son de las observaciones 5, 6 y 19, lo que
-<strong>podría afectar la estabilidad del modelo</strong> y la precisión
-de las estimaciones.</p>
+identifican <strong>tres posibles valores atípicos o influyentes en el
+modelo</strong> en los gráficos de residuos, estos son de las
+observaciones 5, 6 y 19, lo que <strong>podría afectar la estabilidad
+del modelo</strong> y la precisión de las estimaciones.</p>
 <hr />
 <p>El modelo de regresión lineal simple resultante se puede expresar
 como:</p>

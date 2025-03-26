@@ -12,7 +12,7 @@
 <meta name="author" content="Métodos y Simulación Estadística" />
 
 
-<title> Sobre todos los Coeficientes</title>
+<title> Pruebas de Hipótesis y R Cuadrado</title>
 
 <script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -298,25 +298,97 @@ $(document).ready(function () {
       <a href="recurso220.html">Estimación de Máxima Verosimilitud</a>
     </li>
     <li>
-      <a href="recurso230.html">Transformaciones</a>
+      <a href="recurso230.html">Forma Matricial del Modelo</a>
+    </li>
+    <li>
+      <a href="recurso300.html">Supuestos</a>
+    </li>
+    <li>
+      <a href="recurso310.html">Residuales</a>
+    </li>
+    <li>
+      <a href="recurso320.html">Revisión de Supuestos</a>
     </li>
   </ul>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Predicción
+    Tests y R Cuadrado
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="recurso300.html">Inferencia sobre el Modelo</a>
+      <a href="recurso400.html">Pruebas de Hipótesis</a>
     </li>
     <li>
-      <a href="recurso310.html">Inferencia sobre los Parámetros</a>
+      <a href="recurso410.html">R Cuadrado</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Transformaciones
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso500.html">Transformaciones</a>
     </li>
     <li>
-      <a href="recurso320.html">Inferencia sobre la Variable Respuesta</a>
+      <a href="recurso600.html">Modelos Polinomiales</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Predicción e Intervalos
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso700.html">Intervalo de Confianza</a>
+    </li>
+    <li>
+      <a href="recurso800.html">Intervalos de C. de Coeficientes y Varianza</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Atípicos e Influyentes
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso900.html">Punto Atípico e Influyente</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Tablero
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso1000.html">Tablero usando Shiny</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Referencias
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso2000.html">Referencias</a>
     </li>
   </ul>
 </li>
@@ -340,14 +412,105 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore"><span style="color:#686868"> <strong>Sobre
-todos los Coeficientes</strong></span></h1>
+<h1 class="title toc-ignore"><span style="color:#686868">
+<strong>Pruebas de Hipótesis y R Cuadrado</strong></span></h1>
 <h4 class="author">Métodos y Simulación Estadística</h4>
 
 </div>
 
 
+</br></br>
+<h2>
+Coeficiente de determinación
+</h2>
+<p>En una <strong>regresión lineal</strong>, el <strong>coeficiente de
+determinación</strong> (<span class="math inline">\(R^2\)</span>) y el
+<strong><span class="math inline">\(R^2\)</span> ajustado</strong> son
+medidas que evalúan qué tan bien el modelo explica la variabilidad de la
+variable respuesta (<span class="math inline">\(Y\)</span>). Mientras
+que el <span class="math inline">\(R^2\)</span> mide la proporción de
+variabilidad explicada, el <span class="math inline">\(R^2\)</span>
+ajustado penaliza la inclusión de variables irrelevantes.</p>
+</br></br>
+<h3>
+Definición de <span class="math inline">\(R^2\)</span>
+</h3>
+<p>El coeficiente de determinación <span
+class="math inline">\(R^2\)</span> se define como:</p>
+<p><span class="math display">\[
+R^2 = 1 - \frac{\sum_{i=1}^{n} (y_i - \hat{y}_i)^2}{\sum_{i=1}^{n} (y_i
+- \bar{y})^2}
+\]</span></p>
+<p>donde:</p>
+<ul>
+<li><p><span class="math inline">\(y_i\)</span> son los valores
+observados de la variable respuesta.</p></li>
+<li><p><span class="math inline">\(\hat{y}_i\)</span> son los valores
+predichos por el modelo.</p></li>
+<li><p><span class="math inline">\(\bar{y}\)</span> es el promedio de
+los valores observados de la variable respuesta.</p></li>
+</ul>
+<p></br> El <span class="math inline">\(R^2\)</span> varía entre
+<strong>0 y 1</strong>:</p>
+<ul>
+<li><p><span class="math inline">\(R^2 = 0.9\)</span> indica que el
+modelo explica el 90% de la variabilidad de <span
+class="math inline">\(Y\)</span>.</p></li>
+<li><p><span class="math inline">\(R^2 = 0\)</span> significa que el
+modelo no explica nada de la variabilidad de <span
+class="math inline">\(Y\)</span>.</p></li>
+</ul>
+<p>Un problema con <span class="math inline">\(R^2\)</span> es que
+<strong>siempre aumenta</strong> cuando se añaden más variables al
+modelo, incluso si esas variables no son útiles. Para corregir esto, se
+usa el <strong><span class="math inline">\(R^2\)</span>
+ajustado</strong>.</p>
+</br></br>
+<h3>
+Definición de <span class="math inline">\(R^2\)</span> ajustado
+</h3>
+<p>El <strong><span class="math inline">\(R^2\)</span> ajustado</strong>
+penaliza la inclusión de variables irrelevantes y se calcula como:</p>
+<p><span class="math display">\[
+R^2_{\text{ajustado}} = 1 - \left( \frac{(1 - R^2)(n - 1)}{n - k - 1}
+\right)
+\]</span></p>
+<p>donde:</p>
+<ul>
+<li><p><span class="math inline">\(n\)</span> es el número de
+observaciones.</p></li>
+<li><p><span class="math inline">\(k\)</span> es el número de variables
+explicativas (excluyendo la constante).</p></li>
+</ul>
+</br></br>
+<div class="caja-ejemplo">
+<h3>
+Ejemplo:
+</h3>
+<p>
+<p>En el ejemplo anterior, la variable Edad explica el 89.64% de la
+Resistencia.</p>
+<pre>
+Call:
+lm(formula = Resistencia ~ Edad, data = datos)
 
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-215.98  -50.68   28.74   66.61  106.76 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept) 2627.822     44.184   59.48  < 2e-16 ***
+Edad         -37.154      2.889  -12.86 1.64e-10 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 96.11 on 18 degrees of freedom
+Multiple R-squared:  0.9018,    Adjusted R-squared:  0.8964 
+F-statistic: 165.4 on 1 and 18 DF,  p-value: 1.643e-10
+</pre>
+</p>
+</div>
 
 
 

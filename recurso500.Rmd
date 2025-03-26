@@ -248,9 +248,9 @@ La **Figura 3.33** muestra los gráficos de diagnóstico de los residuos del mod
 
 - **Residuals vs Fitted (Residuos vs Valores Ajustados)**:  La forma de "U" en el gráfico indica que hay una relación no lineal entre las variables. Esto sugiere que el modelo lineal no es adecuado, ya que los residuos deberían estar distribuidos aleatoriamente alrededor de la línea horizontal (cero).
 
-- **Q-Q Residuals (Gráfico de Cuantiles-Cuantiles)**: Se observa una desviación de los puntos con respecto a la línea diagonal en los extremos.Esto indica que los residuos no siguen completamente una distribución normal, lo cual puede afectar la validez de los resultados asociados al modelo.
+- **Q-Q Residuals (Gráfico de Cuantiles-Cuantiles)**: Se observa una desviación de los puntos con respecto a la línea diagonal en los extremos.Esto indica que los residuos no siguen completamente una distribución normal, lo cual puede afectar la validez de los resultados asociados al modelo debido al no cumplimiento de la normalidad de los errores.
 
-- **Scale-Location (Residuos Estandarizados vs Valores Ajustados)**: La tendencia en forma de "U" sugiere que la varianza de los residuos no es constante (presencia de heterocedasticidad). Esto significa que el modelo puede no ser el más adecuado y se recomienda considerar una transformación logaritmo a la variable respuesta.
+- **Scale-Location (Residuos Estandarizados vs Valores Ajustados)**: La tendencia en forma de "U" muestra que la varianza de los residuos no es constante (presencia de heterocedasticidad). Esto significa que el modelo puede no ser el más adecuado debido a la falta de homocedasticidad de los errores.
 
 
 
@@ -267,7 +267,7 @@ knitr::include_graphics("img/fig333.png")
 
 
 
-Dado que los supuestos de **homocedasticidad** y **normalidad** de los residuos **no se cumplen**, es necesario aplicar una transformación a la variable respuesta. En este caso, se emplea la transformación logarítmica, lo que implica trabajar con la nueva variable transformada:
+Dado que los supuestos de **homocedasticidad** y **normalidad** de los errores **no se cumplen**, es necesario aplicar una transformación a la variable respuesta. En este caso, se emplea la transformación logarítmica, lo que implica trabajar con la nueva variable transformada:
 
 $$ Cantidad^* = \log(Cantidad) $$
 
@@ -444,7 +444,7 @@ knitr::include_graphics("img/fig335.png")
 <br/><br/>
 
 
-La **Figura 3.35** muestra los gráficos de diagnóstico de los residuos del modelo de regresión lineal $M_2$. Vamos a analizar cada uno:
+La **Figura 3.35** muestra los gráficos de diagnóstico de los residuos del modelo de regresión lineal $M_2$. A continuación se analiza cada uno:
 
 - **Residuals vs Fitted (Residuos vs Valores Ajustados)**: Los residuos están distribuidos aleatoriamente alrededor de la línea horizontal, sin una tendencia clara, lo que indica que la relación entre las variables es adecuadamente modelada por una regresión lineal. Algunos valores atípicos (puntos 44, 45 y 48) podrían indicar observaciones con mayor influencia en el modelo.
 
@@ -454,7 +454,7 @@ La **Figura 3.35** muestra los gráficos de diagnóstico de los residuos del mod
 
 Los resultados de las pruebas estadísticas indican que los errores cumplen con los supuestos de **normalidad** e **independencia**, ya que los valores-p obtenidos en las pruebas de **Shapiro-Wilk** y **Durbin-Watson** son mayores a 0.10, lo que significa que no hay suficiente evidencia para rechazar la hipótesis nula en cada caso.
 
-Sin embargo, la prueba de **Breusch-Pagan** detecta la presencia de **heterocedasticidad** en los residuos, con un valor-p de **0.0019**, lo que indica que la varianza de los errores no es constante con un nivel de significancia del **1%**.
+Sin embargo, la prueba de **Breusch-Pagan** detecta la presencia de **heterocedasticidad** en los residuos, con un \(valor-p \) de **0.0019**, lo que indica que la varianza de los errores no es constante con un nivel de significancia del **1%**.
 
 <pre>
 Shapiro-Wilk normality test
@@ -477,13 +477,13 @@ alternative hypothesis: true autocorrelation is greater than 0
 </pre>
 
 
-Los resultados del **modelo 2** sugieren que existe una relación lineal significativa entre estas variables, respaldada por la **estadística de prueba F** de $1.714 \times 10^4$ y un **valor-p < $2.2 \times e^{-16}$**.
+Los resultados del **modelo 2** sugieren que existe una relación lineal significativa entre estas variables, respaldada por la **estadística de prueba F** de $1.714 \times 10^4$ y un \(valor-p < 2.2 \times e^{-16} \)  .
 
 Adicionalmente:
 
-- **La variable tiempo es altamente significativa**, ya que su valor-p es menor a $2 \times e^{-16}$.
+- **La variable tiempo es altamente significativa**, ya que su \(valor-p \) es menor a $2 \times e^{-16}$.
 
-- **El coeficiente de determinación ($R^2$) es de 0.9972**. En este caso, el valor de \( R^2 = 0.9972 \) indica que el **99.72% de la variabilidad en la cantidad de la sustancia radiactiva** puede explicarse por el tiempo transcurrido. Un **\( R^2 \) alto** sugiere que el modelo tiene un **buen ajuste a los datos**, lo que significa que la relación entre la cantidad de la sustancia y el tiempo es fuerte y bien representada por la regresión lineal. Sin embargo, es importante complementar esta evaluación con **análisis de los residuos** para verificar el cumplimiento de los supuestos del modelo y evitar conclusiones erróneas.
+- **El coeficiente de determinación ($R^2$) ajustado es de 0.9971**. En este caso, el valor de \( R^2 = 0.9971 \) indica que el **99.71% de la variabilidad en la cantidad de la sustancia radiactiva** puede explicarse por el tiempo transcurrido. Un **\( R^2 \) alto** sugiere que el modelo tiene un **buen ajuste a los datos**, lo que significa que la relación entre la cantidad de la sustancia y el tiempo es fuerte y bien representada por la regresión lineal. Sin embargo, es importante complementar esta evaluación con **análisis de los residuos** para verificar el cumplimiento de los supuestos del modelo y evitar conclusiones erróneas.
 
 
 <pre>

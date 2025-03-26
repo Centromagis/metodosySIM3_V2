@@ -169,7 +169,7 @@ Dependiendo de la forma que adopten los puntos, es posible identificar patrones 
 
 
 
-```{r, eval=FALSE,  fig.align = "center"}
+```{r, eval=FALSE,  fig.align = "center",include=FALSE}
 library(ggplot2)
 library(patchwork)
 library(MASS)  # Para generar datos correlacionados
@@ -426,7 +426,7 @@ Donde:
 <h3>Ejemplo:</h3>
 <p>
 
-En el **caso de estudio No. 4 de la Unidad 2** se analizó el contexto de una **fábrica de mecanizado de precisión** que produce **ejes metálicos** utilizados en **motores eléctricos de maquinaria industrial**. En este proceso de fabricación, dos variables clave determinan la calidad del eje:  
+En la Unidad 2 se analizó el contexto de una **fábrica de mecanizado de precisión** que produce **ejes metálicos** utilizados en **motores eléctricos de maquinaria industrial**. En este proceso de fabricación, dos variables clave determinan la calidad del eje:  
 
 - **\( X \) : Diámetro del eje (en milímetros, mm)**  
 
