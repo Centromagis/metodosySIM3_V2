@@ -450,17 +450,35 @@ Indica la importancia de cada observación en el modelo. En modelos sin
 ponderación, se asume <span class="math inline">\(W_i =
 1\)</span>.</p></li>
 <li><p><strong>Leverage <span
-class="math inline">\(h_{ii}\)</span></strong>: Representa la influencia
-de la observación <span class="math inline">\(i\)</span> en su propia
-predicción. Se obtiene a partir de la <strong>matriz sombrero</strong> o
-<strong>hat matrix</strong> que se determina con la matriz de diseño
-<span class="math inline">\(X\)</span>:</p>
+class="math inline">\(h_{ii}\)</span></strong>: El leverage mide qué
+tanto una observación <span class="math inline">\(i\)</span> influye en
+su propia predicción. Matemáticamente, el leverage se define como la
+diagonal de la matriz de proyección <span
+class="math inline">\(H\)</span>, determinada por la <strong>matriz de
+diseño</strong> que está conformada por los valores de las variables
+predictoras:</p>
 <p><span class="math display">\[
-H = X (X^\top X)^{-1} X^\top.
+H = X (X^\top X)^{-1} X^\top,
 \]</span></p>
-<p>Valores altos de <span class="math inline">\(h_{ii}\)</span> sugieren
-que una observación tiene un impacto significativo en la estimación de
-los coeficientes y en la predicción.</p></li>
+<p>donde,</p>
+<p><span class="math display">\[
+h_{ii} = \frac{1}{n} + \frac{(x_i - \bar{x})^2}{\sum_{j=1}^{n} (x_j -
+\bar{x})^2}
+\]</span></p>
+<ul>
+<li><p>El leverage toma valores entre <strong><span
+class="math inline">\(0\)</span></strong> y <strong><span
+class="math inline">\(1\)</span></strong>.</p></li>
+<li><p>Observaciones con <span class="math inline">\(x_i\)</span>
+cercanas a la media de <span class="math inline">\(X\)</span>, <span
+class="math inline">\(\bar{x}\)</span>, tienen <strong>bajo
+leverage</strong>.</p></li>
+<li><p>Observaciones con <span class="math inline">\(x_i\)</span>
+alejadas de <span class="math inline">\(\bar{x}\)</span> tienen
+<strong>alto leverage</strong>, lo que significa que tienen mayor
+impacto en la estimación de los coeficientes del modelo y en su propia
+predicción.</p></li>
+</ul></li>
 <li><p><strong>Varianza ajustada <span
 class="math inline">\(\hat{\sigma}^2_{(i)}\)</span></strong>: Es la
 estimación de la varianza de los errores cuando <strong>se
@@ -478,7 +496,9 @@ métodos de validación cruzada, como el residual PRESS.</p></li>
 <strong>valores atípicos, puntos influyentes y problemas de
 ajuste</strong> en el modelo. Comprender cómo estos residuales se
 calculan e interpretan es fundamental para garantizar la validez del
-modelo de regresión y mejorar su capacidad predictiva.</p>
+modelo de regresión debido a la necesidad del cumplimiento de los
+supuestos de los errores. Además, garantizar el cumplimiento de los
+supuestos ayuda a mejorar su capacidad predictiva.</p>
 <hr />
 </br></br>
 <h3>
@@ -612,18 +632,6 @@ class="math inline">\(i\)</span></strong>.</p></li>
 el cálculo de la varianza excluyendo la observación <span
 class="math inline">\(i\)</span> reduce el impacto de valores extremos
 en la estimación de <span class="math inline">\(\sigma^2\)</span>.</p>
-<p>En modelos bien ajustados con errores normales, se espera que la
-mayoría de los valores de <span class="math inline">\(r_i\)</span> estén
-dentro del rango <span class="math inline">\([-2,2]\)</span>. Valores
-absolutos mayores a <strong>3</strong> sugieren que la observación <span
-class="math inline">\(i\)</span> podría ser <strong>un valor atípico
-significativo</strong>. A diferencia del residual estandarizado, este
-residual es más confiable para detectar valores extremos, ya que ajusta
-la varianza sin depender de la observación analizada.</p>
-<p>Este tipo de residual es una herramienta clave en
-<strong>diagnósticos de regresión</strong>, especialmente cuando se
-busca identificar puntos que podrían afectar sustancialmente la
-estimación de los coeficientes del modelo.</p>
 </br></br>
 <h3>
 Residual parcial
@@ -754,71 +762,28 @@ class="math inline">\(Y\)</span></strong> se modela en función de <span
 class="math inline">\(X\)</span>, utilizando como pesos los valores de
 <span class="math inline">\(W\)</span>. Una vez ajustado el modelo, se
 procederá a calcular los <strong>valores ajustados</strong> y los
-<strong>residuales manualmente</strong>, comparándolos posteriormente
-con los obtenidos mediante las funciones de <strong>R</strong>.</p>
+<strong>residuales ordinarios y de Pearson</strong> manualmente,
+comparándolos posteriormente con los obtenidos mediante las funciones de
+<strong>R</strong>.</p>
 <p>En este análisis, se dispone de informaciónsobre la variable
-respuesta (<span class="math inline">\(Y\)</span>), la variable
-predictora (<span class="math inline">\(X\)</span>) y los pesos
-asociados (<span class="math inline">\(W\)</span>).</p>
+respuesta <span class="math inline">\(Y\)</span>, la variable predictora
+<span class="math inline">\(X\)</span> y los pesos asociados <span
+class="math inline">\(W\)</span>.</p>
 <p>Los datos correspondientes están disponibles en el siguiente
 enlace:</p>
 <p><a
-href="https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_res.txt">Descargar
+href="https://raw.githubusercontent.com/Centromagis/metodosySIM3_V2/refs/heads/main/datos_MetySim/dat_res.txt">Descargar
 datos de <span class="math inline">\(Y\)</span>, <span
 class="math inline">\(X\)</span> y <span
 class="math inline">\(W\)</span></a></p>
-<p>Para realizar este ajuste en <strong>R</strong>, se emplea la función
-<code>lm()</code> especificando el argumento <code>weights = w</code>,
-lo que permite asignar diferentes pesos a cada observación en el modelo
-de regresión.</p>
-<p>Los <strong>coeficientes estimados</strong> mediante el ajuste del
-modelo definen la ecuación de la <strong>regresión lineal
-ponderada</strong>:</p>
-<p><span class="math display">\[
-\hat{y}_i = \hat{\beta}_0 + \hat{\beta}_1 x_i
-\]</span></p>
-<p><strong>Cálculo manual de los valores ajustados y
-residuales:</strong></p>
-<p>Dado que la regresión es <strong>ponderada</strong>, los valores
-ajustados y los <strong>residuales ordinarios</strong> se calculan de la
-siguiente manera:</p>
-<p><span class="math display">\[
-e_i = y_i - \hat{y}_i
-\]</span></p>
-<p><span class="math display">\[
-p_i = e_i \sqrt{w_i} \quad \text{(Residual de Pearson)}
-\]</span></p>
-<p><span class="math display">\[
-r_i = \frac{e_i \sqrt{w_i}}{\sqrt{\hat{\sigma}^2 (1 - h_{ii})}} \quad
-\text{(Residual Estandarizado)}
-\]</span></p>
-<p>donde:</p>
-<ul>
-<li><p><span class="math inline">\(e_i\)</span> es el <strong>residual
-ordinario</strong>, que representa la diferencia entre el valor
-observado <span class="math inline">\(y_i\)</span> y el valor ajustado
-<span class="math inline">\(\hat{y}_i\)</span>.</p></li>
-<li><p><span class="math inline">\(p_i\)</span> es el <strong>residual
-de Pearson</strong>, que ajusta la magnitud del error en función del
-peso <span class="math inline">\(w_i\)</span>, permitiendo evaluar la
-adecuación del modelo cuando las observaciones tienen varianzas
-heterogéneas.</p></li>
-<li><p><span class="math inline">\(r_i\)</span> es el <strong>residual
-estandarizado</strong>, el cual ajusta el error considerando tanto la
-varianza estimada <span class="math inline">\(\hat{\sigma}^2\)</span>
-como el leverage <span class="math inline">\(h_{ii}\)</span>,
-proporcionando una métrica útil para la detección de valores
-atípicos.</p></li>
-</ul>
 <pre>
 # Lectura de datos
-file <- "https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_res.txt"
+file <- "https://raw.githubusercontent.com/Centromagis/metodosySIM3_V2/refs/heads/main/datos_MetySim/dat_res.txt"
 datos <- read.table(file = file, header = TRUE)
 
 x<-datos$x
 y<-datos$y
 w<-datos$w
-
 
 #  Ajuste del Modelo de Regresión Lineal Ponderada 
 # Se ajusta el modelo de regresión ponderada usando los valores de 'w' como pesos
@@ -859,7 +824,7 @@ resultados <- data.frame(
 print(resultados)
 </pre>
 <pre class="r"><code># Lectura de datos
-file &lt;- &quot;https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_res.txt&quot;
+file &lt;- &quot;https://raw.githubusercontent.com/Centromagis/metodosySIM3_V2/refs/heads/main/datos_MetySim/dat_res.txt&quot;
 datos &lt;- read.table(file = file, header = TRUE)
 
 x&lt;-datos$x
@@ -920,7 +885,7 @@ los residuales coinciden con los obtenidos por las funciones de
 <strong>R</strong>, se realiza la siguiente comparación:</p>
 <pre>
 # Lectura de datos
-file <- "https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_res.txt"
+file <- "https://raw.githubusercontent.com/Centromagis/metodosySIM3_V2/refs/heads/main/datos_MetySim/dat_res.txt"
 datos <- read.table(file = file, header = TRUE)
 
 x<-datos$x
@@ -960,7 +925,7 @@ comparacion_resultados <- data.frame(
 print(comparacion_resultados)
 </pre>
 <pre class="r"><code># Lectura de datos
-file &lt;- &quot;https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_res.txt&quot;
+file &lt;- &quot;https://raw.githubusercontent.com/Centromagis/metodosySIM3_V2/refs/heads/main/datos_MetySim/dat_res.txt&quot;
 datos &lt;- read.table(file = file, header = TRUE)
 
 x&lt;-datos$x
@@ -1010,7 +975,6 @@ es la siguiente:</p>
 6 5 4   0.9            3.529412       3.529412                    0.4705882    0.4705882                0.44643920           0.44643920
 </pre>
 <hr />
-<p><strong>Regresión ponderada:</strong></p>
 <p>En una <strong>regresión ponderada</strong>, los
 <strong>pesos</strong> asignados a cada observación determinan la
 influencia que tiene cada punto en la estimación de los coeficientes del
@@ -1018,31 +982,6 @@ modelo. Estos pesos permiten ajustar la importancia de cada observación,
 lo que es útil cuando los datos presentan heterocedasticidad
 (variabilidad no constante) o cuando algunas mediciones son más
 confiables que otras.</p>
-<p>Los pesos <span class="math inline">\(w_i\)</span> pueden
-interpretarse de diferentes maneras según el contexto del problema:</p>
-<ul>
-<li><p><strong>Como la inversa de la varianza de los
-errores</strong>:</p>
-<p><span class="math display">\[
-w_i = \frac{1}{\sigma_i^2}
-\]</span></p>
-<p>Donde <span class="math inline">\(\sigma_i^2\)</span> representa la
-varianza del error para la observación <span
-class="math inline">\(i\)</span>. En este caso, se otorgan
-<strong>mayores pesos</strong> a las observaciones con menor
-variabilidad y <strong>menores pesos</strong> a las observaciones con
-alta dispersión.</p></li>
-<li><p><strong>Como una función de la confiabilidad de la
-observación</strong>:</p>
-<ul>
-<li><p>Las observaciones con <strong>alta precisión</strong> reciben
-<strong>mayor peso</strong>, influyendo más en la estimación del
-modelo.</p></li>
-<li><p>Las observaciones con <strong>mayor variabilidad o ruido</strong>
-tienen <strong>menor peso</strong>, reduciendo su impacto en el
-ajuste.</p></li>
-</ul></li>
-</ul>
 </p>
 </div>
 <div class="caja-actividad">
@@ -1051,9 +990,9 @@ Nota:
 </h3>
 <blockquote>
 <p>
-<strong>Caso especial</strong>: Si todos los pesos son iguales
-<strong>(<span class="math inline">\(w_i = 1\)</span></strong> para
-todas las observaciones), la regresión ponderada <strong>equivale a la
+<strong>Caso especial</strong>: Si todos los pesos son son unos,
+<strong><span class="math inline">\(W_i = 1\)</span></strong>, para
+todas las observaciones, la regresión ponderada <strong>equivale a la
 regresión lineal ordinaria</strong>.
 </p>
 </blockquote>

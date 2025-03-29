@@ -438,22 +438,6 @@ forma:</p>
 Y_i \mid X_i \sim N(\mu_i, \sigma^2), \\ \text{donde} \quad \mu_i =E[Y_i
 \mid X_i] = \beta_0 + \beta_1 X_i, \quad \sigma^2 = \text{constante}.
 \]</span></p>
-<p><strong>¿Qué es variable y qué es fijo en este contexto?</strong></p>
-<ul>
-<li><p><strong><span class="math inline">\(Y_i\)</span> es una variable
-aleatoria</strong>, ya que su valor cambia en cada realización del
-experimento.</p></li>
-<li><p><strong><span class="math inline">\(X_i\)</span> es
-fijo</strong>, ya que se considera dado por el diseño del estudio o la
-muestra observada.</p></li>
-<li><p><strong>Los parámetros <span class="math inline">\(\beta_0,
-\beta_1, \sigma^2\)</span> son desconocidos</strong> y deben ser
-estimados.</p></li>
-<li><p><strong>Los errores <span class="math inline">\(\varepsilon_i =
-Y_i - (\beta_0 + \beta_1 X_i)\)</span> son variables aleatorias</strong>
-con distribución normal <span class="math inline">\(N(0,
-\sigma^2)\)</span>.</p></li>
-</ul>
 <p>Este modelo implica que, para cada valor fijo de <span
 class="math inline">\(X_i\)</span>, la variable respuesta <span
 class="math inline">\(Y_i\)</span> sigue una distribución normal con
@@ -465,7 +449,7 @@ valor de <span class="math inline">\(X_i\)</span>.</p>
 <p><strong>¿Cómo se determinan los valores de los parámetros que hacen
 más probable la ocurrencia de la muestra?</strong></p>
 <p>Dado un conjunto de <strong><span class="math inline">\(n\)</span>
-observaciones <span class="math inline">\((X_i, Y_i)\)</span></strong>,
+observaciones <span class="math inline">\((x_i, y_i)\)</span></strong>,
 y asumiendo independencia condicional entre las <span
 class="math inline">\(Y_i\)</span>, la <strong>función de verosimilitud
 conjunta</strong> se construye como el producto de las densidades
@@ -473,8 +457,8 @@ normales de cada <span class="math inline">\(Y_i\)</span>, dado <span
 class="math inline">\(X_i\)</span>:</p>
 <p><span class="math display">\[
 L(\beta_0, \beta_1, \sigma^2) = \prod_{i=1}^{n}
-\frac{1}{\sqrt{2\pi\sigma^2}} \exp\left\{ -\frac{(Y_i - (\beta_0 +
-\beta_1 X_i))^2}{2\sigma^2} \right\}.
+\frac{1}{\sqrt{2\pi\sigma^2}} \exp\left\{ -\frac{(y_i - (\beta_0 +
+\beta_1 x_i))^2}{2\sigma^2} \right\}.
 \]</span></p>
 <p>Donde:</p>
 <ul>
@@ -503,37 +487,20 @@ métodos:</p>
 <li><p><strong>En MCO</strong>, la varianza de los errores se estima
 como:</p>
 <p><span class="math display">\[
-\hat{\sigma}^2_{\text{MCO}} = \frac{1}{n-2} \sum_{i=1}^{n} (Y_i -
-\hat{\beta}_0 - \hat{\beta}_1 X_i)^2
+\hat{\sigma}^2_{\text{MCO}} = \frac{1}{n-2} \sum_{i=1}^{n} (y_i -
+\hat{\beta}_0 - \hat{\beta}_1 x_i)^2
 \]</span></p>
 <p>donde <span class="math inline">\(n-2\)</span> en el denominador
 garantiza que sea un <strong>estimador insesgado</strong>.</p></li>
 <li><p><strong>En EMV</strong>, la varianza se estima con:</p>
 <p><span class="math display">\[
-\hat{\sigma}^2_{\text{EMV}} = \frac{1}{n} \sum_{i=1}^{n} (Y_i -
-\hat{\beta}_0 - \hat{\beta}_1 X_i)^2
+\hat{\sigma}^2_{\text{EMV}} = \frac{1}{n} \sum_{i=1}^{n} (y_i -
+\hat{\beta}_0 - \hat{\beta}_1 x_i)^2
 \]</span></p>
 <p>donde el denominador es <span class="math inline">\(n\)</span>, lo
 que hace que sea un <strong>estimador sesgado</strong>, pero con menor
 varianza y, por lo tanto, más eficiente en términos de error cuadrático
 medio.</p></li>
-</ul>
-<p>Resumiendo:</p>
-<ul>
-<li><p>En la <strong>regresión lineal bajo el enfoque de máxima
-verosimilitud</strong>, <strong><span class="math inline">\(X_i\)</span>
-se considera fijo y <span class="math inline">\(Y_i\)</span> es una
-variable aleatoria</strong>.</p></li>
-<li><p><strong>Los estimadores EMV de <span
-class="math inline">\(\beta_0\)</span> y <span
-class="math inline">\(\beta_1\)</span>, bajo normalidad, coinciden con
-los obtenidos por mínimos cuadrados ordinarios (MCO)</strong>.</p></li>
-<li><p><strong>El estimador de la varianza <span
-class="math inline">\(\sigma^2\)</span> es diferente entre ambos
-métodos</strong>: MCO usa <span class="math inline">\(n-2\)</span> y
-resulta un estimador insesgado, mientras que EMV usa <span
-class="math inline">\(n\)</span>, lo que introduce un pequeño sesgo pero
-mejora la eficiencia del estimador.</p></li>
 </ul>
 </br></br>
 <h3>
@@ -566,18 +533,11 @@ class="math inline">\(x_i\)</span>.</p></li>
 <p>Estos valores observados se utilizan para <strong>inferir los
 parámetros desconocidos</strong> <span class="math inline">\(\beta_0,
 \beta_1, \sigma^2\)</span> mediante métodos como <strong>máxima
-verosimilitud (EMV)</strong> o <strong>mínimos cuadrados ordinarios
-(MCO)</strong>.</p>
+verosimilitud (EMV)</strong>.</p>
 </br></br>
 <h4>
 Función de verosimilitud
 </h4>
-<p>En el contexto de la <strong>estimación por máxima verosimilitud
-(EMV)</strong>, el objetivo es determinar los valores de los parámetros
-desconocidos <span class="math inline">\(\beta_0, \beta_1\)</span> y
-<span class="math inline">\(\sigma^2\)</span> que <strong>maximizan la
-verosimilitud de los datos observados</strong>, dada la estructura del
-modelo probabilístico.</p>
 <p>Dado que el modelo de regresión lineal simple se expresa como:</p>
 <p><span class="math display">\[
 Y_i \mid X_i \sim N(\beta_0 + \beta_1 X_i, \sigma^2), \quad \text{para }
@@ -587,21 +547,21 @@ i = 1,2, \dots, n,
 <span class="math inline">\(Y_i\)</span> dado <span
 class="math inline">\(X_i\)</span> está dada por:</p>
 <p><span class="math display">\[
-f(Y_i \mid X_i; \beta_0, \beta_1, \sigma^2) =
+f(y_i \mid x_i; \beta_0, \beta_1, \sigma^2) =
 \frac{1}{\sqrt{2\pi\sigma^2}}
-\exp \left\{ -\frac{(Y_i - \beta_0 - \beta_1 X_i)^2}{2\sigma^2}
+\exp \left\{ -\frac{(y_i - \beta_0 - \beta_1 x_i)^2}{2\sigma^2}
 \right\}.
 \]</span></p>
 <p>En el modelo de regresión lineal, se asume que los <strong>errores
 <span class="math inline">\(\varepsilon_i\)</span> son independientes e
-identicamente distribuidos</strong>, es decir:</p>
+identicamente distribuidos (i.i.d)</strong>, es decir:</p>
 <p><span class="math display">\[
 \varepsilon_i \sim \text{i.i.d. } N(0, \sigma^2).
 \]</span></p>
 <p>Esto implica que las <strong>variables aleatorias <span
 class="math inline">\(Y_i\)</span> son condicionalmente
 independientes</strong> dado el conjunto de valores fijos <span
-class="math inline">\(X_1, \dots, X_n\)</span>, aunque no necesariamente
+class="math inline">\(x_1, \dots, x_n\)</span>, aunque no necesariamente
 sean independientes marginalmente. La independencia condicional permite
 escribir la <strong>función de verosimilitud</strong> como el producto
 de las densidades individuales:</p>
@@ -631,9 +591,7 @@ probabilidad</strong>, sino una <strong>densidad conjunta de los datos
 observados</strong> bajo los parámetros del modelo.</p></li>
 <li><p><strong>Las <span class="math inline">\(y_i\)</span> y <span
 class="math inline">\(x_i\)</span> representan valores
-observados</strong> en la muestra, mientras que <span
-class="math inline">\(Y_i\)</span> y <span
-class="math inline">\(X_i\)</span> son variables aleatorias.</p></li>
+observados</strong> en la muestra.</p></li>
 <li><p>La independencia asumida en la construcción de la verosimilitud
 <strong>se refiere a la independencia condicional de los <span
 class="math inline">\(Y_i\)</span> dado <span
@@ -675,20 +633,25 @@ modelo</strong>.</p>
 <ol style="list-style-type: decimal">
 <li><p><strong>Estimadores de los coeficientes <span
 class="math inline">\(\beta_0\)</span> y <span
-class="math inline">\(\beta_1\)</span></strong><br />
-Derivando respecto a <span class="math inline">\(\beta_0\)</span> y
+class="math inline">\(\beta_1\)</span></strong></p>
+<p>Derivando respecto a <span class="math inline">\(\beta_0\)</span> y
 <span class="math inline">\(\beta_1\)</span>, se obtiene que los EMV
 coinciden con los estimadores de <strong>mínimos cuadrados ordinarios
 (MCO)</strong>:</p>
 <p><span class="math display">\[
-\hat{\beta}_1 = \frac{\sum_{i=1}^{n} (x_i - \bar{x})(y_i -
-\bar{y})}{\sum_{i=1}^{n} (x_i - \bar{x})^2}, \quad
-\hat{\beta}_0 = \bar{y} - \hat{\beta}_1 \bar{x}.
+\widehat{\beta}_1 = \frac{S_{xy}}{S_{xx}} \\
+\widehat{\beta}_0 = \overline{y} - \widehat{\beta}_1 \overline{x}
+\]</span></p>
+<p>Donde:</p>
+<p><span class="math display">\[
+  S_{xx} = \sum_{i=1}^{n} (x_i - \overline{x})^2, \quad S_{yy} =
+\sum_{i=1}^{n} (y_i - \overline{y})^2, \quad S_{xy}   = \sum_{i=1}^{n}
+(x_i - \overline{x}) (y_i - \overline{y})
 \]</span></p></li>
 <li><p><strong>Estimador de la varianza <span
-class="math inline">\(\sigma^2\)</span></strong><br />
-Derivando respecto a <span class="math inline">\(\sigma^2\)</span>, se
-obtiene el EMV de la varianza:</p>
+class="math inline">\(\sigma^2\)</span></strong></p>
+<p>Derivando respecto a <span class="math inline">\(\sigma^2\)</span>,
+se obtiene el EMV de la varianza:</p>
 <p><span class="math display">\[
 \hat{\sigma}^2_{\text{EMV}} = \frac{1}{n} \sum_{i=1}^{n} (y_i -
 \hat{\beta}_0 - \hat{\beta}_1 x_i)^2.
@@ -722,6 +685,17 @@ en términos de varianza.”</p>
 <p>La elección entre <strong>MCO</strong> y <strong>EMV</strong> depende
 del contexto y de si se busca una estimación insesgada o una basada en
 principios probabilísticos.</p>
+<div class="caja-nota">
+<blockquote>
+<p><em>En la práctica, en la regresión lineal clásica basada en MCO y
+EMV, se trata a <span class="math inline">\(X\)</span> como fija y a
+<span class="math inline">\(Y\)</span> como aleatoria. Sin embargo, en
+ciertos escenarios, especialmente en problemas de inferencia Bayesiana o
+en modelos con errores en variables, ambas pueden considerarse
+aleatorias y se deben usar métodos específicos para la
+estimación.</em></p>
+</blockquote>
+</div>
 
 
 

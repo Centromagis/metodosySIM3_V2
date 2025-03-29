@@ -34,17 +34,6 @@ $$
 Y_i \mid X_i \sim N(\mu_i, \sigma^2), \\ \text{donde} \quad \mu_i =E[Y_i \mid X_i] = \beta_0 + \beta_1 X_i, \quad \sigma^2 = \text{constante}.
 $$
 
- **¿Qué es variable y qué es fijo en este contexto?**
- 
-- **\( Y_i \) es una variable aleatoria**, ya que su valor cambia en cada realización del experimento.
-
-- **\( X_i \) es fijo**, ya que se considera dado por el diseño del estudio o la muestra observada.
-
-- **Los parámetros \( \beta_0, \beta_1, \sigma^2 \) son desconocidos** y deben ser estimados.
-
-- **Los errores \( \varepsilon_i = Y_i - (\beta_0 + \beta_1 X_i) \) son variables aleatorias** con distribución normal \( N(0, \sigma^2) \).
-
-
 Este modelo implica que, para cada valor fijo de \( X_i \), la variable respuesta \( Y_i \) sigue una distribución normal con **media condicional** \( \mu_i = \beta_0 + \beta_1 X_i \) y **varianza constante** \( \sigma^2 \), independientemente del valor de \( X_i \).
 
 
@@ -52,10 +41,10 @@ Este modelo implica que, para cada valor fijo de \( X_i \), la variable respuest
 
  **¿Cómo se determinan los valores de los parámetros que hacen más probable la ocurrencia de la muestra?**
 
-Dado un conjunto de **\( n \) observaciones \( (X_i, Y_i) \)**, y asumiendo independencia condicional entre las \( Y_i \), la **función de verosimilitud conjunta** se construye como el producto de las densidades normales de cada \( Y_i \), dado \( X_i \):
+Dado un conjunto de **\( n \) observaciones \( (x_i, y_i) \)**, y asumiendo independencia condicional entre las \( Y_i \), la **función de verosimilitud conjunta** se construye como el producto de las densidades normales de cada \( Y_i \), dado \( X_i \):
 
 $$
-L(\beta_0, \beta_1, \sigma^2) = \prod_{i=1}^{n} \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left\{ -\frac{(Y_i - (\beta_0 + \beta_1 X_i))^2}{2\sigma^2} \right\}.
+L(\beta_0, \beta_1, \sigma^2) = \prod_{i=1}^{n} \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left\{ -\frac{(y_i - (\beta_0 + \beta_1 x_i))^2}{2\sigma^2} \right\}.
 $$
 
 Donde:
@@ -75,7 +64,7 @@ Bajo los supuestos de normalidad de los errores, se puede demostrar que los esti
 - **En MCO**, la varianza de los errores se estima como:
 
   $$
-  \hat{\sigma}^2_{\text{MCO}} = \frac{1}{n-2} \sum_{i=1}^{n} (Y_i - \hat{\beta}_0 - \hat{\beta}_1 X_i)^2
+  \hat{\sigma}^2_{\text{MCO}} = \frac{1}{n-2} \sum_{i=1}^{n} (y_i - \hat{\beta}_0 - \hat{\beta}_1 x_i)^2
   $$
 
   donde \( n-2 \) en el denominador garantiza que sea un **estimador insesgado**.
@@ -83,18 +72,10 @@ Bajo los supuestos de normalidad de los errores, se puede demostrar que los esti
 - **En EMV**, la varianza se estima con:
 
   $$
-  \hat{\sigma}^2_{\text{EMV}} = \frac{1}{n} \sum_{i=1}^{n} (Y_i - \hat{\beta}_0 - \hat{\beta}_1 X_i)^2
+  \hat{\sigma}^2_{\text{EMV}} = \frac{1}{n} \sum_{i=1}^{n} (y_i - \hat{\beta}_0 - \hat{\beta}_1 x_i)^2
   $$
 
   donde el denominador es \( n \), lo que hace que sea un **estimador sesgado**, pero con menor varianza y, por lo tanto, más eficiente en términos de error cuadrático medio.
-
-Resumiendo: 
-
-- En la **regresión lineal bajo el enfoque de máxima verosimilitud**, **\( X_i \) se considera fijo y \( Y_i \) es una variable aleatoria**.
-
-- **Los estimadores EMV de \( \beta_0 \) y \( \beta_1 \), bajo normalidad,  coinciden con los obtenidos por mínimos cuadrados ordinarios (MCO)**.
-
-- **El estimador de la varianza \( \sigma^2 \) es diferente entre ambos métodos**: MCO usa \( n-2 \)  y resulta un estimador insesgado, mientras que EMV usa \( n \), lo que introduce un pequeño sesgo pero mejora la eficiencia del estimador.
 
 
 
@@ -119,13 +100,11 @@ Donde:
 
 - \( y_i \) es una **realización observada** de la variable aleatoria \( Y_i \) para un valor concreto \( x_i \).
 
-Estos valores observados se utilizan para **inferir los parámetros desconocidos** \( \beta_0, \beta_1, \sigma^2 \) mediante métodos como **máxima verosimilitud (EMV)** o **mínimos cuadrados ordinarios (MCO)**.
+Estos valores observados se utilizan para **inferir los parámetros desconocidos** \( \beta_0, \beta_1, \sigma^2 \) mediante métodos como **máxima verosimilitud (EMV)**.
 
 
 </br></br>
 <h4>Función de verosimilitud</h4>
-
-En el contexto de la **estimación por máxima verosimilitud (EMV)**, el objetivo es determinar los valores de los parámetros desconocidos \( \beta_0, \beta_1 \) y \( \sigma^2 \) que **maximizan la verosimilitud de los datos observados**, dada la estructura del modelo probabilístico.
 
 Dado que el modelo de regresión lineal simple se expresa como:
 
@@ -136,17 +115,17 @@ $$
 la densidad condicional de cada **variable aleatoria** \( Y_i \) dado \( X_i \) está dada por:
 
 $$
-f(Y_i \mid X_i; \beta_0, \beta_1, \sigma^2) = \frac{1}{\sqrt{2\pi\sigma^2}} 
-\exp \left\{ -\frac{(Y_i - \beta_0 - \beta_1 X_i)^2}{2\sigma^2} \right\}.
+f(y_i \mid x_i; \beta_0, \beta_1, \sigma^2) = \frac{1}{\sqrt{2\pi\sigma^2}} 
+\exp \left\{ -\frac{(y_i - \beta_0 - \beta_1 x_i)^2}{2\sigma^2} \right\}.
 $$
 
-En el modelo de regresión lineal, se asume que los **errores \( \varepsilon_i \) son independientes e identicamente distribuidos**, es decir:
+En el modelo de regresión lineal, se asume que los **errores \( \varepsilon_i \) son independientes e identicamente distribuidos (i.i.d)**, es decir:
 
 $$
 \varepsilon_i \sim \text{i.i.d. } N(0, \sigma^2).
 $$
 
-Esto implica que las **variables aleatorias \( Y_i \) son condicionalmente independientes** dado el conjunto de valores fijos \( X_1, \dots, X_n \), aunque no necesariamente sean independientes marginalmente. La independencia condicional permite escribir la **función de verosimilitud** como el producto de las densidades individuales:
+Esto implica que las **variables aleatorias \( Y_i \) son condicionalmente independientes** dado el conjunto de valores fijos \( x_1, \dots, x_n \), aunque no necesariamente sean independientes marginalmente. La independencia condicional permite escribir la **función de verosimilitud** como el producto de las densidades individuales:
 
 
 $$
@@ -173,7 +152,7 @@ Respecto a esta función:
 
 - La función de verosimilitud **no representa una probabilidad**, sino una **densidad conjunta de los datos observados** bajo los parámetros del modelo.
 
-- **Las \( y_i \) y \( x_i \) representan valores observados** en la muestra, mientras que \( Y_i \) y \( X_i \) son variables aleatorias.
+- **Las \( y_i \) y \( x_i \) representan valores observados** en la muestra.
 
 - La independencia asumida en la construcción de la verosimilitud **se refiere a la independencia condicional de los \( Y_i \) dado \( X_i \)**, no a su independencia marginal.
 
@@ -204,14 +183,22 @@ El uso del **logaritmo de la verosimilitud** simplifica la maximización de la f
 Para obtener los **estimadores de máxima verosimilitud (EMV)** de los parámetros \( \beta_0, \beta_1 \) y \( \sigma^2 \), se resuelven las ecuaciones normales obtenidas al derivar la log-verosimilitud con respecto a cada parámetro e igualar a cero. **Los datos observados \( (x_i, y_i) \) se utilizan para inferir los parámetros desconocidos del modelo**.
 
 1. **Estimadores de los coeficientes \( \beta_0 \) y \( \beta_1 \)**  
+
    Derivando respecto a \( \beta_0 \) y \( \beta_1 \), se obtiene que los EMV coinciden con los estimadores de **mínimos cuadrados ordinarios (MCO)**:
 
-   $$
-   \hat{\beta}_1 = \frac{\sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y})}{\sum_{i=1}^{n} (x_i - \bar{x})^2}, \quad
-   \hat{\beta}_0 = \bar{y} - \hat{\beta}_1 \bar{x}.
-   $$
+   \[
+    \widehat{\beta}_1 = \frac{S_{xy}}{S_{xx}} \\ 
+    \widehat{\beta}_0 = \overline{y} - \widehat{\beta}_1 \overline{x}
+   \]
+
+   Donde:
+
+     \[
+  S_{xx} = \sum_{i=1}^{n} (x_i - \overline{x})^2, \quad S_{yy} = \sum_{i=1}^{n} (y_i - \overline{y})^2, \quad S_{xy}   = \sum_{i=1}^{n} (x_i - \overline{x}) (y_i - \overline{y})
+ \]
 
 2. **Estimador de la varianza \( \sigma^2 \)**  
+
    Derivando respecto a \( \sigma^2 \), se obtiene el EMV de la varianza:
 
    $$
@@ -236,6 +223,12 @@ De lo anterior se concluye que bajo el supuesto de normalidad, **los EMV de \( \
 
 La elección entre **MCO** y **EMV** depende del contexto y de si se busca una estimación insesgada o una basada en principios probabilísticos.
 
+
+
+<div class="caja-nota">
+> *En la práctica, en la regresión lineal clásica basada en MCO y EMV, se trata a  \( X \)  como fija y a  \( Y \)
+como aleatoria. Sin embargo, en ciertos escenarios, especialmente en problemas de inferencia Bayesiana o en modelos con errores en variables, ambas pueden considerarse aleatorias y se deben usar métodos específicos para la estimación.*
+</div>
 
 
 

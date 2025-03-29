@@ -435,11 +435,11 @@ representa el intercepto y no se cuenta como variable, se requiere
 evaluar hipótesis como las siguientes para cada coeficiente de cada una
 de las <span class="math inline">\(k\)</span> variables:</p>
 <p><span class="math display">\[
-H_0: \beta_j = 0
+H_0: \beta_j = \beta_{j0}
 \]</span></p>
-<p>frente a la hipótesis alternativas:</p>
+<p>frente a la hipótesis alternativa:</p>
 <p><span class="math display">\[
-  H_1: \beta_j \neq 0
+  H_1: \beta_j \neq \beta_{j0}
 \]</span></p>
 <p>para algún <span class="math inline">\(j = 1, 2, \dots,
 k\)</span>.</p>
@@ -455,6 +455,10 @@ estimador del coeficiente <span
 class="math inline">\(\beta_j\)</span>.</p></li>
 <li><p><span class="math inline">\(s.e.(\hat{\beta}_j)\)</span>
 representa el error estándar del estimador.</p></li>
+<li><p>Se usa <span class="math inline">\(\beta_{j0}=0\)</span> para
+determinar si la pendiente entra al modelo de regresión lineal simple,
+lo que significa que la variable predictora explica a la variable
+respuesta.</p></li>
 </ul>
 <p>Bajo la hipótesis nula, el estadístico de prueba sigue una
 distribución <span class="math inline">\(t\)</span> de
@@ -484,35 +488,35 @@ utilizar la función <code>summary()</code> en <strong>R</strong>.
 Prueba sobre todos los coeficientes
 </h2>
 <p>En un modelo de <strong>regresión múltiple</strong>, la variable
-respuesta <span class="math inline">\(y_i\)</span> se modela como
+respuesta <span class="math inline">\(Y_i\)</span> se modela como
 sigue:</p>
 <p><span class="math display">\[
-y_i \sim N(\mu_i, \sigma^2)
+Y_i \sim N(\mu_i, \sigma^2)
 \]</span></p>
 <p><span class="math display">\[
-\mu_i = \beta_0 + \beta_1 x_{1i} + \beta_2 x_{2i} + \dots + \beta_k
-x_{ki}
+\mu_i = \beta_0 + \beta_1 X_{1i} + \beta_2 X_{2i} + \dots + \beta_k
+X_{ki}
 \]</span></p>
 <p>donde <span class="math inline">\(\sigma^2\)</span> es constante, lo
 que implica la suposición de homocedasticidad.</p>
 <p>En este contexto, una pregunta clave en el análisis del modelo es
 determinar si alguna de las variables explicativas <span
-class="math inline">\(x_j\)</span> aporta información significativa a la
-predicción de <span class="math inline">\(y\)</span> o si, por el
+class="math inline">\(X_j\)</span> aporta información significativa a la
+predicción de <span class="math inline">\(Y\)</span> o si, por el
 contrario, ninguna contribuye de manera relevante. Esto se traduce en la
 siguiente prueba de hipótesis:</p>
 <ul>
-<li><strong>Hipótesis nula (<span
-class="math inline">\(H_0\)</span>)</strong>: Ninguna de las variables
-explicativas tiene un efecto significativo en la variable respuesta. Es
-decir,</li>
+<li>Hipótesis nula <span
+class="math inline">\(\left(H_0\right)\)</span>: Ninguna de las
+variables explicativas tiene un efecto significativo en la variable
+respuesta. Es decir,</li>
 </ul>
 <p><span class="math display">\[
 H_0: \beta_1 = \beta_2 = \dots = \beta_k = 0
 \]</span></p>
 <ul>
-<li><strong>Hipótesis alternativa (<span
-class="math inline">\(H_1\)</span>)</strong>: Al menos una de las
+<li>Hipótesis alterna <span
+class="math inline">\(\left(H_1\right)\)</span>: Al menos una de las
 variables explicativas tiene un efecto significativo en la variable
 respuesta. Es decir,</li>
 </ul>
@@ -525,25 +529,25 @@ significancia de la regresión</strong>, la cual se basa en la
 descomposición de la variabilidad total en tres componentes
 fundamentales:</p>
 <ol style="list-style-type: decimal">
-<li><p><strong>Variabilidad total (<span
-class="math inline">\(SST\)</span>)</strong>: Representa la variabilidad
+<li><p><strong>Variabilidad total <span
+class="math inline">\(SS_T\)</span></strong>: Representa la variabilidad
 total observada en los datos de <span
-class="math inline">\(y\)</span>.</p></li>
-<li><p><strong>Variabilidad explicada por el modelo (<span
-class="math inline">\(SSR\)</span>)</strong>: Corresponde a la parte de
+class="math inline">\(Y\)</span>.</p></li>
+<li><p><strong>Variabilidad explicada por el modelo <span
+class="math inline">\(SS_R\)</span></strong>: Corresponde a la parte de
 la variabilidad total que el modelo de regresión logra
 explicar.</p></li>
-<li><p><strong>Variabilidad residual (<span
-class="math inline">\(SSRes\)</span>)</strong>: Es la parte de la
+<li><p><strong>Variabilidad residual <span
+class="math inline">\(SS_{Res}\)</span></strong>: Es la parte de la
 variabilidad total que no puede ser explicada por el modelo, es decir,
 los residuos.</p></li>
 </ol>
 <p>En esta prueba, el objetivo es determinar si la variabilidad
-explicada por el modelo de <strong>Regresión</strong> (<span
-class="math inline">\(SSR\)</span>) representa una parte significativa
-de la <strong>Variabilidad total</strong> (<span
-class="math inline">\(SST\)</span>), o si, por el contrario, la
-variabilidad residual (<span class="math inline">\(SSRes\)</span>) es
+explicada por el modelo de <strong>Regresión</strong>, <span
+class="math inline">\(SS_R\)</span>, representa una parte significativa
+de la <strong>Variabilidad total</strong>, <span
+class="math inline">\(SS_T\)</span>, o si, por el contrario, la
+variabilidad residual, <span class="math inline">\(SS_{Res}\)</span>, es
 tan grande que el modelo no explica adecuadamente la variable
 respuesta.</p>
 <p>Para evaluar esta relación, se construye la <strong>tabla ANOVA
@@ -566,13 +570,13 @@ total en sus componentes: <strong>Regresión</strong>,
 </colgroup>
 <thead>
 <tr class="header">
-<th><strong>Fuente de variación</strong></th>
-<th><strong>Suma de cuadrados</strong></th>
-<th><strong>Grados de libertad</strong></th>
-<th><strong>Cuadrado medio</strong></th>
-<th><strong>Estadístico <span
-class="math inline">\(F_0\)</span></strong></th>
-<th><strong>Valor-P</strong></th>
+<th><span style="font-size:80%;">Fuente variación</span></th>
+<th><span style="font-size:80%;">Suma de cuadrados</span></th>
+<th><span style="font-size:80%;">Grados libertad</span></th>
+<th><span style="font-size:80%;">Cuadrado medio</span></th>
+<th><span style="font-size:80%;">Estadístico <span
+class="math inline">\(F_0\)</span></span></th>
+<th><span style="font-size:80%;">Valor-P</span></th>
 </tr>
 </thead>
 <tbody>
@@ -607,16 +611,16 @@ class="math inline">\(F_0\)</span></strong></th>
 <p>La relación entre las sumas de cuadrados en un modelo de regresión se
 define de la siguiente manera:</p>
 <ul>
-<li><p><strong>Suma de cuadrados total (<span
-class="math inline">\(SS_T\)</span>)</strong>:</p>
+<li><p><strong>Suma de cuadrados total <span
+class="math inline">\(SS_T\)</span></strong>:</p>
 <p><span class="math display">\[
 SS_T = \sum_{i=1}^{n} y_i^2 - \frac{\left(\sum_{i=1}^{n}
 y_i\right)^2}{n}
 \]</span></p>
 <p>Esta cantidad representa la variabilidad total en los datos de la
 variable respuesta <span class="math inline">\(Y\)</span>.</p></li>
-<li><p><strong>Suma de cuadrados de la regresión (<span
-class="math inline">\(SS_R\)</span>)</strong>:</p>
+<li><p><strong>Suma de cuadrados de la regresión <span
+class="math inline">\(SS_R\)</span></strong>:</p>
 <p><span class="math display">\[
 SS_R = \sum_{i=1}^{n} \hat{y}_i y_i - \frac{\left(\sum_{i=1}^{n}
 y_i\right)^2}{n}
@@ -624,8 +628,8 @@ y_i\right)^2}{n}
 <p>Donde <span class="math inline">\(\hat{y}_i\)</span> representa los
 valores ajustados por el modelo. Esta expresión mide la variabilidad
 explicada por el modelo de regresión.</p></li>
-<li><p><strong>Suma de cuadrados de los residuos (<span
-class="math inline">\(SS_{Res}\)</span>)</strong>:</p>
+<li><p><strong>Suma de cuadrados de los residuos <span
+class="math inline">\(SS_{Res}\)</span></strong>:</p>
 <p><span class="math display">\[
 SS_{Res} = SS_T - SS_R = \sum_{i=1}^{n} (y_i - \hat{y}_i)^2
 \]</span></p>
@@ -728,7 +732,7 @@ library(nortest)   # Para pruebas adicionales de normalidad
 library(patchwork) # Para combinar gráficos en una sola figura
 
 # Definir la URL del archivo con los datos
-file <- "https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_reg1.txt"
+file <- "https://raw.githubusercontent.com/Centromagis/metodosySIM3_V2/refs/heads/main/datos_MetySim/dat_reg1.txt"
 
 # Cargar el conjunto de datos desde la URL
 datos <- read.table(file = file, header = TRUE)
@@ -767,7 +771,7 @@ library(nortest)   # Para pruebas adicionales de normalidad
 library(patchwork) # Para combinar gráficos en una sola figura
 
 # Definir la URL del archivo con los datos
-file &lt;- &quot;https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_reg1.txt&quot;
+file &lt;- &quot;https://raw.githubusercontent.com/Centromagis/metodosySIM3_V2/refs/heads/main/datos_MetySim/dat_reg1.txt&quot;
 
 # Cargar el conjunto de datos desde la URL
 datos &lt;- read.table(file = file, header = TRUE)
@@ -823,7 +827,7 @@ utilizando la función <code>summary()</code>, la cual proporciona una
 parte de la tabla ANOVA, pero no la tabla completa.</p>
 <pre>
 # Definir la URL del archivo con los datos
-file <- "https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_reg1.txt"
+file <- "https://raw.githubusercontent.com/Centromagis/metodosySIM3_V2/refs/heads/main/datos_MetySim/dat_reg1.txt"
 
 # Cargar el conjunto de datos desde la URL
 datos <- read.table(file = file, header = TRUE)
@@ -835,7 +839,7 @@ mod1 <- lm(Resistencia ~ Edad, data = datos)
 summary(mod1)
 </pre>
 <pre class="r"><code># Definir la URL del archivo con los datos
-file &lt;- &quot;https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_reg1.txt&quot;
+file &lt;- &quot;https://raw.githubusercontent.com/Centromagis/metodosySIM3_V2/refs/heads/main/datos_MetySim/dat_reg1.txt&quot;
 
 # Cargar el conjunto de datos desde la URL
 datos &lt;- read.table(file = file, header = TRUE)
@@ -914,7 +918,7 @@ library(nortest)   # Para pruebas adicionales de normalidad
 library(patchwork) # Para combinar gráficos en una sola figura
 
 # Definir la URL del archivo con los datos
-file <- "https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_reg1.txt"
+file <- "https://raw.githubusercontent.com/Centromagis/metodosySIM3_V2/refs/heads/main/datos_MetySim/dat_reg1.txt"
 
 # Cargar el conjunto de datos desde la URL
 datos <- read.table(file = file, header = TRUE)
@@ -1025,7 +1029,7 @@ library(nortest)   # Para pruebas adicionales de normalidad
 library(patchwork) # Para combinar gráficos en una sola figura
 
 # Definir la URL del archivo con los datos
-file &lt;- &quot;https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_reg1.txt&quot;
+file &lt;- &quot;https://raw.githubusercontent.com/Centromagis/metodosySIM3_V2/refs/heads/main/datos_MetySim/dat_reg1.txt&quot;
 
 # Cargar el conjunto de datos desde la URL
 datos &lt;- read.table(file = file, header = TRUE)
@@ -1127,10 +1131,10 @@ print(mod1)</code></pre>
 <p>De acuerdo con los valores-p obtenidos en los <strong>tests de
 normalidad</strong>, los resultados indican lo siguiente:</p>
 <ul>
-<li><p>Los valores-p de las pruebas <strong>Shapiro-Wilk</strong> y
-<strong>Anderson-Darling</strong> son menores a 0.05, lo que proporciona
-<strong>evidencia suficiente</strong> para rechazar la hipótesis nula de
-normalidad en los errores.</p></li>
+<li><p>Los <span class="math inline">\(valores-p\)</span> de las pruebas
+<strong>Shapiro-Wilk</strong> y <strong>Anderson-Darling</strong> son
+menores a 0.05, lo que proporciona <strong>evidencia suficiente</strong>
+para rechazar la hipótesis nula de normalidad en los errores.</p></li>
 <li><p>Aunque la prueba de <strong>Kolmogorov-Smirnov</strong> no
 rechaza la normalidad de los errores, en la <strong>Figura
 3.29</strong>, el <strong>QQ-plot de los residuos</strong> muestra que

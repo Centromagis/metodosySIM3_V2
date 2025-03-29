@@ -1,0 +1,1602 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Métodos y Simulación Estadística" />
+
+
+<title> Punto atípico e influyente</title>
+
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"> </a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Métodos
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="index.html">Contenido</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Correlación
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso100.html">Análisis de Correlación</a>
+    </li>
+    <li>
+      <a href="recurso110.html">Coeficiente de Pearson</a>
+    </li>
+    <li>
+      <a href="recurso120.html">Coeficiente de Spearman</a>
+    </li>
+    <li>
+      <a href="recurso130.html">Coeficiente de Kendall</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Modelo
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso200.html">Modelo de Regresión Lineal Simple</a>
+    </li>
+    <li>
+      <a href="recurso210.html">Estimación Mínimos Cuadrados Ordinarios</a>
+    </li>
+    <li>
+      <a href="recurso220.html">Estimación de Máxima Verosimilitud</a>
+    </li>
+    <li>
+      <a href="recurso230.html">Forma Matricial del Modelo</a>
+    </li>
+    <li>
+      <a href="recurso300.html">Supuestos</a>
+    </li>
+    <li>
+      <a href="recurso310.html">Residuales</a>
+    </li>
+    <li>
+      <a href="recurso320.html">Revisión de Supuestos</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Pruebas de Hipótesis
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso400.html">Sobre los Coeficientes</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Transformaciones
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso500.html">Transformaciones</a>
+    </li>
+    <li>
+      <a href="recurso600.html">Modelos Polinomiales</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Predicción e Intervalos
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso700.html">Intervalo de Confianza</a>
+    </li>
+    <li>
+      <a href="recurso800.html">Intervalos de C. de Coeficientes y Varianza</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Atípicos e Influyentes
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso900.html">Punto Atípico e Influyente</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Tablero
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso1000.html">Tablero usando Shiny</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Referencias
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso2000.html">Referencias</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore"><span style="color:#686868"> <strong>Punto
+atípico e influyente</strong></span></h1>
+<h4 class="author">Métodos y Simulación Estadística</h4>
+
+</div>
+
+
+</br></br>
+<h2>
+Matriz sombrero o hat
+</h2>
+<p>La <strong>matriz hat</strong> (o <strong>matriz sombrero</strong>)
+es una herramienta fundamental en la regresión lineal, ya que permite
+medir la influencia que tiene cada observación en los valores ajustados
+del modelo. En particular, los valores de su <strong>diagonal</strong>
+representan la <strong>distancia relativa</strong> de cada observación
+con respecto al <strong>centroide</strong> de las variables
+explicativas.</p>
+<p>En otras palabras, estos valores indican <strong>qué tan alejados
+están los puntos individuales en el espacio de las variables
+predictoras</strong> con respecto al centro de la nube de datos.</p>
+<p>En la <strong>Figura 3.44</strong> se ilustra este concepto en un
+caso con tres variables explicativas <span class="math inline">\(X_1,
+X_2\)</span> y <span class="math inline">\(X_3\)</span>. En ella, el
+centroide de los datos se representa con un <strong>punto rojo</strong>,
+y se observan las distancias relativas de cada observación con respecto
+a este centroide.</p>
+<br/><br/>
+<center>
+<img src="img/fig344.png" width="60%" style="display: block; margin: auto;" />
+<strong>Figura 3.44</strong> Matriz sombrero o hat.
+</center>
+<p><br/><br/></p>
+<p>La cantidad <span class="math inline">\(h_{ii}\)</span> se denomina
+<strong>leverage</strong> y corresponde al elemento <span
+class="math inline">\(i\)</span>-ésimo de la diagonal de la matriz
+<strong>sombrero</strong> <span class="math inline">\(H\)</span>. Este
+valor indica qué tan influyente es una observación en la estimación de
+los valores ajustados del modelo.</p>
+<p>Los valores de <span class="math inline">\(h_{ii}\)</span> cumplen
+las siguientes propiedades:</p>
+<ul>
+<li>Siempre están dentro del rango:</li>
+</ul>
+<p><span class="math display">\[
+\frac{1}{n} \leq h_{ii} \leq 1
+\]</span></p>
+<p>donde <span class="math inline">\(n\)</span> es el número total de
+observaciones.</p>
+<ul>
+<li>La <strong>suma de todos los valores de leverage</strong> es igual
+al número de coeficientes del modelo, incluyendo el intercepto:</li>
+</ul>
+<p><span class="math display">\[
+\sum h_{ii} = k + 1
+\]</span></p>
+<p>donde <span class="math inline">\(k\)</span> es el número de
+variables explicativas en el modelo.</p>
+<p><strong>Interpretación de los valores de leverage</strong>:</p>
+<ul>
+<li><p><strong>Valores grandes de <span
+class="math inline">\(h_{ii}\)</span></strong>: Indican que la
+observación tiene valores inusuales de <span
+class="math inline">\(x_i\)</span> y se encuentra alejada del centro de
+la nube de datos.</p></li>
+<li><p><strong>Valores pequeños de <span
+class="math inline">\(h_{ii}\)</span></strong>: Indican que la
+observación está cerca del <strong>centroide</strong> del conjunto de
+datos y tiene menor influencia en el ajuste del modelo.</p></li>
+<li><p>En regresión lineal, un valor de <strong>leverage</strong> (<span
+class="math inline">\(h_{ii}\)</span>) se considera grande cuando excede
+el siguiente umbral:</p>
+<p><span class="math display">\[
+h_{ii} &gt; \frac{2p}{n}
+\]</span></p>
+<p>donde:</p>
+<ul>
+<li><p><span class="math inline">\(p\)</span> es el número de parámetros
+en el modelo (incluyendo el intercepto),</p></li>
+<li><p><span class="math inline">\(n\)</span> es el número total de
+observaciones.</p></li>
+</ul></li>
+</ul>
+<p>Un valor de <strong>leverage</strong> mayor a este umbral indica que
+la observación tiene un impacto considerable en el ajuste del modelo, ya
+que se encuentra alejada del centro de los predictores en el espacio de
+covariables.</p>
+<p>Este concepto es crucial para identificar <strong>puntos con alta
+influencia</strong> en el modelo de regresión y evaluar la robustez de
+los resultados obtenidos.</p>
+</br></br>
+<h2>
+Punto atípico (outlier) y punto influyente
+</h2>
+<p>La <strong>Figura 3.45</strong> ilustra distintos tipos de
+<strong>puntos atípicos (outliers)</strong> y su
+<strong>influencia</strong> en un <strong>modelo de regresión
+lineal</strong>, representado por la <strong>línea negra</strong>
+ajustada a los datos.</p>
+<p>Los puntos atípicos están coloreados según su <strong>leverage (<span
+class="math inline">\(h_{ii}\)</span>)</strong> y su <strong>influencia
+en la regresión</strong>.</p>
+<ol style="list-style-type: decimal">
+<li><p><strong>Outlier con leverage bajo (<span
+class="math inline">\(h_{ii}\)</span> bajo) e influyente - Punto
+Morado</strong></p>
+<ul>
+<li><p>Este punto se encuentra <strong>cerca del centroide en <span
+class="math inline">\(X\)</span></strong>, lo que significa que
+<strong>su leverage es bajo</strong>.</p></li>
+<li><p>Sin embargo, su valor de <span class="math inline">\(Y\)</span>
+es <strong>atípico</strong> y se aleja significativamente de la
+tendencia general del modelo.</p></li>
+<li><p><strong>Impacto en la regresión</strong>: Aunque está cerca del
+centro en <span class="math inline">\(X\)</span>, su gran diferencia en
+<span class="math inline">\(Y\)</span> hace que <strong>pueda influir en
+la varianza de los errores</strong>.</p></li>
+</ul></li>
+<li><p><strong>Outlier con leverage alto (<span
+class="math inline">\(h_{ii}\)</span> alto) pero no influyente - Punto
+Naranja</strong></p>
+<ul>
+<li><p>Este punto se encuentra <strong>lejos del centroide de los datos
+en <span class="math inline">\(X\)</span></strong>, por lo que tiene un
+<strong>leverage alto</strong>.</p></li>
+<li><p>No es influyente porque <strong>su valor de <span
+class="math inline">\(Y\)</span></strong> sigue la tendencia de la recta
+de regresión.</p></li>
+<li><p><strong>Impacto en la regresión</strong>: A pesar de su alta
+distancia en <span class="math inline">\(X\)</span>, <strong>no altera
+significativamente la pendiente</strong> ni el intercepto del
+modelo.</p></li>
+</ul></li>
+<li><p><strong>Outlier con leverage alto (<span
+class="math inline">\(h_{ii}\)</span> alto) e influyente - Punto
+Rojo</strong></p>
+<ul>
+<li><p>Este punto se encuentra <strong>muy lejos del centroide de los
+datos en <span class="math inline">\(X\)</span></strong>, lo que le
+otorga <strong>un leverage alto</strong>.</p></li>
+<li><p>Además, su valor de <span class="math inline">\(Y\)</span> es
+<strong>atípico</strong>, lo que lo convierte en un punto con
+<strong>gran influencia</strong> sobre la pendiente de la
+regresión.</p></li>
+<li><p><strong>Impacto en la regresión</strong>: Puede
+<strong>distorsionar la pendiente</strong> y el ajuste del modelo de
+manera significativa.</p></li>
+</ul></li>
+</ol>
+<p>Este tipo de análisis es crucial para <strong>evaluar la estabilidad
+del modelo de regresión</strong>, ya que la presencia de puntos
+influyentes puede <strong>distorsionar los coeficientes estimados y
+afectar la interpretación de los resultados</strong>. Por tanto hay que
+analizar este tipo de puntos y su impacto en el modelo:</p>
+<ul>
+<li><p><strong>El leverage alto (<span
+class="math inline">\(h_{ii}\)</span>) no implica que un punto sea
+influyente</strong>, como se observa en el punto
+<strong>naranja</strong>.</p></li>
+<li><p><strong>Los puntos atípicos en <span
+class="math inline">\(Y\)</span> pueden ser influyentes aunque su
+leverage sea bajo</strong>, como se ve en el punto
+<strong>morado</strong>.</p></li>
+<li><p><strong>Los puntos con leverage alto y valores atípicos en <span
+class="math inline">\(Y\)</span> son altamente influyentes</strong>,
+como el <strong>punto rojo</strong>.</p></li>
+</ul>
+<br/><br/>
+<center>
+<img src="img/fig345.png" width="100%" style="display: block; margin: auto;" />
+<strong>Figura 3.45</strong> Puntos influyentes y outlier.
+</center>
+<p><br/><br/></p>
+<p>Para determinar si un punto es atípico (outlier) se puede usar la
+prueba de Bonferroni o los residuales y para saber si un punto es
+influyente se puede utilizar Distancia de Cook.</p>
+</br></br>
+<h3>
+Residuales para detectar atípicos (outliers)
+</h3>
+<ol style="list-style-type: decimal">
+<li><p><strong>Residuales estandarizados <span
+class="math inline">\(d_i\)</span> grandes</strong>:</p>
+<p><span class="math display">\[
+| d_i | &gt; 3
+\]</span></p>
+<ul>
+<li><p>Indica una observación con un error inusualmente grande.</p></li>
+<li><p>Se compara cada residual con 3 desviaciones estándar de la
+distribución normal.</p></li>
+</ul></li>
+<li><p><strong>Residuales studentizados <span
+class="math inline">\(r_i\)</span> grandes</strong>:</p>
+<p><span class="math display">\[
+| r_i | &gt; 3
+\]</span></p>
+<ul>
+<li><p>Indica una observación atípica considerando la varianza ajustada
+de los residuos.</p></li>
+<li><p>Más sensible en conjuntos de datos con tamaño de muestra
+moderado.</p></li>
+</ul></li>
+</ol>
+<p>En <strong>R</strong> se usan las funciones <code>rstandard</code> y
+<code>rstudent</code>.</p>
+</br></br>
+<h3>
+Test de Bonferroni
+</h3>
+<p>Este test se utiliza para evaluar <strong>si una observación atípica
+es significativa</strong> después de ajustar por comparaciones
+múltiples. Las hipótesis del test son las siguientes:</p>
+<ul>
+<li><p><span class="math inline">\(H_0\)</span>: No hay observaciones
+atípicas.</p></li>
+<li><p><span class="math inline">\(H_1\)</span>: Existen observaciones
+atípicas en los datos.</p></li>
+</ul>
+<p>En <strong>R</strong> se usa la función <code>outlierTest</code></p>
+</br></br>
+<h3>
+Distancia de Cook
+</h3>
+<p>La <strong>Distancia de Cook</strong> es una métrica que
+<strong>cuantifica el impacto</strong> que tiene cada observación sobre
+la estimación de los coeficientes <span
+class="math inline">\(\beta\)</span> en un modelo de regresión. Una
+distancia de Cook elevada indica que una observación <strong>influye
+significativamente</strong> en la estimación de los parámetros del
+modelo. Existen dos formas principales para calcular la
+<strong>Distancia de Cook</strong> <span
+class="math inline">\(D_i\)</span>:</p>
+<ul>
+<li><p>A través del residual estandarizado:</p>
+<p><span class="math display">\[
+D_i = \frac{d_i^2}{k + 1} \times \frac{h_{ii}}{1 - h_{ii}}
+\]</span></p>
+<p>donde:</p>
+<ul>
+<li><p><span class="math inline">\(d_i\)</span> es el <strong>residuo
+estandarizado</strong>.</p></li>
+<li><p><span class="math inline">\(h_{ii}\)</span> es el
+<strong>leverage</strong> de la observación <span
+class="math inline">\(i\)</span>-ésima.</p></li>
+<li><p><span class="math inline">\(k\)</span> es el número de variables
+explicativas en el modelo.</p></li>
+</ul></li>
+<li><p>Usando la influencia de la observación <span
+class="math inline">\(i\)</span>-ésima:</p>
+<p><span class="math display">\[
+D_i = \sum_{j=1}^{n} \frac{(\hat{y}_j - \hat{y}_{j(i)})^2}{p
+\hat{\sigma}^2}
+\]</span></p>
+<p>donde:</p>
+<ul>
+<li><p><span class="math inline">\(\hat{y}_j\)</span> es el valor
+estimado con todas las observaciones.</p></li>
+<li><p><span class="math inline">\(\hat{y}_{j(i)}\)</span> es la
+estimación del modelo <strong>sin la observación <span
+class="math inline">\(i\)</span>-ésima</strong>.</p></li>
+<li><p><span class="math inline">\(p = k + 1\)</span> representa el
+número total de parámetros en el modelo, incluyendo el
+intercepto.</p></li>
+<li><p><span class="math inline">\(\hat{\sigma}^2\)</span> es la
+varianza residual del modelo.</p></li>
+</ul></li>
+</ul>
+<p>Respecto a cómo interpretar:</p>
+<ul>
+<li><p><strong><span class="math inline">\(D_i &gt; 1\)</span></strong>:
+La observación tiene <strong>una influencia significativa</strong> en la
+estimación de los coeficientes y debe analizarse con detalle.</p></li>
+<li><p>Para muestras grandes, una observación puede considerarse
+influyente si: <span class="math display">\[
+D_i &gt; \frac{4}{n}
+\]</span> donde <span class="math inline">\(n\)</span> es el número
+total de observaciones.</p></li>
+<li><p>Un criterio más conservador que toma en cuenta el número de
+predictores <span class="math inline">\(p\)</span> es: <span
+class="math display">\[
+D_i &gt; \frac{4}{n - p}
+\]</span> donde <span class="math inline">\(p\)</span> representa la
+cantidad de parámetros en el modelo, incluyendo el intercepto.</p></li>
+</ul>
+<p>Para calcular la <strong>Distancia de Cook</strong> en
+<strong>R</strong>, se usa la función <code>cooks.distance()</code>
+aplicada a un modelo de regresión</p>
+<p>Si se desea evaluar la influencia de cada observación, se recomienda
+calcular la distancia de Cook y analizarla en conjunto con el
+<strong>leverage</strong> y los <strong>residuos
+estandarizados</strong>.</p>
+<div class="caja-nota">
+<blockquote>
+<p><em>“En esta unidad, el análisis se centra en la <strong>Regresión
+Lineal Simple</strong>, la cual permite modelar la relación entre una
+<strong>única variable explicativa</strong> y una <strong>variable
+respuesta</strong>. Sin embargo, en muchos casos, los fenómenos de
+interés involucran <strong>múltiples factores</strong> que afectan la
+variable respuesta. Por ello, en el curso de <strong>Modelos</strong>,
+que se estudiará el siguiente semestre, se explorará la
+<strong>Regresión Lineal Múltiple</strong>. Este modelo amplía las
+herramientas de análisis al considerar <strong>varias variables
+explicativas simultáneamente</strong>.”</em></p>
+</blockquote>
+</div>
+</br></br>
+<div class="caja-ejemplo">
+<h3>
+Ejemplo:
+</h3>
+<p>
+<p>En este análisis, se trabajará con una base de datos que contiene
+<strong>medidas antropométricas</strong> de un grupo de estudiantes
+universitarios. El objetivo es <strong>determinar la variable que tenga
+la mayor correlación con el peso corporal</strong> y, a partir de ello,
+<strong>ajustar un modelo de regresión lineal simple</strong> para
+explicar el peso promedio.</p>
+<p><strong>Pasos del análisis:</strong></p>
+<ol style="list-style-type: decimal">
+<li><p><strong>Cálculo de la matriz de correlación</strong>: Se
+analizará la relación entre el peso y las demás variables cuantitativas
+de la base de datos para seleccionar la más correlacionada.</p></li>
+<li><p><strong>Selección de la variable explicativa</strong>: Se elegirá
+la variable con la <strong>mayor correlación con el peso</strong> para
+utilizarla en el modelo.</p></li>
+<li><p><strong>Ajuste del modelo de regresión lineal simple</strong>: Se
+estimarán los coeficientes del modelo.</p></li>
+<li><p><strong>Evaluación del modelo</strong>: Se realizarán pruebas
+estadísticas y análisis de residuos para validar los supuestos del
+modelo.</p></li>
+<li><p><strong>Determinación de puntos atípicos u influyentes</strong>:
+Se realizarán gráficos de residuos y se calculará la distancia de
+Cook.</p></li>
+</ol>
+<p>Los datos están disponibles en el siguiente enlace:</p>
+<p><a
+href="https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_atip.txt">Datos
+de medidas antropométricas</a></p>
+<pre class="r"><code># =======================
+# Lectura y exploración de datos
+# =======================
+
+# Configurar el entorno para el uso del idioma español
+Sys.setlocale(&quot;LC_ALL&quot;, &quot;es_ES.UTF-8&quot;)
+
+# Cargar paquetes necesarios
+library(MASS)       # Para cálculos estadísticos
+library(ggplot2)   # Para visualización de datos
+library(lmtest)    # Para pruebas de independencia y homocedasticidad
+library(car)       # Para pruebas de normalidad y análisis de influencia
+library(nortest)   # Para pruebas adicionales de normalidad
+library(patchwork) # Para combinar gráficos en una sola figura
+library(&quot;GGally&quot;)  # Para matriz de gráficos de dispersión y correlación
+
+# Definir la URL del archivo con los datos
+file &lt;- &quot;https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_atip.txt&quot;
+
+# Cargar el conjunto de datos desde la URL
+datos &lt;- read.table(file = file, header = TRUE)
+
+# Matriz de correlación
+correlacion_pearson &lt;- cor(datos[,c(3,5,6,7)], method = &quot;pearson&quot;, use = &quot;pairwise.complete.obs&quot;) %&gt;% round(3)
+correlacion_kendall &lt;- cor(datos[,c(3,5,6,7)], method = &quot;kendall&quot;, use = &quot;pairwise.complete.obs&quot;) %&gt;% round(3)
+correlacion_spearman &lt;- cor(datos[,c(3,5,6,7)], method = &quot;spearman&quot;, use = &quot;pairwise.complete.obs&quot;) %&gt;% round(3)
+
+#Matriz de gráficos de dispersión con correlaciones de Pearson
+plot.pearson &lt;- ggpairs(
+  datos[,c(3,5,6,7)],  
+  title = &quot;Matriz de Dispersion y Correlacion - Pearson&quot;,
+  upper = list(continuous = wrap(&quot;cor&quot;, size = 4, method = &quot;pearson&quot;)),  
+  lower = list(continuous = wrap(&quot;points&quot;, alpha = 0.5, size = 1.5)),  
+  diag = list(continuous = wrap(&quot;densityDiag&quot;, alpha = 0.6))  
+)
+
+
+#Matriz de gráficos de dispersión con correlaciones de Kendall
+plot.kendall &lt;- ggpairs(
+  datos[,c(3,5,6,7)],  
+  title = &quot;Matriz de Dispersion y Correlacion - Kendall&quot;,
+  upper = list(continuous = wrap(&quot;cor&quot;, size = 4, method = &quot;kendall&quot;)), 
+  lower = list(continuous = wrap(&quot;points&quot;, alpha = 0.5, size = 1.5)), 
+  diag = list(continuous = wrap(&quot;densityDiag&quot;, alpha = 0.6))  
+)
+
+#Mostrar la matriz de gráficos
+print(plot.pearson)
+print(plot.kendall)
+
+
+
+
+# =======================
+#Ajuste del modelo
+# =======================
+
+# Ajustar el modelo de regresión lineal
+mod1 &lt;- lm(Peso ~ circun_cuello, data=datos)
+
+# Mostrar resumen del modelo ajustado
+summary(mod1)
+
+# Extraer coeficientes del modelo (intercepto y pendiente)
+intercepto &lt;- round(coef(mod1)[1], 2)
+pendiente &lt;- round(coef(mod1)[2], 2)
+
+# Construcción del gráfico de dispersión con línea de tendencia
+with(datos, 
+     plot(x=circun_cuello, y=Peso, pch=19, las=1,
+          xlab=&quot;Circunferencia cuello (cm)&quot;, ylab=&quot;Peso (Kg)&quot;))
+
+# Agregar la línea de regresión
+abline(mod1, lwd=3, col=&#39;blue2&#39;)
+
+# Agregar la ecuación del modelo en la gráfica
+text(x=34, y=95, labels = bquote(hat(Peso) == .(intercepto) + .(pendiente) * C.cuello), 
+     col=&#39;blue3&#39; )
+
+
+
+# =======================
+# Análisis de Influencia
+# =======================
+
+
+# Calcular residuos estandarizados
+residuos_est &lt;- rstandard(mod1)
+
+# Calcular leverage (h_ii) de la matriz sombrero
+leverage &lt;- hatvalues(mod1)
+
+# Calcular distancia de Cook
+dist_cook &lt;- cooks.distance(mod1)
+
+# Definir umbrales para considerar valores atípicos o influyentes
+umbral_residuos &lt;- 3  # Para residuos estandarizados
+umbral_cook &lt;- 4/(nrow(datos))      # Umbral estándar para distancia de Cook
+umbral_leverage &lt;- 2 * length(coef(mod1)) / nrow(datos)  # Umbral de leverage
+
+# Gráfico de la distancia de Cook
+plot(mod1, which=4, cook.levels=umbral_cook, las=1, main=&quot;Distancia de Cook&quot;)
+abline(h=umbral_cook, lty=&quot;dashed&quot;, col=&quot;dodgerblue2&quot;)
+
+# Índice de influencia gráfica
+influenceIndexPlot(mod1, vars=&quot;Cook&quot;, main=&quot;Índice de Influencia - Distancia de Cook&quot;)
+
+
+# Diagnóstico de residuos
+
+# Configurar gráficos en formato 2x2 para diagnóstico de residuos
+par(mfrow=c(2, 2))
+
+# Gráficos de diagnóstico del modelo
+plot(mod1, col=&#39;deepskyblue4&#39;, pch=19, main=&quot;Diagnóstico de Residuos&quot;)
+
+
+# =======================
+# Datos sospechosos
+# =======================
+
+
+
+# Crear un dataframe con los resultados
+analisis_puntos &lt;- data.frame(
+  Observacion = 1:nrow(datos),
+  Residuo_Estandarizado = residuos_est,
+  Leverage = leverage,
+  Distancia_Cook = dist_cook
+)
+
+
+# Identificar posibles outliers e influyentes
+# Asegurarnos de que sean vectores lógicos
+outliers &lt;- which(abs(analisis_puntos$Residuo_Estandarizado) &gt; umbral_residuos)
+influyentes &lt;- which(analisis_puntos$Distancia_Cook &gt; umbral_cook )
+high_leverage &lt;- which(analisis_puntos$Leverage &gt; umbral_leverage)
+
+# Convertir a vectores lógicos con la misma longitud que la tabla
+outliers_log &lt;- rep(FALSE, nrow(analisis_puntos))
+outliers_log[outliers] &lt;- TRUE
+
+influyentes_log &lt;- rep(FALSE, nrow(analisis_puntos))
+influyentes_log[influyentes] &lt;- TRUE
+
+high_leverage_log &lt;- rep(FALSE, nrow(analisis_puntos))
+high_leverage_log[high_leverage] &lt;- TRUE
+
+# Filtrar las observaciones que deben analizarse
+analisis_puntos_filtrados &lt;- analisis_puntos[outliers_log | influyentes_log | high_leverage_log, ]
+
+# Mostrar tabla de observaciones sospechosas
+print(analisis_puntos_filtrados)
+
+
+
+# =======================
+# Sospechosos y el modelo
+# =======================
+
+
+# Identificar observaciones sospechosas
+puntos_sospechosos &lt;- c(analisis_puntos_filtrados[1,1], 
+                        analisis_puntos_filtrados[2,1], 
+                        analisis_puntos_filtrados[3,1])  # Observaciones que deben resaltarse
+
+# Crear el gráfico base
+plot(datos$circun_cuello, datos$Peso, 
+     pch=19, las=1, xlab=&quot;Circunferencia cuello (cm)&quot;, ylab=&quot;Peso (Kg)&quot;,
+     col=&quot;black&quot;, main=&quot;Gráfico de dispersión con puntos sospechosos&quot;)
+
+# Agregar la línea de regresión
+abline(mod1, lwd=3, col=&#39;blue2&#39;)
+
+# Resaltar los puntos sospechosos con diferentes colores
+colores_puntos &lt;- c(&quot;red&quot;, &quot;orange&quot;, &quot;purple&quot;)  # Asignar colores distintos
+points(datos$circun_cuello[puntos_sospechosos], 
+       datos$Peso[puntos_sospechosos], 
+       pch=19, col=colores_puntos, cex=1.5)
+
+# Agregar etiquetas a los puntos sospechosos
+text(datos$circun_cuello[puntos_sospechosos], 
+     datos$Peso[puntos_sospechosos], 
+     labels=puntos_sospechosos, pos=3, col=colores_puntos, font=2)
+
+# Agregar la ecuación del modelo en la gráfica
+text(x=34, y=95, labels = bquote(hat(Peso) == .(intercepto) + .(pendiente) * circun_cuello), 
+     col=&#39;blue3&#39;, font=2 )
+
+
+
+# =======================
+# Cook vesus levergae
+# =======================
+
+
+# Convertir la variable Observacion a factor para usar colores categóricos
+analisis_puntos$Observacion &lt;- as.factor(analisis_puntos$Observacion)
+
+# Crear un vector de colores solo para las observaciones resaltadas
+colores_destacados &lt;- c(&quot;8&quot; = &quot;purple&quot;, &quot;11&quot; = &quot;red&quot;, &quot;51&quot; = &quot;orange&quot;)
+
+# Crear gráfico de leverage vs. distancia de Cook con puntos resaltados
+ggplot(analisis_puntos, aes(x=Leverage, y=Distancia_Cook)) +
+  geom_point(aes(color=Observacion), size=3) +  # Asignar color por observación
+  geom_hline(yintercept=umbral_cook, linetype=&quot;dashed&quot;, color=&quot;blue&quot;) +
+  geom_vline(xintercept=umbral_leverage, linetype=&quot;dashed&quot;, color=&quot;green&quot;) +
+  geom_text(data=subset(analisis_puntos, Observacion %in% c(&quot;8&quot;, &quot;11&quot;, &quot;51&quot;)), 
+            aes(label=Observacion), 
+            vjust=-1, color=&quot;black&quot;, fontface=&quot;bold&quot;) +
+  scale_color_manual(values=colores_destacados, na.value=&quot;gray&quot;) +  # Asignar colores a los puntos resaltados
+  labs(title=&quot;Detección de Observaciones Atípicas e Influyentes&quot;,
+       x=&quot;Leverage&quot;,
+       y=&quot;Distancia de Cook&quot;,
+       color=&quot;Observación&quot;) +
+  theme_minimal()
+
+
+# =======================
+# Ajuste del Modelo y Comparación de Métricas
+# =======================
+
+# Función para ajustar el modelo y extraer métricas
+ajustar_modelo &lt;- function(datos_filtrados) {
+  modelo &lt;- lm(Peso ~ circun_cuello, data = datos_filtrados)
+  resumen &lt;- summary(modelo)
+  
+  # Extraer métricas clave
+  R2 &lt;- resumen$r.squared
+  R2_ajustado &lt;- resumen$adj.r.squared
+  desv_estandar &lt;- resumen$sigma
+  coef1 &lt;- resumen$coefficients[1]
+  coef2 &lt;- resumen$coefficients[2]
+  
+  
+  # Pruebas estadísticas sobre residuos
+  p_shapiro &lt;- shapiro.test(residuals(modelo))$p.value  # Normalidad
+  p_bptest &lt;- bptest(modelo)$p.value                    # Homocedasticidad (Breusch-Pagan)
+  p_dwtest &lt;- dwtest(modelo)$p.value                    # Independencia de errores (Durbin-Watson)
+  
+  return(c(coef1,coef2,R2,desv_estandar,p_shapiro, p_bptest, p_dwtest))
+}
+
+
+
+# =======================
+# Ajustar Modelos con Diferentes Exclusiones
+# =======================
+
+# Identificar las dos observaciones con mayor distancia de Cook
+observaciones_mayor_cook &lt;- order(dist_cook, decreasing = TRUE)[1:2]
+
+# Lista de modelos con diferentes filtraciones de datos
+modelos &lt;- list(
+  &quot;Modelo Original&quot; = datos,
+  &quot;Sin Observación con Mayor Cook&quot; = datos[-which.max(dist_cook), ],  # Sin la observación más influyente
+  &quot;Sin Dos Observaciones con Mayor Cook&quot; = datos[-observaciones_mayor_cook, ],  # Sin las dos más influyentes
+  &quot;Sin Observaciones Sospechosas&quot; = datos[-puntos_sospechosos, ]       # Sin todas las sospechosas
+)
+
+
+# Aplicar la función de ajuste a cada conjunto de datos
+resultados &lt;- sapply(modelos, ajustar_modelo)
+
+# Crear un dataframe con los resultados
+resultados_df &lt;- data.frame(
+  R2 = resultados[3, ],
+  R2_Ajustado = resultados[4, ],
+  Desviacion_Estandar = resultados[5, ],
+  coef1 = resultados[1, ],
+  coef2 = resultados[2, ]
+)
+
+# Mostrar la tabla de comparación
+print(resultados_df)</code></pre>
+<p>Para evaluar el nivel de asociación lineal o monótona entre
+<strong>el peso corporal</strong> y las variables
+<strong>estatura</strong>, <strong>longitud de la circunferencia del
+cuello</strong> y <strong>longitud de la circunferencia de la
+muñeca</strong>, se calcularon los coeficientes de correlación de
+<strong>Pearson</strong> y <strong>Kendall</strong>.</p>
+<p>Las <strong>Figuras 3.46 y 3.47</strong> presentan la matriz de
+correlación y los gráficos de dispersión de las variables analizadas. Se
+observa que la distribución de la <strong>longitud de la circunferencia
+del cuello</strong> y la <strong>longitud de la circunferencia de la
+muñeca</strong> exhibe curvas de densidad bimodal, lo que justifica el
+uso del coeficiente de correlación de <strong>Kendall</strong>. En ambos
+casos, tanto con Pearson como con Kendall (0.866 y 0.709), la variable
+con mayor asociación con el peso corporal es la <strong>longitud de la
+circunferencia del cuello</strong>, lo que indica que a medida que esta
+longitud aumenta, el peso tiende a incrementarse.</p>
+<p>Además, en el gráfico de dispersión <strong>Peso vs. Circunferencia
+del cuello</strong>, se identifica un <strong>punto que se aleja
+significativamente de la nube de datos</strong>, correspondiente a un
+estudiante con un peso superior a <strong>100 kilogramos</strong>. Esta
+observación debe analizarse en términos de su impacto en el ajuste del
+modelo.</p>
+<p>El siguiente código genera las matrices de correlación y los gráficos
+de dispersión:</p>
+<pre>
+# Configurar el entorno para el uso del idioma español
+Sys.setlocale("LC_ALL", "es_ES.UTF-8")
+
+# Cargar paquetes necesarios
+library(MASS)       # Para cálculos estadísticos
+library(ggplot2)   # Para visualización de datos
+library(lmtest)    # Para pruebas de independencia y homocedasticidad
+library(car)       # Para pruebas de normalidad y análisis de influencia
+library(nortest)   # Para pruebas adicionales de normalidad
+library(patchwork) # Para combinar gráficos en una sola figura
+library("GGally")  # Para matriz de gráficos de dispersión y correlación
+
+# Definir la URL del archivo con los datos
+file <- "https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_atip.txt"
+
+# Cargar el conjunto de datos desde la URL
+datos <- read.table(file = file, header = TRUE)
+
+# Matriz de correlación
+correlacion_pearson <- cor(datos[,c(3,5,6,7)], method = "pearson", use = "pairwise.complete.obs") %>% round(3)
+correlacion_kendall <- cor(datos[,c(3,5,6,7)], method = "kendall", use = "pairwise.complete.obs") %>% round(3)
+correlacion_spearman <- cor(datos[,c(3,5,6,7)], method = "spearman", use = "pairwise.complete.obs") %>% round(3)
+
+#Matriz de gráficos de dispersión con correlaciones de Pearson
+plot.pearson <- ggpairs(
+  datos[,c(3,5,6,7)],  
+  title = "Matriz de Dispersion y Correlacion - Pearson",
+  upper = list(continuous = wrap("cor", size = 4, method = "pearson")),  
+  lower = list(continuous = wrap("points", alpha = 0.5, size = 1.5)),  
+  diag = list(continuous = wrap("densityDiag", alpha = 0.6))  
+)
+
+
+#Matriz de gráficos de dispersión con correlaciones de Kendall
+plot.kendall <- ggpairs(
+  datos[,c(3,5,6,7)],  
+  title = "Matriz de Dispersion y Correlacion - Kendall",
+  upper = list(continuous = wrap("cor", size = 4, method = "kendall")), 
+  lower = list(continuous = wrap("points", alpha = 0.5, size = 1.5)), 
+  diag = list(continuous = wrap("densityDiag", alpha = 0.6))  
+)
+
+#Mostrar la matriz de gráficos
+print(plot.pearson)
+print(plot.kendall)
+</pre>
+<br/><br/>
+<center>
+<img src="img/fig346.png" width="80%" style="display: block; margin: auto;" />
+<strong>Figura 3.46</strong> Matriz de correlación de Pearson.
+</center>
+<p><br/><br/></p>
+<br/><br/>
+<center>
+<img src="img/fig347.png" width="80%" style="display: block; margin: auto;" />
+<strong>Figura 3.47</strong> Matriz de correlación de Kendall.
+</center>
+<p><br/><br/></p>
+<hr />
+<p>Se ajusta un <strong>modelo de regresión lineal simple</strong> para
+explicar la variable <strong>Peso</strong> en función de la
+<strong>circunferencia del cuello</strong>.</p>
+<p>El modelo estimado es el siguiente:</p>
+<p><span class="math display">\[
+\hat{\text{Peso}} = -37.1552 + 2.9002 \times \text{Circunferencia del
+cuello}\\ \varepsilon_i \sim N(0, \hat{\sigma}^2=5.936^2)
+\]</span></p>
+<p>Ambos coeficientes son <strong>estadísticamente
+significativos</strong>, con valores-p de <strong><span
+class="math inline">\(5.33 \times 10^{-5}\)</span></strong> y
+<strong><span class="math inline">\(&lt; 2 \times
+10^{-16}\)</span></strong>, respectivamente.</p>
+<p>La <strong>Figura 3.48</strong> muestra la relación entre el peso y
+la circunferencia del cuello, junto con la <strong>línea de regresión
+ajustada</strong>. En este gráfico se destaca un posible <strong>punto
+atípico</strong>, correspondiente a un estudiante con un peso superior a
+<strong>100 kilogramos</strong>, que se encuentra alejado de la recta de
+regresión.</p>
+<p>El siguiente código genera el modelo y la visualización:</p>
+<pre>
+# Ajustar el modelo de regresión lineal
+mod1 <- lm(Peso ~ circun_cuello, data=datos)
+
+# Mostrar resumen del modelo ajustado
+summary(mod1)
+
+# Extraer coeficientes del modelo (intercepto y pendiente)
+intercepto <- round(coef(mod1)[1], 2)
+pendiente <- round(coef(mod1)[2], 2)
+
+# Construcción del gráfico de dispersión con línea de tendencia
+with(datos, 
+     plot(x=circun_cuello, y=Peso, pch=19, las=1,
+          xlab="Circunferencia cuello (cm)", ylab="Peso (Kg)"))
+
+# Agregar la línea de regresión
+abline(mod1, lwd=3, col='blue2')
+
+# Agregar la ecuación del modelo en la gráfica
+text(x=34, y=95, labels = bquote(hat(Peso) == .(intercepto) + .(pendiente) * C.cuello), 
+     col='blue3' )
+</pre>
+<pre>
+Call:
+lm(formula = Peso ~ circun_cuello, data = datos)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-11.4526  -3.7980  -0.5279   3.6603  18.9962 
+
+Coefficients:
+              Estimate Std. Error t value Pr(>|t|)    
+(Intercept)   -37.1552     8.4079  -4.419 5.33e-05 ***
+circun_cuello   2.9002     0.2368  12.250  < 2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 5.936 on 50 degrees of freedom
+Multiple R-squared:  0.7501,    Adjusted R-squared:  0.7451 
+F-statistic: 150.1 on 1 and 50 DF,  p-value: < 2.2e-16
+</pre>
+<br/><br/>
+<center>
+<img src="img/fig348.png" width="80%" style="display: block; margin: auto;" />
+<strong>Figura 3.48</strong> Gráfico de dispersión con el modelo de
+regresión lineal estimado.
+</center>
+<p><br/><br/></p>
+<hr />
+<p>Dado que existe una observación alejada de la nube de datos, se
+realizan gráficos de residuales y se calcula la distancia de Cook para
+todas las observaciones. Representar gráficamente estas distancias
+permite identificar posibles puntos influyentes que podrían afectar
+significativamente los coeficientes del modelo.</p>
+<p>Las <strong>Figuras 3.49</strong> muestran que las observaciones
+<strong>11 y 51</strong> presentan los valores más altos de
+<strong>distancia de Cook</strong>. Sin embargo, en principio se puede
+decir que dichos valores son inferiores a 1, lo que sugiere que no
+ejercen una influencia significativa en el ajuste del modelo.</p>
+<pre>
+# Calcular residuos estandarizados
+residuos_est <- rstandard(mod1)
+
+# Calcular leverage (h_ii) de la matriz sombrero
+leverage <- hatvalues(mod1)
+
+# Calcular distancia de Cook
+dist_cook <- cooks.distance(mod1)
+
+# Definir umbrales para considerar valores atípicos o influyentes
+umbral_residuos <- 3  # Para residuos estandarizados
+umbral_cook <- 4/(nrow(datos))      # Umbral estándar para distancia de Cook
+umbral_leverage <- 2 * length(coef(mod1)) / nrow(datos)  # Umbral de leverage
+
+# Gráfico de la distancia de Cook
+plot(mod1, which=4, cook.levels=umbral_cook, las=1, main="Distancia de Cook")
+abline(h=umbral_cook, lty="dashed", col="dodgerblue2")
+
+# Índice de influencia gráfica
+influenceIndexPlot(mod1, vars="Cook", main="Índice de Influencia - Distancia de Cook")
+
+</pre>
+<br/><br/>
+<center>
+<img src="img/fig349.png" width="80%" style="display: block; margin: auto;" />
+<strong>Figura 3.49</strong> Distancia de Cook.
+</center>
+<p><br/><br/></p>
+<hr />
+<p>La <strong>Figura 3.50</strong> presenta los <strong>gráficos de
+diagnóstico de residuos</strong>, en los cuales se identifican varias
+observaciones que requieren un análisis más detallado: <strong>11, 51, 8
+y 40</strong>.</p>
+<p>En el <strong>Q-Q plot de residuos estandarizados</strong>, la
+mayoría de los puntos se encuentran alineados con la línea de
+referencia, excepto las observaciones <strong>11, 40 y 51</strong>, que
+se desvían de la tendencia esperada.</p>
+<p>Los gráficos de <strong>residuos y residuos estandarizados versus
+valores ajustados</strong> no muestran un patrón evidente de
+heterocedasticidad; sin embargo, las observaciones <strong>11, 40 y
+51</strong> presentan residuos que se separan notablemente de la nube de
+puntos.</p>
+<p>En el gráfico de <strong>residuos versus leverage</strong>, se
+destacan las observaciones <strong>8, 11 y 51</strong>. No obstante, el
+valor de la observación <strong>8</strong> no supera la distancia de
+Cook de <strong>0.5</strong>, mientras que los valores correspondientes
+a las observaciones <strong>11 y 51</strong> se encuentran muy próximos
+a este umbral. Ninguna de estas observaciones supera un valor de
+<strong>1</strong> en la distancia de Cook.</p>
+<p>El siguiente código permite generar el diagnóstico de residuos:</p>
+<pre>
+# Configurar gráficos en formato 2x2 para diagnóstico de residuos
+par(mfrow=c(2, 2))
+
+# Gráficos de diagnóstico del modelo
+plot(mod1, col='deepskyblue4', pch=19, main="Diagnóstico de Residuos")
+</pre>
+<br/><br/>
+<center>
+<img src="img/fig350.png" width="80%" style="display: block; margin: auto;" />
+<strong>Figura 3.50</strong> Residuales del modelo Peso versus longitud
+de la circunferencia del cuello.
+</center>
+<p><br/><br/></p>
+<p>Los valores de los <strong>residuos estandarizados</strong>,
+<strong>leverage</strong> y <strong>distancia de Cook</strong> se
+presentan a continuación. Los resultados indican que <strong>las
+observaciones 8, 11 y 51 registran los valores más altos</strong> en
+estas métricas.</p>
+<p>Se destaca que únicamente en el caso de la <strong>observación
+11</strong>, el residuo estandarizado supera el umbral en valor absoluto
+de <strong>3</strong>. Asimismo, en ningún caso la <strong>distancia de
+Cook</strong> excede el valor de <strong>1</strong>.</p>
+<pre>
+   Observacion Residuo_Estandarizado   Leverage Distancia_Cook
+8            8             -1.931002 0.06155210      0.1222835
+11          11              3.335722 0.07955398      0.4808540
+51          51              2.418017 0.17334486      0.6130210
+</pre>
+<p>A continuación los códigos para extraer los resultados.</p>
+<pre>
+# Crear un dataframe con los resultados
+analisis_puntos <- data.frame(
+  Observacion = 1:nrow(datos),
+  Residuo_Estandarizado = residuos_est,
+  Leverage = leverage,
+  Distancia_Cook = dist_cook
+)
+
+# Identificar posibles outliers e influyentes
+# Asegurarnos de que sean vectores lógicos
+outliers <- which(abs(analisis_puntos$Residuo_Estandarizado) > umbral_residuos)
+influyentes <- which(analisis_puntos$Distancia_Cook > umbral_cook)
+high_leverage <- which(analisis_puntos$Leverage > umbral_leverage)
+
+# Convertir a vectores lógicos con la misma longitud que la tabla
+outliers_log <- rep(FALSE, nrow(analisis_puntos))
+outliers_log[outliers] <- TRUE
+
+influyentes_log <- rep(FALSE, nrow(analisis_puntos))
+influyentes_log[influyentes] <- TRUE
+
+high_leverage_log <- rep(FALSE, nrow(analisis_puntos))
+high_leverage_log[high_leverage] <- TRUE
+
+# Filtrar las observaciones que deben analizarse
+analisis_puntos_filtrados <- analisis_puntos[outliers_log | influyentes_log | high_leverage_log, ]
+
+# Mostrar tabla de observaciones sospechosas
+print(analisis_puntos_filtrados)
+</pre>
+<p>La <strong>Figura 3.51</strong> muestra los puntos anteriormente
+encontrados en rojo, naranja y morado.</p>
+<pre>
+# Identificar observaciones sospechosas
+puntos_sospechosos <- c(analisis_puntos_filtrados[1,1], 
+                        analisis_puntos_filtrados[2,1], 
+                        analisis_puntos_filtrados[3,1])  # Observaciones que deben resaltarse
+
+# Crear el gráfico base
+plot(datos$circun_cuello, datos$Peso, 
+     pch=19, las=1, xlab="Circunferencia cuello (cm)", ylab="Peso (Kg)",
+     col="black", main="Gráfico de dispersión con puntos sospechosos")
+
+# Agregar la línea de regresión
+abline(mod1, lwd=3, col='blue2')
+
+# Resaltar los puntos sospechosos con diferentes colores
+colores_puntos <- c("red", "orange", "purple")  # Asignar colores distintos
+points(datos$circun_cuello[puntos_sospechosos], 
+       datos$Peso[puntos_sospechosos], 
+       pch=19, col=colores_puntos, cex=1)
+
+# Agregar etiquetas a los puntos sospechosos
+text(datos$circun_cuello[puntos_sospechosos], 
+     datos$Peso[puntos_sospechosos], 
+     labels=puntos_sospechosos, pos=3, col=colores_puntos, font=1.5)
+
+# Agregar la ecuación del modelo en la gráfica
+text(x=34, y=95, labels = bquote(hat(Peso) == .(intercepto) + .(pendiente) * circun_cuello), 
+     col='blue3', font=2 )
+</pre>
+<br/><br/>
+<center>
+<img src="img/fig351.png" width="80%" style="display: block; margin: auto;" />
+<strong>Figura 3.51</strong> Observaciones sospechosas sobre la recta de
+regresión.
+</center>
+<p><br/><br/></p>
+<p>La <strong>Figura 3.52</strong> muestra la relación entre la
+<strong>distancia de Cook</strong> y el <strong>leverage</strong> para
+cada observación en el modelo. Se incluyen <strong>líneas de
+referencia</strong> para los umbrales de leverage y distancia de Cook.
+La figura muestra que las observaciones <strong>11 y 51</strong> se
+destacan sobre el resto, en particular la <strong>51</strong> con mayor
+leverage y distancia de Cook.</p>
+<pre>
+# Convertir la variable Observacion a factor para usar colores categóricos
+analisis_puntos$Observacion <- as.factor(analisis_puntos$Observacion)
+
+# Crear un vector de colores solo para las observaciones resaltadas
+colores_destacados <- c("8" = "purple", "11" = "red", "51" = "orange")
+
+# Crear gráfico de leverage vs. distancia de Cook con puntos resaltados
+ggplot(analisis_puntos, aes(x=Leverage, y=Distancia_Cook)) +
+  geom_point(aes(color=Observacion), size=3) +  # Asignar color por observación
+  geom_hline(yintercept=umbral_cook, linetype="dashed", color="blue") +
+  geom_vline(xintercept=umbral_leverage, linetype="dashed", color="green") +
+  geom_text(data=subset(analisis_puntos, Observacion %in% c("8", "11", "51")), 
+            aes(label=Observacion), 
+            vjust=-1, color="black", fontface="bold") +
+  scale_color_manual(values=colores_destacados, na.value="gray") +  # Asignar colores a los puntos resaltados
+  labs(title="Detección de Observaciones Atípicas e Influyentes",
+       x="Leverage",
+       y="Distancia de Cook",
+       color="Observación") +
+  theme_minimal()
+</pre>
+<br/><br/>
+<center>
+<img src="img/fig352.png" width="80%" style="display: block; margin: auto;" />
+<strong>Figura 3.52</strong> Distancia de Cook versus Leverage.
+</center>
+<p><br/><br/></p>
+<hr />
+<p>La siguiente tabla presenta los resultados del ajuste del modelo de
+regresión lineal bajo diferentes escenarios. Se incluyen el coeficiente
+de determinación (<span class="math inline">\(R^2\)</span>), la
+estimación de la pendiente del modelo, la desviación estándar de los
+residuos, y los valores-p de las pruebas de normalidad (Shapiro-Wilk),
+homocedasticidad (Breusch-Pagan) e independencia de errores
+(Durbin-Watson).</p>
+<p>Los resultados muestran que tanto el <strong>modelo original</strong>
+como el <strong>modelo sin las observaciones 11 y 51</strong> cumplen
+con los supuestos de normalidad, homocedasticidad e independencia de los
+errores. Sin embargo, al excluir las dos observaciones con mayor
+distancia de Cook, la desviación estándar de los errores disminuye a
+<strong>5.0199</strong>, en comparación con <strong>5.9358</strong> en
+el modelo original.</p>
+<p>Además, la diferencia en la estimación de la pendiente entre el
+<strong>modelo original</strong> y el <strong>modelo sin las
+observaciones 11 y 51</strong> es mínima (<strong>0.0280</strong>), lo
+que indica que la eliminación de estos puntos no afecta
+significativamente la relación entre la circunferencia del cuello y el
+peso, sin embargo sí mejora la precisión del modelo.</p>
+<pre>
+                                            R2 Desviacion_Estandar     coef1    coef2   vp.norm     vp.hom     vp.ind
+Modelo Original                      0.7500723            5.935767 -37.15517 2.900217 0.1249637 0.30015064 0.34250203
+Sin Observación con Mayor Cook       0.7713569            5.634559 -46.19479 3.147401 0.3453422 0.02438465 0.18269299
+Sin Dos Observaciones con Mayor Cook 0.7776975            5.019946 -38.78841 2.928236 0.9199382 0.20980800 0.05760417
+Sin Observaciones Sospechosas        0.7992899            4.812106 -42.73091 3.046012 0.9817796 0.52012942 0.04777400
+</pre>
+<pre>
+# Función para ajustar el modelo y extraer métricas
+ajustar_modelo <- function(datos_filtrados) {
+  modelo <- lm(Peso ~ circun_cuello, data = datos_filtrados)
+  resumen <- summary(modelo)
+  
+  # Extraer métricas clave
+  R2 <- resumen$r.squared
+  R2_ajustado <- resumen$adj.r.squared
+  desv_estandar <- resumen$sigma
+  coef1 <- resumen$coefficients[1]
+  coef2 <- resumen$coefficients[2]
+  
+  
+  # Pruebas estadísticas sobre residuos
+  p_shapiro <- shapiro.test(residuals(modelo))$p.value  # Normalidad
+  p_bptest <- bptest(modelo)$p.value                    # Homocedasticidad (Breusch-Pagan)
+  p_dwtest <- dwtest(modelo)$p.value                    # Independencia de errores (Durbin-Watson)
+  
+  return(c(coef1,coef2,R2,desv_estandar,p_shapiro, p_bptest, p_dwtest))
+}
+
+# Ajustar Modelos con Diferentes Exclusiones
+# Identificar las dos observaciones con mayor distancia de Cook
+observaciones_mayor_cook <- order(dist_cook, decreasing = TRUE)[1:2]
+
+# Lista de modelos con diferentes filtraciones de datos
+modelos <- list(
+  "Modelo Original" = datos,
+  "Sin Observación con Mayor Cook" = datos[-which.max(dist_cook), ],  # Sin la observación más influyente
+  "Sin Dos Observaciones con Mayor Cook" = datos[-observaciones_mayor_cook, ],  # Sin las dos más influyentes
+  "Sin Observaciones Sospechosas" = datos[-puntos_sospechosos, ]       # Sin todas las sospechosas
+)
+
+
+# Aplicar la función de ajuste a cada conjunto de datos
+resultados <- sapply(modelos, ajustar_modelo)
+
+# Crear un dataframe con los resultados
+resultados_df <- data.frame(
+  R2 = resultados[3, ],
+  Desviacion_Estandar = resultados[4, ],
+  coef1 = resultados[1, ],
+  coef2 = resultados[2, ],
+  vp.norm=resultados[5, ],
+  vp.hom=resultados[6, ],
+  vp.ind=resultados[7, ]
+)
+
+# Mostrar la tabla de comparación
+print(resultados_df)
+</pre>
+</p>
+</div>
+<div class="caja-nota">
+<blockquote>
+<p><em>“Las observaciones sospechosas <strong>no</strong> se deben sacar
+inmediatamente del modelo. Antes se deben estudiar para ver si hay algo
+raro con ellas, en caso afirmativo se sacan de la base y se ajusta
+nuevamente el modelo.”</em></p>
+</blockquote>
+</div>
+<pre class="r"><code># =======================
+# Lectura y exploración de datos
+# =======================
+
+# Configurar el entorno para el uso del idioma español
+Sys.setlocale(&quot;LC_ALL&quot;, &quot;es_ES.UTF-8&quot;)
+
+# Cargar paquetes necesarios
+library(MASS)       # Cálculos estadísticos
+library(ggplot2)   # Visualización de datos
+library(lmtest)    # Pruebas de independencia y homocedasticidad
+library(car)       # Pruebas de normalidad y análisis de influencia
+library(nortest)   # Pruebas adicionales de normalidad
+library(patchwork) # Para combinar gráficos
+library(GGally)    # Para análisis de correlación
+
+# Definir la URL del archivo con los datos
+file &lt;- &quot;https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_atip.txt&quot;
+
+# Cargar el conjunto de datos
+datos &lt;- read.table(file = file, header = TRUE)
+
+# Excluir las observaciones 11 y 51
+datos_filtrados &lt;- datos[-c(11, 51), ]
+
+# =======================
+# Ajuste del modelo sin observaciones 11 y 51
+# =======================
+mod1 &lt;- lm(Peso ~ circun_cuello, data = datos_filtrados)
+summary(mod1)
+
+# Extraer coeficientes
+intercepto &lt;- round(coef(mod1)[1], 2)
+pendiente &lt;- round(coef(mod1)[2], 2)
+
+# =======================
+# Cálculo de Intervalos de Confianza y Predicción
+# =======================
+
+# Definir valores de circunferencia de cuello para predicción
+nuevos_datos &lt;- data.frame(circun_cuello = seq(min(datos_filtrados$circun_cuello), 
+                                               max(datos_filtrados$circun_cuello), 
+                                               length.out = 100))
+
+# Calcular intervalos de confianza (esperanza de Y | X)
+ic_esperanza &lt;- predict(mod1, newdata = nuevos_datos, interval = &quot;confidence&quot;)
+
+# Calcular intervalos de predicción (respuesta Y)
+ic_prediccion &lt;- predict(mod1, newdata = nuevos_datos, interval = &quot;prediction&quot;)
+
+# Convertir a data frame para graficar
+intervalos &lt;- data.frame(
+  circun_cuello = nuevos_datos$circun_cuello,
+  prediccion = ic_prediccion[, &quot;fit&quot;],
+  li_pred = ic_prediccion[, &quot;lwr&quot;],
+  ls_pred = ic_prediccion[, &quot;upr&quot;],
+  li_conf = ic_esperanza[, &quot;lwr&quot;],
+  ls_conf = ic_esperanza[, &quot;upr&quot;]
+)
+
+# =======================
+# Visualización del modelo con intervalos y leyenda clara
+# =======================
+ggplot() +
+  # Puntos originales de los datos filtrados
+  geom_point(data = datos_filtrados, aes(x = circun_cuello, y = Peso), color = &quot;black&quot;, size = 2) +
+  
+  # Línea de regresión estimada
+  geom_line(data = intervalos, aes(x = circun_cuello, y = prediccion, color = &quot;Regresión Ajustada&quot;), size = 1) +
+  
+  # Intervalo de confianza (Esperanza de Y | X)
+  geom_ribbon(data = intervalos, aes(x = circun_cuello, ymin = li_conf, ymax = ls_conf, fill = &quot;IC Esperanza E[Y|X]&quot;), alpha = 0.3) +
+  
+  # Intervalo de predicción (Respuesta Y)
+  geom_ribbon(data = intervalos, aes(x = circun_cuello, ymin = li_pred, ymax = ls_pred, fill = &quot;IC Predicción Y&quot;), alpha = 0.2) +
+  
+  # Personalización de la leyenda
+  scale_fill_manual(name = &quot;Intervalos&quot;,
+                    values = c(&quot;IC Esperanza E[Y|X]&quot; = &quot;blue&quot;, &quot;IC Predicción Y&quot; = &quot;red&quot;)) +
+  scale_color_manual(name = &quot;Modelo&quot;,
+                     values = c(&quot;Regresión Ajustada&quot; = &quot;black&quot;)) +
+
+  labs(title = &quot;Intervalos de Confianza y Predicción (Sin Observaciones 11 y 51)&quot;,
+       x = &quot;Circunferencia del cuello (cm)&quot;,
+       y = &quot;Peso (Kg)&quot;) +
+  theme_minimal()</code></pre>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

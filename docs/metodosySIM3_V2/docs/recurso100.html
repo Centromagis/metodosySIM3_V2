@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Métodos y Simulación Estadística" />
+
+
+<title> Análisis de correlación</title>
+
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"> </a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Métodos
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="index.html">Contenido</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Correlación
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso100.html">Análisis de Correlación</a>
+    </li>
+    <li>
+      <a href="recurso110.html">Coeficiente de Pearson</a>
+    </li>
+    <li>
+      <a href="recurso120.html">Coeficiente de Spearman</a>
+    </li>
+    <li>
+      <a href="recurso130.html">Coeficiente de Kendall</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Modelo
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso200.html">Modelo de Regresión Lineal Simple</a>
+    </li>
+    <li>
+      <a href="recurso210.html">Estimación Mínimos Cuadrados Ordinarios</a>
+    </li>
+    <li>
+      <a href="recurso220.html">Estimación de Máxima Verosimilitud</a>
+    </li>
+    <li>
+      <a href="recurso230.html">Forma Matricial del Modelo</a>
+    </li>
+    <li>
+      <a href="recurso300.html">Supuestos</a>
+    </li>
+    <li>
+      <a href="recurso310.html">Residuales</a>
+    </li>
+    <li>
+      <a href="recurso320.html">Revisión de Supuestos</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Pruebas de Hipótesis
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso400.html">Sobre los Coeficientes</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Transformaciones
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso500.html">Transformaciones</a>
+    </li>
+    <li>
+      <a href="recurso600.html">Modelos Polinomiales</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Predicción e Intervalos
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso700.html">Intervalo de Confianza</a>
+    </li>
+    <li>
+      <a href="recurso800.html">Intervalos de C. de Coeficientes y Varianza</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Atípicos e Influyentes
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso900.html">Punto Atípico e Influyente</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Tablero
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso1000.html">Tablero usando Shiny</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Referencias
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso2000.html">Referencias</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore"><span style="color:#686868">
+<strong>Análisis de correlación</strong></span></h1>
+<h4 class="author">Métodos y Simulación Estadística</h4>
+
+</div>
+
+
+<br/><br/>
+<h3>
+Análisis de correlación
+</h3>
+<p>El <strong>análisis de correlación</strong> es una técnica
+estadística utilizada para cuantificar la relación entre dos variables
+cuantitativas. Su objetivo principal es medir el grado de asociación
+entre estas variables sin implicar una relación causal.</p>
+<p>En este análisis, se considera una variable respuesta <span
+class="math inline">\(Y\)</span>, cuya relación con otra variable
+explicativa <span class="math inline">\(X\)</span> se investiga a partir
+de una muestra de <span class="math inline">\(n\)</span> pares de
+observaciones, es decir:</p>
+<p><span class="math display">\[
+(X_1, Y_1), (X_2, Y_2), \dots, (X_n, Y_n)
+\]</span></p>
+<p>Este análisis permite responder preguntas como:</p>
+<ul>
+<li><p>¿Existe una asociación entre <span
+class="math inline">\(X\)</span> y <span
+class="math inline">\(Y\)</span>?</p></li>
+<li><p>¿Qué tan fuerte es la relación entre ambas variables?</p></li>
+<li><p>¿Es la relación positiva o negativa?</p></li>
+</ul>
+<p>Dependiendo de la naturaleza de la relación, se pueden utilizar
+diferentes medidas de correlación, siendo el <strong>coeficiente de
+correlación de Pearson</strong> una de las más utilizadas cuando la
+relación es lineal. Sin embargo, en caso de relaciones no lineales o con
+datos atípicos, existen otras medidas más robustas, como la correlación
+de <strong>Spearman</strong> o <strong>Kendall</strong>.</p>
+<p>El análisis de correlación es un primer paso fundamental antes de la
+construcción de modelos de regresión, ya que permite evaluar la
+pertinencia de incluir una variable explicativa en el modelo y detectar
+posibles patrones en los datos.</p>
+</br></br>
+<div class="caja-ejemplo">
+<h3>
+Ejemplo:
+</h3>
+<p>
+<p>El análisis de correlación permite responder preguntas sobre la
+relación entre dos variables cuantitativas. Algunos ejemplos comunes
+incluyen:</p>
+<ul>
+<li><p><strong>Relación entre inversión en publicidad y
+ventas:</strong><br />
+¿Existe una asociación entre el presupuesto destinado a publicidad y el
+volumen de ventas mensuales de una empresa? ¿Un mayor gasto en
+publicidad se traduce en un aumento en las ventas?</p></li>
+<li><p><strong>Relación entre tamaño y precio de una
+vivienda:</strong><br />
+¿El número de metros cuadrados de una casa influye en su valor de venta?
+¿A mayor tamaño, mayor precio?</p></li>
+<li><p><strong>Relación entre eficiencia de combustible y peso del
+vehículo:</strong><br />
+¿Existe un patrón entre los kilómetros por galón consumidos y el peso de
+un automóvil? ¿Los autos más pesados tienden a consumir más
+combustible?</p></li>
+<li><p><strong>Relación entre tiempo de estudio y rendimiento
+académico:</strong><br />
+¿El número de horas que un estudiante dedica a estudiar está relacionado
+con la calificación obtenida en un examen?</p></li>
+<li><p><strong>Relación entre peso y estatura:</strong><br />
+¿Existe una correlación entre el peso y la altura de los estudiantes?
+¿Es una relación proporcional?</p></li>
+<li><p><strong>Relación entre desempleo y criminalidad:</strong><br />
+¿Existe una conexión entre la tasa de desempleo y la tasa de homicidios
+en una región? ¿Un mayor desempleo está asociado con un aumento en la
+criminalidad?</p></li>
+<li><p><strong>Relación entre medidas de tránsito y accidentes
+viales:</strong><br />
+¿La implementación de más medidas preventivas de tránsito contribuye a
+la reducción de accidentes?</p></li>
+</ul>
+</p>
+</div>
+<p>Además de evaluar la existencia de una relación entre las variables,
+el análisis de correlación también permite determinar:</p>
+<ul>
+<li><p><strong>La intensidad de la relación:</strong> ¿Es una asociación
+fuerte o débil?</p></li>
+<li><p><strong>La dirección de la relación:</strong> ¿Es una correlación
+positiva (directa) o negativa (inversa)?</p></li>
+</ul>
+<p>Estos aspectos son fundamentales para interpretar adecuadamente los
+resultados y tomar decisiones basadas en datos.</p>
+<br/><br/>
+<h3>
+Herramientas estadísticas para el análisis de correlación
+</h3>
+<p>El análisis de correlación se apoya en diversas herramientas
+estadísticas que permiten visualizar y cuantificar la relación entre dos
+variables. Entre las principales se encuentran:</p>
+<ul>
+<li><p><strong>Gráficos de dispersión:</strong></p>
+<p>Representación visual que permite observar la relación entre dos
+variables cuantitativas. A través de este gráfico, es posible
+identificar patrones de asociación, tendencias lineales o no lineales, y
+detectar posibles valores atípicos.</p></li>
+<li><p><strong>Coeficiente de correlación:</strong></p>
+<p>Medida cuantitativa que evalúa la <strong>fuerza</strong> y
+<strong>dirección</strong> de la relación entre dos variables. Existen
+diferentes tipos de coeficientes, entre ellos:</p>
+<ul>
+<li><p><strong>Coeficiente de correlación de Pearson:</strong> Indica el
+grado de relación lineal entre dos variables. Su valor oscila entre -1 y
+1.</p></li>
+<li><p><strong>Coeficiente de correlación de Spearman:</strong> Se
+emplea cuando la relación entre las variables no es estrictamente
+lineal, sino monótona. Es útil en datos con distribuciones no normales o
+con valores atípicos.</p></li>
+<li><p><strong>Coeficiente de correlación de Kendall:</strong> Similar a
+Spearman, mide la concordancia entre dos variables y es más robusto en
+muestras pequeñas o con empates en los datos.</p></li>
+</ul></li>
+</ul>
+<p>El uso combinado de estas herramientas permite obtener un análisis
+más completo sobre la existencia y naturaleza de la asociación entre las
+variables estudiadas.</p>
+<br/><br/>
+<h3>
+Gráfico de dispersión
+</h3>
+<p>Un <strong>gráfico de dispersión</strong> es una representación
+visual de los pares de valores <span class="math inline">\((X,
+Y)\)</span> observados para dos variables cuantitativas. La distribución
+de los puntos en el gráfico proporciona información sobre la posible
+asociación entre las variables.</p>
+<p>Dependiendo de la forma que adopten los puntos, es posible
+identificar patrones de relación, como asociaciones lineales, no
+lineales o la ausencia de relación entre las variables.</p>
+<br/><br/>
+<center>
+<img src="img/fig31.png" width="80%" style="display: block; margin: auto;" />
+<strong>Figura 3.1</strong> Gráficos de dispersión.
+</center>
+<p><br/><br/></p>
+<p>La <strong>Figura 3.1</strong> ilustra que los gráficos (a), (b) y
+(c) muestran ejemplos de correlación positiva, negativa y nula. El
+gráfico (d) muestra otro tipo de asociación diferente a la lineal.</p>
+<p><strong>Gráfico (a): Correlación positiva fuerte</strong></p>
+<ul>
+<li><p>Los puntos siguen una tendencia ascendente clara, indicando que a
+medida que <span class="math inline">\(x\)</span> aumenta, <span
+class="math inline">\(y\)</span> también lo hace.</p></li>
+<li><p>Representa una correlación positiva fuerte (~ 0.8).</p></li>
+</ul>
+<p><strong>Gráfico (b): Correlación negativa fuerte</strong></p>
+<ul>
+<li><p>Los puntos muestran una tendencia descendente clara, lo que
+indica que cuando <span class="math inline">\(x\)</span> aumenta, <span
+class="math inline">\(y\)</span> disminuye.</p></li>
+<li><p>Representa una correlación negativa fuerte (~ -0.7).</p></li>
+</ul>
+<p><strong>Gráfico (c): Sin correlación</strong></p>
+<ul>
+<li><p>Los puntos están dispersos sin un patrón claro, indicando que no
+hay relación lineal entre <span class="math inline">\(x\)</span> y <span
+class="math inline">\(y\)</span>.</p></li>
+<li><p>Representa un caso con correlación cercana a 0.</p></li>
+</ul>
+<p><strong>Gráfico (d): Relación no lineal</strong></p>
+<ul>
+<li><p>Los datos siguen una tendencia en forma de parábola, lo que
+indica que hay una relación cuadrática entre <span
+class="math inline">\(x\)</span> y <span
+class="math inline">\(y\)</span>.</p></li>
+<li><p>La correlación lineal sería cercana a 0, pero hay una relación no
+lineal clara.</p></li>
+</ul>
+</br></br>
+<div class="caja-ejemplo">
+<h3>
+Ejemplo:
+</h3>
+<p>
+<p>En un entorno industrial, comprender la relación entre el
+<strong>tiempo de trabajo</strong> y la <strong>producción</strong> es
+fundamental para optimizar la eficiencia operativa y facilitar la toma
+de decisiones estratégicas. En este análisis, se examina la posible
+relación lineal entre dos variables clave:</p>
+<ul>
+<li><p><strong><span class="math inline">\(X\)</span></strong>: Cantidad
+de horas trabajadas en la empresa.</p></li>
+<li><p><strong><span class="math inline">\(Y\)</span></strong>: Cantidad
+de unidades producidas en la empresa.</p></li>
+</ul>
+<p>Para explorar esta relación, se construirá un <strong>gráfico de
+dispersión</strong>, el cual permite identificar posibles patrones de
+asociación entre las variables.</p>
+<p>Los datos utilizados en este estudio están disponibles en el
+siguiente enlace:</p>
+<p><a
+href="https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_product.txt">Datos
+de producción y tiempo de trabajo</a></p>
+<p>A continuación, se presenta el código en <strong>R</strong> para
+generar dicho gráfico:</p>
+<pre>
+# Cargar la librería necesaria para la visualización de datos
+library(ggplot2)
+
+# Crear un data frame con las observaciones de la muestra
+# 1. Lectura de datos
+file <- "https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_product.txt"
+datos <- read.table(file = file, header = TRUE)
+
+data_produccion <- datos
+
+# Crear el gráfico de dispersión
+grafico_dispersion <- ggplot(data_produccion, aes(x = x, y = y)) + 
+  geom_point(size = 3, colour = "blue") +  # Puntos en color azul y tamaño ajustado
+  theme_minimal() +  # Estilo limpio y minimalista
+  labs(
+    title = "Relación entre Horas Trabajadas y Producción", 
+    x = "Cantidad de horas trabajadas", 
+    y = "Cantidad de unidades producidas"
+  ) +
+  theme(
+    plot.title = element_text(hjust = 0.5, face = "bold", size = 14), # Centrar y resaltar título
+    axis.title = element_text(size = 12)  # Ajustar tamaño de etiquetas de ejes
+  )
+
+# Mostrar el gráfico
+print(grafico_dispersion)
+</pre>
+<pre class="r"><code># Cargar la librería necesaria para la visualización de datos
+library(ggplot2)
+
+# Crear un data frame con las observaciones de la muestra
+# 1. Lectura de datos
+file &lt;- &quot;https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_product.txt&quot;
+datos &lt;- read.table(file = file, header = TRUE)
+
+data_produccion &lt;- datos
+
+# Crear el gráfico de dispersión
+grafico_dispersion &lt;- ggplot(data_produccion, aes(x = x, y = y)) + 
+  geom_point(size = 3, colour = &quot;blue&quot;) +  # Puntos en color azul y tamaño ajustado
+  theme_minimal() +  # Estilo limpio y minimalista
+  labs(
+    title = &quot;Relación entre Horas Trabajadas y Producción&quot;, 
+    x = &quot;Cantidad de horas trabajadas&quot;, 
+    y = &quot;Cantidad de unidades producidas&quot;
+  ) +
+  theme(
+    plot.title = element_text(hjust = 0.5, face = &quot;bold&quot;, size = 14), # Centrar y resaltar título
+    axis.title = element_text(size = 12)  # Ajustar tamaño de etiquetas de ejes
+  )
+
+# Mostrar el gráfico
+print(grafico_dispersion)</code></pre>
+<br/><br/>
+<center>
+<img src="img/fig32.png" width="80%" style="display: block; margin: auto;" />
+<strong>Figura 3.2</strong> Relación entre la cantidad de horas
+trabajadas y la cantidad de unidades producidas en una empresa.
+</center>
+<p><br/><br/></p>
+<p>La <strong>Figura 3.2</strong> muestra una <strong>relación lineal
+positiva</strong> entre el <strong>número de horas trabajadas</strong> y
+la <strong>cantidad de unidades producidas</strong>. Esto sugiere que,
+en general, un mayor tiempo de trabajo está asociado con una mayor
+producción.</p>
+<p>Sin embargo, para evaluar con precisión el grado de asociación entre
+estas variables, es necesario calcular una medida estadística que
+<strong>cuantifique la relación</strong>. Algunas de las herramientas
+más utilizadas para este propósito es el <strong>coeficiente de
+correlación de Pearson, Spearman y Kendall</strong>.</p>
+</p>
+</div>
+</br></br>
+<h3>
+Matriz de covarianza
+</h3>
+<p>La matriz de covarianza <span class="math inline">\(\Sigma\)</span>
+se define como:</p>
+<p><span class="math display">\[
+\Sigma =
+\begin{bmatrix}
+  \sigma_{1}^2 &amp; \sigma_{12} &amp; \sigma_{13} &amp; \ldots &amp;
+\sigma_{1n} \\
+  \sigma_{21} &amp; \sigma_{2}^2 &amp; \sigma_{23} &amp; \ldots &amp;
+\sigma_{2n} \\
+  \sigma_{31} &amp; \sigma_{32} &amp; \sigma_{3}^2 &amp; \ldots &amp;
+\sigma_{3n} \\
+  \vdots &amp; \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+  \sigma_{n1} &amp; \sigma_{n2} &amp; \sigma_{n3} &amp; \ldots &amp;
+\sigma_{n}^2 \\
+\end{bmatrix}
+\]</span></p>
+<p>Esta matriz es <strong>simétrica</strong>, lo que significa que <span
+class="math inline">\(\sigma_{ij} = \sigma_{ji}\)</span>, y contiene en
+su <strong>diagonal principal</strong> las <strong>varianzas</strong> de
+cada variable, mientras que los elementos fuera de la diagonal
+corresponden a las <strong>covarianzas</strong> entre pares de
+variables.</p>
+<p><strong>Definiciones y propiedades:</strong></p>
+<ul>
+<li><p><span class="math inline">\(\sigma_{i}^2\)</span> representa la
+<strong>varianza</strong> de la variable <span
+class="math inline">\(x_i\)</span>, ubicada en la diagonal
+principal.</p></li>
+<li><p><span class="math inline">\(\sigma_{ij}\)</span> representa la
+<strong>covarianza</strong> entre las variables <span
+class="math inline">\(x_i\)</span> y <span
+class="math inline">\(x_j\)</span>, ubicada fuera de la
+diagonal.</p></li>
+<li><p>La relación <span class="math inline">\(\sigma_{x_i,x_i} =
+\sigma^2_{x_i}\)</span> indica que la <strong>covarianza de una variable
+consigo misma</strong> es su propia varianza.</p></li>
+<li><p>La propiedad <span class="math inline">\(\sigma_{x_i,x_j} =
+\sigma_{x_j,x_i}\)</span> para todo <span class="math inline">\(i \neq
+j\)</span> confirma que la <strong>matriz es simétrica</strong>,
+reflejando la igualdad de la covarianza en ambas direcciones.</p></li>
+</ul>
+</br></br>
+<h3>
+Matriz de correlación
+</h3>
+<p>A partir de la matriz de covarianza, se puede calcular la
+<strong>matriz de correlación</strong> <span
+class="math inline">\(\mathbf{R}\)</span>, normalizando cada elemento
+por la desviación estándar de las variables involucradas:</p>
+<p><span class="math display">\[
+\mathbf{R} =
+\begin{bmatrix}
+  1 &amp; \rho_{12} &amp; \rho_{13} &amp; \ldots &amp; \rho_{1n} \\
+  \rho_{21} &amp; 1 &amp; \rho_{23} &amp; \ldots &amp; \rho_{2n} \\
+  \rho_{31} &amp; \rho_{32} &amp; 1 &amp; \ldots &amp; \rho_{3n} \\
+  \vdots &amp; \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+  \rho_{n1} &amp; \rho_{n2} &amp; \rho_{n3} &amp; \ldots &amp; 1 \\
+\end{bmatrix}
+\]</span></p>
+<p>Donde:</p>
+<ul>
+<li><p><span class="math inline">\(\rho_{ij}\)</span> representa el
+<strong>coeficiente de correlación de Pearson</strong> entre las
+variables <span class="math inline">\(x_i\)</span> y <span
+class="math inline">\(x_j\)</span>, calculado como:</p>
+<p><span class="math display">\[
+\rho_{ij} = \frac{\sigma_{ij}}{\sigma_{i} \sigma_{j}}
+\]</span></p></li>
+<li><p>La diagonal principal contiene <strong>unos (1)</strong>, ya que
+cada variable está perfectamente correlacionada consigo misma: <span
+class="math inline">\(\rho_{x_i, x_i} = 1\)</span>.</p></li>
+<li><p>Los elementos fuera de la diagonal muestran la
+<strong>correlación entre pares de variables</strong>, con valores entre
+<span class="math inline">\(-1\)</span> y <span
+class="math inline">\(1\)</span>, donde:</p>
+<ul>
+<li><span class="math inline">\(\rho_{ij} &gt; 0\)</span> indica una
+<strong>correlación positiva</strong>.</li>
+<li><span class="math inline">\(\rho_{ij} &lt; 0\)</span> indica una
+<strong>correlación negativa</strong>.</li>
+<li><span class="math inline">\(\rho_{ij} = 0\)</span> indica
+<strong>ausencia de correlación lineal</strong>.</li>
+</ul></li>
+</ul>
+<p></br> <strong>Relación entre ambas matrices:</strong></p>
+<ul>
+<li><p>La <strong>matriz de covarianza</strong> mide la
+<strong>variabilidad conjunta absoluta</strong> entre variables. No
+tiene un rango de valores fijo, ya que depende de las escalas de las
+variables. No mide correlación lineal directamente, sino que indica cómo
+varían juntas dos variables en términos de unidades de medida.</p></li>
+<li><p>La <strong>matriz de correlación</strong> es una versión
+<strong>normalizada</strong> de la matriz de covarianza, permitiendo
+comparar la fuerza de la relación entre variables en una escala estándar
+de <span class="math inline">\(-1\)</span> a <span
+class="math inline">\(1\)</span>. Mide la fuerza y dirección de la
+relación lineal entre dos variables, proporcionando una interpretación
+estandarizada de la relación entre variables.</p></li>
+</ul>
+</br></br>
+<div class="caja-ejemplo">
+<h3>
+Ejemplo:
+</h3>
+<p>
+<p>En la Unidad 2 se analizó el contexto de una <strong>fábrica de
+mecanizado de precisión</strong> que produce <strong>ejes
+metálicos</strong> utilizados en <strong>motores eléctricos de
+maquinaria industrial</strong>. En este proceso de fabricación, dos
+variables clave determinan la calidad del eje:</p>
+<ul>
+<li><p><strong><span class="math inline">\(X\)</span> : Diámetro del eje
+(en milímetros, mm)</strong></p></li>
+<li><p><strong><span class="math inline">\(Y\)</span> : Rugosidad
+superficial del eje (en micrómetros, <span class="math inline">\(\mu
+m\)</span>)</strong></p></li>
+</ul>
+<p>El <strong>diámetro y la rugosidad</strong>, se pueden modelar
+mediante una <strong>distribución normal bivariada</strong>, expresada
+como:</p>
+<p><span class="math display">\[
+(X, Y) \sim N_2 \left(
+\boldsymbol{\mu},  
+\Sigma
+\right)
+\]</span></p>
+<p>donde:</p>
+<ul>
+<li><p><span class="math inline">\(\boldsymbol{\mu}\)</span> representa
+el <strong>vector de medias</strong> del proceso.</p></li>
+<li><p><span class="math inline">\(\Sigma\)</span> es la <strong>matriz
+de covarianza</strong>, que describe la dispersión conjunta de ambas
+variables.</p></li>
+</ul>
+<p>Los valores de los <strong>parámetros</strong> de la <strong>normal
+bivariada</strong> están dados a continuación:</p>
+<p><br/> <strong>Medias</strong></p>
+<p><span class="math display">\[
+\boldsymbol{\mu}=\begin{bmatrix}
+\mu_X \\ \mu_Y
+\end{bmatrix} =
+\begin{bmatrix}
+50.00 \\ 1.0
+\end{bmatrix}
+\]</span></p>
+<ul>
+<li><p><strong><span class="math inline">\(\mu_X = 50.00\)</span>
+mm</strong> → <strong>Media del diámetro del eje</strong>.</p></li>
+<li><p><strong><span class="math inline">\(\mu_Y = 1.0\)</span> <span
+class="math inline">\(\mu m\)</span></strong> → <strong>Media de la
+rugosidad superficial</strong>.</p></li>
+</ul>
+<p><br/> <strong>Matriz de covarianza</strong></p>
+<p>En la normal bivariada se cumple que <span
+class="math inline">\(\text{Cov}(X, Y) = \rho \sigma_X
+\sigma_Y\)</span>, por tanto:</p>
+<p><span class="math display">\[
+\begin{align}
+\Sigma &amp;=
+\begin{bmatrix}
+\sigma_X^2 &amp; \text{Cov}(X, Y) \\
+\text{Cov}(X, Y) &amp; \sigma_Y^2
+\end{bmatrix}  \\
+&amp;=
+\begin{bmatrix}
+\sigma_X^2 &amp; \rho \sigma_X \sigma_Y \\
+\rho \sigma_X \sigma_Y &amp; \sigma_Y^2
+\end{bmatrix}  \\
+&amp;=
+\begin{bmatrix}
+0.015^2 &amp; -0.6 \times (0.015) \times (0.2) \\
+-0.6 \times (0.015) \times (0.2) &amp; 0.2^2
+\end{bmatrix}  \\
+&amp;=
+\begin{bmatrix}
+0.000225 &amp; -0.0018 \\
+-0.0018 &amp; 0.04
+\end{bmatrix}  
+\end{align}
+\]</span></p>
+<p>Donde:</p>
+<ul>
+<li><strong><span class="math inline">\(\sigma_X = 0.015\)</span>
+mm</strong> → <strong>Desviación estándar del diámetro</strong>.</li>
+<li><strong><span class="math inline">\(\sigma_Y = 0.2\)</span> <span
+class="math inline">\(\mu m\)</span></strong> → <strong>Desviación
+estándar de la rugosidad</strong>.</li>
+<li><strong><span class="math inline">\(\rho = -0.6\)</span></strong> →
+<strong>Correlación de Pearson entre diámetro y rugosidad</strong>.</li>
+</ul>
+<p>Esta matriz describe la <strong>dispersión conjunta de ambas
+variables</strong>, donde la <strong>covarianza negativa indica que un
+mayor diámetro tiende a estar asociado con una menor
+rugosidad</strong>.</p>
+<p></br> <strong>Relación entre covarianza y correlación</strong></p>
+<p>Una forma alternativa de medir la relación entre <span
+class="math inline">\(X\)</span> e <span
+class="math inline">\(Y\)</span> es la <strong>correlación de
+Pearson</strong> <span class="math inline">\(\rho\)</span>, que se
+define como:</p>
+<p><span class="math display">\[
+\rho = \frac{\text{Cov}(X, Y)}{\sigma_X \sigma_Y}
+\]</span></p>
+<p>Esta es una medida <strong>normalizada</strong> de la covarianza que
+se encuentra en el intervalo <span class="math inline">\([-1,1]\)</span>
+y permite comparar relaciones sin depender de las unidades de las
+variables.</p>
+<p>Despejando la covarianza de esta ecuación:</p>
+<p><span class="math display">\[
+\text{Cov}(X, Y) = \rho \sigma_X \sigma_Y
+\]</span></p>
+<p>Esto significa que la covarianza está determinada por la fuerza de la
+relación lineal (<span class="math inline">\(\rho\)</span>) y las
+dispersiones individuales de cada variable (<span
+class="math inline">\(\sigma_X\)</span> y <span
+class="math inline">\(\sigma_Y\)</span>).</p>
+<p>En una distribución normal bivariada:</p>
+<p><span class="math display">\[
+(X, Y) \sim N_2 \left(
+\boldsymbol{\mu},  
+\Sigma
+\right)
+\]</span></p>
+<p>donde:</p>
+<p><span class="math display">\[
+\boldsymbol{\mu} =
+\begin{bmatrix}
+\mu_X \\ \mu_Y
+\end{bmatrix},
+\quad
+\Sigma =
+\begin{bmatrix}
+\sigma_X^2 &amp; \sigma_{XY} \\
+\sigma_{XY} &amp; \sigma_Y^2
+\end{bmatrix}
+\]</span></p>
+<p>Por construcción, en la normal bivariada, se expresa en términos de
+la correlación:</p>
+<p><span class="math display">\[
+\text{Cov}(X, Y) =\sigma_{XY} = \rho \sigma_X \sigma_Y
+\]</span> Esta definición tiene varias consecuencias importantes:</p>
+<ol style="list-style-type: decimal">
+<li><p><strong>Si <span class="math inline">\(X\)</span> e <span
+class="math inline">\(Y\)</span> son independientes, entonces <span
+class="math inline">\(\rho = 0\)</span> y <span
+class="math inline">\(\text{Cov}(X, Y) = 0\)</span></strong>. En una
+normal bivariada, la independencia implica ausencia de
+correlación.</p></li>
+<li><p><strong>Si <span class="math inline">\(\rho = 1\)</span> o <span
+class="math inline">\(\rho = -1\)</span>, entonces <span
+class="math inline">\(X\)</span> e <span
+class="math inline">\(Y\)</span> están perfectamente
+correlacionados</strong>, es decir, <span
+class="math inline">\(Y\)</span> es una combinación lineal exacta de
+<span class="math inline">\(X\)</span>.</p></li>
+<li><p><strong>La covarianza tiene las mismas unidades que el producto
+de <span class="math inline">\(X\)</span> e <span
+class="math inline">\(Y\)</span></strong>, mientras que la correlación
+es adimensional.</p></li>
+</ol>
+</p>
+</div>
+<p></br> <strong>Relación entre la matriz teórica y las matrices
+calculadas en la práctica con <code>cor()</code> en R</strong>:</p>
+<p>En la práctica, estas matrices se pueden obtener con la función
+<code>cor()</code> en <strong>R</strong>, dependiendo del método
+seleccionado:</p>
+<ul>
+<li><p><code>cor(mis_datos, method = "pearson")</code>: La matriz de
+correlación de <strong>Pearson</strong> obtenida con
+<code>method = "pearson"</code> es la equivalente a la matriz teórica de
+correlación <span class="math inline">\(\mathbf{R}\)</span>.</p></li>
+<li><p><code>cor(mis_datos, method = "spearman")</code></p></li>
+<li><p><code>cor(mis_datos, method = "kendall")</code></p></li>
+</ul>
+<p>Las matrices obtenidas con <strong>Spearman</strong> y
+<strong>Kendall</strong> no se derivan de la matriz de covarianza, sino
+que usan transformaciones distintas (rangos en Spearman y pares
+ordenados en Kendall).</p>
+<p>Si los datos cumplen <strong>normalidad</strong> y
+<strong>linealidad</strong>, la matriz de <strong>Pearson</strong> es
+adecuada. Si los datos <strong>no cumplen estos supuestos</strong>,
+<strong>Spearman</strong> o <strong>Kendall</strong> pueden ser
+alternativas más robustas.</p>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

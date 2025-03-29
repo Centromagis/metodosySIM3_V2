@@ -429,9 +429,10 @@ es encontrar la relación entre una <strong>variable predictora</strong>
 respuesta</strong> <span class="math inline">\(Y\)</span>, con una
 ecuación lineal de la forma:</p>
 <p><span class="math display">\[
-Y_i = \beta_0 + \beta_1 X_i + \varepsilon_i, \quad i = 1, 2, \dots, n
+Y_i = \beta_0 + \beta_1 X_i + \varepsilon_i, \quad i = 1, 2, \dots, n \\
+\varepsilon_i \sim N(0, \sigma^2)
 \]</span></p>
-<p>donde:</p>
+<p>Donde:</p>
 <ul>
 <li><p><strong><span class="math inline">\(\beta_0\)</span></strong> es
 el <strong>intercepto</strong>, que representa el valor esperado de
@@ -447,12 +448,11 @@ class="math inline">\(\varepsilon_i\)</span></strong> es el
 en <span class="math inline">\(Y\)</span> no explicada por el
 modelo.</p></li>
 </ul>
-<p>Para estimar los coeficientes <span
-class="math inline">\(\beta_0\)</span> y <span
-class="math inline">\(\beta_1\)</span>, se utiliza el <strong>método de
-mínimos cuadrados ordinarios (MCO)</strong>, que busca encontrar la
-mejor línea de ajuste minimizando la <strong>suma de los cuadrados de
-los errores</strong>:</p>
+<p>Para estimar los coeficientes y la varianza del modelo se utiliza el
+<strong>método de mínimos cuadrados ordinarios (MCO)</strong>. El método
+para estimar los coeficientes busca encontrar la mejor línea de ajuste
+minimizando la <strong>suma de los cuadrados de los
+errores</strong>:</p>
 <p><span class="math display">\[
 S(\beta_0, \beta_1) = \sum_{i=1}^{n} (Y_i - \beta_0 - \beta_1 X_i)^2.
 \]</span></p>
@@ -511,9 +511,8 @@ simple:</p>
 <p><span class="math display">\[
 Y_i = \beta_0 + \beta_1 X_i + \varepsilon_i
 \]</span></p>
-<p>se utiliza el <strong>método de mínimos cuadrados ordinarios
-(MCO)</strong>, que consiste en minimizar la <strong>suma de los
-cuadrados de los errores (SCE)</strong>:</p>
+<p>se minimiza la <strong>suma de los cuadrados de los errores
+(SCE)</strong>:</p>
 <p><span class="math display">\[
 S(\beta_0, \beta_1) = \sum_{i=1}^{n} \varepsilon_i^2 = \sum_{i=1}^{n}
 (Y_i - \beta_0 - \beta_1 X_i)^2
@@ -521,33 +520,42 @@ S(\beta_0, \beta_1) = \sum_{i=1}^{n} \varepsilon_i^2 = \sum_{i=1}^{n}
 <hr />
 <p>Para encontrar las estimaciones de <span
 class="math inline">\(\beta_0\)</span> y <span
-class="math inline">\(\beta_1\)</span>, se deriva la función de error
-<span class="math inline">\(S(\beta_0, \beta_1)\)</span> respecto a los
-parámetros y se iguala a cero:</p>
+class="math inline">\(\beta_1\)</span>, se deriva la función de la suma
+de los cuadrados de los errores: <span class="math inline">\(S(\beta_0,
+\beta_1)\)</span> respecto a los parámetros y se iguala a cero:</p>
 <p><span class="math display">\[
 \frac{\partial S(\beta_0, \beta_1)}{\partial \beta_0} = 0, \quad
 \frac{\partial S(\beta_0, \beta_1)}{\partial \beta_1} = 0
 \]</span></p>
 <p>Resolviendo este sistema de ecuaciones y reemplazando los datos de
 una muestra aleatoria concreta se determinan las <strong>estimaciones de
-mínimos cuadrados</strong>:</p>
+mínimos cuadrados</strong> de los coeficientes.</p>
+<ol style="list-style-type: decimal">
+<li><p><strong>Estimadores de los coeficientes <span
+class="math inline">\(\beta_0\)</span> y <span
+class="math inline">\(\beta_1\)</span></strong>:</p>
 <p><span class="math display">\[
-\widehat{\beta}_1 = \frac{S_{xy}}{S_{xx}}, \quad \widehat{\beta}_0 =
-\overline{y} - \widehat{\beta}_1 \overline{x}
+\widehat{\beta}_1 = \frac{S_{xy}}{S_{xx}} \\
+\widehat{\beta}_0 = \overline{y} - \widehat{\beta}_1 \overline{x}
 \]</span></p>
-<p>donde:</p>
+<p>Donde:</p>
 <p><span class="math display">\[
-S_{xx} = \sum_{i=1}^{n} (x_i - \overline{x})^2, \quad S_{yy} =
-\sum_{i=1}^{n} (y_i - \overline{y})^2, \quad S_{xy} = \sum_{i=1}^{n}
-(x_i - \overline{x}) (y_i - \overline{y})
-\]</span></p>
-<p>Donde una muestra de datos observados consiste en un conjunto de
-<strong>pares de valores</strong>:</p>
+   S_{xx} = \sum_{i=1}^{n} (x_i - \overline{x})^2, \quad S_{yy} =
+\sum_{i=1}^{n} (y_i - \overline{y})^2, \quad    S_{xy}    =
+\sum_{i=1}^{n} (x_i - \overline{x}) (y_i - \overline{y})
+\]</span></p></li>
+<li><p><strong>Estimador de la varianza <span
+class="math inline">\(\sigma^2\)</span></strong>: Una vez estimados los
+coeficientes, se obtiene la varianza del error mediante,</p>
 <p><span class="math display">\[
-(x_1, y_1), (x_2, y_2), \dots, (x_n, y_n).
+\hat{\sigma}^2_{\text{MCO}} = \frac{1}{n-2} \sum_{i=1}^{n} (y_i -
+\hat{\beta}_0 - \hat{\beta}_1 x_i)^2.
 \]</span></p>
-<p>Tal que:</p>
+<p>Donde:</p>
 <ul>
+<li><p>Una muestra de datos observados consiste en un conjunto de
+<strong>pares de valores</strong>: <span class="math inline">\((x_1,
+y_1), (x_2, y_2), \dots, (x_n, y_n)\)</span></p></li>
 <li><p><span class="math inline">\(x_i\)</span> es un <strong>valor
 fijo</strong> en la muestra.</p></li>
 <li><p><span class="math inline">\(y_i\)</span> es una
@@ -556,14 +564,15 @@ class="math inline">\(Y_i\)</span>.</p></li>
 <li><p><span class="math inline">\(\overline{x}\)</span> y <span
 class="math inline">\(\overline{y}\)</span> corresponden a los promedios
 muestrales.</p></li>
-</ul>
+</ul></li>
+</ol>
 <div class="caja-nota">
 <blockquote>
-<p><em>“<span class="math inline">\(x_i\)</span> y <span
+<p><em><span class="math inline">\(x_i\)</span> y <span
 class="math inline">\(y_i\)</span> son valores observados que se
 utilizan para <strong>inferir los parámetros desconocidos</strong> <span
 class="math inline">\(\beta_0, \beta_1, \sigma^2\)</span> mediante
-<strong>mínimos cuadrados ordinarios (MCO)</strong>.”</em></p>
+<strong>mínimos cuadrados ordinarios (MCO)</strong>.</em></p>
 </blockquote>
 </div>
 

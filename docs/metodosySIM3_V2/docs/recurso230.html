@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Métodos y Simulación Estadística" />
+
+
+<title> Forma Matricial del Modelo</title>
+
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"> </a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Métodos
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="index.html">Contenido</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Correlación
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso100.html">Análisis de Correlación</a>
+    </li>
+    <li>
+      <a href="recurso110.html">Coeficiente de Pearson</a>
+    </li>
+    <li>
+      <a href="recurso120.html">Coeficiente de Spearman</a>
+    </li>
+    <li>
+      <a href="recurso130.html">Coeficiente de Kendall</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Modelo
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso200.html">Modelo de Regresión Lineal Simple</a>
+    </li>
+    <li>
+      <a href="recurso210.html">Estimación Mínimos Cuadrados Ordinarios</a>
+    </li>
+    <li>
+      <a href="recurso220.html">Estimación de Máxima Verosimilitud</a>
+    </li>
+    <li>
+      <a href="recurso230.html">Forma Matricial del Modelo</a>
+    </li>
+    <li>
+      <a href="recurso300.html">Supuestos</a>
+    </li>
+    <li>
+      <a href="recurso310.html">Residuales</a>
+    </li>
+    <li>
+      <a href="recurso320.html">Revisión de Supuestos</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Pruebas de Hipótesis
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso400.html">Sobre los Coeficientes</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Transformaciones
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso500.html">Transformaciones</a>
+    </li>
+    <li>
+      <a href="recurso600.html">Modelos Polinomiales</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Predicción e Intervalos
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso700.html">Intervalo de Confianza</a>
+    </li>
+    <li>
+      <a href="recurso800.html">Intervalos de C. de Coeficientes y Varianza</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Atípicos e Influyentes
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso900.html">Punto Atípico e Influyente</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Tablero
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso1000.html">Tablero usando Shiny</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Referencias
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso2000.html">Referencias</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore"><span style="color:#686868"> <strong>Forma
+Matricial del Modelo</strong></span></h1>
+<h4 class="author">Métodos y Simulación Estadística</h4>
+
+</div>
+
+
+</br></br>
+<h2>
+Introducción
+</h2>
+<p>La formulación matricial del modelo de <strong>regresión lineal
+simple</strong> permite expresar el problema de manera compacta y
+eficiente. Esto facilita la estimación de los coeficientes, el cálculo
+de valores ajustados y el análisis de los residuales.</p>
+</br></br>
+<h2>
+Regresión Lineal Simple en Forma Matricial
+</h2>
+<p>La <strong>regresión lineal simple</strong> en forma matricial se
+expresa como:</p>
+<p><span class="math display">\[
+\mathbf{Y} = \mathbf{X} \boldsymbol{\beta} + \boldsymbol{\varepsilon}
+\]</span></p>
+<p>donde:</p>
+<ul>
+<li><p><span class="math inline">\(\mathbf{Y}\)</span> es el
+<strong>vector de respuesta</strong> de dimensión <span
+class="math inline">\(n \times 1\)</span>, que contiene las
+observaciones de la variable dependiente.</p></li>
+<li><p><span class="math inline">\(\mathbf{X}\)</span> es la
+<strong>matriz de diseño</strong> de dimensión <span
+class="math inline">\(n \times 2\)</span>, que incluye una columna de
+unos (para el intercepto) y una columna con los valores de la variable
+independiente.</p></li>
+<li><p><span class="math inline">\(\boldsymbol{\beta}\)</span> es el
+<strong>vector de coeficientes</strong> de dimensión <span
+class="math inline">\(2 \times 1\)</span>, que contiene el intercepto
+<span class="math inline">\(\beta_0\)</span> y la pendiente <span
+class="math inline">\(\beta_1\)</span>.</p></li>
+<li><p><span class="math inline">\(\boldsymbol{\varepsilon}\)</span> es
+el <strong>vector de errores</strong> de dimensión <span
+class="math inline">\(n \times 1\)</span>.</p></li>
+</ul>
+</br></br>
+<h2>
+Matrices en detalle
+</h2>
+</br></br>
+<h3>
+Matriz de diseño <span class="math inline">\(\mathbf{X}\)</span>
+</h3>
+<p><span class="math display">\[
+\mathbf{X} =
+\begin{bmatrix}
+1 &amp; X_1 \\
+1 &amp; X_2 \\
+\vdots &amp; \vdots \\
+1 &amp; X_n
+\end{bmatrix}
+\]</span></p>
+<p>La primera columna es de unos para representar el intercepto <span
+class="math inline">\(\beta_0\)</span>, y la segunda columna contiene
+los valores de la variable independiente <span
+class="math inline">\(X\)</span>.</p>
+</br></br>
+<h3>
+Vector de coeficientes <span
+class="math inline">\(\boldsymbol{\beta}\)</span>
+</h3>
+<p><span class="math display">\[
+\boldsymbol{\beta} =
+\begin{bmatrix}
+\beta_0 \\
+\beta_1
+\end{bmatrix}
+\]</span></p>
+<p>Este vector contiene los parámetros del modelo, que deben estimarse a
+partir de los datos.</p>
+</br></br>
+<h3>
+Vector de respuesta <span class="math inline">\(\mathbf{Y}\)</span>
+</h3>
+<p><span class="math display">\[
+\mathbf{Y} =
+\begin{bmatrix}
+Y_1 \\
+Y_2 \\
+\vdots \\
+Y_n
+\end{bmatrix}
+\]</span></p>
+<p>Este es el vector de valores observados de la variable
+dependiente.</p>
+</br></br>
+<h3>
+Vector de errores <span
+class="math inline">\(\boldsymbol{\varepsilon}\)</span>
+</h3>
+<p><span class="math display">\[
+\boldsymbol{\varepsilon} =
+\begin{bmatrix}
+\varepsilon_1 \\
+\varepsilon_2 \\
+\vdots \\
+\varepsilon_n
+\end{bmatrix}
+\]</span></p>
+<p>Los errores representan la diferencia entre los valores observados
+<span class="math inline">\(Y_i\)</span> y la verdadera relación lineal
+de la población. <strong>No son observables</strong>, ya que dependen de
+los coeficientes poblacionales <span
+class="math inline">\(\beta_0\)</span> y <span
+class="math inline">\(\beta_1\)</span>, que son desconocidos.</p>
+</br></br>
+<h3>
+Estimación de los coeficientes
+</h3>
+<p>La forma matricial de los estimadores de los coeficientes del modelo
+es la siguiente:</p>
+<p><span class="math display">\[
+\hat{\boldsymbol{\beta}} = (\mathbf{X}^\top \mathbf{X})^{-1}
+\mathbf{X}^\top \mathbf{Y}
+\]</span></p>
+<p>Con esta estimación, los valores ajustados (<span
+class="math inline">\(\hat{\mathbf{Y}}\)</span>) y los residuales (<span
+class="math inline">\(\hat{\boldsymbol{\varepsilon}}\)</span>) se
+calculan como:</p>
+<p><span class="math display">\[
+\hat{\mathbf{Y}} = \mathbf{X} \hat{\boldsymbol{\beta}}
+\]</span></p>
+<p><span class="math display">\[
+\hat{\boldsymbol{\varepsilon}} = \mathbf{Y} - \hat{\mathbf{Y}}
+\]</span></p>
+</br></br>
+<div class="caja-ejemplo">
+<h3>
+Ejemplo:
+</h3>
+<p>
+<p>Continuando con el modelo de regresión lineal entre la
+<strong>Resistencia</strong> y la <strong>Edad</strong>, su
+representación en términos matriciales es:</p>
+<p><span class="math display">\[
+\mathbf{Y} = \mathbf{X} \boldsymbol{\beta} + \boldsymbol{\varepsilon}
+\]</span></p>
+<p>donde:</p>
+<ul>
+<li><p><span class="math inline">\(\mathbf{Y}\)</span> es el
+<strong>vector de respuesta</strong>, que contiene los valores
+observados de la <strong>Resistencia</strong>.</p></li>
+<li><p><span class="math inline">\(\mathbf{X}\)</span> es la
+<strong>matriz de diseño</strong>, que incluye una columna de unos (para
+el intercepto) y una columna con los valores de la
+<strong>Edad</strong>.</p></li>
+<li><p><span class="math inline">\(\boldsymbol{\beta}\)</span> es el
+<strong>vector de coeficientes</strong>, que contiene el intercepto
+<span class="math inline">\(\beta_0\)</span> y la pendiente <span
+class="math inline">\(\beta_1\)</span>.</p></li>
+<li><p><span class="math inline">\(\boldsymbol{\varepsilon}\)</span> es
+el <strong>vector de errores</strong>.</p></li>
+</ul>
+<hr />
+<p><br/> 1. <strong>Matriz de diseño <span
+class="math inline">\(\mathbf{X}\)</span></strong></p>
+<p>Matemáticamente, la <strong>matriz de diseño</strong> <span
+class="math inline">\(\mathbf{X}\)</span> se expresa como:</p>
+<p><span class="math display">\[
+\mathbf{X} =
+\begin{bmatrix}
+1 &amp; X_{1}\\
+1 &amp; X_{2}\\
+1 &amp; X_{3}\\
+1 &amp; X_{4}\\
+1 &amp; X_{5}\\
+1 &amp; X_{6}\\
+1 &amp; X_{7}\\
+1 &amp; X_{8}\\
+1 &amp; X_{9}\\
+1 &amp; X_{10}\\
+1 &amp; X_{11}\\
+1 &amp; X_{12}\\
+1 &amp; X_{13}\\
+1 &amp; X_{14}\\
+1 &amp; X_{15}\\
+1 &amp; X_{16}\\
+1 &amp; X_{17}\\
+1 &amp; X_{18}\\
+1 &amp; X_{19}\\
+1 &amp; X_{20}
+\end{bmatrix} =
+\begin{bmatrix}
+1 &amp; 15.50 \\
+1 &amp; 23.75 \\
+1 &amp; 8.00 \\
+1 &amp; 17.00 \\
+1 &amp; 5.50 \\
+1 &amp; 19.00 \\
+1 &amp; 24.00 \\
+1 &amp; 2.50 \\
+1 &amp; 7.50 \\
+1 &amp; 11.00 \\
+1 &amp; 13.00 \\
+1 &amp; 3.75 \\
+1 &amp; 25.00 \\
+1 &amp; 9.75 \\
+1 &amp; 22.00 \\
+1 &amp; 18.00 \\
+1 &amp; 6.00 \\
+1 &amp; 12.50 \\
+1 &amp; 2.00 \\
+1 &amp; 21.50
+\end{bmatrix}
+\]</span></p>
+<p><br/> 2. <strong>Vector de respuestas <span
+class="math inline">\(\mathbf{Y}\)</span></strong></p>
+<p>El <strong>vector de respuestas</strong> <span
+class="math inline">\(\mathbf{Y}\)</span> contiene las
+<strong>resistencias observadas</strong>, que representan la variable
+dependiente del modelo de <strong>regresión lineal simple</strong>.</p>
+<p>Matemáticamente, se expresa como:</p>
+<p><span class="math display">\[
+\mathbf{Y} =
+\begin{bmatrix}
+Y_1\\    
+Y_2\\    
+Y_3\\    
+Y_4\\    
+Y_5\\    
+Y_6\\    
+Y_7\\    
+Y_8\\    
+Y_9\\    
+Y_{10}\\
+Y_{11}\\
+Y_{12}\\
+Y_{13}\\
+Y_{14}\\
+Y_{15}\\
+Y_{16}\\
+Y_{17}\\
+Y_{18}\\
+Y_{19}\\
+Y_{20}
+\end{bmatrix} =
+\begin{bmatrix}
+2158.70 \\
+1678.15 \\
+2316.00 \\
+2061.30 \\
+2207.50 \\
+1708.30 \\
+1784.70 \\
+2575.00 \\
+2357.90 \\
+2256.70 \\
+2165.20 \\
+2399.55 \\
+1779.80 \\
+2336.75 \\
+1765.30 \\
+2053.50 \\
+2414.40 \\
+2200.50 \\
+2654.20 \\
+1753.70
+\end{bmatrix}
+\]</span></p>
+<p><br/> 3. <strong>Vector de coeficientes</strong></p>
+<p>El <strong>vector de coeficientes</strong> <span
+class="math inline">\(\boldsymbol{\beta}\)</span> contiene los
+<strong>parámetros del modelo</strong>, que incluyen el
+<strong>intercepto</strong> (<span
+class="math inline">\(\beta_0\)</span>) y la <strong>pendiente</strong>
+(<span class="math inline">\(\beta_1\)</span>).</p>
+<p><span class="math display">\[
+\boldsymbol{\beta} =
+\begin{bmatrix}
+\beta_0 \\
+\beta_1
+\end{bmatrix}
+\]</span></p>
+<p>Sustituyendo los valores estimados en el modelo:</p>
+<p><span class="math display">\[
+\widehat{\boldsymbol{\beta}} =
+\begin{bmatrix}
+2627.82 \\
+-37.15
+\end{bmatrix}
+\]</span></p>
+<p>donde:</p>
+<ul>
+<li><p><span class="math inline">\(\widehat{\beta}_0 = 2627.82\)</span>
+representa el <strong>intercepto</strong>, es decir, la resistencia
+estimada cuando la edad es cero.</p></li>
+<li><p><span class="math inline">\(\widehat{\beta}_1 = -37.15\)</span>
+representa la <strong>pendiente</strong>, indicando que por cada unidad
+adicional en la <strong>edad</strong>, la resistencia disminuye en
+promedio 37.15 unidades.</p></li>
+</ul>
+<p><br/> 4. <strong>Vector de residuos</strong></p>
+<p>Nuevamente, insistiendo en la diferencia, en un modelo de regresión,
+es importante diferenciar entre los <strong>errores</strong> y los
+<strong>residuales</strong>:</p>
+<ul>
+<li><strong>Errores <span
+class="math inline">\(\boldsymbol{\varepsilon}\)</span></strong>:
+Representan la diferencia entre los valores observados <span
+class="math inline">\(Y_i\)</span> y la verdadera relación lineal de la
+población.</li>
+</ul>
+<p><span class="math display">\[
+\varepsilon_i = Y_i - \beta_0 - \beta_1 X_i
+\]</span></p>
+<ul>
+<li><strong>Residuos o residuales <span
+class="math inline">\(\mathbf{e}\)</span></strong>: Son la diferencia
+entre los valores observados <span class="math inline">\(Y_i\)</span> y
+los valores ajustados <span class="math inline">\(\hat{Y}_i\)</span>
+obtenidos con los coeficientes estimados <span
+class="math inline">\(\hat{\beta}_0\)</span> y <span
+class="math inline">\(\hat{\beta}_1\)</span>. Los residuales se pueden
+calcular y analizar, a diferencia de los errores.</li>
+</ul>
+<p><span class="math display">\[
+\hat{\boldsymbol{\varepsilon}_i}= e_i = Y_i - \hat{Y}_i = Y_i -
+\hat{\beta}_0 - \hat{\beta}_1 X_i
+\]</span></p>
+<p>El vector de residuos se expresa como:</p>
+<p><span class="math display">\[
+\mathbf{e} =
+\begin{bmatrix}
+e_1    \\
+e_2    \\
+e_3    \\
+e_4    \\
+e_5    \\
+e_6    \\
+e_7    \\
+e_8    \\
+e_9    \\
+e_{10} \\
+e_{11} \\
+e_{12} \\
+e_{13} \\
+e_{14} \\
+e_{15} \\
+e_{16} \\
+e_{17} \\
+e_{18} \\
+e_{19} \\
+e_{20}
+\end{bmatrix}
+=
+\begin{bmatrix}
+Y_1 - \hat{\beta}_0 - \hat{\beta}_1 X_1 \\
+Y_2 - \hat{\beta}_0 - \hat{\beta}_1 X_2 \\
+Y_3 - \hat{\beta}_0 - \hat{\beta}_1 X_3 \\
+Y_4 - \hat{\beta}_0 - \hat{\beta}_1 X_4 \\
+Y_5 - \hat{\beta}_0 - \hat{\beta}_1 X_5 \\
+Y_6 - \hat{\beta}_0 - \hat{\beta}_1 X_6 \\
+Y_7 - \hat{\beta}_0 - \hat{\beta}_1 X_7 \\
+Y_8 - \hat{\beta}_0 - \hat{\beta}_1 X_8 \\
+Y_9 - \hat{\beta}_0 - \hat{\beta}_1 X_9 \\
+Y_{10} - \hat{\beta}_0 - \hat{\beta}_1 X_{10} \\
+Y_{11} - \hat{\beta}_0 - \hat{\beta}_1 X_{11} \\
+Y_{12} - \hat{\beta}_0 - \hat{\beta}_1 X_{12} \\
+Y_{13} - \hat{\beta}_0 - \hat{\beta}_1 X_{13} \\
+Y_{14} - \hat{\beta}_0 - \hat{\beta}_1 X_{14} \\
+Y_{15} - \hat{\beta}_0 - \hat{\beta}_1 X_{15} \\
+Y_{16} - \hat{\beta}_0 - \hat{\beta}_1 X_{16} \\
+Y_{17} - \hat{\beta}_0 - \hat{\beta}_1 X_{17} \\
+Y_{18} - \hat{\beta}_0 - \hat{\beta}_1 X_{18} \\
+Y_{19} - \hat{\beta}_0 - \hat{\beta}_1 X_{19} \\
+Y_{20} - \hat{\beta}_0 - \hat{\beta}_1 X_{20}
+\end{bmatrix}
+\]</span></p>
+<p>El vector de residuos se expresa como:</p>
+<p><span class="math display">\[
+\mathbf{e} =
+\begin{bmatrix}
+106.7583  \\
+-67.2746  \\
+-14.5936  \\
+65.0887   \\
+-215.9776 \\
+-213.6041 \\
+48.5638   \\
+40.0616   \\
+8.7296    \\
+37.5671   \\
+20.3743   \\
+-88.9464  \\
+80.8174   \\
+71.1752   \\
+-45.1434  \\
+94.4423   \\
+9.4992    \\
+37.0975   \\
+100.6848  \\
+-75.3202
+\end{bmatrix}
+\]</span></p>
+<p>donde cada residuo <span class="math inline">\(e_i\)</span> se
+obtiene como la diferencia entre la resistencia observada <span
+class="math inline">\(Y_i\)</span> y la predicción del modelo <span
+class="math inline">\(\hat{Y}_i\)</span>:</p>
+<p><span class="math display">\[
+e_i = Y_i - \hat{Y}_i
+\]</span></p>
+</p>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

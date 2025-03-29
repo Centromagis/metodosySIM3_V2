@@ -11,7 +11,7 @@ output:
 </br></br>
 <h2>Coeficiente de determinación</h2>
 
-En una **regresión lineal**, el **coeficiente de determinación** ($R^2$) y el **$R^2$ ajustado** son medidas que evalúan qué tan bien el modelo explica la variabilidad de la variable respuesta ($Y$). Mientras que el $R^2$ mide la proporción de variabilidad explicada, el $R^2$ ajustado penaliza la inclusión de variables irrelevantes.
+En una **regresión lineal**, el **coeficiente de determinación** $R^2$ y el **$R^2$ ajustado** son medidas que evalúan qué tan bien el modelo explica la variabilidad de la variable respuesta $Y$. Mientras que el $R^2$ mide la proporción de variabilidad explicada, el $R^2$ ajustado penaliza la inclusión de variables irrelevantes.
 
 
 </br></br>
@@ -62,7 +62,7 @@ donde:
 <h3>Ejemplo:</h3>
 <p>
 
-En el ejemplo anterior, la variable Edad explica el 89.64% de la Resistencia.
+En el ejemplo anterior, el modelo de regresión explica el 89.64% de la variabilidad de la Resistencia.
 
 <pre>
 Call:

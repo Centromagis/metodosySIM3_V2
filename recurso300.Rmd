@@ -35,7 +35,7 @@ Estos supuestos se enfocan en las propiedades de los **errores** del modelo:
    \text{Var}(\varepsilon_i) = \sigma^2, \quad \forall i.
    \]
 
-4. No hay correlación entre los errores (independencia).  
+4. No hay correlación entre los errores, lo que se conoce como **independencia de los errores**. Esto indica que al conocer el valor de un error no proporciona información sobre otro. 
    
 
 ---
@@ -56,7 +56,7 @@ Estos supuestos se enfocan en la distribución de la **variable respuesta** \( Y
    \text{Var}(Y_i | X_i) = \sigma^2.
    \]
 
-3. Las observaciones de \( Y_i \) son **independientes** entre sí.
+3. Las **variables aleatorias \( Y_i \) son condicionalmente independientes** dado el conjunto de valores fijos \( X_1, \dots, X_n \). Esto significa que, una vez que se conocen los valores de \( X_1, \dots, X_n \), las variables \( Y_i \) no influyen entre sí en términos probabilísticos. En particular, al conocer \( X \), la información sobre \( Y_1 \) no proporciona ninguna información adicional sobre \( Y_2 \), y viceversa.  
 
 4. Existe una **relación lineal** entre la variable respuesta \( Y \) y las variables predictoras \( X \).
 

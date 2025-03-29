@@ -1,0 +1,20 @@
+---
+title: <span style="color:#686868"> **Referencias**</span>
+author: "Métodos y Simulación Estadística"
+output:
+  html_document:
+    code_folding: hide
+    css: style.css
+---
+
+
+<div class="caja-referencia">
+<h3>Regresión lineal simple:</h3>
+<p>
+R Core Team. (2024). <em>R: A language and environment for statistical computing</em>. R Foundation for Statistical Computing, Vienna, Austria. Recuperado de <a href="https://www.R-project.org/" target="_blank">https://www.R-project.org/</a>
+</p>
+<p>
+Hernández, F., Usuga, O., & Mazo, M. (2024). <em>Modelos de Regresión con R</em>. Recuperado de <a href="https://fhernanb.github.io/libro_regresion/index.html" target="_blank">https://fhernanb.github.io/libro_regresion/index.html</a>
+</p>
+</div>
+

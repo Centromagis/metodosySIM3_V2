@@ -28,20 +28,21 @@ modelo=lm(log(bio_total) ~ diametro, data=biomasa)
 En modelos de **regresión lineal simple**, el objetivo es encontrar la relación entre una **variable predictora** \(X\) y una **variable respuesta** \(Y\), con una ecuación lineal de la forma:
 
 \[
-Y_i = \beta_0 + \beta_1 X_i + \varepsilon_i, \quad i = 1, 2, \dots, n
+Y_i = \beta_0 + \beta_1 X_i + \varepsilon_i, \quad i = 1, 2, \dots, n \\
+\varepsilon_i \sim N(0, \sigma^2)
 \]
 
-donde:
+Donde:
 
-- **\(\beta_0\)** es el **intercepto**, que representa el valor esperado de \( Y \) cuando \( X = 0 \).
+ - **\(\beta_0\)** es el **intercepto**, que representa el valor esperado de \( Y \) cuando \( X = 0 \).
 
-- **\(\beta_1\)** es la  **pendiente**, que indica cuánto cambia \( Y \) en promedio por cada unidad de cambio en \( X \).
+ - **\(\beta_1\)** es la  **pendiente**, que indica cuánto cambia \( Y \) en promedio por cada unidad de cambio en \( X \).
 
-- **\(\varepsilon_i\)** es el  **término de error aleatorio**, que captura la variabilidad en \( Y \) no explicada por el modelo.
+ - **\(\varepsilon_i\)** es el  **término de error aleatorio**, que captura la variabilidad en \( Y \) no explicada por el modelo.
 
 
 
-Para estimar los coeficientes \(\beta_0\) y \(\beta_1\), se utiliza el **método de mínimos cuadrados ordinarios (MCO)**, que busca encontrar la mejor línea de ajuste minimizando la **suma de los cuadrados de los errores**:
+Para estimar los coeficientes y la varianza del modelo se utiliza el **método de mínimos cuadrados ordinarios (MCO)**. El método para estimar los coeficientes busca encontrar la mejor línea de ajuste minimizando la **suma de los cuadrados de los errores**:
 
 \[
 S(\beta_0, \beta_1) = \sum_{i=1}^{n} (Y_i - \beta_0 - \beta_1 X_i)^2.
@@ -127,13 +128,13 @@ knitr::include_graphics("img/fig315.png")
 <h3>Formulación</h3>
 
 
-Para estimar los parámetros \(\beta_0\) y \(\beta_1\) en un modelo de regresión lineal simple:
+Para estimar los parámetros \(\beta_0\) y \(\beta_1\)   en un modelo de regresión lineal simple:
 
 \[
 Y_i = \beta_0 + \beta_1 X_i + \varepsilon_i
 \]
 
-se utiliza el **método de mínimos cuadrados ordinarios (MCO)**, que consiste en minimizar la **suma de los cuadrados de los errores (SCE)**:
+se minimiza la **suma de los cuadrados de los errores (SCE)**:
 
 \[
 S(\beta_0, \beta_1) = \sum_{i=1}^{n} \varepsilon_i^2 = \sum_{i=1}^{n} (Y_i - \beta_0 - \beta_1 X_i)^2
@@ -147,43 +148,52 @@ S(\beta_0, \beta_1) = \sum_{i=1}^{n} \varepsilon_i^2 = \sum_{i=1}^{n} (Y_i - \be
 ---
 
 
-Para encontrar las estimaciones de \(\beta_0\) y \(\beta_1\), se deriva la función de error \( S(\beta_0, \beta_1) \) respecto a los parámetros y se iguala a cero:
+Para encontrar las estimaciones de \(\beta_0\) y \(\beta_1\), se deriva la función de la suma de los cuadrados de los errores: \( S(\beta_0, \beta_1) \) respecto a los parámetros y se iguala a cero:
 
 \[
 \frac{\partial S(\beta_0, \beta_1)}{\partial \beta_0} = 0, \quad \frac{\partial S(\beta_0, \beta_1)}{\partial \beta_1} = 0
 \]
 
-Resolviendo este sistema de ecuaciones y reemplazando los datos de una muestra aleatoria concreta se  determinan las **estimaciones de mínimos cuadrados**:
-
-\[
-\widehat{\beta}_1 = \frac{S_{xy}}{S_{xx}}, \quad \widehat{\beta}_0 = \overline{y} - \widehat{\beta}_1 \overline{x}
-\]
-
-donde:
-
-\[
-S_{xx} = \sum_{i=1}^{n} (x_i - \overline{x})^2, \quad S_{yy} = \sum_{i=1}^{n} (y_i - \overline{y})^2, \quad S_{xy} = \sum_{i=1}^{n} (x_i - \overline{x}) (y_i - \overline{y})
-\]
+Resolviendo este sistema de ecuaciones y reemplazando los datos de una muestra aleatoria concreta se  determinan las **estimaciones de mínimos cuadrados** de los coeficientes. 
 
 
+1. **Estimadores de los coeficientes \( \beta_0 \) y \( \beta_1 \)**:
 
-Donde una muestra de datos observados consiste en un conjunto de **pares de valores**:
+   \[
+   \widehat{\beta}_1 = \frac{S_{xy}}{S_{xx}} \\ 
+   \widehat{\beta}_0 = \overline{y} - \widehat{\beta}_1 \overline{x}
+   \]
 
-$$
-(x_1, y_1), (x_2, y_2), \dots, (x_n, y_n).
-$$
+   Donde:
 
-Tal que:
+      \[
+      S_{xx} = \sum_{i=1}^{n} (x_i - \overline{x})^2, \quad S_{yy} = \sum_{i=1}^{n} (y_i - \overline{y})^2, \quad    S_{xy}    = \sum_{i=1}^{n} (x_i - \overline{x}) (y_i - \overline{y})
+   \]
 
-- \( x_i \) es un **valor fijo** en la muestra.
+2. **Estimador de la varianza \( \sigma^2 \)**:  Una vez estimados los coeficientes, se obtiene la varianza del error mediante,
+  
 
-- \( y_i \) es una **realización observada** de la variable aleatoria \( Y_i \).
+   $$
+   \hat{\sigma}^2_{\text{MCO}} = \frac{1}{n-2} \sum_{i=1}^{n} (y_i - \hat{\beta}_0 - \hat{\beta}_1 x_i)^2.
+   $$
 
-- \( \overline{x} \) y \( \overline{y} \) corresponden a los promedios muestrales.
+   Donde: 
+
+   -  Una muestra de datos observados consiste en un conjunto de **pares de valores**: \( (x_1, y_1), (x_2, y_2), \dots, (x_n, y_n) \)
+
+   - \( x_i \) es un **valor fijo** en la muestra.
+
+   - \( y_i \) es una **realización observada** de la variable aleatoria \( Y_i \).
+
+   - \( \overline{x} \) y \( \overline{y} \) corresponden a los promedios muestrales.
 
   
 
 <div class="caja-nota">
-> *"\( x_i \) y  \( y_i \) son valores observados que se utilizan para **inferir los parámetros desconocidos** \( \beta_0, \beta_1, \sigma^2 \) mediante **mínimos cuadrados ordinarios (MCO)**."*
+> *\( x_i \) y  \( y_i \) son valores observados que se utilizan para **inferir los parámetros desconocidos** \( \beta_0, \beta_1, \sigma^2 \) mediante **mínimos cuadrados ordinarios (MCO)**.*
 </div>
+
+
+
+
 

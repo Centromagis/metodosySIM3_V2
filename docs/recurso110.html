@@ -436,15 +436,17 @@ manera:</p>
 1\)</span>:</strong> Indica una <strong>asociación positiva
 fuerte</strong>, es decir, a medida que <span
 class="math inline">\(X\)</span> aumenta, <span
-class="math inline">\(Y\)</span> también tiende a aumentar.</p></li>
+class="math inline">\(Y\)</span> también tiende a aumentar
+linealmente.</p></li>
 <li><p><strong><span class="math inline">\(r \approx
 -1\)</span>:</strong> Indica una <strong>asociación negativa
 fuerte</strong>, lo que significa que a medida que <span
 class="math inline">\(X\)</span> aumenta, <span
-class="math inline">\(Y\)</span> tiende a disminuir.</p></li>
+class="math inline">\(Y\)</span> tiende a disminuir
+linealmente.</p></li>
 <li><p><strong><span class="math inline">\(r \approx
-0\)</span>:</strong> Sugiere que no hay una asociación lineal
-significativa entre las variables.</p></li>
+0\)</span>:</strong> Sugiere que no hay una asociación lineal entre las
+variables.</p></li>
 </ul>
 <p><img src="img/correlacion2.png" width="100%" style="display: block; margin: auto;" /></p>
 </br></br>
@@ -452,11 +454,13 @@ significativa entre las variables.</p></li>
 Fórmula de cálculo
 </h3>
 <p>El <strong>coeficiente de correlación de Pearson muestral</strong>
-para las variables <span class="math inline">\((X, Y)\)</span>, donde
-<span class="math inline">\(X = (x_1, ..., x_n)\)</span> y <span
-class="math inline">\(Y = (y_1, ..., y_n)\)</span>, se denota con la
-letra <span class="math inline">\(r\)</span> y se calcula utilizando la
-siguiente expresión:</p>
+para las variables <span class="math inline">\(X\)</span> y <span
+class="math inline">\(Y\)</span>, dadas las <span
+class="math inline">\(n\)</span> observaciones <span
+class="math inline">\((x_1, y_1), (x_2, y_2), \dots, (x_n,
+y_n)\)</span>, se denota con la letra <span
+class="math inline">\(r\)</span> y se calcula mediante la siguiente
+expresión:</p>
 <p><span class="math display">\[
 r = \dfrac{n \Bigg(\displaystyle\sum_{i=1}^{n} x_{i}y_{i} \Bigg) -
 \Bigg(\displaystyle\sum_{i=1}^{n} x_{i} \Bigg)
@@ -476,11 +480,12 @@ r = \dfrac{cov(X, Y)}{s_X s_Y}
 <p>donde:</p>
 <ul>
 <li><p><span class="math inline">\(cov(X, Y)\)</span> representa la
-<strong>covarianza</strong> entre <span class="math inline">\(X\)</span>
-y <span class="math inline">\(Y\)</span>.</p></li>
+<strong>covarianza muestral</strong> entre <span
+class="math inline">\(X\)</span> y <span
+class="math inline">\(Y\)</span>.</p></li>
 <li><p><span class="math inline">\(s_X\)</span> y <span
-class="math inline">\(s_Y\)</span> son las <strong>desviaciones
-estándar</strong> de <span class="math inline">\(X\)</span> y <span
+class="math inline">\(s_Y\)</span> son las <strong>desviaciones estándar
+muestrales</strong> de <span class="math inline">\(X\)</span> y <span
 class="math inline">\(Y\)</span>, respectivamente.</p></li>
 <li><p><span class="math inline">\(n\)</span> es el número total de
 observaciones.</p></li>
@@ -498,22 +503,19 @@ supuestos:</p>
 medidas en una escala de intervalo o de razón.</p></li>
 <li><p><strong>Se asume normalidad en las variables</strong>,
 especialmente para realizar inferencias estadísticas.</p></li>
-<li><p><strong>La relación entre las variables debe ser lineal</strong>,
-ya que la correlación de Pearson no captura relaciones no
+<li><p>La correlación de Pearson no captura relaciones no
 lineales.</p></li>
 </ul>
 <p>El coeficiente de correlación de Pearson es ampliamente utilizado en
 análisis exploratorios y en la validación de modelos estadísticos,
 proporcionando una primera aproximación sobre la relación entre dos
-variables antes de aplicar modelos de regresión.</p>
+variables antes de aplicar modelos de regresión lineal.</p>
 </br></br>
 <h3>
 Interpretación
 </h3>
-<p>Los valores obtenidos del <strong>coeficiente de correlación de
-Pearson</strong> permiten clasificar la relación lineal entre dos
-variables según su intensidad y dirección. La <strong>Tabla 3.1</strong>
-presenta una clasificación comúnmente utilizada:</p>
+<p>La <strong>Tabla 3.1</strong> presenta una clasificación comúnmente
+utilizada para el coeficiente de correlación de Pearson:</p>
 </br></br>
 <center>
 <strong>Tabla 3.1</strong> Clasificación de la relación lineal entre
@@ -586,39 +588,38 @@ correlación entre dos variables <span class="math inline">\(X\)</span> y
 <p>La <strong>Figura 3.3</strong> presenta:</p>
 <ul>
 <li><p><strong>Correlación <span class="math inline">\(r = -1\)</span>
-(Gráfico superior izquierdo):</strong> Existe una <strong>relación
-negativa perfecta</strong> entre <span class="math inline">\(X\)</span>
-y <span class="math inline">\(Y\)</span>. Todos los puntos se alinean
+(a):</strong> Existe una <strong>relación negativa perfecta</strong>
+entre <span class="math inline">\(X\)</span> y <span
+class="math inline">\(Y\)</span>. Todos los puntos se alinean
 exactamente sobre una línea recta descendente. Esto indica que un
 aumento en <span class="math inline">\(X\)</span> siempre se asocia con
 una disminución proporcional en <span
 class="math inline">\(Y\)</span>.</p></li>
 <li><p><strong>Correlación <span class="math inline">\(r = -0.9\)</span>
-(Gráfico superior central):</strong> Se observa una <strong>fuerte
-relación negativa</strong>, aunque no es perfecta. A medida que <span
+(b):</strong> Se observa una <strong>fuerte relación negativa</strong>,
+aunque no es perfecta. A medida que <span
 class="math inline">\(X\)</span> aumenta, <span
 class="math inline">\(Y\)</span> tiende a disminuir de manera
 consistente, pero con cierta dispersión en los datos.</p></li>
 <li><p><strong>Correlación <span class="math inline">\(r =
--0.75\)</span> (Gráfico superior derecho):</strong> Existe una
-<strong>relación negativa moderada</strong>, con mayor dispersión en
-comparación con <span class="math inline">\(r = -0.9\)</span>. Aunque la
-tendencia descendente es clara, la variabilidad en los datos es
-mayor.</p></li>
+-0.75\)</span> (c):</strong> Existe una <strong>relación negativa
+moderada</strong>, con mayor dispersión en comparación con <span
+class="math inline">\(r = -0.9\)</span>. Aunque la tendencia descendente
+es clara, la variabilidad en los datos es mayor.</p></li>
 <li><p><strong>Correlación <span class="math inline">\(r = -0.5\)</span>
-(Gráfico inferior izquierdo):</strong> Relación <strong>negativa
-débil</strong> entre las variables. La tendencia descendente aún es
-visible, pero los puntos están más dispersos, lo que sugiere una menor
-asociación lineal.</p></li>
+(d):</strong> Relación <strong>negativa débil</strong> entre las
+variables. La tendencia descendente aún es visible, pero los puntos
+están más dispersos, lo que sugiere una menor asociación
+lineal.</p></li>
 <li><p><strong>Correlación <span class="math inline">\(r =
--0.25\)</span> (Gráfico inferior central):</strong> Relación <strong>muy
-débil o casi inexistente</strong>. Aunque hay una ligera tendencia
-negativa, la dispersión es alta y no se puede concluir una relación
-lineal clara.</p></li>
+-0.25\)</span> (e):</strong> Relación <strong>muy débil o casi
+inexistente</strong>. Aunque hay una ligera tendencia negativa, la
+dispersión es alta y no se puede concluir una relación lineal
+clara.</p></li>
 <li><p><strong>Correlación <span class="math inline">\(r = 0\)</span>
-(Gráfico inferior derecho):</strong> <strong>No existe relación
-lineal</strong> entre las variables. Los puntos están dispersos de
-manera aleatoria, sin un patrón discernible.</p></li>
+(f):</strong> <strong>No existe relación lineal</strong> entre las
+variables. Los puntos están dispersos de manera aleatoria, sin un patrón
+discernible.</p></li>
 </ul>
 <img src="img/Rho1.png" width="100%" style="display: block; margin: auto;" />
 <center>
@@ -638,34 +639,31 @@ class="math inline">\(r= 0.0\)</span>.
 <p>La <strong>Figura 3.4</strong> presenta:</p>
 <ul>
 <li><p><strong>Correlación <span class="math inline">\(r = 0.1\)</span>
-(Gráfico superior izquierdo):</strong> La relación entre <span
-class="math inline">\(X\)</span> y <span
-class="math inline">\(Y\)</span> es prácticamente nula. Los puntos están
-distribuidos de manera aleatoria, sin una tendencia clara. No se puede
-concluir que exista una asociación lineal significativa.</p></li>
+(a):</strong> La relación entre <span class="math inline">\(X\)</span> y
+<span class="math inline">\(Y\)</span> es prácticamente nula. Los puntos
+están distribuidos de manera aleatoria, sin una tendencia clara. No se
+puede concluir que exista una asociación lineal significativa.</p></li>
 <li><p><strong>Correlación <span class="math inline">\(r = 0.25\)</span>
-(Gráfico superior central):</strong> Se observa una ligera tendencia
-ascendente, pero la dispersión de los puntos sigue siendo alta.</p></li>
+(b):</strong> Se observa una ligera tendencia ascendente, pero la
+dispersión de los puntos sigue siendo alta.</p></li>
 <li><p><strong>Correlación <span class="math inline">\(r = 0.5\)</span>
-(Gráfico superior derecho):</strong> Existe una <strong>relación
-positiva moderada</strong>. Aunque los puntos están dispersos, se
-empieza a notar una tendencia creciente en la relación entre <span
-class="math inline">\(X\)</span> y <span
-class="math inline">\(Y\)</span>.</p></li>
+(c):</strong> Existe una <strong>relación positiva moderada</strong>.
+Aunque los puntos están dispersos, se empieza a notar una tendencia
+creciente en la relación entre <span class="math inline">\(X\)</span> y
+<span class="math inline">\(Y\)</span>.</p></li>
 <li><p><strong>Correlación <span class="math inline">\(r = 0.75\)</span>
-(Gráfico inferior izquierdo):</strong> La relación entre <span
-class="math inline">\(X\)</span> y <span
-class="math inline">\(Y\)</span> es <strong>positiva fuerte</strong>.
-Los puntos siguen una tendencia ascendente más clara, aunque aún hay
-cierta variabilidad.</p></li>
+(d):</strong> La relación entre <span class="math inline">\(X\)</span> y
+<span class="math inline">\(Y\)</span> es <strong>positiva
+fuerte</strong>. Los puntos siguen una tendencia ascendente más clara,
+aunque aún hay cierta variabilidad.</p></li>
 <li><p><strong>Correlación <span class="math inline">\(r = 0.9\)</span>
-(Gráfico inferior central):</strong> La relación es <strong>muy fuerte y
-positiva</strong>. Los puntos están mucho más alineados en una dirección
-creciente, indicando una fuerte asociación lineal.</p></li>
+(e):</strong> La relación es <strong>muy fuerte y positiva</strong>. Los
+puntos están mucho más alineados en una dirección creciente, indicando
+una fuerte asociación lineal.</p></li>
 <li><p><strong>Correlación <span class="math inline">\(r = 1\)</span>
-(Gráfico inferior derecho):</strong> Existe una <strong>relación lineal
-perfecta positiva</strong>. Todos los puntos se alinean exactamente
-sobre una línea recta ascendente. Esto indica que un aumento en <span
+(f):</strong> Existe una <strong>relación lineal perfecta
+positiva</strong>. Todos los puntos se alinean exactamente sobre una
+línea recta ascendente. Esto indica que un aumento en <span
 class="math inline">\(X\)</span> se asocia <strong>siempre</strong> con
 un aumento proporcional en <span
 class="math inline">\(Y\)</span>.</p></li>
@@ -718,7 +716,7 @@ mensualmente.</p>
 <p>Los datos observados se encuentran disponibles en el siguiente
 enlace:</p>
 <p><a
-href="https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_pueblos.txt">Datos
+href="https://raw.githubusercontent.com/Centromagis/metodosySIM3_V2/refs/heads/main/datos_MetySim/dat_pueblos.txt">Datos
 de delitos y policías por pueblo</a></p>
 <hr />
 <p>El gráfico de dispersión para revisar linealidad y la variabilidad de
@@ -737,8 +735,8 @@ library(ggplot2)
 # x: Número de policías en diferentes pueblos
 # y: Número de delitos registrados en esos pueblos
 
-# 1. Lectura de datos
-file <- "https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_pueblos.txt"
+# Lectura de datos
+file <- "https://raw.githubusercontent.com/Centromagis/metodosySIM3_V2/refs/heads/main/datos_MetySim/dat_pueblos.txt"
 datos <- read.table(file = file, header = TRUE)
 
 
@@ -767,8 +765,8 @@ library(ggplot2)
 # x: Número de policías en diferentes pueblos
 # y: Número de delitos registrados en esos pueblos
 
-# 1. Lectura de datos
-file &lt;- &quot;https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_pueblos.txt&quot;
+# Lectura de datos
+file &lt;- &quot;https://raw.githubusercontent.com/Centromagis/metodosySIM3_V2/refs/heads/main/datos_MetySim/dat_pueblos.txt&quot;
 datos &lt;- read.table(file = file, header = TRUE)
 
 
@@ -824,21 +822,18 @@ utilizando el <strong>estadístico t de Student</strong>, con <span
 class="math inline">\(v = n - 2\)</span> grados de libertad.</p>
 <p>La prueba de hipótesis se plantea de la siguiente manera:</p>
 <ul>
-<li><p><strong>Hipótesis nula (<span
-class="math inline">\(H_0\)</span>)</strong>: <span
+<li><p>Hipótesis nula <span
+class="math inline">\(\left(H_0\right)\)</span>: <span
 class="math inline">\(\rho = 0\)</span><br />
-<em>(No existe correlación en la población, es decir, las variables no
-están linealmente asociadas)</em>.</p></li>
-<li><p><strong>Hipótesis alternativa (<span
-class="math inline">\(H_1\)</span>)</strong>: <span
+<em>(Las variables no están linealmente asociadas)</em>.</p></li>
+<li><p>Hipótesis alternativa <span
+class="math inline">\(\left(H_1\right)\)</span>: <span
 class="math inline">\(\rho \neq 0\)</span><br />
-<em>(Existe una correlación significativa en la población, es decir, las
-variables están linealmente asociadas)</em>.</p></li>
+<em>(Las variables están linealmente asociadas)</em>.</p></li>
 </ul>
-<p>El estadístico de prueba utilizado sigue una distribución
-<strong>t-Student</strong> con <span class="math inline">\(v =
-n-2\)</span> grados de libertad y se calcula con la siguiente
-fórmula:</p>
+<p>El estadístico de prueba utilizado sigue una distribución t-Student
+con <span class="math inline">\(v = n-2\)</span> grados de libertad y se
+calcula con la siguiente fórmula:</p>
 <p><span class="math display">\[
 U = \dfrac{r \sqrt{n-2}}{\sqrt{1 - r^{2}}} \sim t_{v=n-2}
 \]</span></p>
@@ -876,7 +871,14 @@ class="math inline">\(X\)</span>. Se recomienda inspeccionar un
 de <span class="math inline">\(X\)</span>.</p></li>
 <li><p><strong>Independencia de las observaciones</strong>: Cada par de
 observaciones <span class="math inline">\((X_i, Y_i)\)</span> debe ser
-<strong>independiente</strong> de las demás.</p></li>
+<strong>independiente</strong> de las demás. Las observaciones deben ser
+independientes entre sí, es decir, que la medición de una variable no
+dependa de la otra en términos de estructura de datos (por ejemplo,
+mediciones repetidas en el mismo individuo, como medir antes o después
+de una dieta).</p></li>
+<li><p><strong>Ausencia de valores atípicos extremos</strong>: Los
+valores atípicos pueden distorsionar la correlación. Se recomienda
+identificarlos con boxplots.</p></li>
 </ol>
 <p><strong>¿Qué hacer si los supuestos no se cumplen?</strong></p>
 <p>Si los datos <strong>no cumplen los supuestos de normalidad o
@@ -888,8 +890,6 @@ lineales.</p></li>
 <li><p><strong>Transformar los datos</strong> (por ejemplo, con
 logaritmos o Box-Cox) para mejorar el cumplimiento de los
 supuestos.</p></li>
-<li><p><strong>Utilizar modelos de regresión no paramétrica</strong> si
-la relación entre las variables no es lineal.</p></li>
 </ul>
 <p>Cumplir estos supuestos es clave para garantizar la validez de la
 prueba de Pearson y la correcta interpretación de sus resultados.</p>
@@ -930,8 +930,8 @@ library(ggplot2)
 # x: Número de policías en diferentes pueblos
 # y: Número de delitos registrados en esos pueblos
 
-# 1. Lectura de datos
-file <- "https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_pueblos.txt"
+# Lectura de datos
+file <- "https://raw.githubusercontent.com/Centromagis/metodosySIM3_V2/refs/heads/main/datos_MetySim/dat_pueblos.txt"
 datos <- read.table(file = file, header = TRUE)
 
 x<-datos$Policias
@@ -966,8 +966,8 @@ library(ggplot2)
 # x: Número de policías en diferentes pueblos
 # y: Número de delitos registrados en esos pueblos
 
-# 1. Lectura de datos
-file &lt;- &quot;https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_pueblos.txt&quot;
+# Lectura de datos
+file &lt;- &quot;https://raw.githubusercontent.com/Centromagis/metodosySIM3_V2/refs/heads/main/datos_MetySim/dat_pueblos.txt&quot;
 datos &lt;- read.table(file = file, header = TRUE)
 
 x&lt;-datos$Policias
@@ -1013,13 +1013,13 @@ correlación de Pearson se cumplen</strong> —<strong>linealidad</strong>,
 procede con la ejecución del test para evaluar la existencia de una
 relación lineal entre las variables:</p>
 <ul>
-<li><p><strong>Hipótesis nula (<span
-class="math inline">\(H_0\)</span>)</strong>: No existe asociación
+<li><p>Hipótesis nula <span
+class="math inline">\(\left(H_0\right)\)</span>: No existe asociación
 lineal entre el número de policías y el número de delitos en los
 pueblos, es decir, <span class="math inline">\(\rho =
 0\)</span>.</p></li>
-<li><p><strong>Hipótesis alternativa (<span
-class="math inline">\(H_1\)</span>)</strong>: Existe una asociación
+<li><p>Hipótesis alternativa <span
+class="math inline">\(\left(H_1\right)\)</span>: Existe una asociación
 lineal significativa entre el número de policías y el número de delitos
 en los pueblos, es decir, <span class="math inline">\(\rho \neq
 0\)</span>.</p></li>
@@ -1110,7 +1110,7 @@ ggplot(biomasa_long, aes(x = Variable, y = Valor, fill = Variable)) +
   theme_minimal() +
   theme(legend.position = "none")  # Ocultar la leyenda ya que cada caja representa una variable
 
-# **Matriz de gráficos de dispersión mejorada para 6 variables**
+# Matriz de gráficos de dispersión mejorada para 6 variables
 ggpairs(
   biomasa[, 3:8],  # Seleccionamos las 6 variables
   title = "Matriz de Dispersión y Correlación - Biomasa",
@@ -1162,7 +1162,7 @@ ggplot(biomasa_long, aes(x = Variable, y = Valor, fill = Variable)) +
   theme_minimal() +
   theme(legend.position = &quot;none&quot;)  # Ocultar la leyenda ya que cada caja representa una variable
 
-# **Matriz de gráficos de dispersión mejorada para 6 variables**
+# Matriz de gráficos de dispersión mejorada para 6 variables
 ggpairs(
   biomasa[, 3:8],  # Seleccionamos las 6 variables
   title = &quot;Matriz de Dispersión y Correlación - Biomasa&quot;,
@@ -1310,7 +1310,7 @@ y <strong>área foliar vs. diámetro</strong>, donde la relación parece
 más débil.</p></li>
 <li><p>En la mayoría de los casos, la varianza de una variable respecto
 a la otra es <strong>aproximadamente constante</strong>. Se observan
-indicios de <strong>heterocedasticidad</strong> en <strong>área foliar
+indicios de <strong>varianzas diferentes</strong> en <strong>área foliar
 vs. altura</strong> y <strong>área foliar vs. diámetro</strong>, lo que
 puede afectar la validez de la correlación de Pearson en estos
 casos.</p></li>
@@ -1319,10 +1319,11 @@ la hipótesis de normalidad en cada variable considerando un nivel de
 significancia del <strong>5%</strong> (<span
 class="math inline">\(\alpha = 0.05\)</span>). Los resultados muestran
 que las variables <strong>biomasa aérea</strong>, <strong>biomasa
-total</strong> y <strong>área foliar</strong> presentan valores-p
-menores a <span class="math inline">\(0.05\)</span>, lo que indica que
-sus distribuciones no siguen un comportamiento normal y, por lo tanto,
-se rechaza la hipótesis de normalidad en estos casos.</p></li>
+total</strong> y <strong>área foliar</strong> presentan <span
+class="math inline">\(valores-p\)</span> menores a <span
+class="math inline">\(0.05\)</span>, lo que indica que sus
+distribuciones no siguen un comportamiento normal y, por lo tanto, se
+rechaza la hipótesis de normalidad en estos casos.</p></li>
 <li><p>La <strong>Figura 3.7</strong> presenta diagramas de caja que
 permiten visualizar la distribución y la presencia de valores atípicos
 en las variables <strong>biomasa aérea</strong>, <strong>biomasa

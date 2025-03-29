@@ -530,7 +530,7 @@ observaciones</strong> que contienen mediciones de la cantidad de la
 sustancia en diferentes momentos del tiempo. Los datos están disponibles
 en el siguiente enlace:</p>
 <p><a
-href="https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_tiempo.txt">Datos
+href="https://raw.githubusercontent.com/Centromagis/metodosySIM3_V2/refs/heads/main/datos_MetySim/dat_tiempo.txt">Datos
 de desintegración radiactiva</a></p>
 <hr />
 <p>A continuación, se presentan los códigos en <strong>R</strong> para
@@ -550,7 +550,7 @@ ajustar se expresa de la siguiente manera:</p>
 Sys.setlocale("LC_ALL", "es_ES.UTF-8")
 
 # Lectura de datos
-file <- "https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_tiempo.txt"
+file <- "https://raw.githubusercontent.com/Centromagis/metodosySIM3_V2/refs/heads/main/datos_MetySim/dat_tiempo.txt"
 datos <- read.table(file = file, header = TRUE)
 
 # Cargar librerías necesarias
@@ -582,7 +582,7 @@ shapiro.test(res_m1)
 Sys.setlocale(&quot;LC_ALL&quot;, &quot;es_ES.UTF-8&quot;)
 
 # Lectura de datos
-file &lt;- &quot;https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_tiempo.txt&quot;
+file &lt;- &quot;https://raw.githubusercontent.com/Centromagis/metodosySIM3_V2/refs/heads/main/datos_MetySim/dat_tiempo.txt&quot;
 datos &lt;- read.table(file = file, header = TRUE)
 
 # Cargar librerías necesarias
@@ -683,7 +683,7 @@ efecto de manera consistente.</p></li>
 <strong>R</strong>, asegurando una relación lineal entre la variable
 explicativa y la respuesta, además de mejorar la interpretación de los
 coeficientes en términos logarítmicos. Los códigos del nuevo modelo
-(<span class="math inline">\(M_2\)</span>) son los siguientes:</p>
+<span class="math inline">\(M_2\)</span> son los siguientes:</p>
 <pre>
 # Configurar el entorno para el uso del idioma español
 Sys.setlocale("LC_ALL", "es_ES.UTF-8")
@@ -694,7 +694,7 @@ library(ggplot2)    # Para visualización de datos
 library(lmtest)     # Para pruebas de supuestos en modelos de regresión
 
 # Lectura de datos desde un archivo en línea
-file <- "https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_tiempo.txt"
+file <- "https://raw.githubusercontent.com/Centromagis/metodosySIM3_V2/refs/heads/main/datos_MetySim/dat_tiempo.txt"
 datos <- read.table(file = file, header = TRUE)
 
 # Transformación de la variable respuesta (aplicación de logaritmo)
@@ -753,7 +753,7 @@ library(ggplot2)    # Para visualización de datos
 library(lmtest)     # Para pruebas de supuestos en modelos de regresión
 
 # Lectura de datos desde un archivo en línea
-file &lt;- &quot;https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_tiempo.txt&quot;
+file &lt;- &quot;https://raw.githubusercontent.com/Centromagis/metodosySIM3_V2/refs/heads/main/datos_MetySim/dat_tiempo.txt&quot;
 datos &lt;- read.table(file = file, header = TRUE)
 
 # Transformación de la variable respuesta (aplicación de logaritmo)
@@ -843,11 +843,11 @@ parece haber estabilizado la varianza.</p></li>
 </ul>
 <p>Los resultados de las pruebas estadísticas indican que los errores
 cumplen con los supuestos de <strong>normalidad</strong> e
-<strong>independencia</strong>, ya que los valores-p obtenidos en las
-pruebas de <strong>Shapiro-Wilk</strong> y
-<strong>Durbin-Watson</strong> son mayores a 0.10, lo que significa que
-no hay suficiente evidencia para rechazar la hipótesis nula en cada
-caso.</p>
+<strong>independencia</strong>, ya que los <span
+class="math inline">\(valores-p\)</span> obtenidos en las pruebas de
+<strong>Shapiro-Wilk</strong> y <strong>Durbin-Watson</strong> son
+mayores a 0.10, lo que significa que no hay suficiente evidencia para
+rechazar la hipótesis nula en cada caso.</p>
 <p>Sin embargo, la prueba de <strong>Breusch-Pagan</strong> detecta la
 presencia de <strong>heterocedasticidad</strong> en los residuos, con un
 <span class="math inline">\(valor-p\)</span> de <strong>0.0019</strong>,
@@ -882,8 +882,8 @@ class="math inline">\(valor-p &lt; 2.2 \times e^{-16}\)</span> .</p>
 <li><p><strong>La variable tiempo es altamente significativa</strong>,
 ya que su <span class="math inline">\(valor-p\)</span> es menor a <span
 class="math inline">\(2 \times e^{-16}\)</span>.</p></li>
-<li><p><strong>El coeficiente de determinación (<span
-class="math inline">\(R^2\)</span>) ajustado es de 0.9971</strong>. En
+<li><p><strong>El coeficiente de determinación <span
+class="math inline">\(R^2\)</span> ajustado es de 0.9971</strong>. En
 este caso, el valor de <span class="math inline">\(R^2 = 0.9971\)</span>
 indica que el <strong>99.71% de la variabilidad en la cantidad de la
 sustancia radiactiva</strong> puede explicarse por el tiempo
@@ -891,9 +891,8 @@ transcurrido. Un <strong><span class="math inline">\(R^2\)</span>
 alto</strong> sugiere que el modelo tiene un <strong>buen ajuste a los
 datos</strong>, lo que significa que la relación entre la cantidad de la
 sustancia y el tiempo es fuerte y bien representada por la regresión
-lineal. Sin embargo, es importante complementar esta evaluación con
-<strong>análisis de los residuos</strong> para verificar el cumplimiento
-de los supuestos del modelo y evitar conclusiones erróneas.</p></li>
+lineal. Sin embargo, ante la falta de homocedasticidad, estos resultados
+son cuestionables.</p></li>
 </ul>
 <pre>
 Call:
@@ -1012,7 +1011,7 @@ el siguiente:</p>
 library(MASS)
 
 # Lectura de datos
-file <- "https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_tiempo.txt"
+file <- "https://raw.githubusercontent.com/Centromagis/metodosySIM3_V2/refs/heads/main/datos_MetySim/dat_tiempo.txt"
 datos <- read.table(file = file, header = TRUE)
 
 # Ajustar un modelo de regresión lineal
@@ -1030,7 +1029,7 @@ lambda_optimo
 library(MASS)
 
 # Lectura de datos
-file &lt;- &quot;https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_tiempo.txt&quot;
+file &lt;- &quot;https://raw.githubusercontent.com/Centromagis/metodosySIM3_V2/refs/heads/main/datos_MetySim/dat_tiempo.txt&quot;
 datos &lt;- read.table(file = file, header = TRUE)
 
 # Ajustar un modelo de regresión lineal
@@ -1107,7 +1106,7 @@ library(lmtest)     # Para pruebas estadísticas como Breusch-Pagan y Durbin-Wat
 # Lectura de datos
 
 # Definir la URL del archivo con los datos
-file <- "https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_tiempo.txt"
+file <- "https://raw.githubusercontent.com/Centromagis/metodosySIM3_V2/refs/heads/main/datos_MetySim/dat_tiempo.txt"
 
 # Cargar el conjunto de datos desde la URL en un dataframe
 datos <- read.table(file = file, header = TRUE)
@@ -1172,7 +1171,7 @@ library(lmtest)     # Para pruebas estadísticas como Breusch-Pagan y Durbin-Wat
 # Lectura de datos
 
 # Definir la URL del archivo con los datos
-file &lt;- &quot;https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_tiempo.txt&quot;
+file &lt;- &quot;https://raw.githubusercontent.com/Centromagis/metodosySIM3_V2/refs/heads/main/datos_MetySim/dat_tiempo.txt&quot;
 
 # Cargar el conjunto de datos desde la URL en un dataframe
 datos &lt;- read.table(file = file, header = TRUE)
@@ -1344,7 +1343,7 @@ library(lmtest)     # Para pruebas estadísticas como Breusch-Pagan y Durbin-Wat
 
 
 # Definir la URL del archivo con los datos
-file <- "https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_tiempo.txt"
+file <- "https://raw.githubusercontent.com/Centromagis/metodosySIM3_V2/refs/heads/main/datos_MetySim/dat_tiempo.txt"
 
 # Cargar el conjunto de datos desde la URL en un dataframe
 datos <- read.table(file = file, header = TRUE)
@@ -1414,7 +1413,7 @@ library(lmtest)     # Para pruebas estadísticas como Breusch-Pagan y Durbin-Wat
 
 
 # Definir la URL del archivo con los datos
-file &lt;- &quot;https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_tiempo.txt&quot;
+file &lt;- &quot;https://raw.githubusercontent.com/Centromagis/metodosySIM3_V2/refs/heads/main/datos_MetySim/dat_tiempo.txt&quot;
 
 # Cargar el conjunto de datos desde la URL en un dataframe
 datos &lt;- read.table(file = file, header = TRUE)
@@ -1540,7 +1539,7 @@ library(ggplot2)    # Para visualización de datos
 library(lmtest)     # Para pruebas de supuestos de regresión
 
 #  Lectura de datos
-file <- "https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_tiempo.txt"
+file <- "https://raw.githubusercontent.com/Centromagis/metodosySIM3_V2/refs/heads/main/datos_MetySim/dat_tiempo.txt"
 datos <- read.table(file = file, header = TRUE)
 
 # Ajustar un modelo de regresión inicial
@@ -1609,7 +1608,7 @@ library(ggplot2)    # Para visualización de datos
 library(lmtest)     # Para pruebas de supuestos de regresión
 
 #  Lectura de datos
-file &lt;- &quot;https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_tiempo.txt&quot;
+file &lt;- &quot;https://raw.githubusercontent.com/Centromagis/metodosySIM3_V2/refs/heads/main/datos_MetySim/dat_tiempo.txt&quot;
 datos &lt;- read.table(file = file, header = TRUE)
 
 # Ajustar un modelo de regresión inicial

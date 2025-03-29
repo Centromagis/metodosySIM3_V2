@@ -75,11 +75,11 @@ tabla <- table(X, Y)
 El **coeficiente de correlación de Pearson** (\( r = \hat{\rho} \)) es una medida estadística que cuantifica el grado y la dirección de la relación lineal entre dos variables cuantitativas \( X \) y \( Y \). Su valor oscila entre \(-1\) y \(1\), y se interpreta de la siguiente manera:
 
 
-- **\( r \approx 1 \):** Indica una **asociación positiva fuerte**, es decir, a medida que \( X \) aumenta, \( Y \) también tiende a aumentar.
+- **\( r \approx 1 \):** Indica una **asociación positiva fuerte**, es decir, a medida que \( X \) aumenta, \( Y \) también tiende a aumentar linealmente.
 
-- **\( r \approx -1 \):** Indica una **asociación negativa fuerte**, lo que significa que a medida que \( X \) aumenta, \( Y \) tiende a disminuir.
+- **\( r \approx -1 \):** Indica una **asociación negativa fuerte**, lo que significa que a medida que \( X \) aumenta, \( Y \) tiende a disminuir linealmente.
 
-- **\( r \approx 0 \):** Sugiere que no hay una asociación lineal significativa entre las variables.
+- **\( r \approx 0 \):** Sugiere que no hay una asociación lineal entre las variables.
 
 
 
@@ -90,7 +90,7 @@ knitr::include_graphics("img/correlacion2.png")
 </br></br>
 <h3>Fórmula de cálculo</h3>
 
-El **coeficiente de correlación de Pearson muestral** para las variables \( (X, Y) \), donde \( X = (x_1, ..., x_n) \) y \( Y = (y_1, ..., y_n) \), se denota con la letra \( r \) y se calcula utilizando la siguiente expresión:
+El **coeficiente de correlación de Pearson muestral** para las variables $X$ y $Y$, dadas las $n$ observaciones $(x_1, y_1), (x_2, y_2), \dots, (x_n, y_n)$, se denota con la letra $r$ y se calcula mediante la siguiente expresión:
 
 
 \[
@@ -108,9 +108,9 @@ r = \dfrac{cov(X, Y)}{s_X s_Y}
 
 donde:
 
-- \( cov(X, Y) \) representa la **covarianza** entre \( X \) y \( Y \).
+- \( cov(X, Y) \) representa la **covarianza muestral** entre \( X \) y \( Y \).
 
-- \( s_X \) y \( s_Y \) son las **desviaciones estándar** de \( X \) y \( Y \), respectivamente.
+- \( s_X \) y \( s_Y \) son las **desviaciones estándar muestrales** de \( X \) y \( Y \), respectivamente.
 
 - \( n \) es el número total de observaciones.
 
@@ -124,9 +124,9 @@ Este coeficiente fue desarrollado por **Karl Pearson**, y para su correcta aplic
 
 - **Se asume normalidad en las variables**, especialmente para realizar inferencias estadísticas.
 
-- **La relación entre las variables debe ser lineal**, ya que la correlación de Pearson no captura relaciones no lineales.
+- La correlación de Pearson no captura relaciones no lineales.
 
-El coeficiente de correlación de Pearson es ampliamente utilizado en análisis exploratorios y en la validación de modelos estadísticos, proporcionando una primera aproximación sobre la relación entre dos variables antes de aplicar modelos de regresión.
+El coeficiente de correlación de Pearson es ampliamente utilizado en análisis exploratorios y en la validación de modelos estadísticos, proporcionando una primera aproximación sobre la relación entre dos variables antes de aplicar modelos de regresión lineal.
 
 
 
@@ -135,7 +135,7 @@ El coeficiente de correlación de Pearson es ampliamente utilizado en análisis 
 <h3>Interpretación</h3>
 
 
-Los valores obtenidos del **coeficiente de correlación de Pearson** permiten clasificar la relación lineal entre dos variables según su intensidad y dirección. La **Tabla 3.1** presenta una clasificación comúnmente utilizada:
+La **Tabla 3.1** presenta una clasificación comúnmente utilizada para el coeficiente de correlación de Pearson:
 
 </br></br>
 <center>
@@ -164,17 +164,53 @@ Las **Figura 3.3** y **3.4** muestra seis gráficos de dispersión, cada uno rep
 
 La **Figura 3.3** presenta:
 
-- **Correlación \( r = -1 \) (Gráfico superior izquierdo):** Existe una **relación negativa perfecta** entre \( X \) y \( Y \). Todos los puntos se alinean exactamente sobre una línea recta descendente.   Esto indica que un aumento en \( X \) siempre se asocia con una disminución proporcional en \( Y \).  
+- **Correlación \( r = -1 \) (a):** Existe una **relación negativa perfecta** entre \( X \) y \( Y \). Todos los puntos se alinean exactamente sobre una línea recta descendente.   Esto indica que un aumento en \( X \) siempre se asocia con una disminución proporcional en \( Y \).  
 
-- **Correlación \( r = -0.9 \) (Gráfico superior central):**  Se observa una **fuerte relación negativa**, aunque no es perfecta.  A medida que \( X \) aumenta, \( Y \) tiende a disminuir de manera consistente, pero con cierta dispersión en los datos. 
+- **Correlación \( r = -0.9 \) (b):**  Se observa una **fuerte relación negativa**, aunque no es perfecta.  A medida que \( X \) aumenta, \( Y \) tiende a disminuir de manera consistente, pero con cierta dispersión en los datos. 
 
-- **Correlación \( r = -0.75 \) (Gráfico superior derecho):**  Existe una **relación negativa moderada**, con mayor dispersión en comparación con \( r = -0.9 \).  Aunque la tendencia descendente es clara, la variabilidad en los datos es mayor.   
+- **Correlación \( r = -0.75 \) (c):**  Existe una **relación negativa moderada**, con mayor dispersión en comparación con \( r = -0.9 \).  Aunque la tendencia descendente es clara, la variabilidad en los datos es mayor.   
 
-- **Correlación \( r = -0.5 \) (Gráfico inferior izquierdo):**   Relación **negativa débil** entre las variables.  La tendencia descendente aún es visible, pero los puntos están más dispersos, lo que sugiere una menor asociación lineal.  
+- **Correlación \( r = -0.5 \) (d):**   Relación **negativa débil** entre las variables.  La tendencia descendente aún es visible, pero los puntos están más dispersos, lo que sugiere una menor asociación lineal.  
 
-- **Correlación \( r = -0.25 \) (Gráfico inferior central):**  Relación **muy débil o casi inexistente**.  Aunque hay una ligera tendencia negativa, la dispersión es alta y no se puede concluir una relación lineal clara.  
+- **Correlación \( r = -0.25 \) (e):**  Relación **muy débil o casi inexistente**.  Aunque hay una ligera tendencia negativa, la dispersión es alta y no se puede concluir una relación lineal clara.  
 
-- **Correlación \( r = 0 \) (Gráfico inferior derecho):**  **No existe relación lineal** entre las variables.   Los puntos están dispersos de manera aleatoria, sin un patrón discernible.  
+- **Correlación \( r = 0 \) (f):**  **No existe relación lineal** entre las variables.   Los puntos están dispersos de manera aleatoria, sin un patrón discernible.  
+
+
+```{r,eval=FALSE,warning=FALSE,message=FALSE,include=FALSE}
+# Configurar el entorno para el uso del idioma español
+Sys.setlocale("LC_ALL", "es_ES.UTF-8")
+
+# Cargar paquetes necesarios
+library(ggplot2)
+library(gridExtra)
+
+# Generar datos con distintas correlaciones
+set.seed(123)
+n <- 200
+
+gen_cor_data <- function(r) {
+  x <- rnorm(n, mean = 100, sd = 2)
+  y <- r * x + sqrt(1 - r^2) * rnorm(n, mean = 100, sd = 2)
+  data.frame(x, y)
+}
+
+cor_values <- c(-1.0, -0.9, -0.75, -0.5, -0.25, 0.0)
+labels <- c("(a)", "(b)", "(c)", "(d)", "(e)", "(f)")
+
+# Crear gráficos individuales con puntos azules
+graficos <- lapply(1:length(cor_values), function(i) {
+  ggplot(gen_cor_data(cor_values[i]), aes(x = x, y = y)) +
+    geom_point(color = "blue") +  # Puntos en azul
+    labs(title = paste(labels[i], " Correlación ", cor_values[i])) +
+    theme_minimal() +
+    theme(plot.title = element_text(hjust = 0.5))
+})
+
+# Mostrar gráficos en una cuadrícula de 3x2
+grid.arrange(grobs = graficos, ncol = 3)
+
+```
 
 ```{r, echo=FALSE, out.width="100%", fig.align = "center"}
 knitr::include_graphics("img/Rho1.png")
@@ -187,17 +223,58 @@ knitr::include_graphics("img/Rho1.png")
 
 La **Figura 3.4** presenta:
 
-- **Correlación \( r = 0.1 \) (Gráfico superior izquierdo):**  La relación entre \( X \) y \( Y \) es prácticamente nula.  Los puntos están distribuidos de manera aleatoria, sin una tendencia clara.  No se puede concluir que exista una asociación lineal significativa.  
+- **Correlación \( r = 0.1 \) (a):**  La relación entre \( X \) y \( Y \) es prácticamente nula.  Los puntos están distribuidos de manera aleatoria, sin una tendencia clara.  No se puede concluir que exista una asociación lineal significativa.  
 
-- **Correlación \( r = 0.25 \) (Gráfico superior central):**  Se observa una ligera tendencia ascendente, pero la dispersión de los puntos sigue siendo alta.  
+- **Correlación \( r = 0.25 \) (b):**  Se observa una ligera tendencia ascendente, pero la dispersión de los puntos sigue siendo alta.  
 
-- **Correlación \( r = 0.5 \) (Gráfico superior derecho):**  Existe una **relación positiva moderada**. Aunque los puntos están dispersos, se empieza a notar una tendencia creciente en la relación entre \( X \) y \( Y \).  
+- **Correlación \( r = 0.5 \) (c):**  Existe una **relación positiva moderada**. Aunque los puntos están dispersos, se empieza a notar una tendencia creciente en la relación entre \( X \) y \( Y \).  
 
-- **Correlación \( r = 0.75 \) (Gráfico inferior izquierdo):**  La relación entre \( X \) y \( Y \) es **positiva fuerte**. Los puntos siguen una tendencia ascendente más clara, aunque aún hay cierta variabilidad.   
+- **Correlación \( r = 0.75 \) (d):**  La relación entre \( X \) y \( Y \) es **positiva fuerte**. Los puntos siguen una tendencia ascendente más clara, aunque aún hay cierta variabilidad.   
 
-- **Correlación \( r = 0.9 \) (Gráfico inferior central):**  La relación es **muy fuerte y positiva**.  Los puntos están mucho más alineados en una dirección creciente, indicando una fuerte asociación lineal.  
+- **Correlación \( r = 0.9 \) (e):**  La relación es **muy fuerte y positiva**.  Los puntos están mucho más alineados en una dirección creciente, indicando una fuerte asociación lineal.  
 
-- **Correlación \( r = 1 \) (Gráfico inferior derecho):**  Existe una **relación lineal perfecta positiva**. Todos los puntos se alinean exactamente sobre una línea recta ascendente.  Esto indica que un aumento en \( X \) se asocia **siempre** con un aumento proporcional en \( Y \).  
+- **Correlación \( r = 1 \) (f):**  Existe una **relación lineal perfecta positiva**. Todos los puntos se alinean exactamente sobre una línea recta ascendente.  Esto indica que un aumento en \( X \) se asocia **siempre** con un aumento proporcional en \( Y \).  
+
+
+
+```{r,eval=FALSE,warning=FALSE,message=FALSE,include=FALSE}
+# Configurar el entorno para el uso del idioma español
+Sys.setlocale("LC_ALL", "es_ES.UTF-8")
+
+library(ggplot2)
+library(gridExtra)
+library(MASS) # Para mvrnorm
+
+set.seed(123)
+
+# Función para generar datos con una correlación dada
+generate_data <- function(n, rho) {
+  mu <- c(100, 100)
+  Sigma <- matrix(c(1, rho, rho, 1), 2, 2)
+  data <- MASS::mvrnorm(n, mu, Sigma)
+  data.frame(x = data[,1], y = data[,2])
+}
+
+# Valores de correlación y etiquetas
+correlations <- c(0.10, 0.25, 0.50, 0.75, 0.90, 1.0)
+labels <- c("(a)", "(b)", "(c)", "(d)", "(e)", "(f)")
+plots <- list()
+
+# Generar gráficos
+for (i in 1:length(correlations)) {
+  data <- generate_data(150, correlations[i])
+  p <- ggplot(data, aes(x = x, y = y)) +
+    geom_point(color = "pink") +
+    ggtitle(paste(labels[i], "r =", correlations[i])) +
+    theme_minimal()
+  plots[[i]] <- p
+}
+
+# Mostrar los gráficos en una cuadrícula
+grid.arrange(grobs = plots, ncol = 3)
+
+
+```
 
 
 ```{r, echo=FALSE, out.width="100%", fig.align = "center"}
@@ -234,7 +311,7 @@ El objetivo es determinar si existe una asociación lineal entre el número de p
 
 Los datos observados se encuentran disponibles en el siguiente enlace:
 
-[Datos de delitos y policías por pueblo](https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_pueblos.txt)
+[Datos de delitos y policías por pueblo](https://raw.githubusercontent.com/Centromagis/metodosySIM3_V2/refs/heads/main/datos_MetySim/dat_pueblos.txt)
 
 
 ---
@@ -252,8 +329,8 @@ library(ggplot2)
 # x: Número de policías en diferentes pueblos
 # y: Número de delitos registrados en esos pueblos
 
-# 1. Lectura de datos
-file <- "https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_pueblos.txt"
+# Lectura de datos
+file <- "https://raw.githubusercontent.com/Centromagis/metodosySIM3_V2/refs/heads/main/datos_MetySim/dat_pueblos.txt"
 datos <- read.table(file = file, header = TRUE)
 
 
@@ -285,8 +362,8 @@ library(ggplot2)
 # x: Número de policías en diferentes pueblos
 # y: Número de delitos registrados en esos pueblos
 
-# 1. Lectura de datos
-file <- "https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_pueblos.txt"
+# Lectura de datos
+file <- "https://raw.githubusercontent.com/Centromagis/metodosySIM3_V2/refs/heads/main/datos_MetySim/dat_pueblos.txt"
 datos <- read.table(file = file, header = TRUE)
 
 
@@ -336,13 +413,13 @@ En el análisis de correlación de Pearson, es fundamental determinar si la **co
 
 La prueba de hipótesis se plantea de la siguiente manera:
 
-- **Hipótesis nula (\(H_0\))**: \( \rho = 0 \)  
-  *(No existe correlación en la población, es decir, las variables no están linealmente asociadas)*.  
+- Hipótesis nula  \(\left(H_0\right)\): \(\rho = 0 \)  
+  *(Las variables no están linealmente asociadas)*.  
 
-- **Hipótesis alternativa (\(H_1\))**: \( \rho \neq 0 \)  
-  *(Existe una correlación significativa en la población, es decir, las variables están linealmente asociadas)*.  
+- Hipótesis alternativa \(\left(H_1\right)\): \( \rho \neq 0 \)  
+  *(Las variables están linealmente asociadas)*.  
 
-El estadístico de prueba utilizado sigue una distribución **t-Student** con \( v = n-2 \) grados de libertad y se calcula con la siguiente fórmula:
+El estadístico de prueba utilizado sigue una distribución t-Student con \( v = n-2 \) grados de libertad y se calcula con la siguiente fórmula:
 
 \[
 U = \dfrac{r \sqrt{n-2}}{\sqrt{1 - r^{2}}} \sim t_{v=n-2}
@@ -364,7 +441,9 @@ Para que la prueba de correlación de **Pearson** proporcione resultados válido
 
 3. **Homocedasticidad (Varianza constante de \( Y \) en función de \( X \))**: La dispersión de los valores de \( Y \) debe ser aproximadamente constante para todos los valores de \( X \). Se recomienda inspeccionar un **gráfico de dispersión** para evaluar si la dispersión de \( Y \) cambia a lo largo de los valores de \( X \).
 
-4. **Independencia de las observaciones**: Cada par de observaciones \((X_i, Y_i)\) debe ser **independiente** de las demás. 
+4. **Independencia de las observaciones**: Cada par de observaciones \((X_i, Y_i)\) debe ser **independiente** de las demás.  Las observaciones deben ser independientes entre sí, es decir, que la medición de una variable no dependa de la otra en términos de estructura de datos (por ejemplo, mediciones repetidas en el mismo individuo, como medir antes o después de una dieta).
+
+5. **Ausencia de valores atípicos extremos**: Los valores atípicos pueden distorsionar la correlación. Se recomienda identificarlos con boxplots.
 
 
 **¿Qué hacer si los supuestos no se cumplen?**
@@ -374,8 +453,6 @@ Si los datos **no cumplen los supuestos de normalidad o linealidad**, se pueden 
 - **Usar la correlación de Spearman o Kendall**, que no requieren normalidad y son más robustas a relaciones no lineales.
 
 - **Transformar los datos** (por ejemplo, con logaritmos o Box-Cox) para mejorar el cumplimiento de los supuestos.
-
-- **Utilizar modelos de regresión no paramétrica** si la relación entre las variables no es lineal.
 
 Cumplir estos supuestos es clave para garantizar la validez de la prueba de Pearson y la correcta interpretación de sus resultados.
 
@@ -412,8 +489,8 @@ library(ggplot2)
 # x: Número de policías en diferentes pueblos
 # y: Número de delitos registrados en esos pueblos
 
-# 1. Lectura de datos
-file <- "https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_pueblos.txt"
+# Lectura de datos
+file <- "https://raw.githubusercontent.com/Centromagis/metodosySIM3_V2/refs/heads/main/datos_MetySim/dat_pueblos.txt"
 datos <- read.table(file = file, header = TRUE)
 
 x<-datos$Policias
@@ -451,8 +528,8 @@ library(ggplot2)
 # x: Número de policías en diferentes pueblos
 # y: Número de delitos registrados en esos pueblos
 
-# 1. Lectura de datos
-file <- "https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_pueblos.txt"
+# Lectura de datos
+file <- "https://raw.githubusercontent.com/Centromagis/metodosySIM3_V2/refs/heads/main/datos_MetySim/dat_pueblos.txt"
 datos <- read.table(file = file, header = TRUE)
 
 x<-datos$Policias
@@ -497,9 +574,9 @@ W = 0.98466, p-value = 0.9178
 
 Dado que los **supuestos requeridos para la prueba de correlación de Pearson se cumplen** —**linealidad**, **normalidad** y **homocedasticidad**—, se procede con la ejecución del test para evaluar la existencia de una relación lineal entre las variables:
 
-- **Hipótesis nula (\(H_0\))**: No existe asociación lineal entre el número de policías y el número de delitos en los pueblos, es decir, \( \rho = 0 \).  
+- Hipótesis nula \(\left(H_0\right)\): No existe asociación lineal entre el número de policías y el número de delitos en los pueblos, es decir, \( \rho = 0 \).  
 
-- **Hipótesis alternativa (\(H_1\))**: Existe una asociación lineal significativa entre el número de policías y el número de delitos en los pueblos, es decir, \( \rho \neq 0 \).
+- Hipótesis alternativa \(\left(H_1\right)\): Existe una asociación lineal significativa entre el número de policías y el número de delitos en los pueblos, es decir, \( \rho \neq 0 \).
 
 Si el \( valor-p = 9.985 \times 10^{-10} \) obtenido en la prueba es menor que el nivel de significancia (\(\alpha = 0.05\)), se rechazará la hipótesis nula, lo que indicaría que existe evidencia estadística suficiente para afirmar la existencia de una correlación lineal significativa entre ambas variables con una significancia del 5%.
 
@@ -582,7 +659,7 @@ ggplot(biomasa_long, aes(x = Variable, y = Valor, fill = Variable)) +
   theme_minimal() +
   theme(legend.position = "none")  # Ocultar la leyenda ya que cada caja representa una variable
 
-# **Matriz de gráficos de dispersión mejorada para 6 variables**
+# Matriz de gráficos de dispersión mejorada para 6 variables
 ggpairs(
   biomasa[, 3:8],  # Seleccionamos las 6 variables
   title = "Matriz de Dispersión y Correlación - Biomasa",
@@ -636,7 +713,7 @@ ggplot(biomasa_long, aes(x = Variable, y = Valor, fill = Variable)) +
   theme_minimal() +
   theme(legend.position = "none")  # Ocultar la leyenda ya que cada caja representa una variable
 
-# **Matriz de gráficos de dispersión mejorada para 6 variables**
+# Matriz de gráficos de dispersión mejorada para 6 variables
 ggpairs(
   biomasa[, 3:8],  # Seleccionamos las 6 variables
   title = "Matriz de Dispersión y Correlación - Biomasa",
@@ -736,9 +813,9 @@ Para determinar la validez del **test de correlación de Pearson**, es necesario
 
 - Los gráficos de dispersión muestran una **relación lineal** entre la mayoría de las variables. Existen algunas excepciones en las combinaciones **área foliar vs. altura** y **área foliar vs. diámetro**, donde la relación parece más débil.
 
-- En la mayoría de los casos, la varianza de una variable respecto a la otra es **aproximadamente constante**. Se observan indicios de **heterocedasticidad** en **área foliar vs. altura** y **área foliar vs. diámetro**, lo que puede afectar la validez de la correlación de Pearson en estos casos.
+- En la mayoría de los casos, la varianza de una variable respecto a la otra es **aproximadamente constante**. Se observan indicios de **varianzas diferentes** en **área foliar vs. altura** y **área foliar vs. diámetro**, lo que puede afectar la validez de la correlación de Pearson en estos casos.
 
-- Se aplicó el **test de Shapiro-Wilk** para evaluar la hipótesis de normalidad en cada variable considerando un nivel de significancia del **5%** (\( \alpha = 0.05 \)). Los resultados muestran que las variables **biomasa aérea**, **biomasa total** y **área foliar** presentan valores-p menores a \( 0.05 \), lo que indica que sus distribuciones no siguen un comportamiento normal y, por lo tanto, se rechaza la hipótesis de normalidad en estos casos.
+- Se aplicó el **test de Shapiro-Wilk** para evaluar la hipótesis de normalidad en cada variable considerando un nivel de significancia del **5%** (\( \alpha = 0.05 \)). Los resultados muestran que las variables **biomasa aérea**, **biomasa total** y **área foliar** presentan $valores-p$ menores a \( 0.05 \), lo que indica que sus distribuciones no siguen un comportamiento normal y, por lo tanto, se rechaza la hipótesis de normalidad en estos casos.
 
 - La **Figura 3.7** presenta diagramas de caja que permiten visualizar la distribución y la presencia de valores atípicos en las variables **biomasa aérea**, **biomasa total** y **área foliar**.
 

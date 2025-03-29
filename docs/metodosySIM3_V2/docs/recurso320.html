@@ -1,0 +1,2397 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Métodos y Simulación Estadística" />
+
+
+<title> Revisión de supuestos</title>
+
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"> </a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Métodos
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="index.html">Contenido</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Correlación
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso100.html">Análisis de Correlación</a>
+    </li>
+    <li>
+      <a href="recurso110.html">Coeficiente de Pearson</a>
+    </li>
+    <li>
+      <a href="recurso120.html">Coeficiente de Spearman</a>
+    </li>
+    <li>
+      <a href="recurso130.html">Coeficiente de Kendall</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Modelo
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso200.html">Modelo de Regresión Lineal Simple</a>
+    </li>
+    <li>
+      <a href="recurso210.html">Estimación Mínimos Cuadrados Ordinarios</a>
+    </li>
+    <li>
+      <a href="recurso220.html">Estimación de Máxima Verosimilitud</a>
+    </li>
+    <li>
+      <a href="recurso230.html">Forma Matricial del Modelo</a>
+    </li>
+    <li>
+      <a href="recurso300.html">Supuestos</a>
+    </li>
+    <li>
+      <a href="recurso310.html">Residuales</a>
+    </li>
+    <li>
+      <a href="recurso320.html">Revisión de Supuestos</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Pruebas de Hipótesis
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso400.html">Sobre los Coeficientes</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Transformaciones
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso500.html">Transformaciones</a>
+    </li>
+    <li>
+      <a href="recurso600.html">Modelos Polinomiales</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Predicción e Intervalos
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso700.html">Intervalo de Confianza</a>
+    </li>
+    <li>
+      <a href="recurso800.html">Intervalos de C. de Coeficientes y Varianza</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Atípicos e Influyentes
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso900.html">Punto Atípico e Influyente</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Tablero
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso1000.html">Tablero usando Shiny</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Referencias
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso2000.html">Referencias</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore"><span style="color:#686868">
+<strong>Revisión de supuestos</strong></span></h1>
+<h4 class="author">Métodos y Simulación Estadística</h4>
+
+</div>
+
+
+</br></br>
+<h2>
+Normalidad de los errores
+</h2>
+</br></br>
+<h3>
+Gráficos
+</h3>
+<p>Para evaluar si los errores del modelo de regresión tienen una
+<strong>distribución aproximadamente normal</strong>, se analizan los
+<strong>residuales estandarizados</strong> <span
+class="math inline">\(d_i\)</span>:</p>
+<p><span class="math display">\[
+d_i = \frac{e_i}{\hat{\sigma} \sqrt{1 - h_{ii}}}
+\]</span></p>
+<p>donde:</p>
+<ul>
+<li><p><span class="math inline">\(e_i\)</span> son los
+<strong>residuales ordinarios</strong>.</p></li>
+<li><p><span class="math inline">\(\hat{\sigma}\)</span> es la
+<strong>desviación estándar del error</strong> estimada en el
+modelo.</p></li>
+<li><p><span class="math inline">\(h_{ii}\)</span> es el
+<strong>leverage</strong> de la observación <span
+class="math inline">\(i\)</span>, que mide su influencia en el ajuste
+del modelo.</p></li>
+</ul>
+<p>Una vez calculados los <strong><span
+class="math inline">\(d_i\)</span></strong>, se utiliza un
+<strong>gráfico de normalidad</strong> o <strong>QQ-Plot</strong> para
+visualizar si los residuales siguen una distribución normal. Un ejemplo
+de este tipo de gráfico es el de la <strong>Figura 3.16</strong>. El
+gráfico compara los cuantiles de los residuales estandarizados (eje
+vertical) con los cuantiles teóricos de una distribución normal estándar
+(eje horizontal). La línea roja representa la relación esperada si los
+datos siguen una distribución normal. Los puntos azules representan los
+cuantiles de los residuales. Si la mayoría de los puntos siguen la línea
+roja, entonces se concluye que los errores del modelo pueden
+considerarse normalmente distribuidos.</p>
+<br/><br/>
+<center>
+<img src="img/fig316.png" width="50%" style="display: block; margin: auto;" />
+<strong>Figura 3.16</strong> QQ-plot de los residuales estandarizados.
+</center>
+<p><br/><br/></p>
+<br/><br/>
+<center>
+<img src="img/fig317.png" width="80%" style="display: block; margin: auto;" />
+<strong>Figura 3.17</strong> Diferentes escenarios de residuales
+estandarizados.
+</center>
+<p><br/><br/></p>
+<p>La <strong>Figura 3.17</strong> presenta diferentes patrones que
+pueden observarse en un <strong>QQ-Plot</strong>:</p>
+<ul>
+<li><p><strong>Gráfico con normalidad</strong>: Los puntos están
+alineados con la <strong>línea de referencia</strong> (recta roja), lo
+que indica que los errores podrían seguir una <strong>distribución
+normal</strong>.</p></li>
+<li><p><strong>Gráficos con “no normalidad”</strong>: Entre los gráficos
+se observa que se presenta <strong>curvatura en los extremos</strong> lo
+que indica <strong>colas pesadas</strong> o <strong>distribución
+sesgada</strong>. También hay <strong>saturación de puntos en un
+extremo</strong> lo que muestra la <strong>presencia de valores
+atípicos</strong> o distribución no simétrica. Adicionalmente se aprecia
+una <strong>S marcada</strong> lo que señala de una distribución bimodal
+o de una transformación incorrecta de los datos.</p></li>
+</ul>
+<hr />
+</br></br>
+<h3>
+Pruebas de hipótesis
+</h3>
+<p>Para determinar <strong>inferencialmente</strong> si los errores del
+modelo de regresión siguen una <strong>distribución normal</strong>, se
+aplica un <strong>test de normalidad</strong> sobre los
+<strong>residuales ordinarios</strong> del modelo.</p>
+<p><strong>Hipótesis del test de normalidad:</strong></p>
+<ul>
+<li><p><strong><span class="math inline">\(H_0\)</span></strong>: Los
+errores siguen una <strong>distribución normal</strong>.</p></li>
+<li><p><strong><span class="math inline">\(H_1\)</span></strong>: Los
+errores <strong>no</strong> siguen una distribución normal.</p></li>
+</ul>
+<p>Si el <span class="math inline">\(valor-p\)</span> obtenido en el
+test es <strong>mayor</strong> que un nivel de significancia establecido
+<span class="math inline">\(\alpha\)</span>, no se rechaza <span
+class="math inline">\(H_0\)</span>, lo que sugiere que los errores
+pueden considerarse normales. Por el contrario, si el <span
+class="math inline">\(valor-p\)</span> es menor que el nivel de
+significancia, se rechaza <span class="math inline">\(H_0\)</span> en
+favor de <span class="math inline">\(H_1\)</span>, indicando que los
+errores <strong>no</strong> siguen una distribución normal.</p>
+<p><strong>Algunos de los tests de normalidad antes estudiados
+son:</strong></p>
+<ol style="list-style-type: decimal">
+<li><p><strong>Test de Shapiro-Wilk</strong></p>
+<ul>
+<li>Función en <strong>R</strong>:
+<code>shapiro.test(residuos)</code></li>
+</ul></li>
+<li><p><strong>Test de Kolmogorov-Smirnov</strong></p>
+<ul>
+<li>Función en <strong>R</strong>:
+<code>ks.test(residuos, "pnorm", mean = mean(residuos), sd = sd(residuos))</code></li>
+</ul></li>
+</ol>
+</br></br>
+<div class="caja-ejemplo">
+<h3>
+Ejemplo:
+</h3>
+<p>
+<p>En este análisis, se busca modelar la variable respuesta <span
+class="math inline">\(Y\)</span> en función de la variable predictora
+<span class="math inline">\(X\)</span>. Para analizar la validez del
+modelo de regresión, es fundamental verificar el cumplimiento de los
+<strong>supuestos estadísticos</strong>, entre ellos el supuesto de
+<strong>normalidad de los errores</strong>.</p>
+<p>Para ello, se utilizarán dos enfoques:</p>
+<ol style="list-style-type: decimal">
+<li><strong>Análisis gráfico</strong>: Se generará un gráfico
+<strong>Q-Q Plot (Quantile-Quantile Plot)</strong>.</li>
+<li><strong>Prueba de hipótesis</strong>: Se aplicará la <strong>prueba
+de Shapiro-Wilk</strong>.</li>
+</ol>
+<p>El conjunto de datos utilizado se encuentra disponible en el
+siguiente enlace:<br />
+<a
+href="https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_reg_norm.txt"><strong>Dataset
+- Normalidad en Regresión</strong></a>.</p>
+<hr />
+<p>Los códigos comentados para construir los gráficos y aplicar el test
+son los siguientes:</p>
+<pre>
+# Configurar el entorno para el uso del idioma español
+# Sys.setlocale("LC_ALL", "es_ES.UTF-8")
+
+# Lectura de datos
+file <- "https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_reg_norm.txt"
+datos <- read.table(file=file, header=TRUE)
+
+# Ajustar un modelo de regresión lineal 
+# Se genera un modelo de regresión lineal simple donde Y es la variable respuesta y X la predictora.
+mod <- lm(y ~ x, data = datos)
+
+# Obtener residuales estandarizados
+residuales_estandarizados <- rstandard(mod)
+
+# Generar el QQ-Plot para evaluar normalidad
+qqnorm(residuales_estandarizados, main="QQ-Plot de los Residuales Estandarizados", col="blue")
+qqline(residuales_estandarizados, col="red", lwd=2)  # Agregar línea de referencia
+
+# Determinar residuos ordinarios y aplicar test de normalidad
+ei <- residuals(mod)
+shapiro.test(ei)
+</pre>
+<pre class="r"><code># Configurar el entorno para el uso del idioma español
+# Sys.setlocale(&quot;LC_ALL&quot;, &quot;es_ES.UTF-8&quot;)
+
+# Lectura de datos
+file &lt;- &quot;https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_reg_norm.txt&quot;
+datos &lt;- read.table(file=file, header=TRUE)
+
+# Ajustar un modelo de regresión lineal 
+# Se genera un modelo de regresión lineal simple donde Y es la variable respuesta y X la predictora.
+mod &lt;- lm(y ~ x, data = datos)
+
+# Obtener residuales estandarizados
+residuales_estandarizados &lt;- rstandard(mod)
+
+# Generar el QQ-Plot para evaluar normalidad
+qqnorm(residuales_estandarizados, main=&quot;QQ-Plot de los Residuales Estandarizados&quot;, col=&quot;blue&quot;)
+qqline(residuales_estandarizados, col=&quot;red&quot;, lwd=2)  # Agregar línea de referencia
+
+# Determinar residuos ordinarios y aplicar test de normalidad
+ei &lt;- residuals(mod)
+shapiro.test(ei)</code></pre>
+<p>La <strong>Figura 3.18</strong> muestra que los puntos del
+<strong>gráfico de normalidad de los residuales estandarizados</strong>
+(<span class="math inline">\(d_i\)</span>) se alejan de la línea de
+referencia. Esto sugiere que los errores no siguen aproximadamente una
+distribución normal, lo que <strong>no apoya el supuesto de
+normalidad</strong> de los errores.</p>
+<br/><br/>
+<center>
+<img src="img/fig318.png" width="80%" style="display: block; margin: auto;" />
+<strong>Figura 3.18</strong> QQ-plot de los residuales estandarizados.
+</center>
+<p><br/><br/></p>
+<p>Las hipótesis y los resultados de la <strong>prueba de
+Shapiro-Wilk</strong> aplicada a los residuos ordinarios del modelo de
+regresión son los siguientes:</p>
+<p><strong>Hipótesis</strong>:</p>
+<ul>
+<li><p><strong><span class="math inline">\(H_0\)</span></strong>: Los
+errores del modelo siguen una distribución normal.</p></li>
+<li><p><strong><span class="math inline">\(H_1\)</span></strong>: Los
+errores del modelo <strong>no</strong> siguen una distribución
+normal.</p></li>
+</ul>
+<p><strong>Salidas computacionales</strong>:</p>
+<pre>
+Shapiro-Wilk normality test
+
+data:  ei
+W = 0.93259, p-value = 3.119e-14
+</pre>
+<p>De la salida anterior se aprecia que el <span
+class="math inline">\(valor-p =3.119 \times 10^{-14}\)</span> es menor
+que un nivel de significancia del <span
+class="math inline">\(0.001\)</span>, eso significa que hay fuerte
+evidencia para rechazar la hipótesis de normalidad de los errores.</p>
+</p>
+</div>
+<hr />
+</br></br>
+<h2>
+Homocedasticidad
+</h2>
+</br></br>
+<h3>
+Gráficos
+</h3>
+<p>Para evaluar si los <strong>errores tienen varianza constante
+(homocedasticidad)</strong>, se construye un <strong>gráfico de
+residuales ordinarios <span class="math inline">\(e_i\)</span> versus
+valores ajustados <span class="math inline">\(\hat{\mu}_i\)</span> o
+<span class="math inline">\(\hat{y}_i\)</span></strong>. Otro gráfico
+útil para evaluar este supuesto es el <strong>diagrama de dispersión
+de</strong> <span class="math inline">\(\sqrt{|e_i|}\)</span> versus
+<span class="math inline">\(\hat{\mu}_i\)</span> o <span
+class="math inline">\(\hat{y}_i\)</span>, donde:</p>
+<ul>
+<li><p><span class="math inline">\(e_i = y_i - \hat{y}_i\)</span>
+representa los <strong>residuales ordinarios</strong>.</p></li>
+<li><p><span class="math inline">\(\hat{y}_i\)</span> o <span
+class="math inline">\(\hat{\mu}_i\)</span> son los <strong>valores
+ajustados</strong> del modelo de regresión.</p></li>
+</ul>
+<p>Para analizar los gráficos debe tener en cuenta lo siguiente:</p>
+<ul>
+<li><p><strong>Si la varianza de los errores es constante
+(homocedasticidad)</strong>, los residuales deben distribuirse
+<strong>aleatoriamente</strong> alrededor de <strong>cero</strong>, sin
+mostrar un patrón estructurado.</p></li>
+<li><p><strong>Si la varianza de los errores no es constante
+(heterocedasticidad)</strong>, los residuos formarán <strong>patrones
+sistemáticos</strong>, como una forma de embudo o una tendencia en la
+dispersión.</p></li>
+</ul>
+<p>La <strong>Figura 3.19</strong> muestra distintos escenarios para
+evaluar el supuesto de <strong>homocedasticidad</strong> de los errores.
+Se analizan los <strong>gráficos de residuos ordinarios</strong> versus
+<strong>valores ajustados</strong> del modelo para revisar si la
+varianza de los errores es constante. La
+<strong>homocedasticidad</strong> se implica si los residuos se
+distribuyen de manera uniforme sin patrones claros. En contraste, la
+<strong>heterocedasticidad</strong> se concluye si la varianza de los
+residuos cambia a lo largo de los valores ajustados.</p>
+<br/><br/>
+<center>
+<img src="img/fig319.png" width="80%" style="display: block; margin: auto;" />
+<strong>Figura 3.19</strong> Algunos casos posibles de homocedasticidad
+u heterocedasticidad.
+</center>
+<p><br/><br/></p>
+<hr />
+</br></br>
+<h3>
+Pruebas de hipótesis
+</h3>
+<p>Para verificar este supuesto, se aplican pruebas estadísticas de
+homocedasticidad, cuyas hipótesis son:</p>
+<ul>
+<li><p><strong>Hipótesis nula (<span
+class="math inline">\(H_0\)</span>)</strong>: Los errores tienen
+varianza constante (homocedasticidad).</p></li>
+<li><p><strong>Hipótesis alternativa (<span
+class="math inline">\(H_1\)</span>)</strong>: Los errores no tienen
+varianza constante (heterocedasticidad).</p></li>
+</ul>
+<p>Entre las pruebas más utilizadas para evaluar este supuesto se
+encuentran:</p>
+<ul>
+<li><p><strong>Prueba de Breusch-Pagan</strong>: Evalúa si la varianza
+de los errores está relacionada con las variables explicativas o los
+valores ajustados. Se basa en una <strong>regresión auxiliar</strong>
+donde la <strong>variable respuesta</strong> son los <strong>residuos al
+cuadrado</strong>.</p></li>
+<li><p><strong>Prueba de White</strong>: Permite detectar no solo
+dependencia de la varianza de los errores con los valores ajustados,
+sino también <strong>relaciones no lineales</strong>. Es una extensión
+de la prueba de Breusch-Pagan que incluye términos cuadráticos y
+productos cruzados.</p></li>
+<li><p><strong>Prueba de Goldfeld-Quandt</strong>: Divide los datos en
+dos grupos y compara la varianza de los errores en cada uno. Es útil
+cuando se sospecha que la heterocedasticidad está relacionada con el
+<strong>tamaño de las observaciones</strong> o el <strong>orden de los
+datos</strong>.</p></li>
+<li><p><strong>Score test for Nonconstant Error Variance</strong>:
+Evalúa si la varianza de los errores varía con los valores ajustados. Su
+ventaja es que no requiere una especificación funcional precisa de la
+heterocedasticidad.</p></li>
+<li><p><strong>Prueba de Harrison-McCabe</strong>: Analiza si los
+residuos tienen una variabilidad constante a lo largo del conjunto de
+datos. Se basa en la comparación de la varianza de los residuos en
+diferentes segmentos de la muestra.</p></li>
+</ul>
+</br></br>
+<h4>
+Breusch-Pagan test
+</h4>
+<p>El procedimiento de la prueba de Breusch-Pagan se basa en ajustar un
+<strong>modelo de regresión auxiliar</strong>, donde la variable
+respuesta es el cuadrado de los <strong>residuales</strong> del modelo
+original (<span class="math inline">\(\hat{e}_i^2\)</span>), y las
+covariables son las mismas del modelo original.</p>
+<p>Si el modelo original es:</p>
+<p><span class="math display">\[
+Y_i = \beta_0 + \beta_1 X_{1i} + \beta_2 X_{2i} + \dots + \beta_k X_{ki}
++ \varepsilon_i
+\]</span></p>
+<p>Entonces, la regresión auxiliar que se ajusta es:</p>
+<p><span class="math display">\[
+\hat{e}_i^2 = \delta_0 + \delta_1 X_{1i} + \delta_2 X_{2i} + \dots +
+\delta_k X_{ki} + u_i
+\]</span></p>
+<p>Donde:</p>
+<ul>
+<li><p><span class="math inline">\(\delta_0, \delta_1, \dots,
+\delta_k\)</span> son los coeficientes de la regresión
+auxiliar.</p></li>
+<li><p><span class="math inline">\(u_i\)</span> representa los errores
+de este modelo auxiliar.</p></li>
+</ul>
+<p>Bajo <strong>homocedasticidad</strong>, los coeficientes <span
+class="math inline">\(\delta_1, \dots, \delta_k\)</span> deben ser
+<strong>estadísticamente iguales a cero</strong>.</p>
+<p>El estadístico de Breusch-Pagan se define como:</p>
+<p><span class="math display">\[
+BP = n \times R^2
+\]</span></p>
+<p>donde:</p>
+<ul>
+<li><p><span class="math inline">\(n\)</span> es el número de
+observaciones.</p></li>
+<li><p><span class="math inline">\(R^2\)</span> es el coeficiente de
+determinación de la <strong>regresión auxiliar</strong>.</p></li>
+</ul>
+<p>Bajo la hipótesis nula, este estadístico sigue una distribución
+<strong><span class="math inline">\(\chi^2_k\)</span></strong> con <span
+class="math inline">\(k\)</span> grados de libertad (número de
+predictores en la regresión auxiliar).</p>
+<hr />
+<p>Si el modelo original de <strong>regresión lineal simple</strong>
+es:</p>
+<p><span class="math display">\[
+Y_i = \beta_0 + \beta_1 X_i + \varepsilon_i, \quad \text{con} \quad
+\varepsilon_i \sim N(0, \sigma^2)
+\]</span></p>
+<p>entonces, la <strong>regresión auxiliar</strong> que se ajusta en la
+prueba de <strong>Breusch-Pagan</strong> es:</p>
+<p><span class="math display">\[
+\hat{e}_i^2 = \delta_0 + \delta_1 X_i + u_i
+\]</span></p>
+<p>donde:</p>
+<ul>
+<li><p><span class="math inline">\(\hat{e}_i^2\)</span> son los
+<strong>residuales al cuadrado</strong> del modelo original.</p></li>
+<li><p><span class="math inline">\(X_i\)</span> es la única covariable
+en la regresión auxiliar.</p></li>
+<li><p><span class="math inline">\(\delta_0, \delta_1\)</span> son los
+<strong>coeficientes de la regresión auxiliar</strong>.</p></li>
+<li><p><span class="math inline">\(u_i\)</span> es el
+<strong>error</strong> del modelo auxiliar.</p></li>
+</ul>
+<p>Bajo la hipótesis de <strong>homocedasticidad</strong>, se espera que
+<span class="math inline">\(\delta_1 = 0\)</span>, lo que significa que
+la varianza de los errores no depende de <span
+class="math inline">\(X_i\)</span>.</p>
+<hr />
+<p>En <strong>R</strong>, la prueba de Breusch-Pagan se puede
+implementar con la función <code>bptest()</code> del paquete
+<strong>lmtest</strong>.</p>
+</br></br>
+<div class="caja-ejemplo">
+<h3>
+Ejemplo:
+</h3>
+<p>
+<p>En este análisis, se busca modelar la variable respuesta <span
+class="math inline">\(Y\)</span> en función de las variables predictoras
+<span class="math inline">\(X_1\)</span> y <span
+class="math inline">\(X_2\)</span>. Para garantizar la validez del
+modelo de regresión, es fundamental verificar el cumplimiento de los
+<strong>supuestos estadísticos</strong>, en particular, el supuesto de
+<strong>homocedasticidad</strong>.</p>
+<p>Para ello, se utilizarán dos enfoques:</p>
+<ol style="list-style-type: decimal">
+<li><p><strong>Análisis gráfico</strong>: Se generarán gráficos de
+dispersión de los residuales para detectar posibles patrones que
+indiquen heterocedasticidad.</p></li>
+<li><p><strong>Prueba de hipótesis</strong>: Se aplicará la
+<strong>prueba de Breusch-Pagan</strong>, que evalúa si la varianza de
+los errores depende de las variables predictoras.</p></li>
+</ol>
+<p>El conjunto de datos utilizado se encuentra disponible en el
+siguiente enlace:<br />
+<a
+href="https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_reg_hom.txt"><strong>Dataset
+- Homocedasticidad en Regresión</strong></a>.</p>
+<hr />
+<p>El siguiente análisis ajusta un <strong>modelo de regresión lineal
+múltiple</strong> para explicar <span class="math inline">\(Y\)</span>
+en función de <span class="math inline">\(X_1\)</span> y <span
+class="math inline">\(X_2\)</span>, y evalúa el <strong>supuesto de
+homocedasticidad</strong> mediante la <strong>prueba de
+Breusch-Pagan</strong>, tanto de forma manual como con la función
+<code>bptest()</code> del paquete <code>lmtest</code>.</p>
+<p>Primero, se extraen los <strong>residuales</strong> del modelo
+ajustado y se construye un <strong>modelo auxiliar</strong> que modela
+la varianza de los residuos en función de las variables predictoras.
+Luego, se calcula el <strong>estadístico de prueba</strong> y su
+respectivo <span class="math inline">\(valor-p\)</span> para determinar
+si los errores presentan varianza constante.</p>
+<p>Adicionalmente, se generan dos gráficos para visualizar la posible
+heterocedasticidad:</p>
+<ol style="list-style-type: decimal">
+<li><p><strong>Diagrama de residuales <span
+class="math inline">\(e_i\)</span> vs. valores ajustados <span
+class="math inline">\(\hat{\mu}_i\)</span></strong></p></li>
+<li><p><strong>Diagrama de <span
+class="math inline">\(\sqrt{|e_i|}\)</span> vs. valores ajustados <span
+class="math inline">\(\hat{\mu}_i\)</span></strong></p></li>
+</ol>
+<p>Los códigos comentados para construir los gráficos y aplicar el test
+son los siguientes:</p>
+<pre>
+# Para usar leyendas en español
+Sys.setlocale("LC_ALL", "es_ES.UTF-8")
+
+# Cargar paquetes necesarios
+library(ggplot2)  
+library(lmtest)
+
+
+# Lectura de datos
+file <- "https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_reg_hom.txt"
+datos <- read.table(file=file, header=TRUE)
+
+
+# Se ajusta un modelo de regresión lineal con las variables predictoras x1 y x2
+mod <- lm(y ~ x1 + x2, data = datos)
+
+# Se obtienen los residuales del modelo
+ei <- resid(mod)  # Residuales ordinarios
+y_ajustados <- fitted(mod)  # Valores ajustados (predichos)
+
+# Prueba de Breusch-Pagan 
+# Se ajusta un modelo auxiliar de regresión de los residuales al cuadrado en función de x1 y x2
+fit <- lm(ei^2 ~ x1 + x2, data = datos)
+R2 <- summary(fit)$r.squared  # Coeficiente de determinación
+n <- nrow(datos)  # Número de observaciones
+k <- 2  # Número de predictores
+estadistico <- n * R2  # Estadístico de prueba
+valorP <- pchisq(q = estadistico, df = k, lower.tail = FALSE)  # Valor p de la prueba
+
+# Mostrar resultados de la prueba Breusch-Pagan
+cbind(estadistico, valorP)
+
+# Aplicar la prueba de Breusch-Pagan directamente con lmtest
+bptest(mod)
+
+# Visualización de la Homocedasticidad
+# Gráfico de Residuales vs Valores Ajustados 
+plot1.bt<-ggplot(data = datos, aes(x = y_ajustados, y = ei)) +
+  geom_point(color = "blue") +  # Puntos de residuales
+  geom_hline(yintercept = 0, linetype = "dashed", color = "red") +  # Línea horizontal en cero
+  labs(title = "Residuales vs Valores Ajustados",
+       x = "Valores Ajustados",
+       y = "Residuales") +
+  theme_minimal()
+
+#Gráfico de Raíz de Valor Absoluto de Residuales vs Valores Ajustados 
+plot2.bt<-ggplot(data = datos, aes(x = y_ajustados, y = sqrt(abs(ei)))) +
+  geom_point(color = "blue") +  # Puntos
+  geom_smooth(method = "lm", se = FALSE, color = "red") +  # Línea de tendencia
+  labs(title = "Raíz Cuadrada del Valor Absoluto de Residuales vs Valores Ajustados",
+       x = "Valores Ajustados",
+       y = "√|Residuales|") +
+  theme_minimal()
+
+print(plot1.bt)
+print(plot2.bt)
+</pre>
+<pre class="r"><code># Para usar leyendas en español
+Sys.setlocale(&quot;LC_ALL&quot;, &quot;es_ES.UTF-8&quot;)
+
+# Cargar paquetes necesarios
+library(ggplot2)  
+library(lmtest)
+
+
+# Lectura de datos
+file &lt;- &quot;https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_reg_hom.txt&quot;
+datos &lt;- read.table(file=file, header=TRUE)
+
+
+# Se ajusta un modelo de regresión lineal con las variables predictoras x1 y x2
+mod &lt;- lm(y ~ x1 + x2, data = datos)
+
+# Se obtienen los residuales del modelo
+ei &lt;- resid(mod)  # Residuales ordinarios
+y_ajustados &lt;- fitted(mod)  # Valores ajustados (predichos)
+
+# Prueba de Breusch-Pagan 
+# Se ajusta un modelo auxiliar de regresión de los residuales al cuadrado en función de x1 y x2
+fit &lt;- lm(ei^2 ~ x1 + x2, data = datos)
+R2 &lt;- summary(fit)$r.squared  # Coeficiente de determinación
+n &lt;- nrow(datos)  # Número de observaciones
+k &lt;- 2  # Número de predictores
+estadistico &lt;- n * R2  # Estadístico de prueba
+valorP &lt;- pchisq(q = estadistico, df = k, lower.tail = FALSE)  # Valor p de la prueba
+
+# Mostrar resultados de la prueba Breusch-Pagan
+cbind(estadistico, valorP)
+
+# Aplicar la prueba de Breusch-Pagan directamente con lmtest
+bptest(mod)
+
+# Visualización de la Homocedasticidad
+# Gráfico de Residuales vs Valores Ajustados 
+plot1.bt&lt;-ggplot(data = datos, aes(x = y_ajustados, y = ei)) +
+  geom_point(color = &quot;blue&quot;) +  # Puntos de residuales
+  geom_hline(yintercept = 0, linetype = &quot;dashed&quot;, color = &quot;red&quot;) +  # Línea horizontal en cero
+  labs(title = &quot;Residuales vs Valores Ajustados&quot;,
+       x = &quot;Valores Ajustados&quot;,
+       y = &quot;Residuales&quot;) +
+  theme_minimal()
+
+#Gráfico de Raíz de Valor Absoluto de Residuales vs Valores Ajustados 
+plot2.bt&lt;-ggplot(data = datos, aes(x = y_ajustados, y = sqrt(abs(ei)))) +
+  geom_point(color = &quot;blue&quot;) +  # Puntos
+  geom_smooth(method = &quot;lm&quot;, se = FALSE, color = &quot;red&quot;) +  # Línea de tendencia
+  labs(title = &quot;Raíz Cuadrada del Valor Absoluto de Residuales vs Valores Ajustados&quot;,
+       x = &quot;Valores Ajustados&quot;,
+       y = &quot;√|Residuales|&quot;) +
+  theme_minimal()
+
+print(plot1.bt)
+print(plot2.bt)</code></pre>
+<p>A continuación se muestran los resultados de la prueba Breusch-Pagan.
+Las <strong>Figura 3.20</strong> y <strong>3.21</strong> complementan la
+información para estudiar la variabilidad de los errores.</p>
+<pre>
+    studentized Breusch-Pagan test
+
+data:  mod
+BP = 8.514, df = 2, p-value = 0.01416
+</pre>
+<br/><br/>
+<center>
+<img src="img/fig320.png" width="80%" style="display: block; margin: auto;" />
+<strong>Figura 3.20</strong> Diagrama de residuales <span
+class="math inline">\(e_i\)</span> vs. valores ajustados <span
+class="math inline">\(\hat{\mu}_i\)</span>.
+</center>
+<p><br/><br/></p>
+<br/><br/>
+<center>
+<img src="img/fig321.png" width="80%" style="display: block; margin: auto;" />
+<strong>Figura 3.21</strong> Diagrama de <span
+class="math inline">\(\sqrt{|e_i|}\)</span> vs. valores ajustados <span
+class="math inline">\(\hat{\mu}_i\)</span>.
+</center>
+<p><br/><br/></p>
+<p>Los gráficos de las <strong>Figura 3.20</strong> y
+<strong>3.21</strong> se observa una estructura no aleatoria en los
+residuos, y el <span class="math inline">\(valor-p =0.01416\)</span> es
+menor a <span class="math inline">\(0.02\)</span>, por tanto se concluye
+la presencia de <strong>heterocedasticidad</strong> con una
+significancia del 2%.</p>
+</p>
+</div>
+</br></br>
+<h4>
+White test
+</h4>
+<p>El <strong>test de Breusch-Pagan</strong> es útil para detectar
+<strong>heterocedasticidad de forma lineal</strong> en los errores del
+modelo de regresión. Sin embargo, este test no es adecuado cuando la
+heterocedasticidad presenta una estructura <strong>no
+lineal</strong>.</p>
+<p>Para abordar este problema, <strong>White (1980)</strong> propuso una
+prueba más flexible que permite detectar <strong>patrones no
+lineales</strong> en la varianza de los errores, incorporando términos
+cuadráticos y productos cruzados de los regresores.</p>
+<p>Si el modelo original tiene <span class="math inline">\(k =
+2\)</span> covariables (<span class="math inline">\(x_1\)</span> y <span
+class="math inline">\(x_2\)</span>), el test de White se basa en la
+siguiente regresión auxiliar:</p>
+<p><span class="math display">\[
+\hat{e}_i^2 = \delta_0 + \delta_1 x_{1i} + \delta_2 x_{2i} + \delta_3
+x_{1i} x_{2i} + \delta_4 x_{1i}^2 + \delta_5 x_{2i}^2 + u_i
+\]</span></p>
+<p>donde:</p>
+<ul>
+<li><p><span class="math inline">\(\hat{e}_i^2\)</span> son los
+<strong>errores al cuadrado</strong> del modelo original.</p></li>
+<li><p>Los coeficientes <span class="math inline">\(\delta_j\)</span>
+representan el impacto de cada predictor en la varianza del
+error.</p></li>
+<li><p>El término <span class="math inline">\(u_i\)</span> es el error
+aleatorio en la regresión auxiliar.</p></li>
+</ul>
+<p>Si <strong><span class="math inline">\(\delta_1 = \delta_2 = \delta_3
+= \delta_4 = \delta_5 = 0\)</span></strong>, significa que los errores
+no dependen de las variables predictoras, es decir, el modelo es
+<strong>homocedástico</strong>.</p>
+<hr />
+<p>Para evaluar la <strong>homocedasticidad</strong> en una regresión
+lineal simple, se aplica el <strong>test de White</strong> mediante una
+regresión auxiliar donde los errores al cuadrado se explican en función
+de <span class="math inline">\(X\)</span> y <span
+class="math inline">\(X^2\)</span>.</p>
+<p>Si el modelo de regresión es:</p>
+<p><span class="math display">\[
+Y_i = \beta_0 + \beta_1 X_i + \varepsilon_i
+\]</span></p>
+<p>entonces la regresión auxiliar utilizada en la prueba de White
+es:</p>
+<p><span class="math display">\[
+\hat{e}_i^2 = \delta_0 + \delta_1 X_i + \delta_2 X_i^2 + u_i
+\]</span></p>
+<p>donde:</p>
+<ul>
+<li><p><span class="math inline">\(\hat{e}_i^2\)</span> son los
+<strong>errores al cuadrado</strong> del modelo original.</p></li>
+<li><p><span class="math inline">\(X_i\)</span> es la variable
+predictora.</p></li>
+<li><p><span class="math inline">\(\delta_1\)</span> y <span
+class="math inline">\(\delta_2\)</span> evalúan la dependencia de la
+varianza respecto a <span class="math inline">\(X_i\)</span>.</p></li>
+<li><p><span class="math inline">\(u_i\)</span> es un término de error
+aleatorio.</p></li>
+</ul>
+<hr />
+<p>En <strong>R</strong>, la prueba de White se puede implementar con la
+función <code>bptest()</code> del paquete <strong>lmtest</strong>,
+especificando los términos no lineales en la regresión auxiliar.</p>
+</br></br>
+<div class="caja-ejemplo">
+<h3>
+Ejemplo:
+</h3>
+<p>
+<p>Continuando con el ejemplo anterior, ahora se evaluará el supuesto de
+<strong>homocedasticidad de los errores</strong> utilizando el
+<strong>test de White</strong>.</p>
+<p>En un modelo de regresión múltiple con dos variables predictoras
+<span class="math inline">\(X_1\)</span> y <span
+class="math inline">\(X_2\)</span>, la regresión auxiliar utilizada en
+el test de White es:</p>
+<p><span class="math display">\[
+\hat{e}_i^2 = \delta_0 + \delta_1 X_1 + \delta_2 X_2 + \delta_3 X_1 X_2
++ \delta_4 X_1^2 + \delta_5 X_2^2 + u_i
+\]</span></p>
+<p>donde:</p>
+<ul>
+<li><p><span class="math inline">\(\hat{e}_i^2\)</span> representa los
+<strong>errores al cuadrado</strong> obtenidos del modelo
+original.</p></li>
+<li><p><span class="math inline">\(X_1\)</span> y <span
+class="math inline">\(X_2\)</span> son las variables
+predictoras.</p></li>
+<li><p>Los coeficientes <span class="math inline">\(\delta_1, \delta_2,
+\delta_3, \delta_4, \delta_5\)</span> evalúan la relación de los errores
+con los regresores de forma lineal y no lineal.</p></li>
+<li><p><span class="math inline">\(u_i\)</span> es un término de error
+aleatorio de la regresión auxiliar.</p></li>
+</ul>
+<p>A continuación se presentan los códigos de <strong>R</strong> para
+implementar el test White de forma manual y con la función de
+<strong>R</strong>. inicialmente se analiza si la varianza puede
+depender de <span class="math inline">\(X_1\)</span> y <span
+class="math inline">\(X_2\)</span>.</p>
+<pre>
+# Cargar paquetes necesarios
+library(ggplot2)  # Para visualización de datos (no utilizado en este código, pero útil para gráficos)
+library(lmtest)   # Para realizar pruebas de heterocedasticidad, incluyendo el test de Breusch-Pagan y White
+
+
+# Lectura de datos
+# URL del archivo de datos
+file <- "https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_reg_hom.txt"
+
+# Cargar el conjunto de datos desde la URL
+datos <- read.table(file = file, header = TRUE)
+
+
+# Se ajusta un modelo de regresión lineal con las variables predictoras x1 y x2
+mod <- lm(y ~ x1 + x2, data = datos)
+
+
+# Aplicación manual del Test de White
+# Se ajusta un nuevo modelo donde la variable respuesta es el cuadrado de los residuales del modelo original.
+# En este modelo auxiliar, se incluyen términos lineales y no lineales de las variables predictoras.
+fit <- lm(resid(mod)^2 ~ x1 + x2 + x1 * x2 + I(x1^2) + I(x2^2), data = datos)
+
+# Se extrae el coeficiente de determinación (R²) del modelo auxiliar
+R2 <- summary(fit)$r.squared
+
+# Cálculo del estadístico de prueba
+n <- nrow(datos)  # Número de observaciones en los datos
+estadistico <- n * R2  # Estadístico de prueba basado en R² y el tamaño de muestra
+
+# Cálculo del valor p basado en la distribución Chi-cuadrado con 5 grados de libertad
+valorP <- pchisq(q = estadistico, df = 5, lower.tail = FALSE)
+
+# Mostrar resultados del test manual
+cbind(estadistico, valorP)
+
+
+# Aplicación del Test de White con función de R
+# Se aplica el test de White utilizando la función `bptest` del paquete `lmtest`
+# Se especifica la fórmula con los términos no lineales de x1 y x2
+bptest(mod, varformula = ~ x1 * x2 + I(x1^2) + I(x2^2), data = datos)
+</pre>
+<pre class="r"><code># Cargar paquetes necesarios
+library(ggplot2)  # Para visualización de datos (no utilizado en este código, pero útil para gráficos)
+library(lmtest)   # Para realizar pruebas de heterocedasticidad, incluyendo el test de Breusch-Pagan y White
+
+
+# Lectura de datos
+# URL del archivo de datos
+file &lt;- &quot;https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_reg_hom.txt&quot;
+
+# Cargar el conjunto de datos desde la URL
+datos &lt;- read.table(file = file, header = TRUE)
+
+
+# Se ajusta un modelo de regresión lineal con las variables predictoras x1 y x2
+mod &lt;- lm(y ~ x1 + x2, data = datos)
+
+
+# Aplicación manual del Test de White
+# Se ajusta un nuevo modelo donde la variable respuesta es el cuadrado de los residuales del modelo original.
+# En este modelo auxiliar, se incluyen términos lineales y no lineales de las variables predictoras.
+fit &lt;- lm(resid(mod)^2 ~ x1 + x2 + x1 * x2 + I(x1^2) + I(x2^2), data = datos)
+
+# Se extrae el coeficiente de determinación (R²) del modelo auxiliar
+R2 &lt;- summary(fit)$r.squared
+
+# Cálculo del estadístico de prueba
+n &lt;- nrow(datos)  # Número de observaciones en los datos
+estadistico &lt;- n * R2  # Estadístico de prueba basado en R² y el tamaño de muestra
+
+# Cálculo del valor p basado en la distribución Chi-cuadrado con 5 grados de libertad
+valorP &lt;- pchisq(q = estadistico, df = 5, lower.tail = FALSE)
+
+# Mostrar resultados del test manual
+cbind(estadistico, valorP)
+
+
+# Aplicación del Test de White con función de R
+# Se aplica el test de White utilizando la función `bptest` del paquete `lmtest`
+# Se especifica la fórmula con los términos no lineales de x1 y x2
+bptest(mod, varformula = ~ x1 * x2 + I(x1^2) + I(x2^2), data = datos)</code></pre>
+<p>Los resultados del test realizando los calculos manualmente y con la
+función de <strong>R</strong> son los siguientes:</p>
+<pre>
+ estadistico     valorP
+[1,]    10.44574 0.06354684
+</pre>
+<pre>
+studentized Breusch-Pagan test
+
+data:  mod
+BP = 10.446, df = 5, p-value = 0.06355
+</pre>
+<p>Como el <span class="math inline">\(valor-p=0.06355\)</span> es mayor
+a <span class="math inline">\(0.05\)</span>, no hay evidencia suficiente
+para rechazar la hipótesis de homocedasticidad con una significancia del
+5%.</p>
+<p>El test de White se basa en modelar la varianza de los errores en
+función de los regresores y sus términos no lineales. Sin embargo, no
+todas las formas de heterocedasticidad pueden ser captadas por este
+modelo auxiliar.</p>
+<p>A pesar de la presencia de heterocedasticidad en los gráficos, el
+test no siempre produce un <span class="math inline">\(valor-p\)</span>
+significativo, especialmente si la relación entre la varianza de los
+errores y los regresores es débil o no es bien representada por el
+modelo auxiliar.</p>
+<p>Para confirmar qué variable está realmente generando la
+heterocedasticidad, se deben analizar de manera separada los efectos de
+<span class="math inline">\(X_1\)</span> y <span
+class="math inline">\(X_2\)</span>. A continuación se aplica el test de
+White considerando: solo a <span class="math inline">\(X_1\)</span> y
+solo a <span class="math inline">\(X_2\)</span>.</p>
+<pre>
+# Configurar el entorno para el uso del idioma español
+Sys.setlocale("LC_ALL", "es_ES.UTF-8")
+
+
+# Cargar paquetes necesarios
+library(ggplot2)   # Para visualización de datos
+library(lmtest)    # Para realizar pruebas de heterocedasticidad
+library(patchwork) # Para combinar gráficos
+
+# Lectura de datos
+file <- "https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_reg_hom.txt"
+datos <- read.table(file = file, header = TRUE)
+
+# Ajustar el modelo de regresión principal con ambas variables predictoras
+mod <- lm(y ~ x1 + x2, data = datos)
+residuos <- resid(mod)  # Residuos del modelo conjunto
+
+# Aplicación del Test de White considerando los residuos del modelo conjunto 
+
+# Test de White para X1
+fit_x1 <- lm(I(residuos^2) ~ x1 + I(x1^2), data = datos)
+R2_x1 <- summary(fit_x1)$r.squared
+estadistico_x1 <- nrow(datos) * R2_x1
+valorP_x1 <- pchisq(q = estadistico_x1, df = 2, lower.tail = FALSE)
+cbind(estadistico_x1, valorP_x1)  # Mostrar resultados del test para X1
+
+# Test de White para X2
+fit_x2 <- lm(I(residuos^2) ~ x2 + I(x2^2), data = datos)
+R2_x2 <- summary(fit_x2)$r.squared
+estadistico_x2 <- nrow(datos) * R2_x2
+valorP_x2 <- pchisq(q = estadistico_x2, df = 2, lower.tail = FALSE)
+cbind(estadistico_x2, valorP_x2)  # Mostrar resultados del test para X2
+
+# Visualización de los residuales al cuadrado vs X1 y X2 
+
+# Gráfico de Residuales al cuadrado vs X1
+grafico_x1 <- ggplot(datos, aes(x = x1, y = residuos^2)) +
+  geom_point(color = "blue") +  
+  geom_smooth(method = "lm", se = FALSE, color = "red") +  
+  labs(title = bquote("Residuales al Cuadrado vs " ~ X[1]), 
+       x = bquote(X[1]), 
+       y = bquote(e[i]^2))
+
+# Gráfico de Residuales al cuadrado vs X2
+grafico_x2 <- ggplot(datos, aes(x = x2, y = residuos^2)) +
+  geom_point(color = "blue") +  
+  geom_smooth(method = "lm", se = FALSE, color = "red") +  
+  labs(title = bquote("Residuales al Cuadrado vs " ~ X[2]), 
+       x = bquote(X[2]), 
+       y = bquote(e[i]^2))
+
+# Combinar ambos gráficos ----
+grafico_x1 + grafico_x2  # Mostrar gráficos lado a lado
+
+</pre>
+<pre class="r"><code># Configurar el entorno para el uso del idioma español
+Sys.setlocale(&quot;LC_ALL&quot;, &quot;es_ES.UTF-8&quot;)
+
+
+# Cargar paquetes necesarios
+library(ggplot2)   # Para visualización de datos
+library(lmtest)    # Para realizar pruebas de heterocedasticidad
+library(patchwork) # Para combinar gráficos
+
+# Lectura de datos
+file &lt;- &quot;https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_reg_hom.txt&quot;
+datos &lt;- read.table(file = file, header = TRUE)
+
+# Ajustar el modelo de regresión principal con ambas variables predictoras
+mod &lt;- lm(y ~ x1 + x2, data = datos)
+residuos &lt;- resid(mod)  # Residuos del modelo conjunto
+
+# Aplicación del Test de White considerando los residuos del modelo conjunto 
+
+# Test de White para X1
+fit_x1 &lt;- lm(I(residuos^2) ~ x1 + I(x1^2), data = datos)
+R2_x1 &lt;- summary(fit_x1)$r.squared
+estadistico_x1 &lt;- nrow(datos) * R2_x1
+valorP_x1 &lt;- pchisq(q = estadistico_x1, df = 2, lower.tail = FALSE)
+cbind(estadistico_x1, valorP_x1)  # Mostrar resultados del test para X1
+
+# Test de White para X2
+fit_x2 &lt;- lm(I(residuos^2) ~ x2 + I(x2^2), data = datos)
+R2_x2 &lt;- summary(fit_x2)$r.squared
+estadistico_x2 &lt;- nrow(datos) * R2_x2
+valorP_x2 &lt;- pchisq(q = estadistico_x2, df = 2, lower.tail = FALSE)
+cbind(estadistico_x2, valorP_x2)  # Mostrar resultados del test para X2
+
+# Visualización de los residuales al cuadrado vs X1 y X2 
+
+# Gráfico de Residuales al cuadrado vs X1
+grafico_x1 &lt;- ggplot(datos, aes(x = x1, y = residuos^2)) +
+  geom_point(color = &quot;blue&quot;) +  
+  geom_smooth(method = &quot;lm&quot;, se = FALSE, color = &quot;red&quot;) +  
+  labs(title = bquote(&quot;Residuales al Cuadrado vs &quot; ~ X[1]), 
+       x = bquote(X[1]), 
+       y = bquote(e[i]^2))
+
+# Gráfico de Residuales al cuadrado vs X2
+grafico_x2 &lt;- ggplot(datos, aes(x = x2, y = residuos^2)) +
+  geom_point(color = &quot;blue&quot;) +  
+  geom_smooth(method = &quot;lm&quot;, se = FALSE, color = &quot;red&quot;) +  
+  labs(title = bquote(&quot;Residuales al Cuadrado vs &quot; ~ X[2]), 
+       x = bquote(X[2]), 
+       y = bquote(e[i]^2))
+
+# Combinar ambos gráficos ----
+grafico_x1 + grafico_x2  # Mostrar gráficos lado a lado</code></pre>
+<p>Los resultados obtenidos para el análisis de heterocedasticidad
+mediante el test de White aplicado a cada variable predictora de forma
+individual usando los residuos del modelo conjunto de <span
+class="math inline">\(X_1\)</span> y <span
+class="math inline">\(X2\)</span> son los siguientes:</p>
+<pre>
+       estadistico_x1 valorP_x1
+[1,]       1.433105 0.4884332
+</pre>
+<pre>
+     estadistico_x2 valorP_x2
+[1,]       8.832904  0.012077
+</pre>
+<p>Estos resultados indican que el supuesto de homocedasticidad se viola
+en función de <span class="math inline">\(X_2\)</span>, pero no de <span
+class="math inline">\(X_1\)</span>. Por lo tanto, cualquier corrección o
+modelado posterior de la heterocedasticidad debe considerar la
+influencia de <span class="math inline">\(X_2\)</span> sobre la varianza
+de los errores.</p>
+<p>Respecto a la <strong>Figura 3.22</strong>, que muestra la relación
+entre el cuadrado de los residuales ordinarios y cada variable
+predictora:</p>
+<ul>
+<li><p><strong>En relación con <span
+class="math inline">\(X_1\)</span></strong>: Se observa que la mayoría
+de los puntos se concentran en valores bajos del cuadrado de los
+residuales. Sin embargo, hay tres valores atípicos extremadamente
+grandes que afectan significativamente la varianza de los errores. A
+pesar de su presencia, la regresión ajustada (línea roja) presenta una
+pendiente relativamente plana, lo que indica una relación débil entre
+<span class="math inline">\(X_1\)</span> y la varianza de los errores.
+Esto explica por qué el test de White no detecta heterocedasticidad en
+esta variable, ya que dicho test evalúa patrones sistemáticos en la
+varianza y no está diseñado para identificar heterocedasticidad
+provocada exclusivamente por valores atípicos.</p></li>
+<li><p><strong>En relación con <span
+class="math inline">\(X_2\)</span></strong>: A diferencia de <span
+class="math inline">\(X_1\)</span>, la relación entre <span
+class="math inline">\(X_2\)</span> y el cuadrado de los residuales es
+más evidente. A medida que <span class="math inline">\(X_2\)</span>
+aumenta, la dispersión de los puntos también crece, lo que indica una
+mayor variabilidad en los errores. Este patrón concuerda con el
+resultado del test de White aplicado a <span
+class="math inline">\(X_2\)</span>, que sugiere la presencia de
+heterocedasticidad en función de esta variable.</p></li>
+</ul>
+<br/><br/>
+<center>
+<img src="img/fig322.png" width="80%" style="display: block; margin: auto;" />
+<strong>Figura 3.22</strong> El cuadrado de los residuales versus cada
+variable <span class="math inline">\(X_1\)</span> y <span
+class="math inline">\(X_2\)</span>.
+</center>
+<p><br/><br/></p>
+</p>
+</div>
+</br></br>
+<h4>
+Otros tests
+</h4>
+<p>El presente documento no aborda en detalle los métodos <strong>Score
+test for nonconstant error variance</strong>, <strong>Goldfeld-Quandt
+test</strong> y <strong>Harrison-McCabe test</strong>. Sin embargo, a
+continuación, se presenta la <strong>Tabla 3.8</strong> comparativa que
+incluye los test de <strong>Breusch-Pagan</strong> y
+<strong>White</strong>, junto con las funciones correspondientes en
+<strong>R</strong> utilizadas para su implementación.</p>
+<br/><br/>
+<center>
+<strong>Tabla 3.8</strong> Comparación de tests para revisar el supuesto
+de homocedasticidad para una regresión lineal simple.
+</center>
+<table>
+<colgroup>
+<col width="16%" />
+<col width="20%" />
+<col width="35%" />
+<col width="27%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Test</strong></th>
+<th><strong>Objetivo</strong></th>
+<th><strong>Supuesto evaluado</strong></th>
+<th><strong>Función en R</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Breusch-Pagan</strong></td>
+<td>Detectar heterocedasticidad basada en una relación lineal entre los
+errores y la variable explicativa.</td>
+<td>La varianza de los errores debe ser constante
+(homocedasticidad).</td>
+<td><code>bptest(mod, data = datos)</code> (paquete
+<strong>lmtest</strong>)</td>
+</tr>
+<tr class="even">
+<td><strong>White (Regresión Simple con <span
+class="math inline">\(X_1\)</span>)</strong></td>
+<td>Detectar heterocedasticidad en forma no lineal utilizando términos
+cuadráticos del predictor.</td>
+<td>La varianza de los errores no debe depender de ninguna función de
+<span class="math inline">\(X_1\)</span>.</td>
+<td><code>bptest(mod, varformula = ~ I(x1^2), data = datos)</code>
+(paquete <strong>lmtest</strong>)</td>
+</tr>
+<tr class="odd">
+<td><strong>Score test for nonconstant error variance</strong></td>
+<td>Evaluar si la varianza de los errores sigue una función específica
+del predictor.</td>
+<td>Los errores deben tener varianza constante en función de <span
+class="math inline">\(X_1\)</span>.</td>
+<td><code>ncvTest(mod)</code> (paquete <strong>car</strong>)</td>
+</tr>
+<tr class="even">
+<td><strong>Goldfeld-Quandt</strong></td>
+<td>Comparar la varianza de los errores en dos subconjuntos de datos
+ordenados por <span class="math inline">\(X_1\)</span>.</td>
+<td>La varianza de los errores no debe cambiar entre subconjuntos de
+datos ordenados.</td>
+<td><code>gqtest(mod, order.by = ~ x1, data = datos)</code> (paquete
+<strong>lmtest</strong>)</td>
+</tr>
+<tr class="odd">
+<td><strong>Harrison-McCabe</strong></td>
+<td>Evaluar la homocedasticidad mediante la transformación de los
+residuos y análisis de varianza.</td>
+<td>La varianza de los errores debe ser constante en toda la
+muestra.</td>
+<td>No hay una implementación directa en <strong>R</strong>, se puede
+programar manualmente mediante pruebas de varianza.</td>
+</tr>
+</tbody>
+</table>
+</br></br>
+<div class="caja-ejemplo">
+<h3>
+Ejemplo:
+</h3>
+<p>
+<p>En este análisis, se continúa con el modelo del ejemplo anterior y se
+examina el supuesto de <strong>homocedasticidad de los errores</strong>
+utilizando las siguientes pruebas estadísticas:</p>
+<ul>
+<li><p><strong>Non-constant Variance Score test</strong></p></li>
+<li><p><strong>Goldfeld-Quandt test</strong></p></li>
+<li><p><strong>Harrison-McCabe test</strong></p></li>
+</ul>
+<p>A continuación, se presentan los códigos en <strong>R</strong> para
+la implementación de estas pruebas, permitiendo evaluar si los errores
+del modelo presentan varianza constante o si existe evidencia de
+heterocedasticidad.</p>
+<pre>
+# Configurar el entorno para el uso del idioma español
+ Sys.setlocale("LC_ALL", "es_ES.UTF-8")
+
+# Cargar paquetes necesarios 
+library(ggplot2)   # Para visualización de datos
+library(lmtest)    # Para realizar pruebas de heterocedasticidad (gqtest y hmctest)
+library(patchwork) # Para combinar gráficos
+library(car)       # Para aplicar el test ncvTest
+
+# Lectura de datos 
+# Se carga el conjunto de datos desde un archivo en línea
+file <- "https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_reg_hom.txt"
+datos <- read.table(file = file, header = TRUE)  # Leer el archivo con nombres de columnas
+
+# Ajustar el modelo de regresión lineal múltiple 
+# Se ajusta un modelo de regresión donde la variable respuesta es "y"
+# y las variables predictoras son "x1" y "x2"
+mod <- lm(y ~ x1 + x2, data = datos)
+
+# Aplicación de pruebas de homocedasticidad 
+
+# Non-constant Variance Score Test (Test de variancia no constante)
+# Evalúa la presencia de heterocedasticidad en los errores del modelo
+ncv_result <- car::ncvTest(mod)
+print(ncv_result)
+
+# Goldfeld-Quandt Test (Prueba de heterocedasticidad basada en subgrupos)
+# Divide la muestra en dos partes y compara la varianza de los errores en cada una
+gq_result <- lmtest::gqtest(mod)
+print(gq_result)
+
+# Harrison-McCabe Test (Prueba para detectar heterocedasticidad)
+# Se basa en una regresión auxiliar que evalúa la varianza de los errores en función de los valores ajustados
+hmc_result <- lmtest::hmctest(mod)
+print(hmc_result)
+</pre>
+<pre class="r"><code># Configurar el entorno para el uso del idioma español
+ Sys.setlocale(&quot;LC_ALL&quot;, &quot;es_ES.UTF-8&quot;)
+
+# Cargar paquetes necesarios 
+library(ggplot2)   # Para visualización de datos
+library(lmtest)    # Para realizar pruebas de heterocedasticidad (gqtest y hmctest)
+library(patchwork) # Para combinar gráficos
+library(car)       # Para aplicar el test ncvTest
+
+# Lectura de datos 
+# Se carga el conjunto de datos desde un archivo en línea
+file &lt;- &quot;https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_reg_hom.txt&quot;
+datos &lt;- read.table(file = file, header = TRUE)  # Leer el archivo con nombres de columnas
+
+# Ajustar el modelo de regresión lineal múltiple 
+# Se ajusta un modelo de regresión donde la variable respuesta es &quot;y&quot;
+# y las variables predictoras son &quot;x1&quot; y &quot;x2&quot;
+mod &lt;- lm(y ~ x1 + x2, data = datos)
+
+# Aplicación de pruebas de homocedasticidad 
+
+# Non-constant Variance Score Test (Test de variancia no constante)
+# Evalúa la presencia de heterocedasticidad en los errores del modelo
+ncv_result &lt;- car::ncvTest(mod)
+print(ncv_result)
+
+# Goldfeld-Quandt Test (Prueba de heterocedasticidad basada en subgrupos)
+# Divide la muestra en dos partes y compara la varianza de los errores en cada una
+gq_result &lt;- lmtest::gqtest(mod)
+print(gq_result)
+
+# Harrison-McCabe Test (Prueba para detectar heterocedasticidad)
+# Se basa en una regresión auxiliar que evalúa la varianza de los errores en función de los valores ajustados
+hmc_result &lt;- lmtest::hmctest(mod)
+print(hmc_result)</code></pre>
+<p>Los resultados de las pruebas de homocedasticidad se presentan a
+continuación:</p>
+<ul>
+<li><p><strong>Goldfeld-Quandt test</strong> y <strong>Non-constant
+Variance Score test</strong> rechazan la hipótesis nula de
+homocedasticidad con niveles de significancia del <strong>1%</strong> y
+<strong>5%</strong>, respectivamente. Esto indica que existe evidencia
+de que los errores del modelo presentan
+<strong>heterocedasticidad</strong>.</p></li>
+<li><p><strong>Harrison-McCabe test</strong> no rechaza la
+homocedasticidad con un nivel de significancia del <strong>5%</strong>,
+lo que sugiere que, bajo este test, no se encuentra suficiente evidencia
+para afirmar que los errores presentan variabilidad no
+constante.</p></li>
+</ul>
+<p>A continuación, se muestran los resultados de cada prueba:</p>
+<pre>
+Non-constant Variance Score Test 
+Variance formula: ~ fitted.values 
+Chisquare = 11.38644, Df = 1, p = 0.00073982
+</pre>
+<pre>
+Goldfeld-Quandt test
+
+data:  mod
+GQ = 2.0997, df1 = 22, df2 = 22, p-value = 0.04446
+alternative hypothesis: variance increases from segment 1 to 2
+</pre>
+<pre>
+    Harrison-McCabe test
+
+data:  mod
+HMC = 0.34793, p-value = 0.066
+</pre>
+<p>El <strong>Harrison-McCabe test</strong> evalúa la heterocedasticidad
+mediante una <strong>regresión auxiliar basada en los valores
+ajustados</strong> del modelo. Esto significa que el test <strong>asume
+que la heterocedasticidad es monótona</strong> y está relacionada con
+los valores ajustados <span class="math inline">\(\hat{Y}\)</span>.</p>
+<p>Sin embargo, en este caso, la heterocedasticidad está
+<strong>fuertemente asociada con una única variable predictora</strong>,
+específicamente <strong><span
+class="math inline">\(X_2\)</span></strong>, y <strong>no con los
+valores ajustados <span class="math inline">\(\hat{Y}\)</span></strong>.
+Esta particularidad <strong>reduce la sensibilidad del test</strong>,
+dificultando la detección de heterocedasticidad cuando su estructura
+depende de una sola variable y no del modelo en su conjunto.</p>
+<p>Además, si la <strong>varianza de los errores depende de <span
+class="math inline">\(X_2\)</span> de manera no lineal</strong>, el test
+puede <strong>no captar adecuadamente esta relación</strong>, dado que
+se basa en relaciones más simples entre los errores y los valores
+ajustados.</p>
+<p>En términos generales, el <strong>Harrison-McCabe test</strong> es
+menos flexible para detectar heterocedasticidad <strong>cuando esta está
+localizada en una única variable predictora</strong> y <strong>no afecta
+significativamente los valores ajustados <span
+class="math inline">\(\hat{Y}\)</span></strong>.</p>
+<p>Dado que en este caso la heterocedasticidad depende directamente de
+<strong><span class="math inline">\(X_2\)</span> y no de <span
+class="math inline">\(\hat{Y}\)</span></strong>, <strong>el test no la
+detecta con suficiente potencia</strong>. Por esta razón, <strong>el
+Non-constant Variance Score Test y el test de Goldfeld-Quandt resultan
+más apropiados</strong> para identificar la heterocedasticidad en este
+tipo de escenarios.</p>
+</p>
+</div>
+<hr />
+</br></br>
+<h2>
+Independencia
+</h2>
+</br></br>
+<h3>
+Gráficos
+</h3>
+<p>Para evaluar el supuesto de <strong>independencia de los
+errores</strong>, se analiza el <strong>gráfico de residuos (<span
+class="math inline">\(e_i\)</span>) versus tiempo</strong>. La
+independencia implica que no existe un <strong>patrón
+sistemático</strong> en los residuos a lo largo del tiempo. Si los
+residuos presentan <strong>tendencias o correlaciones</strong>, es una
+señal de que el modelo no captura correctamente la estructura de los
+datos.</p>
+<p>Los gráficos de la <strong>Figura 3.23</strong> presentan tres
+posibles escenarios: dos de dependencia y uno de independencia.</p>
+<br/><br/>
+<center>
+<img src="img/fig323.png" width="80%" style="display: block; margin: auto;" />
+<strong>Figura 3.23</strong> Escenarios de dependencia e independencia.
+</center>
+<p><br/><br/></p>
+</br></br>
+<h3>
+Pruebas de hipótesis
+</h3>
+<p>Para verificar el <strong>supuesto de independencia de los
+errores</strong>, se aplican pruebas estadísticas diseñadas para
+detectar la presencia de <strong>autocorrelación</strong> en los
+residuos del modelo de regresión.</p>
+<p>Las hipótesis de estas pruebas son:</p>
+<ul>
+<li><p><strong>Hipótesis nula (<span
+class="math inline">\(H_0\)</span>)</strong>: Los errores son
+independientes, es decir, no presentan autocorrelación.</p></li>
+<li><p><strong>Hipótesis alternativa (<span
+class="math inline">\(H_1\)</span>)</strong>: Los errores
+<strong>no</strong> son independientes, es decir, presentan
+autocorrelación.</p></li>
+</ul>
+<p>Entre las pruebas más utilizadas para evaluar este supuesto se
+encuentran:</p>
+<ul>
+<li><p><strong>Durbin-Watson Test</strong>: Evalúa la presencia de
+<strong>autocorrelación de primer orden</strong> en los errores del
+modelo. Es especialmente útil en datos ordenados temporalmente.</p></li>
+<li><p><strong>Breusch-Godfrey Test</strong>: Es una generalización del
+<strong>Durbin-Watson Test</strong>, que permite detectar
+autocorrelación de <strong>orden superior</strong> en los
+errores.</p></li>
+</ul>
+<hr />
+</br></br>
+<div class="caja-ejemplo">
+<h3>
+Ejemplo:
+</h3>
+<p>
+<p>En este ejemplo, se analiza la independencia de los errores en
+modelos de regresión lineal simple. Se modela la variable <strong><span
+class="math inline">\(Y\)</span></strong> a partir de la variable
+<strong><span class="math inline">\(X\)</span></strong> utilizando dos
+conjuntos de datos disponibles en los siguientes enlaces:</p>
+<ul>
+<li><p><a
+href="https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_reg_ind1.txt">Base
+de datos 1</a></p></li>
+<li><p><a
+href="https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_reg_ind2.txt">Base
+de datos 2</a></p></li>
+</ul>
+<p>Se ajusta un <strong>modelo de regresión lineal simple</strong> en
+cada conjunto de datos y se aplican pruebas estadísticas para verificar
+si los errores del modelo cumplen con el supuesto de
+<strong>independencia</strong>.</p>
+<p>Para ello, se utilizan las siguientes pruebas:</p>
+<ul>
+<li><p><strong>Durbin-Watson Test</strong>: Evalúa la presencia de
+autocorrelación de primer orden en los errores.</p></li>
+<li><p><strong>Breusch-Godfrey Test</strong>: Evalúa la autocorrelación
+de orden superior en los errores.</p></li>
+</ul>
+<p>A continuación, se presentan los códigos en <strong>R</strong>, los
+resultados obtenidos y su interpretación.</p>
+<hr />
+<p><strong>Para los datos 1</strong>:</p>
+<p>Los códigos en <strong>R</strong> son los siguientes:</p>
+<pre>
+# Configurar el entorno para el uso del idioma español
+Sys.setlocale("LC_ALL", "es_ES.UTF-8")
+
+
+# Cargar paquetes necesarios
+library(ggplot2)  # Para la visualización de los residuos
+library(lmtest)   # Para las pruebas de independencia de los errores
+
+# Lectura de datos 
+# URL del archivo de datos
+file <- "https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_reg_ind1.txt"
+
+# Cargar el conjunto de datos desde la URL
+datos <- read.table(file = file, header = TRUE)
+
+# Ajuste del modelo de regresión 
+# Se ajusta un modelo de regresión lineal simple con 'x' como predictor de 'y'
+mod1 <- lm(y ~ x, data = datos)
+
+# Visualización de los residuos 
+# Se crea un data frame con los residuos y su índice de observación
+resid_data <- data.frame(
+  Observacion = seq_along(residuals(mod1)),  # Índice de cada observación
+  Residuales = residuals(mod1)              # Valores de los residuos
+)
+
+# Gráfico de residuos usando ggplot2
+ggplot(resid_data, aes(x = Observacion, y = Residuales)) +
+  geom_point(color = "deeppink", size = 2) +       # Puntos de los residuos
+  geom_line(color = "black", linetype = "dashed") + # Línea guía de los residuos
+  geom_hline(yintercept = 0, color = "red", linetype = "solid") + # Línea en y = 0
+  labs(title = "Residuos del Modelo vs Índice de Observación",
+       x = "Índice de la Observación", 
+       y = "Residuales") +
+  theme_minimal()  # Estilo de gráfico limpio
+
+# Pruebas de independencia de los errores 
+
+# Durbin-Watson Test
+# Evalúa si los errores presentan autocorrelación de primer orden
+dw_test <- dwtest(mod1)
+print(dw_test)
+
+# Breusch-Godfrey Test
+# Permite evaluar autocorrelación de orden superior en los errores
+bg_test <- bgtest(mod1)
+print(bg_test)
+</pre>
+<pre class="r"><code># Configurar el entorno para el uso del idioma español
+Sys.setlocale(&quot;LC_ALL&quot;, &quot;es_ES.UTF-8&quot;)
+
+
+# Cargar paquetes necesarios
+library(ggplot2)  # Para la visualización de los residuos
+library(lmtest)   # Para las pruebas de independencia de los errores
+
+# Lectura de datos 
+# URL del archivo de datos
+file &lt;- &quot;https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_reg_ind1.txt&quot;
+
+# Cargar el conjunto de datos desde la URL
+datos &lt;- read.table(file = file, header = TRUE)
+
+# Ajuste del modelo de regresión 
+# Se ajusta un modelo de regresión lineal simple con &#39;x&#39; como predictor de &#39;y&#39;
+mod1 &lt;- lm(y ~ x, data = datos)
+
+# Visualización de los residuos 
+# Se crea un data frame con los residuos y su índice de observación
+resid_data &lt;- data.frame(
+  Observacion = seq_along(residuals(mod1)),  # Índice de cada observación
+  Residuales = residuals(mod1)              # Valores de los residuos
+)
+
+# Gráfico de residuos usando ggplot2
+ggplot(resid_data, aes(x = Observacion, y = Residuales)) +
+  geom_point(color = &quot;deeppink&quot;, size = 2) +       # Puntos de los residuos
+  geom_line(color = &quot;black&quot;, linetype = &quot;dashed&quot;) + # Línea guía de los residuos
+  geom_hline(yintercept = 0, color = &quot;red&quot;, linetype = &quot;solid&quot;) + # Línea en y = 0
+  labs(title = &quot;Residuos del Modelo vs Índice de Observación&quot;,
+       x = &quot;Índice de la Observación&quot;, 
+       y = &quot;Residuales&quot;) +
+  theme_minimal()  # Estilo de gráfico limpio
+
+# Pruebas de independencia de los errores 
+
+# Durbin-Watson Test
+# Evalúa si los errores presentan autocorrelación de primer orden
+dw_test &lt;- dwtest(mod1)
+print(dw_test)
+
+# Breusch-Godfrey Test
+# Permite evaluar autocorrelación de orden superior en los errores
+bg_test &lt;- bgtest(mod1)
+print(bg_test)</code></pre>
+<p>Los valores-p obtenidos en ambas pruebas son mayores a
+<strong>0.05</strong>, lo que indica que con un nivel de significancia
+del <strong>5%</strong>, <strong>no se rechaza la hipótesis nula de
+independencia de los errores</strong>.</p>
+<p>La <strong>Figura 3.24</strong> presenta la gráfica de los residuos
+del modelo en función del índice de observación. Se observa que los
+residuos oscilan aleatoriamente alrededor de cero, sin mostrar un patrón
+sistemático, lo cual concuerda con los resultados de ambas pruebas y
+sugiere que no hay evidencia de autocorrelación en los errores.</p>
+<p>A continuación, se muestran los resultados de cada prueba:</p>
+<pre>
+Durbin-Watson test
+
+data:  mod1
+DW = 1.9715, p-value = 0.4477
+alternative hypothesis: true autocorrelation is greater than 0
+</pre>
+<pre>
+Breusch-Godfrey test for serial correlation of order up to 1
+
+data:  mod1
+LM test = 0.013288, df = 1, p-value = 0.9082
+</pre>
+<br/><br/>
+<center>
+<img src="img/fig324.png" width="80%" style="display: block; margin: auto;" />
+<strong>Figura 3.24</strong> Residuos del modelo en función del índice
+de observación para datos 1.
+</center>
+<p><br/><br/></p>
+<p><strong>Para los datos 2</strong>:</p>
+<p>Los códigos en <strong>R</strong> son los siguientes:</p>
+<pre>
+# Configurar el entorno para el uso del idioma español
+Sys.setlocale("LC_ALL", "es_ES.UTF-8")
+
+# Cargar paquetes necesarios
+library(ggplot2)  # Para visualización de residuos
+library(lmtest)   # Para realizar pruebas de independencia de los errores
+
+# Lectura de datos 
+# URL del archivo de datos
+file <- "https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_reg_ind2.txt"
+
+# Cargar el conjunto de datos desde la URL
+datos <- read.table(file = file, header = TRUE)
+
+# Ajuste del modelo de regresión 
+# Se ajusta un modelo de regresión lineal simple con 'x' como predictor de 'y'
+mod2 <- lm(y ~ x, data = datos)
+
+# Visualización de los residuos 
+# Crear un data frame con los residuos y su índice de observación
+resid_data <- data.frame(
+  Observacion = seq_along(residuals(mod2)),  # Índice de cada observación
+  Residuales = residuals(mod2)              # Valores de los residuos
+)
+
+# Gráfico de residuos usando ggplot2
+ggplot(resid_data, aes(x = Observacion, y = Residuales)) +
+  geom_point(color = "deepskyblue3", size = 2) +       # Puntos de los residuos
+  geom_line(color = "black", linetype = "dashed") +    # Línea discontinua para seguir la tendencia
+  geom_hline(yintercept = 0, color = "red", linetype = "solid") + # Línea en y = 0
+  labs(title = "Residuos del Modelo vs Índice de Observación",
+       x = "Índice de la Observación", 
+       y = "Residuales") +
+  theme_minimal()  # Estilo de gráfico limpio
+
+# Pruebas de independencia de los errores 
+
+# Durbin-Watson Test
+# Evalúa la presencia de autocorrelación de primer orden en los errores
+dw_test <- dwtest(mod2)
+print(dw_test)
+
+# Breusch-Godfrey Test
+# Evalúa la autocorrelación de orden superior en los errores
+bg_test <- bgtest(mod2)
+print(bg_test)
+
+</pre>
+<pre class="r"><code># Configurar el entorno para el uso del idioma español
+Sys.setlocale(&quot;LC_ALL&quot;, &quot;es_ES.UTF-8&quot;)
+
+# Cargar paquetes necesarios
+library(ggplot2)  # Para visualización de residuos
+library(lmtest)   # Para realizar pruebas de independencia de los errores
+
+# Lectura de datos 
+# URL del archivo de datos
+file &lt;- &quot;https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_reg_ind2.txt&quot;
+
+# Cargar el conjunto de datos desde la URL
+datos &lt;- read.table(file = file, header = TRUE)
+
+# Ajuste del modelo de regresión 
+# Se ajusta un modelo de regresión lineal simple con &#39;x&#39; como predictor de &#39;y&#39;
+mod2 &lt;- lm(y ~ x, data = datos)
+
+# Visualización de los residuos 
+# Crear un data frame con los residuos y su índice de observación
+resid_data &lt;- data.frame(
+  Observacion = seq_along(residuals(mod2)),  # Índice de cada observación
+  Residuales = residuals(mod2)              # Valores de los residuos
+)
+
+# Gráfico de residuos usando ggplot2
+ggplot(resid_data, aes(x = Observacion, y = Residuales)) +
+  geom_point(color = &quot;deepskyblue3&quot;, size = 2) +       # Puntos de los residuos
+  geom_line(color = &quot;black&quot;, linetype = &quot;dashed&quot;) +    # Línea discontinua para seguir la tendencia
+  geom_hline(yintercept = 0, color = &quot;red&quot;, linetype = &quot;solid&quot;) + # Línea en y = 0
+  labs(title = &quot;Residuos del Modelo vs Índice de Observación&quot;,
+       x = &quot;Índice de la Observación&quot;, 
+       y = &quot;Residuales&quot;) +
+  theme_minimal()  # Estilo de gráfico limpio
+
+# Pruebas de independencia de los errores 
+
+# Durbin-Watson Test
+# Evalúa la presencia de autocorrelación de primer orden en los errores
+dw_test &lt;- dwtest(mod2)
+print(dw_test)
+
+# Breusch-Godfrey Test
+# Evalúa la autocorrelación de orden superior en los errores
+bg_test &lt;- bgtest(mod2)
+print(bg_test)</code></pre>
+<p>Los valores-p obtenidos en ambas pruebas son menores a
+<strong>0.001</strong>, lo que indica que con un nivel de significancia
+del <strong>1%</strong>, <strong>se rechaza la hipótesis nula de
+independencia de los errores</strong>.</p>
+<p>La <strong>Figura 3.25</strong> presenta la gráfica de los residuos
+del modelo en función del índice de observación. En un modelo con
+errores independientes, los residuos deberían oscilar de manera
+aleatoria alrededor de cero, sin mostrar <strong>patrones
+evidentes</strong>. Sin embargo, en este caso, se observa un
+<strong>comportamiento cíclico o estructurado en los residuos</strong>,
+lo que sugiere una fuerte dependencia temporal o secuencial en los
+errores.</p>
+<p>Este patrón indica que los errores <strong>no son
+independientes</strong>, sino que pueden estar correlacionados entre sí.
+En particular:</p>
+<ul>
+<li><p>Se observan <strong>secciones donde los residuos permanecen
+positivos o negativos por varios puntos consecutivos</strong>, en lugar
+de distribuirse de manera aleatoria.</p></li>
+<li><p>Se presentan <strong>fluctuaciones amplias y
+persistentes</strong>, lo que indica que el modelo no captura
+adecuadamente la estructura de los datos.</p></li>
+<li><p>El comportamiento oscilatorio es consistente con la
+<strong>autocorrelación positiva</strong>, donde los errores en un
+instante tienden a estar relacionados con los errores en instantes
+previos.</p></li>
+</ul>
+<p>A continuación, se muestran los resultados de cada prueba:</p>
+<pre>
+Durbin-Watson test
+
+data:  mod2
+DW = 0.20866, p-value < 2.2e-16
+alternative hypothesis: true autocorrelation is greater than 0
+
+</pre>
+<pre>
+Breusch-Godfrey test for serial correlation of order up to 1
+
+data:  mod2
+LM test = 160.44, df = 1, p-value < 2.2e-16
+</pre>
+<br/><br/>
+<center>
+<img src="img/fig325.png" width="80%" style="display: block; margin: auto;" />
+<strong>Figura 3.25</strong> Residuos del modelo en función del índice
+de observación para datos 2.
+</center>
+<p><br/><br/></p>
+</p>
+</div>
+<hr />
+</br></br>
+<div class="caja-ejemplo">
+<h3>
+Ejemplo:
+</h3>
+<p>
+<p>En este análisis, se verifican los <strong>supuestos de los
+errores</strong> en un modelo de <strong>regresión lineal
+simple</strong>. Se modela la variable <strong><span
+class="math inline">\(Y\)</span></strong> en función de la variable
+<strong><span class="math inline">\(X\)</span></strong> utilizando un
+conjunto de datos disponible en el siguiente enlace:</p>
+<ul>
+<li><a
+href="https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_ok.txt">Base
+de datos</a></li>
+</ul>
+<p>Se ajusta un <strong>modelo de regresión lineal simple</strong> y se
+aplican <strong>pruebas estadísticas</strong> para evaluar si los
+errores cumplen con los supuestos de <strong>normalidad,
+homocedasticidad e independencia</strong>.</p>
+<p>Pruebas utilizadas para evaluar los supuestos:</p>
+<ul>
+<li><p><strong>Prueba de normalidad:</strong></p>
+<ul>
+<li><p>Shapiro-Wilk test.</p></li>
+<li><p>Anderson-Darling test.</p></li>
+<li><p>Kolmogorov-Smirnov test.</p></li>
+</ul></li>
+<li><p><strong>Pruebas de homocedasticidad:</strong></p>
+<ul>
+<li><p>Breusch-Pagan test.</p></li>
+<li><p>White test.</p></li>
+<li><p>Goldfeld-Quandt test.</p></li>
+</ul></li>
+<li><p><strong>Pruebas de independencia:</strong></p>
+<ul>
+<li><p>Durbin-Watson test.</p></li>
+<li><p>Breusch-Godfrey test.</p></li>
+</ul></li>
+</ul>
+<p>A continuación, se presentan los códigos en <strong>R</strong>, los
+resultados obtenidos y su interpretación.</p>
+<pre>
+# Configurar el entorno para el uso del idioma español
+Sys.setlocale("LC_ALL", "es_ES.UTF-8")
+
+
+# Cargar paquetes necesarios
+library(ggplot2)   # Para visualización de datos
+library(lmtest)    # Para pruebas de independencia y homocedasticidad
+library(car)       # Para el test de normalidad y homocedasticidad
+library(nortest)   # Para pruebas adicionales de normalidad
+library(patchwork) # Para combinar gráficos en una sola figura
+
+
+# Lectura de datos
+file <- "https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_ok.txt"
+datos <- read.table(file = file, header = TRUE)
+
+# Ajuste del modelo de regresión
+mod <- lm(y ~ x, data=datos)
+
+# Evaluación de los supuestos del modelo 
+
+## Verificación de homocedasticidad
+# Se generan gráficos de diagnóstico para evaluar la homocedasticidad y la normalidad
+par(mfrow=c(2, 2))  # Organiza los gráficos en una cuadrícula de 2x2
+plot(mod, las=1, col='darkseagreen3', which=1:3) 
+
+# Evaluación de normalidad de los errores
+ei <- residuals(mod)  # Se extraen los residuos del modelo
+
+# Prueba de Shapiro-Wilk
+shapiro.test(ei)  # Prueba de normalidad para muestras pequeñas
+
+# Prueba de Anderson-Darling (más robusta para normalidad)
+ad.test(ei)
+
+# Prueba de Kolmogorov-Smirnov (para verificar normalidad)
+ks.test(ei, "pnorm", mean(ei), sd(ei))
+
+
+# Evaluación de independencia de los errores
+# Test de Durbin-Watson para detectar autocorrelación de primer orden
+dwtest(mod)
+
+# Test de Breusch-Godfrey para correlación serial de orden superior
+bgtest(mod)
+
+
+# Evaluación de homocedasticidad
+# Test de Breusch-Pagan (detecta heterocedasticidad)
+bptest(mod)
+
+# Test de White (heterocedasticidad con términos no lineales)
+bptest(mod, varformula = ~ poly(x, 2), data=datos)
+
+# Test de Goldfeld-Quandt (para heterocedasticidad en la mitad de los datos)
+gqtest(mod)
+
+
+# Visualización adicional de los residuos 
+
+
+# Obtener residuos, valores ajustados e índice de observación
+residuos <- residuals(mod)
+valores_ajustados <- fitted(mod)
+residuos_estandarizados <- rstandard(mod)
+indice_observacion <- 1:length(residuos)
+
+# Obtener residuos y valores ajustados
+residuos <- residuals(mod)
+valores_ajustados <- fitted(mod)
+residuos_estandarizados <- rstandard(mod)
+
+# Gráfico de Residuos vs Valores Ajustados
+grafico_residuos <- ggplot(data = data.frame(valores_ajustados, residuos), aes(x = valores_ajustados, y = residuos)) +
+  geom_point(color = "darkseagreen3") +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
+  labs(title = "Residuos vs Valores Ajustados", x = "Valores Ajustados", y = "Residuos")
+
+# Gráfico Q-Q de Residuos
+grafico_qq <- ggplot(data = data.frame(residuos_estandarizados), aes(sample = residuos_estandarizados)) +
+  stat_qq(color = "darkseagreen3") +
+  stat_qq_line(color = "red") +
+  labs(title = "Gráfico Q-Q de Residuos", x = "Cuantiles Teóricos", y = "Cuantiles Muestrales")
+
+# Gráfico Scale-Location (Raíz cuadrada de |Residuos Estandarizados| vs Valores Ajustados)
+grafico_scale <- ggplot(data = data.frame(valores_ajustados, residuos_estandarizados), 
+                        aes(x = valores_ajustados, y = sqrt(abs(residuos_estandarizados)))) +
+  geom_point(color = "darkseagreen3") +
+  geom_smooth(method = "lm", se = FALSE, color = "red") +
+  labs(title = "Scale-Location", x = "Valores Ajustados", y = "√|Residuos Estandarizados|")
+
+
+# Gráfico de Residuos vs Índice de Observación (para independencia de los errores)
+grafico_residuos_index <- ggplot(data = data.frame(indice_observacion, residuos), aes(x = indice_observacion, y = residuos)) +
+  geom_point(color = "darkseagreen3") +
+  geom_line(linetype = "dashed", color = "black") +
+  geom_hline(yintercept = 0, linetype = "solid", color = "red") +
+  labs(title = "Residuos vs Índice de Observación", x = "Índice de la Observación", y = "Residuos")
+
+# Visualización combinada
+(grafico_residuos + grafico_qq + grafico_scale) / grafico_residuos_index  # Organiza los gráficos en filas
+
+</pre>
+<pre class="r"><code># Configurar el entorno para el uso del idioma español
+Sys.setlocale(&quot;LC_ALL&quot;, &quot;es_ES.UTF-8&quot;)
+
+
+# Cargar paquetes necesarios
+library(ggplot2)   # Para visualización de datos
+library(lmtest)    # Para pruebas de independencia y homocedasticidad
+library(car)       # Para el test de normalidad y homocedasticidad
+library(nortest)   # Para pruebas adicionales de normalidad
+library(patchwork) # Para combinar gráficos en una sola figura
+
+
+# Lectura de datos
+file &lt;- &quot;https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_ok.txt&quot;
+datos &lt;- read.table(file = file, header = TRUE)
+
+# Ajuste del modelo de regresión
+mod &lt;- lm(y ~ x, data=datos)
+
+# Evaluación de los supuestos del modelo 
+
+## Verificación de homocedasticidad
+# Se generan gráficos de diagnóstico para evaluar la homocedasticidad y la normalidad
+par(mfrow=c(2, 2))  # Organiza los gráficos en una cuadrícula de 2x2
+plot(mod, las=1, col=&#39;darkseagreen3&#39;, which=1:3) 
+
+# Evaluación de normalidad de los errores
+ei &lt;- residuals(mod)  # Se extraen los residuos del modelo
+
+# Prueba de Shapiro-Wilk
+shapiro.test(ei)  # Prueba de normalidad para muestras pequeñas
+
+# Prueba de Anderson-Darling (más robusta para normalidad)
+ad.test(ei)
+
+# Prueba de Kolmogorov-Smirnov (para verificar normalidad)
+ks.test(ei, &quot;pnorm&quot;, mean(ei), sd(ei))
+
+
+# Evaluación de independencia de los errores
+# Test de Durbin-Watson para detectar autocorrelación de primer orden
+dwtest(mod)
+
+# Test de Breusch-Godfrey para correlación serial de orden superior
+bgtest(mod)
+
+
+# Evaluación de homocedasticidad
+# Test de Breusch-Pagan (detecta heterocedasticidad)
+bptest(mod)
+
+# Test de White (heterocedasticidad con términos no lineales)
+bptest(mod, varformula = ~ poly(x, 2), data=datos)
+
+# Test de Goldfeld-Quandt (para heterocedasticidad en la mitad de los datos)
+gqtest(mod)
+
+
+# Visualización adicional de los residuos 
+
+
+# Obtener residuos, valores ajustados e índice de observación
+residuos &lt;- residuals(mod)
+valores_ajustados &lt;- fitted(mod)
+residuos_estandarizados &lt;- rstandard(mod)
+indice_observacion &lt;- 1:length(residuos)
+
+# Obtener residuos y valores ajustados
+residuos &lt;- residuals(mod)
+valores_ajustados &lt;- fitted(mod)
+residuos_estandarizados &lt;- rstandard(mod)
+
+# Gráfico de Residuos vs Valores Ajustados
+grafico_residuos &lt;- ggplot(data = data.frame(valores_ajustados, residuos), aes(x = valores_ajustados, y = residuos)) +
+  geom_point(color = &quot;darkseagreen3&quot;) +
+  geom_hline(yintercept = 0, linetype = &quot;dashed&quot;, color = &quot;red&quot;) +
+  labs(title = &quot;Residuos vs Valores Ajustados&quot;, x = &quot;Valores Ajustados&quot;, y = &quot;Residuos&quot;)
+
+# Gráfico Q-Q de Residuos
+grafico_qq &lt;- ggplot(data = data.frame(residuos_estandarizados), aes(sample = residuos_estandarizados)) +
+  stat_qq(color = &quot;darkseagreen3&quot;) +
+  stat_qq_line(color = &quot;red&quot;) +
+  labs(title = &quot;Gráfico Q-Q de Residuos&quot;, x = &quot;Cuantiles Teóricos&quot;, y = &quot;Cuantiles Muestrales&quot;)
+
+# Gráfico Scale-Location (Raíz cuadrada de |Residuos Estandarizados| vs Valores Ajustados)
+grafico_scale &lt;- ggplot(data = data.frame(valores_ajustados, residuos_estandarizados), 
+                        aes(x = valores_ajustados, y = sqrt(abs(residuos_estandarizados)))) +
+  geom_point(color = &quot;darkseagreen3&quot;) +
+  geom_smooth(method = &quot;lm&quot;, se = FALSE, color = &quot;red&quot;) +
+  labs(title = &quot;Scale-Location&quot;, x = &quot;Valores Ajustados&quot;, y = &quot;√|Residuos Estandarizados|&quot;)
+
+
+# Gráfico de Residuos vs Índice de Observación (para independencia de los errores)
+grafico_residuos_index &lt;- ggplot(data = data.frame(indice_observacion, residuos), aes(x = indice_observacion, y = residuos)) +
+  geom_point(color = &quot;darkseagreen3&quot;) +
+  geom_line(linetype = &quot;dashed&quot;, color = &quot;black&quot;) +
+  geom_hline(yintercept = 0, linetype = &quot;solid&quot;, color = &quot;red&quot;) +
+  labs(title = &quot;Residuos vs Índice de Observación&quot;, x = &quot;Índice de la Observación&quot;, y = &quot;Residuos&quot;)
+
+# Visualización combinada
+(grafico_residuos + grafico_qq + grafico_scale) / grafico_residuos_index  # Organiza los gráficos en filas</code></pre>
+<p>Los valores-p obtenidos en los tests de normalidad son
+<strong>mayores a 0.05</strong>, lo que indica que <strong>no hay
+suficiente evidencia para rechazar la hipótesis nula de normalidad de
+los errores</strong> con un nivel de significancia del
+<strong>5%</strong>.</p>
+<p>La <strong>Figura 3.26</strong> y <strong>Figura 3.27</strong>
+presentan el <strong>QQ-plot</strong> de los residuos estandarizados del
+modelo ajustado. Se observa que los puntos están <strong>muy cerca de la
+recta de referencia</strong>, lo que también sugiere que los errores del
+modelo de regresión lineal ajustado siguen una distribución normal.</p>
+<p>A continuación, se muestran los resultados de cada prueba:</p>
+<pre>
+Shapiro-Wilk normality test
+
+data:  ei
+W = 0.99609, p-value = 0.2552
+</pre>
+<pre>
+Anderson-Darling normality test
+
+data:  ei
+A = 0.61456, p-value = 0.1094
+</pre>
+<pre>
+Asymptotic one-sample Kolmogorov-Smirnov test
+
+data:  ei
+D = 0.041783, p-value = 0.3472
+alternative hypothesis: two-sided
+</pre>
+<br/><br/>
+<center>
+<img src="img/fig326.png" width="80%" style="display: block; margin: auto;" />
+<strong>Figura 3.26</strong> Gráficos para análisis de residuales.
+</center>
+<p><br/><br/></p>
+<br/><br/>
+<center>
+<img src="img/fig327.png" width="80%" style="display: block; margin: auto;" />
+<strong>Figura 3.27</strong> Gráficos para análisis de residuales.
+</center>
+<p><br/><br/></p>
+<p>Los valores-p obtenidos en las pruebas de independencia son
+<strong>mayores a 0.05</strong>, lo que indica que <strong>no hay
+suficiente evidencia para rechazar la hipótesis nula de independencia de
+los errores</strong> con un nivel de significancia del
+<strong>5%</strong>.</p>
+<p>El <strong>gráfico de residuos versus el índice de
+observación</strong> en la <strong>Figura 3.27</strong> no muestra un
+patrón o tendencia clara, y los puntos se distribuyen aleatoriamente
+alrededor de cero. Esto respalda la suposición de independencia de los
+errores en el modelo de regresión ajustado.</p>
+<p>A continuación, se presentan los resultados de cada prueba:</p>
+<pre>
+Durbin-Watson test
+
+data:  mod
+DW = 1.9031, p-value = 0.1391
+alternative hypothesis: true autocorrelation is greater than 0
+</pre>
+<pre>
+Breusch-Godfrey test for serial correlation of order up to 1
+
+data:  mod
+LM test = 1.1435, df = 1, p-value = 0.2849
+</pre>
+<p>Los valores-p obtenidos en las pruebas de
+<strong>homocedasticidad</strong> son <strong>mayores a 0.05</strong>,
+lo que indica que <strong>no hay suficiente evidencia para rechazar la
+hipótesis nula de homocedasticidad de los errores</strong> con un nivel
+de significancia del <strong>5%</strong>.</p>
+<p>Las <strong>Figuras 3.26 y 3.27</strong> presentan los residuos
+estandarizados frente a los valores ajustados del modelo. Se observa que
+los puntos no muestran ningún patrón o tendencia sistemática, lo que
+sugiere que los errores del modelo de regresión lineal ajustado cumplen
+con el supuesto de varianza constante.</p>
+<p>A continuación, se presentan los resultados de cada prueba:</p>
+<pre>
+studentized Breusch-Pagan test
+
+data:  mod
+BP = 2.2987, df = 1, p-value = 0.1295
+</pre>
+<pre>
+studentized Breusch-Pagan test
+
+data:  mod
+BP = 2.2988, df = 2, p-value = 0.3168
+</pre>
+<pre>
+
+    Goldfeld-Quandt test
+
+data:  mod
+GQ = 1.1477, df1 = 248, df2 = 248, p-value = 0.1393
+alternative hypothesis: variance increases from segment 1 to 2
+</pre>
+<p>De acuerdo con los resultados de las pruebas estadísticas aplicadas y
+el análisis gráfico de los residuos, el <strong>modelo de regresión
+lineal simple ajustado cumple con los supuestos fundamentales</strong>
+de independencia, normalidad y homocedasticidad de los errores.</p>
+<p>En los gráficos de residuos de la <strong>Figura 3.26</strong>, se
+destacan las observaciones <strong>84, 382 y 463</strong>, cuyos
+residuos son notablemente diferentes al resto. Estos puntos atípicos
+pueden influir en la calidad del ajuste del modelo y en la validez de
+los supuestos. Aunque la presencia de estos valores extremos no invalida
+el modelo, es recomendable realizar una inspección más detallada para
+determinar si corresponden a errores de medición, valores influenciales
+o simplemente a una variabilidad inherente en los datos.</p>
+</p>
+</div>
+</p>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

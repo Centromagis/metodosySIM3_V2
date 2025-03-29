@@ -29,20 +29,31 @@ Para comprender mejor estos residuales, es importante conocer algunos conceptos 
 
 - **Peso \( W_i \)**: Indica la importancia de cada observación en el modelo. En modelos sin ponderación, se asume \( W_i = 1 \).
 
-- **Leverage \( h_{ii} \)**: Representa la influencia de la observación \( i \) en su propia predicción. Se obtiene a partir de la **matriz sombrero** o **hat matrix** que se determina con la matriz de diseño $X$:
+- **Leverage \( h_{ii} \)**: El leverage mide qué tanto una observación \( i \) influye en su propia predicción.  Matemáticamente, el leverage se define como la diagonal de la matriz de proyección \( H \), determinada por la **matriz de diseño** que está conformada por los valores de las variables predictoras:
+
 
   \[
-  H = X (X^\top X)^{-1} X^\top.
+  H = X (X^\top X)^{-1} X^\top,
   \]
+  
+  donde,
+  
+  \[
+h_{ii} = \frac{1}{n} + \frac{(x_i - \bar{x})^2}{\sum_{j=1}^{n} (x_j - \bar{x})^2}
+\]
 
-  Valores altos de \( h_{ii} \) sugieren que una observación tiene un impacto significativo en la estimación de los coeficientes y en la predicción.
+     - El leverage toma valores entre **\( 0 \)** y **\( 1 \)**. 
+     
+     - Observaciones con \( x_i \) cercanas a la media de \( X \), \( \bar{x} \), tienen **bajo leverage**. 
+     
+     - Observaciones con \( x_i \) alejadas de \( \bar{x} \) tienen **alto leverage**, lo que significa que tienen mayor impacto en la estimación de los coeficientes del modelo y en su propia predicción.
 
 - **Varianza ajustada \( \hat{\sigma}^2_{(i)} \)**: Es la estimación de la varianza de los errores cuando **se excluye** la observación \( i \). Se utiliza para evaluar la estabilidad del modelo ante la eliminación de datos individuales.
 
 - **Estimación \( \hat{y}_{(i)} \)**: Representa la predicción de \( y_i \) en un modelo ajustado **sin incluir la observación \( i \)**. Su cálculo es clave en métodos de validación cruzada, como el residual PRESS.
 
 
-El análisis de los distintos tipos de residuales permite detectar **valores atípicos, puntos influyentes y problemas de ajuste** en el modelo. Comprender cómo estos residuales se calculan e interpretan es fundamental para garantizar la validez del modelo de regresión y mejorar su capacidad predictiva.
+El análisis de los distintos tipos de residuales permite detectar **valores atípicos, puntos influyentes y problemas de ajuste** en el modelo. Comprender cómo estos residuales se calculan e interpretan es fundamental para garantizar la validez del modelo de regresión debido a la necesidad del cumplimiento de los supuestos de los errores. Además, garantizar el cumplimiento de los supuestos ayuda a mejorar su capacidad predictiva.
 
 ---
 
@@ -142,14 +153,6 @@ donde:
 El **residual studentizado** se usa principalmente para **detectar valores atípicos de manera más precisa**, ya que el cálculo de la varianza excluyendo la observación \( i \) reduce el impacto de valores extremos en la estimación de \( \sigma^2 \). 
 
 
-En modelos bien ajustados con errores normales, se espera que la mayoría de los valores de \( r_i \) estén dentro del rango 
-\([-2,2] \). Valores absolutos mayores a **3** sugieren que la observación \( i \) podría ser **un valor atípico significativo**.
-A diferencia del residual estandarizado, este residual es más confiable para detectar valores extremos, ya que ajusta la varianza sin depender de la observación analizada.
-
-Este tipo de residual es una herramienta clave en **diagnósticos de regresión**, especialmente cuando se busca identificar puntos que podrían afectar sustancialmente la estimación de los coeficientes del modelo.
-
-
-
 
 
 
@@ -244,61 +247,25 @@ rstudent(object)
 <div class="caja-ejemplo">
 <h3>Ejemplo:</h3>
 <p>
-El objetivo es ajustar un **modelo de regresión lineal ponderada**, donde la **media de \( Y \)** se modela en función de \( X \), utilizando como pesos los valores de \( W \). Una vez ajustado el modelo, se procederá a calcular los **valores ajustados** y los **residuales manualmente**, comparándolos posteriormente con los obtenidos mediante las funciones de **R**.
+El objetivo es ajustar un **modelo de regresión lineal ponderada**, donde la **media de \( Y \)** se modela en función de \( X \), utilizando como pesos los valores de \( W \). Una vez ajustado el modelo, se procederá a calcular los **valores ajustados** y los **residuales ordinarios y de Pearson** manualmente, comparándolos posteriormente con los obtenidos mediante las funciones de **R**.
 
 
-En este análisis, se dispone de informaciónsobre la variable respuesta (\( Y \)), la variable predictora (\( X \)) y los pesos asociados (\( W \)). 
+En este análisis, se dispone de informaciónsobre la variable respuesta \( Y \), la variable predictora \( X \) y los pesos asociados \( W \). 
 
 Los datos correspondientes están disponibles en el siguiente enlace:
 
-[Descargar datos de \( Y \), \( X \) y \( W \)](https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_res.txt)
-
-
-
-Para realizar este ajuste en **R**, se emplea la función `lm()` especificando el argumento `weights = w`, lo que permite asignar diferentes pesos a cada observación en el modelo de regresión.
-
-Los **coeficientes estimados** mediante el ajuste del modelo definen la ecuación de la **regresión lineal ponderada**:
-
-\[
-\hat{y}_i = \hat{\beta}_0 + \hat{\beta}_1 x_i
-\]
-
-
-**Cálculo manual de los valores ajustados y residuales:**
-
-Dado que la regresión es **ponderada**, los valores ajustados y los **residuales ordinarios** se calculan de la siguiente manera:
-
-\[
-e_i = y_i - \hat{y}_i
-\]
-
-\[
-p_i = e_i \sqrt{w_i} \quad \text{(Residual de Pearson)}
-\]
-
-\[
-r_i = \frac{e_i \sqrt{w_i}}{\sqrt{\hat{\sigma}^2 (1 - h_{ii})}} \quad \text{(Residual Estandarizado)}
-\]
-
-donde:
-
-- \( e_i \) es el **residual ordinario**, que representa la diferencia entre el valor observado \( y_i \) y el valor ajustado \( \hat{y}_i \).
-
-- \( p_i \) es el **residual de Pearson**, que ajusta la magnitud del error en función del peso \( w_i \), permitiendo evaluar la adecuación del modelo cuando las observaciones tienen varianzas heterogéneas.
-
-- \( r_i \) es el **residual estandarizado**, el cual ajusta el error considerando tanto la varianza estimada \( \hat{\sigma}^2 \) como el leverage \( h_{ii} \), proporcionando una métrica útil para la detección de valores atípicos.
+[Descargar datos de \( Y \), \( X \) y \( W \)](https://raw.githubusercontent.com/Centromagis/metodosySIM3_V2/refs/heads/main/datos_MetySim/dat_res.txt)
 
 
 
 <pre>
 # Lectura de datos
-file <- "https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_res.txt"
+file <- "https://raw.githubusercontent.com/Centromagis/metodosySIM3_V2/refs/heads/main/datos_MetySim/dat_res.txt"
 datos <- read.table(file = file, header = TRUE)
 
 x<-datos$x
 y<-datos$y
 w<-datos$w
-
 
 #  Ajuste del Modelo de Regresión Lineal Ponderada 
 # Se ajusta el modelo de regresión ponderada usando los valores de 'w' como pesos
@@ -343,7 +310,7 @@ print(resultados)
 
 ```{r,eval=FALSE,warning=FALSE,message=FALSE}
 # Lectura de datos
-file <- "https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_res.txt"
+file <- "https://raw.githubusercontent.com/Centromagis/metodosySIM3_V2/refs/heads/main/datos_MetySim/dat_res.txt"
 datos <- read.table(file = file, header = TRUE)
 
 x<-datos$x
@@ -409,7 +376,7 @@ Para comprobar que los cálculos manuales de los valores ajustados y los residua
 
 <pre>
 # Lectura de datos
-file <- "https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_res.txt"
+file <- "https://raw.githubusercontent.com/Centromagis/metodosySIM3_V2/refs/heads/main/datos_MetySim/dat_res.txt"
 datos <- read.table(file = file, header = TRUE)
 
 x<-datos$x
@@ -452,7 +419,7 @@ print(comparacion_resultados)
 
 ```{r,eval=FALSE,warning=FALSE,message=FALSE}
 # Lectura de datos
-file <- "https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_res.txt"
+file <- "https://raw.githubusercontent.com/Centromagis/metodosySIM3_V2/refs/heads/main/datos_MetySim/dat_res.txt"
 datos <- read.table(file = file, header = TRUE)
 
 x<-datos$x
@@ -506,25 +473,7 @@ Los resultados de la implementación manual y con **R** es la siguiente:
 
 ---
 
-**Regresión ponderada:**
-
 En una **regresión ponderada**, los **pesos** asignados a cada observación determinan la influencia que tiene cada punto en la estimación de los coeficientes del modelo. Estos pesos permiten ajustar la importancia de cada observación, lo que es útil cuando los datos presentan heterocedasticidad (variabilidad no constante) o cuando algunas mediciones son más confiables que otras.
-
-Los pesos \( w_i \) pueden interpretarse de diferentes maneras según el contexto del problema:
-
-- **Como la inversa de la varianza de los errores**:
-  
-  \[
-  w_i = \frac{1}{\sigma_i^2}
-  \]
-  
-  Donde \( \sigma_i^2 \) representa la varianza del error para la observación \( i \). En este caso, se otorgan **mayores pesos** a las observaciones con menor variabilidad y **menores pesos** a las observaciones con alta dispersión.
-
-- **Como una función de la confiabilidad de la observación**:
-
-  - Las observaciones con **alta precisión** reciben **mayor peso**, influyendo más en la estimación del modelo.
-  
-  - Las observaciones con **mayor variabilidad o ruido** tienen **menor peso**, reduciendo su impacto en el ajuste.
 
 
 </p>
@@ -537,7 +486,7 @@ Los pesos \( w_i \) pueden interpretarse de diferentes maneras según el context
 <h3>Nota:</h3>
 >
 <p>
-**Caso especial**: Si todos los pesos son iguales **(\( w_i = 1 \)** para todas las observaciones), la regresión ponderada **equivale a la regresión lineal ordinaria**.
+**Caso especial**: Si todos los pesos son son unos, **\( W_i = 1 \)**, para todas las observaciones, la regresión ponderada **equivale a la regresión lineal ordinaria**.
 </p>
 >
 </div>

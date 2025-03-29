@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Métodos y Simulación Estadística" />
+
+
+<title> Coeficiente de correlación de Kendall</title>
+
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"> </a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Métodos
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="index.html">Contenido</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Correlación
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso100.html">Análisis de Correlación</a>
+    </li>
+    <li>
+      <a href="recurso110.html">Coeficiente de Pearson</a>
+    </li>
+    <li>
+      <a href="recurso120.html">Coeficiente de Spearman</a>
+    </li>
+    <li>
+      <a href="recurso130.html">Coeficiente de Kendall</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Modelo
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso200.html">Modelo de Regresión Lineal Simple</a>
+    </li>
+    <li>
+      <a href="recurso210.html">Estimación Mínimos Cuadrados Ordinarios</a>
+    </li>
+    <li>
+      <a href="recurso220.html">Estimación de Máxima Verosimilitud</a>
+    </li>
+    <li>
+      <a href="recurso230.html">Forma Matricial del Modelo</a>
+    </li>
+    <li>
+      <a href="recurso300.html">Supuestos</a>
+    </li>
+    <li>
+      <a href="recurso310.html">Residuales</a>
+    </li>
+    <li>
+      <a href="recurso320.html">Revisión de Supuestos</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Pruebas de Hipótesis
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso400.html">Sobre los Coeficientes</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Transformaciones
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso500.html">Transformaciones</a>
+    </li>
+    <li>
+      <a href="recurso600.html">Modelos Polinomiales</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Predicción e Intervalos
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso700.html">Intervalo de Confianza</a>
+    </li>
+    <li>
+      <a href="recurso800.html">Intervalos de C. de Coeficientes y Varianza</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Atípicos e Influyentes
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso900.html">Punto Atípico e Influyente</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Tablero
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso1000.html">Tablero usando Shiny</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Referencias
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso2000.html">Referencias</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore"><span style="color:#686868">
+<strong>Coeficiente de correlación de Kendall</strong></span></h1>
+<h4 class="author">Métodos y Simulación Estadística</h4>
+
+</div>
+
+
+</br></br>
+<h2>
+Coeficiente de correlación de Kendall
+</h2>
+<p>La <strong>correlación de Kendall (<span
+class="math inline">\(\tau\)</span>)</strong> es una <strong>medida no
+paramétrica</strong> utilizada para evaluar la relación entre dos
+variables ordinales o continuas. No asume una distribución específica
+para los datos, lo que la hace más robusta frente a valores extremos y
+distribuciones no normales.</p>
+<p>Este coeficiente mide la <strong>asociación monótona</strong> entre
+dos variables, es decir, si a medida que una aumenta, la otra también lo
+hace (relación positiva) o disminuye (relación negativa). A diferencia
+de la correlación de Pearson, que mide relaciones lineales, y la de
+Spearman, que trabaja con rangos, Kendall evalúa la <strong>proporción
+de pares ordenados de manera concordante o discordante</strong>.</p>
+</br></br>
+<h3>
+Fórmula de cálculo
+</h3>
+<p>La correlación de Kendall se basa en la comparación de todos los
+pares posibles <span class="math inline">\((x_i, y_i)\)</span> y <span
+class="math inline">\((x_j, y_j)\)</span>:</p>
+<ul>
+<li><p><strong>Par concordante</strong>: Si el orden relativo de los
+valores en ambas variables es el mismo:</p>
+<p><span class="math display">\[
+(x_i &gt; x_j \text{ y } y_i &gt; y_j) \quad \text{o} \quad (x_i &lt;
+x_j \text{ y } y_i &lt; y_j)
+\]</span></p></li>
+<li><p><strong>Par discordante</strong>: Si el orden relativo de los
+valores es diferente:</p>
+<p><span class="math display">\[
+(x_i &gt; x_j \text{ y } y_i &lt; y_j) \quad \text{o} \quad (x_i &lt;
+x_j \text{ y } y_i &gt; y_j)
+\]</span></p></li>
+</ul>
+<p>El coeficiente de Kendall se calcula como:</p>
+<p><span class="math display">\[
+\tau = \frac{C - D}{\frac{1}{2} n (n-1)}
+\]</span></p>
+<p>donde:</p>
+<ul>
+<li><p><span class="math inline">\(C\)</span> es el número de pares
+<strong>concordantes</strong>.</p></li>
+<li><p><span class="math inline">\(D\)</span> es el número de pares
+<strong>discordantes</strong>.</p></li>
+<li><p><span class="math inline">\(n\)</span> es el número total de
+observaciones.</p></li>
+</ul>
+<p>Si existen empates en los valores de <span
+class="math inline">\(X\)</span> o <span
+class="math inline">\(Y\)</span>, se usa la versión ajustada de la
+fórmula:</p>
+<p><span class="math display">\[
+\tau = \frac{C - D}{\sqrt{(C+D+T_x) (C+D+T_y)}}
+\]</span></p>
+<p>donde:</p>
+<ul>
+<li><span class="math inline">\(T_x\)</span> y <span
+class="math inline">\(T_y\)</span> representan las correcciones por
+empates en <span class="math inline">\(X\)</span> e <span
+class="math inline">\(Y\)</span>.</li>
+</ul>
+</br></br>
+<h3>
+Consideraciones y supuestos
+</h3>
+<p>Para aplicar la correlación de Kendall de manera válida, se deben
+cumplir los siguientes criterios:</p>
+<ul>
+<li><p><strong>Las variables deben ser ordinales o continuas</strong>:
+No se puede aplicar a datos nominales.</p></li>
+<li><p><strong>Se debe evaluar una relación monótona</strong>: Kendall
+no detecta relaciones no monótonas.</p></li>
+<li><p><strong>No es necesario que los datos sean normales</strong>: A
+diferencia de Pearson, no requiere normalidad en los datos.</p></li>
+<li><p><strong>Es robusta ante valores atípicos</strong>: No se ve
+afectada de manera significativa por outliers.</p></li>
+</ul>
+</br></br>
+<h3>
+Interpretación
+</h3>
+<p>Los valores de Kendall <span class="math inline">\(\tau\)</span>
+varían entre <strong>-1 y 1</strong>:</p>
+<ul>
+<li><p><strong><span class="math inline">\(\tau = 1\)</span></strong>:
+Relación monótona creciente perfecta (todos los pares son
+concordantes).</p></li>
+<li><p><strong><span class="math inline">\(\tau = -1\)</span></strong>:
+Relación monótona decreciente perfecta (todos los pares son
+discordantes).</p></li>
+<li><p><strong><span class="math inline">\(\tau = 0\)</span></strong>:
+No hay relación monótona entre las variables.</p></li>
+</ul>
+<p>Valores intermedios indican el grado de asociación. Por ejemplo:</p>
+<ul>
+<li><p><span class="math inline">\(\tau = 0.5\)</span> indica una
+relación monótona positiva moderada.</p></li>
+<li><p><span class="math inline">\(\tau = -0.3\)</span> indica una
+relación monótona negativa débil.</p></li>
+</ul>
+</br></br>
+<h3>
+Pruebas de hipótesis
+</h3>
+<p>Para evaluar la <strong>significancia estadística</strong> de la
+correlación de Kendall, se establece la siguiente prueba de
+hipótesis:</p>
+<ul>
+<li><p><strong>Hipótesis nula (<span
+class="math inline">\(H_0\)</span>):</strong> No hay asociación entre
+las variables.</p></li>
+<li><p><strong>Hipótesis alternativa (<span
+class="math inline">\(H_1\)</span>):</strong> Existe una asociación
+monótona entre las variables.</p></li>
+</ul>
+<p>El <strong>estadístico de prueba</strong> para grandes muestras
+(<span class="math inline">\(n &gt; 10\)</span>) sigue aproximadamente
+una <strong>distribución normal estándar</strong>:</p>
+<p><span class="math display">\[
+Z = \frac{\tau \sqrt{n(n-1)/2}}{\sqrt{(2(2n+5))/9}}
+\]</span></p>
+<p>Para que la prueba de hipótesis de Kendall sea válida, se deben
+cumplir los siguientes criterios:</p>
+<ol style="list-style-type: decimal">
+<li><p><strong>Independencia de las observaciones</strong>: Las parejas
+<span class="math inline">\((x_i, y_i)\)</span> deben ser independientes
+entre sí.</p></li>
+<li><p><strong>Nivel de medición ordinal o superior</strong>: Ambas
+variables deben ser al menos ordinales.</p></li>
+<li><p><strong>Tamaño de muestra adecuado</strong>: Para pequeños
+tamaños de muestra (<span class="math inline">\(n &lt; 10\)</span>), es
+preferible usar tablas exactas en lugar de la aproximación
+normal.</p></li>
+<li><p><strong>Ausencia de fuertes empates</strong>: Si hay demasiados
+valores repetidos, la estimación de <span
+class="math inline">\(\tau\)</span> puede verse afectada.</p></li>
+</ol>
+<p></br> <strong>¿Cuándo usar Kendall en lugar de Spearman o
+Pearson?</strong></p>
+<ul>
+<li><p>Si se espera que la relación entre las variables sea lineal, los
+datos sean continuos y aproximadamente normales, no haya valores
+atípicos fuertes que puedan afectar la media y la varianza, se necesite
+una medida de asociación basada en la covarianza, entonces usa
+Pearson.</p></li>
+<li><p>Si la relación entre las variables es monótona, pero no
+necesariamente lineal, los datos son ordinales o continuos sin cumplir
+normalidad, existen valores atípicos, se desea una medida basada en los
+rangos, en lugar de los valores absolutos, entonces usa
+Spearman.</p></li>
+<li><p>Si los datos contienen muchos empates (por ejemplo, mediciones
+ordinales con valores repetidos), se quiere evaluar la relación monótona
+de manera más robusta en comparación con Spearman, se tienen pocas
+observaciones, se necesita una medida más interpretativa basada en la
+proporción de pares ordenados correctamente, entonces usa
+Kendall.</p></li>
+</ul>
+<p>La <strong>Tabla 3.5</strong> resume algunos de los aspectos clave de
+las correlaciones de Pearson, Spearman y Kendall.</p>
+<br/><br/>
+<center>
+<strong>Tabla 3.5</strong> Comparación de Pearson, Spearman y Kendall.
+</center>
+<table>
+<colgroup>
+<col width="33%" />
+<col width="22%" />
+<col width="22%" />
+<col width="22%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Criterio</strong></th>
+<th><strong>Pearson (<span
+class="math inline">\(r\)</span>)</strong></th>
+<th><strong>Spearman (<span
+class="math inline">\(\gamma_{s}\)</span>)</strong></th>
+<th><strong>Kendall (<span
+class="math inline">\(\tau\)</span>)</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Tipo de relación</strong></td>
+<td>Lineal</td>
+<td>Monótona</td>
+<td>Monótona</td>
+</tr>
+<tr class="even">
+<td><strong>Basado en</strong></td>
+<td>Covarianza y valores</td>
+<td>Rangos</td>
+<td>Orden relativo</td>
+</tr>
+<tr class="odd">
+<td><strong>Sensibilidad a atípicos</strong></td>
+<td>Alta</td>
+<td>Moderada</td>
+<td>Baja</td>
+</tr>
+<tr class="even">
+<td><strong>Uso con datos ordinales</strong></td>
+<td>No</td>
+<td>Sí</td>
+<td>Sí</td>
+</tr>
+<tr class="odd">
+<td><strong>Robustez con empates</strong></td>
+<td>No aplica</td>
+<td>Afectado</td>
+<td>Mejor opción</td>
+</tr>
+<tr class="even">
+<td><strong>Mejor en muestras pequeñas</strong></td>
+<td>No</td>
+<td>No siempre</td>
+<td>Sí</td>
+</tr>
+<tr class="odd">
+<td><strong>Computacionalmente eficiente</strong></td>
+<td>Sí</td>
+<td>Moderado</td>
+<td>Más costoso</td>
+</tr>
+</tbody>
+</table>
+</br></br>
+<div class="caja-ejemplo">
+<h3>
+Ejemplo:
+</h3>
+<p>
+<p>Este ejemplo es la continuación de los análisis previos realizados
+para los coeficientes de <strong>Pearson y Spearman</strong>, donde se
+exploraron las posibles asociaciones entre las variables del conjunto de
+datos <code>biomasa</code>, utilizando la función <code>cor()</code> en
+<strong>R</strong>. Como se explicó previamente, todas las variables son
+<strong>cuantitativas continuas</strong>, lo que permite aplicar métodos
+de correlación para evaluar sus relaciones.</p>
+<p>En este caso, se emplea la <strong>correlación de Kendall</strong>,
+la cual mide la asociación ordinal entre dos variables mediante la
+comparación de pares de observaciones. Esta medida es especialmente útil
+cuando los datos contienen empates o no siguen una distribución
+normal.</p>
+<p>El código en <strong>R</strong> para calcular la matriz de
+correlación de Kendall y realizar los test de hipótesis correspondientes
+es el siguiente:</p>
+<pre>
+# Cargar las librerías necesarias
+library(paqueteMETODOS)  # Contiene el conjunto de datos "biomasa"
+library(GGally)          # Para matriz de gráficos de dispersión y correlación
+library(dplyr)           # Para manipulación de datos
+library(ggplot2)         # Para visualización de datos
+
+# Cargar la base de datos "biomasa"
+data(biomasa)
+
+# Calcular la matriz de correlación de Kendall
+correlacion_kendall <- cor(biomasa[, 3:8], method = "kendall", use = "pairwise.complete.obs") %>% round(3)
+
+# Mostrar la matriz de correlación de Kendall
+print("Matriz de correlación de Kendall:")
+print(correlacion_kendall)
+
+#Prueba de correlación de Kendall sin advertencias
+print("Resultados de la prueba de correlación de Kendall:")
+for (i in 3:7) {
+  for (j in (i+1):8) {
+    test_result <- cor.test(
+      biomasa[[i]], biomasa[[j]],
+      method = "kendall",
+      exact = FALSE,  # Desactiva el método exacto para evitar advertencias
+      alternative = "two.sided"
+    )
+    cat("\nVariables:", colnames(biomasa)[i], "vs", colnames(biomasa)[j], "\n")
+    print(test_result)
+  }
+}
+
+#Matriz de gráficos de dispersión con correlaciones de Kendall
+plot.kendall <- ggpairs(
+  biomasa[, 3:8],  # Seleccionamos las 6 variables
+  title = "Matriz de Dispersion y Correlacion - Kendall",
+  upper = list(continuous = wrap("cor", size = 4, method = "kendall")),  # Correlaciones de Kendall
+  lower = list(continuous = wrap("points", alpha = 0.5, size = 1.5)),  # Dispersión en la parte inferior
+  diag = list(continuous = wrap("densityDiag", alpha = 0.6))  # Densidades en la diagonal
+)
+
+#Mostrar la matriz de gráficos
+print(plot.kendall)
+</pre>
+<pre class="r"><code># Cargar las librerías necesarias
+library(paqueteMETODOS)  # Contiene el conjunto de datos &quot;biomasa&quot;
+library(GGally)          # Para matriz de gráficos de dispersión y correlación
+library(dplyr)           # Para manipulación de datos
+library(ggplot2)         # Para visualización de datos
+
+# Cargar la base de datos &quot;biomasa&quot;
+data(biomasa)
+
+# Calcular la matriz de correlación de Kendall
+correlacion_kendall &lt;- cor(biomasa[, 3:8], method = &quot;kendall&quot;, use = &quot;pairwise.complete.obs&quot;) %&gt;% round(3)
+
+# Mostrar la matriz de correlación de Kendall
+print(&quot;Matriz de correlación de Kendall:&quot;)
+print(correlacion_kendall)
+
+#Prueba de correlación de Kendall sin advertencias
+print(&quot;Resultados de la prueba de correlación de Kendall:&quot;)
+for (i in 3:7) {
+  for (j in (i+1):8) {
+    test_result &lt;- cor.test(
+      biomasa[[i]], biomasa[[j]],
+      method = &quot;kendall&quot;,
+      exact = FALSE,  # Desactiva el método exacto para evitar advertencias
+      alternative = &quot;two.sided&quot;
+    )
+    cat(&quot;\nVariables:&quot;, colnames(biomasa)[i], &quot;vs&quot;, colnames(biomasa)[j], &quot;\n&quot;)
+    print(test_result)
+  }
+}
+
+#Matriz de gráficos de dispersión con correlaciones de Kendall
+plot.kendall &lt;- ggpairs(
+  biomasa[, 3:8],  # Seleccionamos las 6 variables
+  title = &quot;Matriz de Dispersion y Correlacion - Kendall&quot;,
+  upper = list(continuous = wrap(&quot;cor&quot;, size = 4, method = &quot;kendall&quot;)),  # Correlaciones de Kendall
+  lower = list(continuous = wrap(&quot;points&quot;, alpha = 0.5, size = 1.5)),  # Dispersión en la parte inferior
+  diag = list(continuous = wrap(&quot;densityDiag&quot;, alpha = 0.6))  # Densidades en la diagonal
+)
+
+#Mostrar la matriz de gráficos
+print(plot.kendall)</code></pre>
+<p>La <strong>Tabla 3.6</strong> presenta las estimaciones de la matriz
+de correlación de Kendall. De acuerdo con los resultados de las
+variables <strong>biomasa aérea</strong>, <strong>biomasa total</strong>
+y <strong>área foliar</strong> que no cumplieron con los supuestos de
+normalidad y presentaron valores atípicos se puede concluir:</p>
+<ul>
+<li><p><strong>Biomasa aérea vs. biomasa total</strong> (<span
+class="math inline">\(\tau = 0.982\)</span>) presenta una
+<strong>asociación monótona positiva muy fuerte</strong>, lo que indica
+que un aumento en la biomasa aérea está prácticamente siempre acompañado
+por un aumento en la biomasa total.</p></li>
+<li><p><strong>Biomasa aérea vs. área foliar</strong> (<span
+class="math inline">\(\tau = 0.660\)</span>) muestra una
+<strong>relación monótona positiva moderada a fuerte</strong>, lo que
+sugiere que el desarrollo del área foliar tiende a estar asociado con un
+aumento en la biomasa aérea.</p></li>
+<li><p><strong>Biomasa total vs. área foliar</strong> (<span
+class="math inline">\(\tau = 0.652\)</span>) también presenta una
+<strong>relación monótona positiva moderada a fuerte</strong>, lo que
+confirma que un mayor desarrollo del área foliar se asocia con una mayor
+biomasa total.</p></li>
+</ul>
+<br/><br/>
+<center>
+<strong>Tabla 3.6</strong> Matriz de correlación de Kendall.
+</center>
+<pre>
+           bio_aerea bio_sub bio_total area_foliar diametro altura
+bio_aerea       1.000  -0.400     0.982       0.660    0.789  0.669
+bio_sub        -0.400   1.000    -0.381      -0.390   -0.449 -0.362
+bio_total       0.982  -0.381     1.000       0.652    0.783  0.668
+area_foliar     0.660  -0.390     0.652       1.000    0.520  0.377
+diametro        0.789  -0.449     0.783       0.520    1.000  0.798
+altura          0.669  -0.362     0.668       0.377    0.798  1.000
+</pre>
+<p>Los resultados de la implementación del test de Kendall se presentan
+a continuación. Dado que todas las relaciones analizadas tienen valores
+<span class="math inline">\(valor-p &lt; 0.001\)</span>, se concluye que
+las asociaciones monótonas observadas son estadísticamente
+significativas. Además, la correlación de Kendall confirma relaciones
+monótonas significativas en las variables <strong>biomasa
+aérea</strong>, <strong>biomasa total</strong> y <strong>área
+foliar</strong>, las cuales no cumplían con los supuestos de
+Pearson.</p>
+<pre>
+Variables: bio_aerea vs bio_sub 
+
+    Kendall's rank correlation tau
+
+data:  biomasa[[i]] and biomasa[[j]]
+z = -5.5543, p-value = 2.787e-08
+alternative hypothesis: true tau is not equal to 0
+sample estimates:
+       tau 
+-0.4002568 
+
+
+Variables: bio_aerea vs bio_total 
+
+    Kendall's rank correlation tau
+
+data:  biomasa[[i]] and biomasa[[j]]
+z = 13.691, p-value < 2.2e-16
+alternative hypothesis: true tau is not equal to 0
+sample estimates:
+      tau 
+0.9816319 
+
+
+Variables: bio_aerea vs area_foliar 
+
+    Kendall's rank correlation tau
+
+data:  biomasa[[i]] and biomasa[[j]]
+z = 9.2118, p-value < 2.2e-16
+alternative hypothesis: true tau is not equal to 0
+sample estimates:
+      tau 
+0.6602549 
+
+
+Variables: bio_aerea vs diametro 
+
+    Kendall's rank correlation tau
+
+data:  biomasa[[i]] and biomasa[[j]]
+z = 10.929, p-value < 2.2e-16
+alternative hypothesis: true tau is not equal to 0
+sample estimates:
+      tau 
+0.7894447 
+
+
+Variables: bio_aerea vs altura 
+
+    Kendall's rank correlation tau
+
+data:  biomasa[[i]] and biomasa[[j]]
+z = 9.265, p-value < 2.2e-16
+alternative hypothesis: true tau is not equal to 0
+sample estimates:
+      tau 
+0.6687808 
+
+
+Variables: bio_sub vs bio_total 
+
+    Kendall's rank correlation tau
+
+data:  biomasa[[i]] and biomasa[[j]]
+z = -5.2858, p-value = 1.251e-07
+alternative hypothesis: true tau is not equal to 0
+sample estimates:
+       tau 
+-0.3808622 
+
+
+Variables: bio_sub vs area_foliar 
+
+    Kendall's rank correlation tau
+
+data:  biomasa[[i]] and biomasa[[j]]
+z = -5.4077, p-value = 6.382e-08
+alternative hypothesis: true tau is not equal to 0
+sample estimates:
+       tau 
+-0.3895093 
+
+
+Variables: bio_sub vs diametro 
+
+    Kendall's rank correlation tau
+
+data:  biomasa[[i]] and biomasa[[j]]
+z = -6.192, p-value = 5.942e-10
+alternative hypothesis: true tau is not equal to 0
+sample estimates:
+       tau 
+-0.4494823 
+
+
+Variables: bio_sub vs altura 
+
+    Kendall's rank correlation tau
+
+data:  biomasa[[i]] and biomasa[[j]]
+z = -4.9848, p-value = 6.204e-07
+alternative hypothesis: true tau is not equal to 0
+sample estimates:
+       tau 
+-0.3615896 
+
+
+Variables: bio_total vs area_foliar 
+
+    Kendall's rank correlation tau
+
+data:  biomasa[[i]] and biomasa[[j]]
+z = 9.0967, p-value < 2.2e-16
+alternative hypothesis: true tau is not equal to 0
+sample estimates:
+      tau 
+0.6519296 
+
+
+Variables: bio_total vs diametro 
+
+    Kendall's rank correlation tau
+
+data:  biomasa[[i]] and biomasa[[j]]
+z = 10.838, p-value < 2.2e-16
+alternative hypothesis: true tau is not equal to 0
+sample estimates:
+      tau 
+0.7827976 
+
+
+Variables: bio_total vs altura 
+
+    Kendall's rank correlation tau
+
+data:  biomasa[[i]] and biomasa[[j]]
+z = 9.251, p-value < 2.2e-16
+alternative hypothesis: true tau is not equal to 0
+sample estimates:
+      tau 
+0.6676905 
+
+
+Variables: area_foliar vs diametro 
+
+    Kendall's rank correlation tau
+
+data:  biomasa[[i]] and biomasa[[j]]
+z = 7.2008, p-value = 5.986e-13
+alternative hypothesis: true tau is not equal to 0
+sample estimates:
+      tau 
+0.5199072 
+
+
+Variables: area_foliar vs altura 
+
+    Kendall's rank correlation tau
+
+data:  biomasa[[i]] and biomasa[[j]]
+z = 5.2199, p-value = 1.79e-07
+alternative hypothesis: true tau is not equal to 0
+sample estimates:
+      tau 
+0.3766145 
+
+
+Variables: diametro vs altura 
+
+    Kendall's rank correlation tau
+
+data:  biomasa[[i]] and biomasa[[j]]
+z = 10.972, p-value < 2.2e-16
+alternative hypothesis: true tau is not equal to 0
+sample estimates:
+      tau 
+0.7978186 
+</pre>
+<p>La <strong>Figura 3.9</strong> permite visualizar los resultados de
+la correlación de Kendall junto con los gráficos de dispersión para
+analizar la asociación entre cada par de variables. Este tipo de
+visualización es similar a la utilizada en la correlación de Pearson y
+Spearman.</p>
+<br/><br/>
+<center>
+<img src="img/fig39.png" width="80%" style="display: block; margin: auto;" />
+<strong>Figura 3.9</strong>. Descripción de cada par de variables de la
+base de datos biomasa.
+</center>
+<p><br/><br/></p>
+<br/><br/>
+<center>
+<strong>Tabla 3.7</strong> Comparación entre Pearson, Spearman y
+Kendall.
+</center>
+<table>
+<colgroup>
+<col width="14%" />
+<col width="28%" />
+<col width="31%" />
+<col width="25%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Relación</th>
+<th>Pearson</th>
+<th>Spearman</th>
+<th>Kendall</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Biomasa aérea vs Biomasa total</strong></td>
+<td>0.999***</td>
+<td>0.9989***</td>
+<td>0.982***</td>
+</tr>
+<tr class="even">
+<td><strong>Biomasa aérea vs Área foliar</strong></td>
+<td>0.865***</td>
+<td>0.8340***</td>
+<td>0.660***</td>
+</tr>
+<tr class="odd">
+<td><strong>Biomasa total vs Área foliar</strong></td>
+<td>0.860***</td>
+<td>0.8280***</td>
+<td>0.652***</td>
+</tr>
+</tbody>
+</table>
+<p>De acuerdo con la <strong>Tabla 3.7</strong> y resultados
+anteriores:</p>
+<ul>
+<li><p>En la matriz de correlación de <strong>Pearson</strong>, todas
+las correlaciones entre estas variables presentan <strong>tres
+asteriscos (<span class="math inline">\(valor-p &lt;
+0.001\)</span>)</strong>, lo que indica que las relaciones lineales
+observadas son <strong>altamente significativas</strong> y no ocurren al
+azar. Sin embargo, debido a la falta de normalidad y la presencia de
+valores atípicos en tres variables, la validez de estos coeficientes
+puede estar comprometida.</p></li>
+<li><p><strong>Pearson mostró correlaciones extremadamente altas (<span
+class="math inline">\(r &gt; 0.86\)</span>), lo que indica relaciones
+lineales fuertes.</strong> Sin embargo, los resultados relacionados con
+3 variables pueden estar afectadas por la falta de normalidad y valores
+atípicos en los datos.</p></li>
+<li><p><strong>Spearman confirmó asociaciones monótonas significativas,
+con valores altos pero ligeramente menores que Pearson.</strong> Esto
+indica que, aunque la relación es fuerte, no necesariamente es
+estrictamente lineal.</p></li>
+<li><p><strong>Kendall presentó valores más bajos en comparación con
+Spearman y Pearson, pero sigue mostrando asociaciones
+significativas.</strong> Esto es esperado, ya que Kendall mide
+relaciones basadas en pares concordantes y discordantes, lo que lo hace
+menos sensible a variaciones pequeñas en los datos.</p></li>
+</ul>
+</p>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

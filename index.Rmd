@@ -25,11 +25,11 @@ knitr::include_graphics("img/banner2.png")
 
 
 <div class="caja-nota">
-> *"En esta unidad, el análisis se centrará en la **regresión lineal simple**, donde se modelará una única variable respuesta en función de una sola variable predictora. No se abordarán relaciones más complejas ni modelos con múltiples predictores."*  
+> *En esta unidad, el análisis se centrará en el **Modelo de Regresión Lineal Simple**, donde se modelará una única variable respuesta en función de una sola variable predictora. No se abordarán relaciones más complejas ni modelos con múltiples predictores.*  
 </div>
 
 <div class="caja-nota">
-> *"En el siguiente curso de **Estadística de la Maestría en Ciencia de Datos**, se estudiará el **modelo de regresión múltiple**, el cual permite modelar una variable respuesta en términos de varias variables predictoras. Este modelo amplía las capacidades de análisis al considerar múltiples factores que pueden influir simultáneamente en la variable de interés."*
+> *En el siguiente curso de **Modelos Estadísticos para la Toma de Decisiones**, se estudiará el **Modelo de Regresión Lineal Múltiple**, el cual permite modelar una variable respuesta en términos de varias variables predictoras. Este modelo amplía las capacidades de análisis al considerar múltiples factores que pueden influir simultáneamente en la variable de interés.*
 </div>
 
 

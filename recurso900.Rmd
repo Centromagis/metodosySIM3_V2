@@ -53,11 +53,22 @@ Sys.sleep(2)  # Espera 2 segundos para que se renderice correctamente
 rgl.snapshot("hat_matrix_projection.png", fmt = "png")
 ```
 
-La **matriz hat** (o **matriz sombrero**) es una herramienta fundamental en la regresión lineal, ya que permite medir la influencia que tiene cada observación en los valores ajustados del modelo. En particular, los valores de su **diagonal** representan la **distancia relativa** de cada observación con respecto al **centroide** de las variables explicativas.
+La **matriz hat** (o **matriz sombrero**) es una herramienta fundamental en la regresión lineal, ya que permite medir la influencia que tiene cada observación en los valores ajustados del modelo. Matemáticamente, el leverage se define como la diagonal de la matriz  \( H \), determinada por la **matriz de diseño**  \( X \) como sigue:
 
-En otras palabras, estos valores indican **qué tan alejados están los puntos individuales en el espacio de las variables predictoras** con respecto al centro de la nube de datos. 
 
-En la **Figura 3.44** se ilustra este concepto en un caso con tres variables explicativas \( X_1, X_2 \) y \( X_3 \). En ella, el centroide de los datos se representa con un **punto rojo**, y se observan las distancias relativas de cada observación con respecto a este centroide.
+  \[
+  H = X (X^\top X)^{-1} X^\top,
+  \]
+  
+  donde los elementos de la diagonal se determinan como sigue,
+  
+  \[
+h_{ii} = \frac{1}{n} + \frac{(x_i - \bar{x})^2}{\sum_{j=1}^{n} (x_j - \bar{x})^2}
+\]
+
+La cantidad \( h_{ii} \) se denomina **leverage** y corresponde al elemento \( i \)-ésimo de la diagonal de la matriz **sombrero** \( H \).  Estos valores indican **qué tan alejados están los puntos individuales en el espacio de las variables predictoras** con respecto al centro de la nube de datos. Además, indican qué tan influyente es una observación en la estimación de los valores ajustados del modelo.
+
+En la **Figura 3.44** se ilustra este concepto en un caso con tres variables explicativas \( X_1, X_2 \) y \( X_3 \) que determinan la matriz de diseño  \( X \). En ella, el centroide de los datos se representa con un **punto rojo**, y se observan las distancias relativas de cada observación con respecto a este centroide.
 
 
 
@@ -72,25 +83,25 @@ knitr::include_graphics("img/fig344.png")
 
 
 
-La cantidad \( h_{ii} \) se denomina **leverage** y corresponde al elemento \( i \)-ésimo de la diagonal de la matriz **sombrero** \( H \). Este valor indica qué tan influyente es una observación en la estimación de los valores ajustados del modelo.
+
 
 Los valores de \( h_{ii} \) cumplen las siguientes propiedades:
 
 - Siempre están dentro del rango:
 
-\[
-\frac{1}{n} \leq h_{ii} \leq 1
-\]
+   \[
+   \frac{1}{n} \leq h_{ii} \leq 1
+   \]
 
-donde \( n \) es el número total de observaciones.
+  donde \( n \) es el número total de observaciones.
 
 - La **suma de todos los valores de leverage** es igual al número de coeficientes del modelo, incluyendo el intercepto:
 
-\[
-\sum h_{ii} = k + 1
-\]
+   \[
+   \sum h_{ii} = k + 1
+   \]
 
-donde \( k \) es el número de variables explicativas en el modelo.
+   donde \( k \) es el número de variables explicativas en el modelo.
 
 **Interpretación de los valores de leverage**:
 
@@ -110,10 +121,10 @@ donde \( k \) es el número de variables explicativas en el modelo.
    
    - \( n \) es el número total de observaciones.
 
-  Un valor de **leverage** mayor a este umbral indica que la observación tiene un impacto considerable en el ajuste del modelo, ya que se encuentra alejada del centro  de los predictores en el espacio de covariables.
+    Un valor de **leverage** mayor a este umbral indica que la observación tiene un impacto considerable en el ajuste del modelo, ya que se encuentra alejada del centro  de los predictores en el espacio de covariables.
 
 
-Este concepto es crucial para identificar **puntos con alta influencia** en el modelo de regresión y evaluar la robustez de los resultados obtenidos.
+   Este concepto es crucial para identificar **puntos con alta influencia** en el modelo de regresión y evaluar la robustez de los resultados obtenidos.
 
 
 
@@ -316,7 +327,7 @@ Para calcular la **Distancia de Cook** en **R**, se usa la función `cooks.dista
 Si se desea evaluar la influencia de cada observación, se recomienda calcular la distancia de Cook y analizarla en conjunto con el **leverage** y los **residuos estandarizados**.
 
 <div class="caja-nota">
->*"En esta unidad, el análisis se centra en la **Regresión Lineal Simple**, la cual permite modelar la relación entre una **única variable explicativa** y una **variable respuesta**. Sin embargo, en muchos casos, los fenómenos de interés involucran **múltiples factores** que afectan la variable respuesta. Por ello, en el curso de **Modelos**, que se estudiará el siguiente semestre, se explorará la **Regresión Lineal Múltiple**. Este modelo amplía las herramientas de análisis al considerar **varias variables explicativas simultáneamente**."*  
+>*En esta unidad, el análisis se centra en la **Regresión Lineal Simple**, la cual permite modelar la relación entre una **única variable explicativa** y una **variable respuesta**. Sin embargo, en muchos casos, los fenómenos de interés involucran **múltiples factores** que afectan la variable respuesta. Por ello, en el curso de **Modelos Estadísticos para la Toma de Decisiones**, que se estudiará el siguiente semestre, se explorará la **Regresión Lineal Múltiple**. Este modelo amplía las herramientas de análisis al considerar **varias variables explicativas simultáneamente**.*  
 </div>
 
 
@@ -341,16 +352,12 @@ En este análisis, se trabajará con una base de datos que contiene **medidas an
 
 Los datos están disponibles en el siguiente enlace:
 
-[Datos de medidas antropométricas](https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_atip.txt)
+[Datos de medidas antropométricas](https://raw.githubusercontent.com/Centromagis/metodosySIM3_V2/refs/heads/main/datos_MetySim/dat_atip.txt)
 
  
 
 
 ```{r,eval=FALSE,warning=FALSE,message=FALSE}
-
-# =======================
-# Lectura y exploración de datos
-# =======================
 
 # Configurar el entorno para el uso del idioma español
 Sys.setlocale("LC_ALL", "es_ES.UTF-8")
@@ -365,7 +372,7 @@ library(patchwork) # Para combinar gráficos en una sola figura
 library("GGally")  # Para matriz de gráficos de dispersión y correlación
 
 # Definir la URL del archivo con los datos
-file <- "https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_atip.txt"
+file <- "https://raw.githubusercontent.com/Centromagis/metodosySIM3_V2/refs/heads/main/datos_MetySim/dat_atip.txt"
 
 # Cargar el conjunto de datos desde la URL
 datos <- read.table(file = file, header = TRUE)
@@ -399,12 +406,6 @@ print(plot.pearson)
 print(plot.kendall)
 
 
-
-
-# =======================
-#Ajuste del modelo
-# =======================
-
 # Ajustar el modelo de regresión lineal
 mod1 <- lm(Peso ~ circun_cuello, data=datos)
 
@@ -426,12 +427,6 @@ abline(mod1, lwd=3, col='blue2')
 # Agregar la ecuación del modelo en la gráfica
 text(x=34, y=95, labels = bquote(hat(Peso) == .(intercepto) + .(pendiente) * C.cuello), 
      col='blue3' )
-
-
-
-# =======================
-# Análisis de Influencia
-# =======================
 
 
 # Calcular residuos estandarizados
@@ -463,12 +458,6 @@ par(mfrow=c(2, 2))
 
 # Gráficos de diagnóstico del modelo
 plot(mod1, col='deepskyblue4', pch=19, main="Diagnóstico de Residuos")
-
-
-# =======================
-# Datos sospechosos
-# =======================
-
 
 
 # Crear un dataframe con los resultados
@@ -503,12 +492,6 @@ analisis_puntos_filtrados <- analisis_puntos[outliers_log | influyentes_log | hi
 print(analisis_puntos_filtrados)
 
 
-
-# =======================
-# Sospechosos y el modelo
-# =======================
-
-
 # Identificar observaciones sospechosas
 puntos_sospechosos <- c(analisis_puntos_filtrados[1,1], 
                         analisis_puntos_filtrados[2,1], 
@@ -539,11 +522,6 @@ text(x=34, y=95, labels = bquote(hat(Peso) == .(intercepto) + .(pendiente) * cir
 
 
 
-# =======================
-# Cook vesus levergae
-# =======================
-
-
 # Convertir la variable Observacion a factor para usar colores categóricos
 analisis_puntos$Observacion <- as.factor(analisis_puntos$Observacion)
 
@@ -565,11 +543,7 @@ ggplot(analisis_puntos, aes(x=Leverage, y=Distancia_Cook)) +
        color="Observación") +
   theme_minimal()
 
-
-# =======================
-# Ajuste del Modelo y Comparación de Métricas
-# =======================
-
+ 
 # Función para ajustar el modelo y extraer métricas
 ajustar_modelo <- function(datos_filtrados) {
   modelo <- lm(Peso ~ circun_cuello, data = datos_filtrados)
@@ -591,11 +565,6 @@ ajustar_modelo <- function(datos_filtrados) {
   return(c(coef1,coef2,R2,desv_estandar,p_shapiro, p_bptest, p_dwtest))
 }
 
-
-
-# =======================
-# Ajustar Modelos con Diferentes Exclusiones
-# =======================
 
 # Identificar las dos observaciones con mayor distancia de Cook
 observaciones_mayor_cook <- order(dist_cook, decreasing = TRUE)[1:2]
@@ -650,7 +619,7 @@ library(patchwork) # Para combinar gráficos en una sola figura
 library("GGally")  # Para matriz de gráficos de dispersión y correlación
 
 # Definir la URL del archivo con los datos
-file <- "https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_atip.txt"
+file <- "https://raw.githubusercontent.com/Centromagis/metodosySIM3_V2/refs/heads/main/datos_MetySim/dat_atip.txt"
 
 # Cargar el conjunto de datos desde la URL
 datos <- read.table(file = file, header = TRUE)
@@ -660,7 +629,7 @@ correlacion_pearson <- cor(datos[,c(3,5,6,7)], method = "pearson", use = "pairwi
 correlacion_kendall <- cor(datos[,c(3,5,6,7)], method = "kendall", use = "pairwise.complete.obs") %>% round(3)
 correlacion_spearman <- cor(datos[,c(3,5,6,7)], method = "spearman", use = "pairwise.complete.obs") %>% round(3)
 
-#Matriz de gráficos de dispersión con correlaciones de Pearson
+# Matriz de gráficos de dispersión con correlaciones de Pearson
 plot.pearson <- ggpairs(
   datos[,c(3,5,6,7)],  
   title = "Matriz de Dispersion y Correlacion - Pearson",
@@ -670,7 +639,7 @@ plot.pearson <- ggpairs(
 )
 
 
-#Matriz de gráficos de dispersión con correlaciones de Kendall
+# Matriz de gráficos de dispersión con correlaciones de Kendall
 plot.kendall <- ggpairs(
   datos[,c(3,5,6,7)],  
   title = "Matriz de Dispersion y Correlacion - Kendall",
@@ -679,7 +648,7 @@ plot.kendall <- ggpairs(
   diag = list(continuous = wrap("densityDiag", alpha = 0.6))  
 )
 
-#Mostrar la matriz de gráficos
+# Mostrar la matriz de gráficos
 print(plot.pearson)
 print(plot.kendall)
 </pre>
@@ -713,16 +682,6 @@ knitr::include_graphics("img/fig347.png")
 
 Se ajusta un **modelo de regresión lineal simple** para explicar la variable **Peso** en función de la **circunferencia del cuello**. 
 
-El modelo estimado es el siguiente:
-
-\[
-\hat{\text{Peso}} = -37.1552 + 2.9002 \times \text{Circunferencia del cuello}\\ \varepsilon_i \sim N(0, \hat{\sigma}^2=5.936^2)
-\]
-
-Ambos coeficientes son **estadísticamente significativos**, con valores-p de **\(5.33 \times 10^{-5}\)** y **\( < 2 \times 10^{-16}\)**, respectivamente.
-
-La **Figura 3.48** muestra la relación entre el peso y la circunferencia del cuello, junto con la **línea de regresión ajustada**. En este gráfico se destaca un posible **punto atípico**, correspondiente a un estudiante con un peso superior a **100 kilogramos**, que se encuentra alejado de la recta de regresión.
-
 El siguiente código genera el modelo y la visualización:
 
 
@@ -751,6 +710,14 @@ text(x=34, y=95, labels = bquote(hat(Peso) == .(intercepto) + .(pendiente) * C.c
 </pre>
 
 
+El modelo estimado es el siguiente:
+
+\[
+\hat{\text{Peso}} = -37.1552 + 2.9002 \times \text{Circunferencia del cuello}\\ \varepsilon_i \sim N(0, \hat{\sigma}^2=5.936^2)
+\]
+
+Ambos coeficientes son **estadísticamente significativos**, con $valores-p$ de **\(5.33 \times 10^{-5}\)** y **\( < 2 \times 10^{-16}\)**, respectivamente.
+
 
 <pre>
 Call:
@@ -771,6 +738,8 @@ Residual standard error: 5.936 on 50 degrees of freedom
 Multiple R-squared:  0.7501,	Adjusted R-squared:  0.7451 
 F-statistic: 150.1 on 1 and 50 DF,  p-value: < 2.2e-16
 </pre>
+
+La **Figura 3.48** muestra la relación entre el peso y la circunferencia del cuello, junto con la **línea de regresión ajustada**. En este gráfico se destaca un posible **punto atípico**, correspondiente a un estudiante con un peso superior a **100 kilogramos**, que se encuentra alejado de la recta de regresión.
 
 
 
@@ -860,7 +829,7 @@ knitr::include_graphics("img/fig350.png")
 
 
 
-Los valores de los **residuos estandarizados**, **leverage** y **distancia de Cook** se presentan a continuación. Los resultados indican que **las observaciones 8, 11 y 51 registran los valores más altos** en estas métricas. 
+Los valores de los **residuos estandarizados**, **leverage** y **distancia de Cook** se presentan a continuación. Los resultados indican que **las observaciones 8, 11 y 51 registran los valores mayores al resto** en estas métricas. 
 
 Se destaca que únicamente en el caso de la **observación 11**, el residuo estandarizado supera el umbral en valor absoluto de **3**. Asimismo, en ningún caso la **distancia de Cook** excede el valor de **1**.
 
@@ -992,7 +961,7 @@ knitr::include_graphics("img/fig352.png")
 
 ---
 
-La siguiente tabla presenta los resultados del ajuste del modelo de regresión lineal bajo diferentes escenarios. Se incluyen el coeficiente de determinación (\(R^2\)), la estimación de la pendiente del modelo, la desviación estándar de los residuos, y los valores-p de las pruebas de normalidad (Shapiro-Wilk), homocedasticidad (Breusch-Pagan) e independencia de errores (Durbin-Watson).
+La siguiente tabla presenta los resultados del ajuste del modelo de regresión lineal bajo diferentes escenarios. Se incluyen el coeficiente de determinación (\(R^2\)), la estimación de la pendiente del modelo, la desviación estándar de los residuos, y los $valores-p$ de las pruebas de normalidad (Shapiro-Wilk), homocedasticidad (Breusch-Pagan) e independencia de errores (Durbin-Watson).
 
 Los resultados muestran que tanto el **modelo original** como el **modelo sin las observaciones 11 y 51** cumplen con los supuestos de normalidad, homocedasticidad e independencia de los errores. Sin embargo, al excluir las dos observaciones con mayor distancia de Cook, la desviación estándar de los errores disminuye a **5.0199**, en comparación con **5.9358** en el modelo original.  
 

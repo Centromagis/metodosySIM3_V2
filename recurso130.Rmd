@@ -107,9 +107,9 @@ Valores intermedios indican el grado de asociación. Por ejemplo:
 
 Para evaluar la **significancia estadística** de la correlación de Kendall, se establece la siguiente prueba de hipótesis:
 
-- **Hipótesis nula (\(H_0\)):** No hay asociación entre las variables.
+- Hipótesis nula \(\left(H_0\right)\): No hay asociación entre las variables.
 
-- **Hipótesis alternativa (\(H_1\)):** Existe una asociación monótona entre las variables.
+- Hipótesis alternativa \(\left(H_1\right)\): Existe una asociación monótona entre las variables.
 
 
 El **estadístico de prueba** para grandes muestras (\(n > 10\)) sigue aproximadamente una **distribución normal estándar**:
@@ -151,7 +151,7 @@ La **Tabla 3.5** resume algunos de los aspectos clave de las correlaciones de Pe
 | **Criterio**                          | **Pearson (\(r\))**       | **Spearman (\(\gamma_{s}\))**   | **Kendall (\(\tau\))**   |
 |---------------------------------------|--------------------------|--------------------------|--------------------------|
 | **Tipo de relación**                  | Lineal                   | Monótona                 | Monótona                 |
-| **Basado en**                          | Covarianza y valores     | Rangos                   | Orden relativo           |
+| **Basado en**                          | Covarianza      | Rangos                   | Orden relativo           |
 | **Sensibilidad a atípicos**            | Alta                     | Moderada                 | Baja                     |
 | **Uso con datos ordinales**            | No                       | Sí                        | Sí                        |
 | **Robustez con empates**               | No aplica                | Afectado                 | Mejor opción             |
