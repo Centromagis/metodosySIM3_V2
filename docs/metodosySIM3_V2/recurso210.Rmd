@@ -1,0 +1,189 @@
+---
+title: <span style="color:#686868"> **Estimación por mínimos cuadrados**</span>
+author: "Métodos y Simulación Estadística"
+output:
+  html_document:
+    code_folding: hide
+    css: style.css
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, comment = NA)
+
+c1="#FF7F00"
+c2="#=EB0C6"
+c3="#034A94"
+c4="#686868"
+
+library(ggplot2)
+library(paqueteMETODOS)
+data(biomasa)
+modelo=lm(log(bio_total) ~ diametro, data=biomasa)
+```
+
+
+</br></br>
+<h3>Introducción</h3>
+
+En modelos de **regresión lineal simple**, el objetivo es encontrar la relación entre una **variable predictora** \(X\) y una **variable respuesta** \(Y\), con una ecuación lineal de la forma:
+
+\[
+Y_i = \beta_0 + \beta_1 X_i + \varepsilon_i, \quad i = 1, 2, \dots, n
+\]
+
+donde:
+
+- **\(\beta_0\)** es el **intercepto**, que representa el valor esperado de \( Y \) cuando \( X = 0 \).
+
+- **\(\beta_1\)** es la  **pendiente**, que indica cuánto cambia \( Y \) en promedio por cada unidad de cambio en \( X \).
+
+- **\(\varepsilon_i\)** es el  **término de error aleatorio**, que captura la variabilidad en \( Y \) no explicada por el modelo.
+
+
+
+Para estimar los coeficientes \(\beta_0\) y \(\beta_1\), se utiliza el **método de mínimos cuadrados ordinarios (MCO)**, que busca encontrar la mejor línea de ajuste minimizando la **suma de los cuadrados de los errores**:
+
+\[
+S(\beta_0, \beta_1) = \sum_{i=1}^{n} (Y_i - \beta_0 - \beta_1 X_i)^2.
+\]
+
+El criterio de mínimos cuadrados garantiza que la línea ajustada sea aquella que **minimiza la distancia cuadrática total entre los valores observados de la variable respuesta y los valores predichos por el modelo**.
+
+
+
+```{r,eval=FALSE,warning=FALSE,message=FALSE,include=FALSE}
+Sys.setlocale("LC_ALL", "es_ES.UTF-8")
+
+
+# Cargar las librerías necesarias
+library(ggplot2)
+
+# Definir la URL del archivo con los datos
+file <- "https://raw.githubusercontent.com/fhernanb/datos/master/propelente"
+
+# Cargar el conjunto de datos desde la URL en un data frame
+datos <- read.table(file = file, header = TRUE)
+
+# Ajustar el modelo de regresión lineal original (recta gris)
+mod1 <- lm(Resistencia ~ Edad, data = datos)
+
+# Crear predicciones para cada modelo
+datos$pred1 <- predict(mod1)  # Modelo original
+datos$pred2 <- 2620 + (-35 * datos$Edad)  # Modelo con pendiente -35 e intercepto 2620 (Azul)
+datos$pred3 <- 2627.822 + (-41 * datos$Edad)  # Modelo con pendiente -41 e intercepto 2627.822 (Verde)
+
+# Crear un gráfico de dispersión con las tres rectas de regresión
+plot.reg2<-ggplot(datos, aes(x = Edad, y = Resistencia)) +
+  # **Modelo 1 - Gris (Original)**
+  geom_smooth(method = "lm", se = FALSE, color = "lightgrey") +  # Línea de regresión gris
+  geom_segment(aes(xend = Edad, yend = pred1), col = 'red', lty = 'dashed') +  # Residuales modelo 1 (líneas rojas punteadas)
+  geom_point() +  # Puntos de datos observados
+  geom_point(aes(y = pred1), col = 'red') +  # Puntos de predicción en rojo
+  
+  # **Modelo 2 - Azul (Intercepto: 2620, Pendiente: -35)**
+  geom_abline(intercept = 2620, slope = -35, color = "blue", size = 1) +  # Línea azul
+  geom_segment(aes(xend = Edad, yend = pred2), col = 'blue', lty = 'dashed') +  # Residuales modelo 2
+  geom_point(aes(y = pred2), col = 'blue') +  # Puntos de predicción en azul
+
+  # **Modelo 3 - Verde (Intercepto: 2627.822, Pendiente: -41)**
+  geom_abline(intercept = 2627.822, slope = -41, color = "green", size = 1) +  # Línea verde
+  geom_segment(aes(xend = Edad, yend = pred3), col = 'green', lty = 'dashed') +  # Residuales modelo 3
+  geom_point(aes(y = pred3), col = 'green') +  # Puntos de predicción en verde
+  
+  # **Configuración del tema**
+  labs(title = "Estimación por Mínimos Cuadrados en Regresión Lineal",
+       x = "Edad",
+       y = "Resistencia") +
+  theme_light()  # Aplicar un tema ligero para mejorar la visualización
+
+```
+
+
+La **Figura 3.15** muestra la estimación de la recta de regresión mediante el **método de mínimos cuadrados**, ilustrando los valores observados, los valores ajustados y las posibles líneas de regresión obtenidas con diferentes estimaciones.
+
+Los **puntos negros** representan los valores observados de **Resistencia** para cada **Edad**, mientras que los **puntos rojos** corresponden a los valores ajustados por la **recta de regresión óptima (gris)** obtenida con el método de mínimos cuadrados. Los **puntos verdes y azules** representan los valores ajustados por las rectas verde y azul, respectivamente.
+
+La **línea gris** es la **"mejor recta de ajuste"** para la muestra, ya que **minimiza la suma de los cuadrados de los residuos**, proporcionando la "mejor estimación de la relación entre Edad y Resistencia" para la muestra tomada. En contraste, las **líneas azul y verde** representan posibles rectas de ajuste alternativas con pendientes distintas, pero que no minimizan la suma de cuadrado de los residuos de manera óptima para la muestra analizada.
+
+Las **líneas verticales punteadas rojas** representan los **residuales** para la recta óptima, es decir, la diferencia entre los valores observados y los valores predichos por la regresión gris. Por otro lado, las **líneas punteadas azules y verdes** indican los residuos para las regresiones azul y verde, respectivamente.
+
+Al comparar la longitud de las líneas verticales punteadas, se observa que las de color verde son las más largas, seguidas por las azules, y finalmente las rojas, que corresponden a la denominada "regresión óptima". La suma de los cuadrados de estas diferencias es menor en el caso de la recta de regresión gris, lo que indica que esta proporciona el mejor ajuste según el criterio de mínimos cuadrados.
+
+
+
+<br/><br/>
+<center>
+```{r, echo=FALSE, out.width="80%", fig.align = "center"}
+knitr::include_graphics("img/fig315.png")
+```
+**Figura 3.15** Comparación de la recta de regresión lineal con estimaciones por mínimos cuadrados (gris) con otras dos rectas de regresión lineal (verde y azul).
+</center>
+<br/><br/>
+
+---
+
+
+</br></br>
+<h3>Formulación</h3>
+
+
+Para estimar los parámetros \(\beta_0\) y \(\beta_1\) en un modelo de regresión lineal simple:
+
+\[
+Y_i = \beta_0 + \beta_1 X_i + \varepsilon_i
+\]
+
+se utiliza el **método de mínimos cuadrados ordinarios (MCO)**, que consiste en minimizar la **suma de los cuadrados de los errores (SCE)**:
+
+\[
+S(\beta_0, \beta_1) = \sum_{i=1}^{n} \varepsilon_i^2 = \sum_{i=1}^{n} (Y_i - \beta_0 - \beta_1 X_i)^2
+\]
+
+
+
+
+
+
+---
+
+
+Para encontrar las estimaciones de \(\beta_0\) y \(\beta_1\), se deriva la función de error \( S(\beta_0, \beta_1) \) respecto a los parámetros y se iguala a cero:
+
+\[
+\frac{\partial S(\beta_0, \beta_1)}{\partial \beta_0} = 0, \quad \frac{\partial S(\beta_0, \beta_1)}{\partial \beta_1} = 0
+\]
+
+Resolviendo este sistema de ecuaciones y reemplazando los datos de una muestra aleatoria concreta se  determinan las **estimaciones de mínimos cuadrados**:
+
+\[
+\widehat{\beta}_1 = \frac{S_{xy}}{S_{xx}}, \quad \widehat{\beta}_0 = \overline{y} - \widehat{\beta}_1 \overline{x}
+\]
+
+donde:
+
+\[
+S_{xx} = \sum_{i=1}^{n} (x_i - \overline{x})^2, \quad S_{yy} = \sum_{i=1}^{n} (y_i - \overline{y})^2, \quad S_{xy} = \sum_{i=1}^{n} (x_i - \overline{x}) (y_i - \overline{y})
+\]
+
+
+
+Donde una muestra de datos observados consiste en un conjunto de **pares de valores**:
+
+$$
+(x_1, y_1), (x_2, y_2), \dots, (x_n, y_n).
+$$
+
+Tal que:
+
+- \( x_i \) es un **valor fijo** en la muestra.
+
+- \( y_i \) es una **realización observada** de la variable aleatoria \( Y_i \).
+
+- \( \overline{x} \) y \( \overline{y} \) corresponden a los promedios muestrales.
+
+  
+
+<div class="caja-nota">
+> *"\( x_i \) y  \( y_i \) son valores observados que se utilizan para **inferir los parámetros desconocidos** \( \beta_0, \beta_1, \sigma^2 \) mediante **mínimos cuadrados ordinarios (MCO)**."*
+</div>
+

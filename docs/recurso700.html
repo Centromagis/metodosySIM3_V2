@@ -12,7 +12,7 @@
 <meta name="author" content="Métodos y Simulación Estadística" />
 
 
-<title> Intervalo de confianza para la media condicional y predicciones</title>
+<title> Intervalo de confianza para la media condicional y predicciones de la variable respuesta</title>
 
 <script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -337,7 +337,7 @@ $(document).ready(function () {
       <a href="recurso500.html">Transformaciones</a>
     </li>
     <li>
-      <a href="recurso600.html">Modelos Polinomiales</a>
+      <a href="recurso600.html">Variables Explicativas como Polinomios</a>
     </li>
   </ul>
 </li>
@@ -413,17 +413,63 @@ $(document).ready(function () {
 
 
 <h1 class="title toc-ignore"><span style="color:#686868">
-<strong>Intervalo de confianza para la media condicional y
-predicciones</strong></span></h1>
+<strong>Intervalo de confianza para la media condicional y predicciones
+de la variable respuesta</strong></span></h1>
 <h4 class="author">Métodos y Simulación Estadística</h4>
 
 </div>
 
 
 </br></br>
-<h3>
-Intervalo de confianza para la respuesta media
-</h3>
+<h2>
+Introducción
+</h2>
+<p>En un modelo de regresión lineal simple, el objetivo principal es
+estimar los parámetros <span class="math inline">\(\beta_0\)</span> y
+<span class="math inline">\(\beta_1\)</span> para modelar la
+<strong>media condicional de <span class="math inline">\(Y\)</span> dado
+<span class="math inline">\(X\)</span></strong>, expresada como:</p>
+<p><span class="math display">\[
+E(Y | X) = \beta_0 + \beta_1 X
+\]</span></p>
+<p>Sin embargo, la forma del modelo alternativo incluye un término de
+error <span class="math inline">\(\varepsilon\)</span> que captura la
+variabilidad no explicada por <span
+class="math inline">\(X\)</span>:</p>
+<p><span class="math display">\[
+Y = \beta_0 + \beta_1 X + \varepsilon
+\]</span></p>
+<p>donde se asume que <span class="math inline">\(\varepsilon \sim N(0,
+\sigma^2)\)</span>, es decir, los errores tienen media cero y varianza
+constante.</p>
+<p>Esto significa que la regresión <strong>no busca predecir valores
+individuales de <span class="math inline">\(Y\)</span> de manera
+exacta</strong>, sino modelar cómo cambia su <strong>valor
+medio</strong> cuando <span class="math inline">\(X\)</span> varía. Sin
+embargo, una vez ajustado el modelo, se pueden hacer dos tipos de
+inferencias clave:</p>
+<ol style="list-style-type: decimal">
+<li><p><strong>Estimación de la media condicional</strong>: Si se quiere
+conocer el valor medio esperado de <span
+class="math inline">\(Y\)</span> para un valor dado de <span
+class="math inline">\(X_0\)</span>, se construye un <strong>intervalo de
+confianza</strong>.</p></li>
+<li><p><strong>Predicción de un valor de <span
+class="math inline">\(Y\)</span></strong>: Si se quiere estimar un valor
+de <span class="math inline">\(Y\)</span> para un <span
+class="math inline">\(X_0\)</span>, se necesita un <strong>intervalo de
+predicción</strong>, que además de la incertidumbre en la media
+condicional, considera la variabilidad natural de los datos alrededor de
+la recta.</p></li>
+</ol>
+<p>En la práctica, los intervalos de predicción son esenciales cuando se
+requiere hacer pronósticos individuales, mientras que los intervalos de
+confianza son útiles para describir la relación global entre las
+variables.</p>
+</br></br>
+<h2>
+Intervalo de confianza para la media condicional
+</h2>
 <p>En un modelo de <strong>regresión lineal simple</strong>, el objetivo
 es estimar la media de la variable respuesta <span
 class="math inline">\(Y\)</span> en un punto específico <span
@@ -468,18 +514,18 @@ de la media de la respuesta para un valor dado de <span
 class="math inline">\(x_0\)</span> con una confianza del <span
 class="math inline">\((1-\alpha)100\%\)</span>.</p>
 </br></br>
-<h3>
-Intervalo de confianza para la predicción de nuevas observaciones
-</h3>
-<p>En un modelo de <strong>regresión lineal simple</strong>, además de
-estimar la media de la respuesta en un punto específico <span
-class="math inline">\(x_0\)</span>, también se puede predecir una
-<strong>nueva observación</strong> <span
-class="math inline">\(Y_0\)</span> en ese mismo valor de <span
-class="math inline">\(X\)</span>. Sin embargo, dado que las nuevas
-observaciones incluyen tanto la variabilidad de la media como la
-variabilidad del error residual, el intervalo de predicción será más
-amplio que el intervalo de confianza para la media.</p>
+<h2>
+Intervalo de predicción para un valor de <span
+class="math inline">\(Y\)</span>
+</h2>
+<p>El <strong>intervalo de predicción (IP)</strong> es más amplio que el
+IC porque considera tanto la incertidumbre en la estimación de la media
+condicional como la variabilidad inherente en los valores individuales
+de <span class="math inline">\(Y\)</span>. Se usa cuando se desea
+predecir un <strong>nuevo valor individual de <span
+class="math inline">\(Y\)</span></strong> para un <span
+class="math inline">\(X_0\)</span>, teniendo en cuenta la dispersión de
+los datos alrededor de la recta de regresión.</p>
 <p>Si denotamos por <span class="math inline">\(\hat{Y}_0\)</span> el
 valor estimado de la variable respuesta cuando <span
 class="math inline">\(X = x_0\)</span>, entonces un <strong>intervalo de
@@ -540,10 +586,8 @@ Resistencia y a <span class="math inline">\(X\)</span> como la Edad. En
 este análisis, se busca calcular los <strong>intervalos de confianza
 (IC)</strong> para la media de la respuesta <span
 class="math inline">\(E(Y | x_0)\)</span> y los <strong>intervalos de
-predicción (IP)</strong> para una nueva observación <span
-class="math inline">\(\hat{Y}_0\)</span> en valores específicos de la
-variable predictora <strong><span
-class="math inline">\(X\)</span></strong>.</p>
+predicción (IP)</strong> para valores específicos de la variable
+predictora <strong><span class="math inline">\(X\)</span></strong>.</p>
 <p>Los cálculos incluyen:</p>
 <ul>
 <li><p>IC del 95% para <span class="math inline">\(E(Y | x_0)\)</span>
@@ -565,7 +609,7 @@ class="math inline">\(x_0 = 2\)</span>, se utiliza la función
 <code>interval = "confidence"</code>.</p>
 <pre>
 # Definir la URL del archivo con los datos
-file <- "https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_reg1.txt"
+file <- "https://raw.githubusercontent.com/Centromagis/metodosySIM3_V2/refs/heads/main/datos_MetySim/dat_reg1.txt"
 
 # Cargar el conjunto de datos desde la URL
 datos <- read.table(file = file, header = TRUE)
@@ -583,7 +627,7 @@ ic_result <- predict(object = mod1, newdata = new_dt, interval = "confidence", l
 ic_result
 </pre>
 <pre class="r"><code># Definir la URL del archivo con los datos
-file &lt;- &quot;https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_reg1.txt&quot;
+file &lt;- &quot;https://raw.githubusercontent.com/Centromagis/metodosySIM3_V2/refs/heads/main/datos_MetySim/dat_reg1.txt&quot;
 
 # Cargar el conjunto de datos desde la URL
 datos &lt;- read.table(file = file, header = TRUE)
@@ -599,9 +643,9 @@ ic_result &lt;- predict(object = mod1, newdata = new_dt, interval = &quot;confid
 
 # Mostrar los resultados
 ic_result</code></pre>
-<p>Los <strong>intervalos de confianza del 95%</strong> para la
-<strong>resistencia media</strong> cuando la soldadura tiene <strong>13
-semanas</strong> y <strong>2 semanas</strong> de edad son los
+<p>y se obtuvo: Los <strong>intervalos de confianza del 95%</strong>
+para la <strong>resistencia media</strong> cuando la soldadura tiene
+<strong>13 semanas</strong> y <strong>2 semanas</strong> de edad son los
 siguientes:</p>
 <ul>
 <li><p>Para <span class="math inline">\(E(Y \mid x_0 = 13)\)</span>, el
@@ -617,17 +661,16 @@ intervalo de confianza del 95% es <strong>(2471.083,
 1 2144.826 2099.623 2190.028
 2 2553.515 2471.083 2635.947
 </pre>
-<p>Para obtener el <strong>intervalo de predicción (IC)</strong> del
-<strong>90%</strong> para una <strong>nueva observación</strong> <span
-class="math inline">\(Y_0\)</span> cuando <span
-class="math inline">\(x_0 = 10\)</span>, se utiliza la función
-<code>predict()</code> con el argumento
+<p>Para obtener el <strong>intervalo de predicción (IP)</strong> del
+<strong>90%</strong> para <span class="math inline">\(Y_0\)</span>
+cuando <span class="math inline">\(x_0 = 10\)</span>, se utiliza la
+función <code>predict()</code> con el argumento
 <code>interval = "prediction"</code>. Este intervalo proporciona un
 rango donde se espera que caiga una futura observación individual con un
 <strong>90% de confianza</strong>.</p>
 <pre>
 # Definir la URL del archivo con los datos
-file <- "https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_reg1.txt"
+file <- "https://raw.githubusercontent.com/Centromagis/metodosySIM3_V2/refs/heads/main/datos_MetySim/dat_reg1.txt"
 
 # Cargar el conjunto de datos desde la URL y almacenarlo en un dataframe
 datos <- read.table(file = file, header = TRUE)
@@ -643,7 +686,7 @@ predict(object = mod1, newdata = new_dt, interval = "prediction", level = 0.90)
 
 </pre>
 <pre class="r"><code># Definir la URL del archivo con los datos
-file &lt;- &quot;https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_reg1.txt&quot;
+file &lt;- &quot;https://raw.githubusercontent.com/Centromagis/metodosySIM3_V2/refs/heads/main/datos_MetySim/dat_reg1.txt&quot;
 
 # Cargar el conjunto de datos desde la URL y almacenarlo en un dataframe
 datos &lt;- read.table(file = file, header = TRUE)
@@ -685,7 +728,7 @@ class="math inline">\(\hat{Y}_0\)</span> (en rojo), agregados con
 <p>Los códigos en <strong>R</strong> son:</p>
 <pre>
 # Definir la URL del archivo con los datos
-file <- "https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_reg1.txt"
+file <- "https://raw.githubusercontent.com/Centromagis/metodosySIM3_V2/refs/heads/main/datos_MetySim/dat_reg1.txt"
 
 # Cargar el conjunto de datos desde la URL y almacenarlo en un dataframe
 datos <- read.table(file = file, header = TRUE)
@@ -713,7 +756,7 @@ ggplot(nuevos_datos, aes(x = Edad, y = Resistencia)) +
 
 </pre>
 <pre class="r"><code># Definir la URL del archivo con los datos
-file &lt;- &quot;https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_reg1.txt&quot;
+file &lt;- &quot;https://raw.githubusercontent.com/Centromagis/metodosySIM3_V2/refs/heads/main/datos_MetySim/dat_reg1.txt&quot;
 
 # Cargar el conjunto de datos desde la URL y almacenarlo en un dataframe
 datos &lt;- read.table(file = file, header = TRUE)
@@ -742,7 +785,10 @@ ggplot(nuevos_datos, aes(x = Edad, y = Resistencia)) +
 <strong>intervalos de predicción</strong> para <span
 class="math inline">\(\hat{Y}_0\)</span> son siempre más amplios que los
 <strong>intervalos de confianza</strong> para <span
-class="math inline">\(E(Y \mid x_0)\)</span>.</p>
+class="math inline">\(E(Y \mid x_0)\)</span>. El intervalo de confianza
+permite estimar la resistencia media para una edad dada, mientras que el
+intervalo de predicción proporciona una medida de la variabilidad en
+valores individuales de resistencia.</p>
 <br/><br/>
 <center>
 <img src="img/fig343.png" width="80%" style="display: block; margin: auto;" />

@@ -43,7 +43,7 @@ navbar:
       menu:
         - text: "Transformaciones"
           href: recurso500.html  
-        - text: "Modelos Polinomiales"
+        - text: "Variables Explicativas como Polinomios"
           href: recurso600.html  
     - text: "Predicción e Intervalos"
       menu:

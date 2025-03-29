@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Métodos y Simulación Estadística" />
+
+
+<title> Transformaciones</title>
+
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"> </a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Métodos
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="index.html">Contenido</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Correlación
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso100.html">Análisis de Correlación</a>
+    </li>
+    <li>
+      <a href="recurso110.html">Coeficiente de Pearson</a>
+    </li>
+    <li>
+      <a href="recurso120.html">Coeficiente de Spearman</a>
+    </li>
+    <li>
+      <a href="recurso130.html">Coeficiente de Kendall</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Modelo
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso200.html">Modelo de Regresión Lineal Simple</a>
+    </li>
+    <li>
+      <a href="recurso210.html">Estimación Mínimos Cuadrados Ordinarios</a>
+    </li>
+    <li>
+      <a href="recurso220.html">Estimación de Máxima Verosimilitud</a>
+    </li>
+    <li>
+      <a href="recurso230.html">Forma Matricial del Modelo</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Diagnósticos
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso300.html">Supuestos</a>
+    </li>
+    <li>
+      <a href="recurso310.html">Residuales</a>
+    </li>
+    <li>
+      <a href="recurso320.html">Revisión de Supuestos</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Pruebas de Hipótesis
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso400.html">Sobre los Coeficientes</a>
+    </li>
+    <li>
+      <a href="recurso410.html">Sobre todos los Coeficientes</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Transformaciones
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso500.html">Transformaciones</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Modelos polinomiales
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso600.html">Modelos polinomiales</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Predicción
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso700.html">Intervalo de Confianza para la Respuesta Media</a>
+    </li>
+    <li>
+      <a href="recurso710.html">Intervalo de Confianza para la Predicción de Nuevas Observaciones</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Intervalos de Confianza
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso800.html">Coeficientes</a>
+    </li>
+    <li>
+      <a href="recurso810.html">Varianza</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Casos de estudio
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso900.html">Caso 1</a>
+    </li>
+    <li>
+      <a href="recurso910.html">Caso 2</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Referencias
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="recurso1000.html">Referencias</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore"><span style="color:#686868">
+<strong>Transformaciones</strong></span></h1>
+<h4 class="author">Métodos y Simulación Estadística</h4>
+
+</div>
+
+
+<p></br></br></p>
+</br></br>
+<h3>
+Transformaciones para linealizar el modelo
+</h3>
+<p>En ciertos casos, el modelo teórico que describe los datos presenta
+una <strong>estructura matemática no lineal en sus parámetros</strong>.
+Sin embargo, mediante <strong>transformaciones adecuadas</strong> de
+<span class="math inline">\(Y\)</span> y/o <span
+class="math inline">\(X\)</span>, es posible reformularlo en una
+<strong>forma lineal</strong>, permitiendo así la aplicación de métodos
+de regresión lineal estándar.</p>
+<p>La <strong>Tabla 3.6</strong> muestra algunos ejemplos de modelos que
+pueden ser <strong>linealizados</strong> mediante transformaciones
+específicas.</p>
+<br/><br/>
+<center>
+<strong>Tabla 3.6</strong> Ejemplos de transformaciones.
+</center>
+<table>
+<colgroup>
+<col width="24%" />
+<col width="34%" />
+<col width="42%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Modelo</strong></th>
+<th><strong>Denominación</strong></th>
+<th><strong>Transformación</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(Y = \beta_0 e^{\beta_1 X}
+\varepsilon\)</span></td>
+<td>Modelo exponencial multiplicativo</td>
+<td>Se ajusta <span class="math inline">\(Y^* = \beta_0^* + \beta_1 X +
+\varepsilon^*\)</span> con <span class="math inline">\(Y^* =
+\ln(Y)\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(Y = \beta_0 X^{\beta_1}
+\varepsilon\)</span></td>
+<td>Modelo potencial multiplicativo</td>
+<td>Se ajusta <span class="math inline">\(Y^* = \beta_0^* + \beta_1 X^*
++ \varepsilon^*\)</span> con <span class="math inline">\(Y^* =
+\ln(Y)\)</span> y <span class="math inline">\(X^* = \ln(X)\)</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(Y = \beta_0 + \beta_1 \ln(X) +
+\varepsilon\)</span></td>
+<td>Modelo logarítmico</td>
+<td>Se ajusta <span class="math inline">\(Y = \beta_0 + \beta_1 X^* +
+\varepsilon\)</span> con <span class="math inline">\(X^* =
+\ln(X)\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(Y = \beta_0 + \beta_1(1/X) +
+\varepsilon\)</span></td>
+<td>Modelo recíproco</td>
+<td>Se ajusta <span class="math inline">\(Y = \beta_0 + \beta_1 X^* +
+\varepsilon\)</span> con <span class="math inline">\(X^* =
+1/X\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>En la <strong>Figura 3.16</strong> se muestran los patrones de los
+modelos que se pueden linealizar.</p>
+<br/><br/>
+<center>
+<img src="img/fig316.png" width="100%" style="display: block; margin: auto;" />
+<strong>Figura 3.16</strong> Patrones de los modelos que se pueden
+linealizar.
+</center>
+<p><br/><br/></p>
+</br></br>
+<div class="caja-ejemplo">
+<h3>
+Ejemplo:
+</h3>
+<p>
+<p>Se busca modelar la cantidad de una sustancia radiactiva (en
+miligramos) en función del tiempo (en años) debido a su proceso de
+desintegración. Para ello, se dispone de un conjunto de 50
+observaciones:</p>
+<pre>
+   Tiempo Cantidad
+1     0.0     99.4
+2     0.1     97.0
+3     0.3     96.0
+4     0.4     91.9
+5     0.6     89.3
+6     0.7     88.4
+7     0.9     84.7
+8     1.0     80.6
+9     1.1     78.9
+10    1.3     76.9
+11    1.4     76.4
+12    1.6     73.4
+13    1.7     71.4
+14    1.9     69.1
+15    2.0     66.5
+16    2.1     66.9
+17    2.3     63.8
+18    2.4     59.6
+19    2.6     60.5
+20    2.7     57.6
+21    2.9     55.4
+22    3.0     54.7
+23    3.1     52.3
+24    3.3     51.1
+25    3.4     49.7
+26    3.6     47.3
+27    3.7     48.4
+28    3.9     46.4
+29    4.0     43.8
+30    4.1     44.9
+31    4.3     42.9
+32    4.4     40.9
+33    4.6     41.0
+34    4.7     39.8
+35    4.9     38.7
+36    5.0     37.5
+37    5.1     36.3
+38    5.3     34.7
+39    5.4     33.5
+40    5.6     32.4
+41    5.7     31.2
+42    5.9     30.8
+43    6.0     28.9
+44    6.1     31.4
+45    6.3     29.7
+46    6.4     26.5
+47    6.6     26.5
+48    6.7     25.6
+49    6.9     26.2
+50    7.0     24.6
+</pre>
+<p>A continuación, se presentan los códigos en <strong>R</strong> para
+cargar la base de datos, generar el gráfico de dispersión y ajustar un
+modelo de regresión lineal, donde la variable de respuesta es la
+<strong>Cantidad</strong> y la variable predictora es el
+<strong>Tiempo</strong>.</p>
+<pre>
+# Configurar el entorno para el uso del idioma español
+Sys.setlocale("LC_ALL", "es_ES.UTF-8")
+
+# Crear el data.frame con los datos de desintegración radiactiva
+datos <- data.frame(
+  Tiempo = c(0.0, 0.1, 0.3, 0.4, 0.6, 0.7, 0.9, 1.0, 1.1, 1.3,
+             1.4, 1.6, 1.7, 1.9, 2.0, 2.1, 2.3, 2.4, 2.6, 2.7,
+             2.9, 3.0, 3.1, 3.3, 3.4, 3.6, 3.7, 3.9, 4.0, 4.1,
+             4.3, 4.4, 4.6, 4.7, 4.9, 5.0, 5.1, 5.3, 5.4, 5.6,
+             5.7, 5.9, 6.0, 6.1, 6.3, 6.4, 6.6, 6.7, 6.9, 7.0),
+  Cantidad = c(99.4, 97.0, 96.0, 91.9, 89.3, 88.4, 84.7, 80.6, 78.9, 76.9,
+               76.4, 73.4, 71.4, 69.1, 66.5, 66.9, 63.8, 59.6, 60.5, 57.6,
+               55.4, 54.7, 52.3, 51.1, 49.7, 47.3, 48.4, 46.4, 43.8, 44.9,
+               42.9, 40.9, 41.0, 39.8, 38.7, 37.5, 36.3, 34.7, 33.5, 32.4,
+               31.2, 30.8, 28.9, 31.4, 29.7, 26.5, 26.5, 25.6, 26.2, 24.6)
+)
+
+# Cargar librerías necesarias
+library(ggplot2)
+
+# Generar gráfico de dispersión para visualizar la relación entre tiempo y cantidad
+ggplot(datos, aes(x = Tiempo, y = Cantidad)) + 
+  geom_point(color = "blue", size = 2) + 
+  geom_smooth(method = "lm", color = "red", se = FALSE) +  # Agregar línea de tendencia
+  theme_light() +
+  xlim(0, 10) + 
+  labs(title = "Desintegración Radiactiva",
+       x = "Tiempo (años)", 
+       y = "Cantidad de sustancia (mg)")
+
+# Ajuste del modelo de regresión lineal
+m1 <- lm(Cantidad ~ Tiempo, data = datos)
+summary(m1)  # Resumen del modelo
+
+# Diagnóstico del modelo: Evaluación de residuos y ajuste
+par(mfrow = c(2, 2))  # Configurar la disposición de los gráficos
+plot(m1, las = 1, col = 'blue', which = 1:3, cex = 1.5, pch = 19)  # Gráficos de diagnóstico
+
+# Prueba de normalidad de los residuos con Shapiro-Wilk
+res_m1 <- residuals(m1)
+shapiro.test(res_m1)
+</pre>
+<br/><br/>
+<center>
+<img src="img/fig317.png" width="80%" style="display: block; margin: auto;" />
+<strong>Figura 3.17</strong> Relación cantidad (mg) y tiempo (años).
+</center>
+<p><br/><br/></p>
+<p>La <strong>Figura 3.17</strong> muestra claramente que la cantidad de
+sustancia (mg) <strong>decrece de forma exponencial</strong> a medida
+que transcurre el tiempo (años). Este comportamiento es consistente con
+el esperado en un proceso de desintegración radiactiva.</p>
+<p>A partir de la siguiente salida computacional se observa lo
+siguiente:</p>
+<ul>
+<li><p><strong>El tiempo es una variable significativa</strong>, ya que
+el valor-p es menor a <span
+class="math inline">\(2e^{-16}\)</span>.</p></li>
+<li><p><strong>Por cada año transcurrido, la cantidad de sustancia
+radiactiva disminuye en 10.4448 mg</strong>, según el coeficiente
+estimado del modelo.</p></li>
+<li><p><strong>El coeficiente de determinación (<span
+class="math inline">\(R^2\)</span>) es alto</strong>, con un valor de
+0.9642, lo que indica que el modelo explica una un 96.42% de la
+variabilidad en los datos.</p></li>
+<li><p><strong>El modelo <span class="math inline">\(m_1\)</span> es
+significativo</strong>, dado que el valor-p del modelo completo es menor
+a <span class="math inline">\(2.2e^{-16}\)</span>, lo que confirma la
+relación entre el tiempo y la cantidad de sustancia radiactiva.</p></li>
+</ul>
+<pre>
+Call:
+lm(formula = Cantidad ~ Tiempo, data = datos)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-5.9173 -3.1284 -0.6941  3.3272  8.8153 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  90.5847     1.1795   76.80   <2e-16 ***
+Tiempo      -10.4448     0.2903  -35.98   <2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 4.236 on 48 degrees of freedom
+Multiple R-squared:  0.9642,    Adjusted R-squared:  0.9635 
+F-statistic:  1295 on 1 and 48 DF,  p-value: < 2.2e-16
+</pre>
+<p>La <strong>Figura 3.18</strong> muestra los gráficos de diagnóstico
+de los residuos del modelo de regresión lineal <span
+class="math inline">\(m_1\)</span>. Vamos a analizar cada uno:</p>
+<ul>
+<li><p><strong>Residuals vs Fitted (Residuos vs Valores
+Ajustados)</strong>: La forma de “U” en el gráfico indica que hay una
+relación no lineal entre las variables. Esto sugiere que el modelo
+lineal no es adecuado, ya que los residuos deberían estar distribuidos
+aleatoriamente alrededor de la línea horizontal (cero).</p></li>
+<li><p><strong>Q-Q Residuals (Gráfico de Cuantiles-Cuantiles)</strong>:
+Se observa una desviación de los puntos con respecto a la línea diagonal
+en los extremos.Esto indica que los residuos no siguen completamente una
+distribución normal, lo cual puede afectar la validez de los resultados
+asociados al modelo.</p></li>
+<li><p><strong>Scale-Location (Residuos Estandarizados vs Valores
+Ajustados)</strong>: La tendencia en forma de “U” sugiere que la
+varianza de los residuos no es constante (presencia de
+heterocedasticidad). Esto significa que el modelo puede no ser el más
+adecuado y se recomienda considerar una transformación logaritmo a la
+variable respuesta.</p></li>
+<li><p>Adicionalmente el valor-p= 0.008344 del test Shapiro-Wilk rechaza
+la normalidad de los errores del modelo.</p></li>
+</ul>
+<br/><br/>
+<center>
+<img src="img/fig318.png" width="80%" style="display: block; margin: auto;" />
+<strong>Figura 3.18</strong> Residuales del modelo 1.
+</center>
+<p><br/><br/></p>
+<pre>
+Shapiro-Wilk normality test
+
+data:  res_m1
+W = 0.93468, p-value = 0.008344
+</pre>
+<p>Dado que los supuestos de <strong>homocedasticidad</strong> y
+<strong>normalidad</strong> de los residuos <strong>no se
+cumplen</strong>, es necesario aplicar una transformación a la variable
+respuesta. En este caso, se emplea la transformación logarítmica, lo que
+implica trabajar con la nueva variable transformada:</p>
+<p><span class="math display">\[ Y^* = \log(Y) \]</span></p>
+<p>Esta transformación permite estabilizar la varianza y mejorar el
+cumplimiento de los supuestos de la regresión lineal.</p>
+<p>Esto implica reescribir el modelo exponencial multiplicativo
+original, donde <strong>Cantidad de la sustancia</strong> (<span
+class="math inline">\(Y\)</span>) es la variable respuesta y
+<strong>Tiempo</strong> (<span class="math inline">\(X\)</span>) es la
+variable explicativa:</p>
+<p><span class="math display">\[
+Y = \beta_0 e^{\beta_1 X} \varepsilon
+\]</span></p>
+<p>de manera que, al aplicar el logaritmo a ambos lados de la ecuación,
+se obtiene la forma lineal en términos de <span
+class="math inline">\(Y^*\)</span> y <span
+class="math inline">\(X\)</span>:</p>
+<p><span class="math display">\[
+Y^* = \beta_0^* + \beta_1 X + \varepsilon^*
+\]</span></p>
+<p>donde:</p>
+<ul>
+<li><p><span class="math inline">\(\beta_0^* = \log(\beta_0)\)</span>
+representa el nuevo intercepto del modelo transformado.</p></li>
+<li><p><span class="math inline">\(\varepsilon^* =
+\log(\varepsilon)\)</span> corresponde al nuevo término de
+error.</p></li>
+<li><p>El coeficiente <span class="math inline">\(\beta_1\)</span> se
+mantiene inalterado en ambos modelos, lo que permite interpretar su
+efecto de manera consistente.</p></li>
+</ul>
+<p>Esta transformación facilita el ajuste del modelo en
+<strong>R</strong>, asegurando una relación lineal entre la variable
+explicativa y la respuesta, además de mejorar la interpretación de los
+coeficientes en términos logarítmicos. Los códigos del nuevo modelo
+(<span class="math inline">\(m_2\)</span>) son los siguientes:</p>
+<pre>
+#Sys.setlocale("LC_ALL", "es_ES.UTF-8")
+
+# Crear el data.frame en R
+datos <- data.frame(
+  Tiempo = c(0.0, 0.1, 0.3, 0.4, 0.6, 0.7, 0.9, 1.0, 1.1, 1.3,
+             1.4, 1.6, 1.7, 1.9, 2.0, 2.1, 2.3, 2.4, 2.6, 2.7,
+             2.9, 3.0, 3.1, 3.3, 3.4, 3.6, 3.7, 3.9, 4.0, 4.1,
+             4.3, 4.4, 4.6, 4.7, 4.9, 5.0, 5.1, 5.3, 5.4, 5.6,
+             5.7, 5.9, 6.0, 6.1, 6.3, 6.4, 6.6, 6.7, 6.9, 7.0),
+  Cantidad = c(99.4, 97.0, 96.0, 91.9, 89.3, 88.4, 84.7, 80.6, 78.9, 76.9,
+               76.4, 73.4, 71.4, 69.1, 66.5, 66.9, 63.8, 59.6, 60.5, 57.6,
+               55.4, 54.7, 52.3, 51.1, 49.7, 47.3, 48.4, 46.4, 43.8, 44.9,
+               42.9, 40.9, 41.0, 39.8, 38.7, 37.5, 36.3, 34.7, 33.5, 32.4,
+               31.2, 30.8, 28.9, 31.4, 29.7, 26.5, 26.5, 25.6, 26.2, 24.6)
+)
+
+
+library(ggplot2)
+#Ajuste de modelo m2
+
+log_cantidad<-log(datos$Cantidad)
+datos$log_cantidad<-log_cantidad
+
+ggplot(datos, aes(x=Tiempo, y=log_cantidad)) + 
+  geom_point() + theme_light() +
+  xlim(0, 10) + 
+  labs(x="Tiempo", y="log-cantidad")
+
+
+m2 <- lm(log(Cantidad) ~ Tiempo, data=datos)
+summary(m2)
+
+#Residuales
+par(mfrow=c(2, 2))
+plot(m2, las=1, col='palegreen3', which=1:3, cex=1.5, pch=19)
+
+res_m2 <- residuals(m2)
+shapiro.test(res_m2)
+
+#Comparando las lineas
+
+par(mfrow=c(1, 2))
+
+plot(x=datos$Tiempo, y=datos$Canti, pch=20, cex=0.8,
+     xlab="Tiempo (años)", ylab="Cantidad", main="M1")
+abline(m1, col="blue", lwd=2)
+
+plot(x=datos$Tiempo, y=log(datos$Cantidad), pch=20, cex=0.8,
+     xlab="Tiempo (años)", ylab="log(Cantidad)", main="M2")
+abline(m2, col="palegreen3", lwd=2)
+</pre>
+<br/><br/>
+<center>
+<img src="img/fig319.png" width="80%" style="display: block; margin: auto;" />
+<strong>Figura 3.19</strong> Relación log-cantidad y tiempo.
+</center>
+<p><br/><br/></p>
+<p>La <strong>Figura 3.19</strong> evidencia una relación lineal
+negativa entre el logaritmo de la cantidad de sustancia y el tiempo. Los
+resultados del <strong>modelo 2</strong> confirman que existe una
+relación lineal significativa entre estas variables, respaldada por la
+<strong>estadística F de <span class="math inline">\(1.714 \times
+10^4\)</span></strong> y un <strong>valor-p &lt; <span
+class="math inline">\(2.2e^{-16}\)</span></strong>.</p>
+<p>Adicionalmente:</p>
+<ul>
+<li><p><strong>La variable Tiempo es altamente significativa</strong>,
+ya que su valor-p es menor a <span
+class="math inline">\(2e^{-16}\)</span>.</p></li>
+<li><p><strong>El coeficiente de determinación (<span
+class="math inline">\(R^2\)</span>) es de 0.9972</strong>, lo que indica
+que el modelo explica el <strong>99.72%</strong> de la variabilidad en
+los datos.</p></li>
+</ul>
+<p>A continuación, se muestra la salida computacional del modelo <span
+class="math inline">\(m_2\)</span>:</p>
+<pre>
+Call:
+lm(formula = log(Cantidad) ~ Tiempo, data = datos)
+
+Residuals:
+      Min        1Q    Median        3Q       Max 
+-0.049859 -0.014259 -0.001082  0.014219  0.059930 
+
+Coefficients:
+             Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  4.604322   0.006194   743.4   <2e-16 ***
+Tiempo      -0.199581   0.001524  -130.9   <2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.02224 on 48 degrees of freedom
+Multiple R-squared:  0.9972,    Adjusted R-squared:  0.9971 
+F-statistic: 1.714e+04 on 1 and 48 DF,  p-value: < 2.2e-16
+</pre>
+<p>La <strong>Figura 3.20</strong> muestra los gráficos de diagnóstico
+de los residuos del modelo de regresión lineal <span
+class="math inline">\(m_2\)</span>. Vamos a analizar cada uno:</p>
+<ul>
+<li><p><strong>Residuals vs Fitted (Residuos vs Valores
+Ajustados)</strong>: Los residuos están distribuidos aleatoriamente
+alrededor de la línea horizontal, sin una tendencia clara, lo que indica
+que la relación entre las variables es adecuadamente modelada por una
+regresión lineal. Algunos valores atípicos (puntos 44, 45 y 48) podrían
+indicar observaciones con mayor influencia en el modelo.</p></li>
+<li><p><strong>Q-Q Residuals (Gráfico de Cuantiles-Cuantiles)</strong>:
+Los residuos siguen aproximadamente la línea diagonal, lo que sugiere
+que la normalidad de los errores se cumple en gran medida. Sin embargo,
+en los extremos hay algunas desviaciones, lo que indica la presencia de
+valores atípicos que podrían afectar la normalidad de los
+errores.</p></li>
+<li><p><strong>Scale-Location (Residuos Estandarizados vs Valores
+Ajustados)</strong>: No se observa una tendencia clara en los residuos
+estandarizados, lo que sugiere que la homocedasticidad (varianza
+constante de los errores) se cumple adecuadamente. Aunque los valores en
+los extremos (puntos 44, 45 y 48) podrían generar cierta variabilidad,
+en general la transformación logarítmica parece haber estabilizado la
+varianza.</p></li>
+</ul>
+<p>El test de normalidad Shapiro-Wilk no rechaza normalidad de los
+errores del modelo con un valor-p= 0.8696.</p>
+<br/><br/>
+<center>
+<img src="img/fig320.png" width="80%" style="display: block; margin: auto;" />
+<strong>Figura 3.20</strong> Residuales del modelo 2.
+</center>
+<p><br/><br/></p>
+<pre>
+    Shapiro-Wilk normality test
+
+data:  res_m2
+W = 0.98745, p-value = 0.8696
+</pre>
+</p>
+</div>
+<p>La <strong>Figura 3.21</strong> compara los modelos ajustados <span
+class="math inline">\(m_1\)</span> y <span
+class="math inline">\(m_2\)</span> mediante un diagrama de
+dispersión.</p>
+<ul>
+<li><p><strong>El modelo <span
+class="math inline">\(m_1\)</span></strong>, ajustado en términos de
+<span class="math inline">\(Y\)</span> y <span
+class="math inline">\(X\)</span>, no representa adecuadamente la
+relación entre la cantidad de sustancia (<span
+class="math inline">\(Y\)</span>) y el tiempo (<span
+class="math inline">\(X\)</span>). El gráfico de dispersión sugiere una
+relación de tipo exponencial, lo que indica que un modelo lineal en su
+forma original no es apropiado.</p></li>
+<li><p><strong>El modelo <span
+class="math inline">\(m_2\)</span></strong>, basado en la regresión
+lineal de <span class="math inline">\(\log(Y)\)</span> en función de
+<span class="math inline">\(X\)</span>, proporciona un mejor
+ajuste.</p></li>
+</ul>
+<br/><br/>
+<center>
+<img src="img/fig321.png" width="80%" style="display: block; margin: auto;" />
+<strong>Figura 3.21</strong> Comparación de las rectas de los dos
+modelos.
+</center>
+<p><br/><br/></p>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

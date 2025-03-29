@@ -51,11 +51,11 @@ El modelo de regresión lineal es ampliamente aplicado en diversos campos, entre
 
 
 <div class="caja-nota">
-> *"En esta unidad, el análisis se centrará en la **regresión lineal simple**, donde se modelará una única variable respuesta en función de una sola variable predictora. No se abordarán relaciones más complejas ni modelos con múltiples predictores."*  
+> *"En esta unidad, el análisis se centrará en el **Modelo de Regresión Lineal Simple**, donde se modelará una única variable respuesta en función de una sola variable predictora. No se abordarán relaciones más complejas ni modelos con múltiples predictores."*  
 </div>
 
 <div class="caja-nota">
-> *"En el siguiente curso de **Estadística de la Maestría en Ciencia de Datos**, se estudiará el **modelo de regresión múltiple**, el cual permite modelar una variable respuesta en términos de varias variables predictoras. Este modelo amplía las capacidades de análisis al considerar múltiples factores que pueden influir simultáneamente en la variable de interés."*  
+> *"En el siguiente curso **Modelos Estadísticos para la Toma de Decisiones**, se estudiará el **Modelo de Regresión Lineal Múltiple**, el cual permite modelar una variable respuesta en términos de varias variables predictoras. Este modelo amplía las capacidades de análisis al considerar múltiples factores que pueden influir simultáneamente en la variable de interés."*  
 </div>
 
 
@@ -94,6 +94,12 @@ $$
 
 
 
+<div class="caja-nota">
+> *Los errores representan la diferencia entre los valores observados \( Y_i \) y la verdadera relación lineal de la población. **No son observables**, ya que dependen de los coeficientes poblacionales \( \beta_0 \) y \( \beta_1 \), que son desconocidos.*
+</div>
+
+
+
 
 
 
@@ -103,7 +109,7 @@ $$
 En esta formulación, la variable respuesta \( Y_i \) se modela directamente como una **variable aleatoria normal**, cuya **esperanza condicional depende de** \( X_i \), mientras que su **varianza permanece constante**:
 
 $$
-Y_i \mid X_i \sim N(E[Y_i | X_i], \sigma^2) \\ 
+Y_i \mid X_i \sim N(\mu_i, \sigma^2) \\ 
 \mu_i=E[Y_i | X_i] = \beta_0 + \beta_1 X_i \\ \sigma^2 = \text{constante}
 $$
 
@@ -115,8 +121,8 @@ $$
 
 
 <div class="caja-nota">
-> *"En ambos enfoques, el vector de parámetros del modelo está dado por  
-\(\theta = (\beta_0, \beta_1, \sigma)^\top\).  Para estimar estos parámetros, se emplean comúnmente dos métodos: **mínimos cuadrados** y **máxima verosimilitud**"*
+> *En ambos enfoques, el vector de parámetros del modelo está dado por  
+\(\theta = (\beta_0, \beta_1, \sigma)^\top\).  Para estimar estos parámetros, se emplean comúnmente dos métodos: **mínimos cuadrados** y **máxima verosimilitud***
 </div>
  
 
@@ -449,7 +455,7 @@ El código en **R** para crear el gráfico de dispersión y estimar los parámet
 Sys.setlocale("LC_ALL", "es_ES.UTF-8")
 
 # Definir la URL del archivo con los datos
-file <- "https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_reg1.txt"
+file <- "https://github.com/Centromagis/metodosySIM3_V2/blob/main/datos_MetySim/dat_reg1.txt"
 
 # Cargar el conjunto de datos desde la URL
 datos <- read.table(file = file, header = TRUE)
@@ -484,7 +490,7 @@ print(mod1)
 Sys.setlocale("LC_ALL", "es_ES.UTF-8")
 
 # Definir la URL del archivo con los datos
-file <- "https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_reg1.txt"
+file <- "https://github.com/Centromagis/metodosySIM3_V2/blob/main/datos_MetySim/dat_reg1.txt"
 
 # Cargar el conjunto de datos desde la URL
 datos <- read.table(file = file, header = TRUE)
@@ -555,11 +561,11 @@ F-statistic: 165.4 on 1 and 18 DF,  p-value: 1.643e-10
 
 En esta salida se presentan los **coeficientes estimados** del modelo de regresión lineal simple, junto con la estimación de la **desviación estándar del error**.
 
-- **Intercepto estimado (\(\hat{\beta}_0 = 2627.82\))**: La resistencia esperada de la soldadura cuando la **edad es cero** es de 2627.82 psi.
+- **Intercepto estimado \(\left(\hat{\beta}_0 = 2627.82 \right)\)**: La resistencia esperada de la soldadura cuando la **edad es cero** es de 2627.82 psi.
 
-- **Pendiente estimada (\(\hat{\beta}_1 = -37.15\))**: Indica que, por cada **semana de aumento en la edad de la soldadura**, la resistencia disminuye en promedio en 37.15 psi.
+- **Pendiente estimada \(\left(\hat{\beta}_1 = -37.15 \right)\)**: Indica que, por cada **semana de aumento en la edad de la soldadura**, la resistencia disminuye en promedio en 37.15 psi.
 
-- **Desviación estándar estimada de los errores (\(\hat{\sigma} = 96.11\))**: La dispersión estimada de los errores en torno a la línea de regresión es de aproximadamente 96.11 psi. 
+- **Desviación estándar estimada de los errores \(\left(\hat{\sigma} = 96.11 \right)\)**: La dispersión estimada de los errores en torno a la línea de regresión es de aproximadamente 96.11 psi. 
 
 A partir de estos valores, el modelo de regresión se puede expresar de dos maneras:
 
@@ -596,7 +602,7 @@ Aquí, el término del error aleatorio **\(\varepsilon_i\)** se incluye explíci
 Matemáticamente, los **valores ajustados** o **predichos** en el modelo de regresión se expresan como:
 
 \[
-\widehat{Y}_i = \widehat{\beta}_0 + \widehat{\beta}_1 \times X_i
+\widehat{\mu}_i=\widehat{Y}_i = \widehat{\beta}_0 + \widehat{\beta}_1 \times X_i
 \]
 
 Sustituyendo los valores estimados:
@@ -615,7 +621,7 @@ El objeto `mod1$fitted.values` en **R** almacena los valores ajustados del model
 
 **Expresión matemática de los residuales**
 
-Los **residuales del modelo ajustado** permiten analizar el comportamiento de los **errores del modelo**. Matemáticamente, los **residuales (\(e_i\))** en un modelo de regresión lineal se definen como:
+Los **residuales del modelo ajustado** permiten analizar el comportamiento de los **errores del modelo**. Matemáticamente, los **residuales \(\left(\widehat{\varepsilon}_i=e_i\right)\)** en un modelo de regresión lineal se definen como:
 
 \[
 \widehat{\varepsilon}_i =e_i= Y_i - \widehat{Y}_i
@@ -627,7 +633,7 @@ Los siguientes códigos en **R** permiten obtener las **predicciones de la resis
 
 <pre>
 # Definir la URL del archivo con los datos
-file <- "https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_reg1.txt"
+file <- "https://github.com/Centromagis/metodosySIM3_V2/blob/main/datos_MetySim/dat_reg1.txt"
 
 # Cargar el conjunto de datos desde la URL en un data frame
 datos <- read.table(file = file, header = TRUE)
@@ -668,7 +674,7 @@ ggplot(datos, aes(x = Edad, y = Resistencia)) +
 
 ```{r,eval=FALSE,warning=FALSE,message=FALSE}
 # Definir la URL del archivo con los datos
-file <- "https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_reg1.txt"
+file <- "https://github.com/Centromagis/metodosySIM3_V2/blob/main/datos_MetySim/dat_reg1.txt"
 
 # Cargar el conjunto de datos desde la URL en un data frame
 datos <- read.table(file = file, header = TRUE)
@@ -745,9 +751,9 @@ knitr::include_graphics("img/fig314.png")
 
 La **Figura 3.14** muestra lo siguiente:
 
-- **Los puntos negros** representan las observaciones originales \((X_i, Y_i)\).
+- **Los puntos negros** representan las observaciones originales \((x_i, y_i)\).
 
-- **Los puntos rojos** corresponden a las estimaciones \((X_i, \widehat{Y}_i)\), los cuales coinciden con la **recta de regresión estimada** en color **gris**.
+- **Los puntos rojos** corresponden a las estimaciones \((x_i, \widehat{y}_i)\), los cuales coinciden con la **recta de regresión estimada** en color **gris**.
 
 - **Los residuales \( e_i \)** se visualizan como **líneas rojas punteadas**, conectando cada punto observado con su correspondiente predicción.
 

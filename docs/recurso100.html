@@ -337,7 +337,7 @@ $(document).ready(function () {
       <a href="recurso500.html">Transformaciones</a>
     </li>
     <li>
-      <a href="recurso600.html">Modelos Polinomiales</a>
+      <a href="recurso600.html">Variables Explicativas como Polinomios</a>
     </li>
   </ul>
 </li>
@@ -420,9 +420,9 @@ $(document).ready(function () {
 
 
 <br/><br/>
-<h3>
+<h2>
 Análisis de correlación
-</h3>
+</h2>
 <p>El <strong>análisis de correlación</strong> es una técnica
 estadística utilizada para cuantificar la relación entre dos variables
 cuantitativas. Su objetivo principal es medir el grado de asociación
@@ -506,9 +506,9 @@ positiva (directa) o negativa (inversa)?</p></li>
 <p>Estos aspectos son fundamentales para interpretar adecuadamente los
 resultados y tomar decisiones basadas en datos.</p>
 <br/><br/>
-<h3>
+<h2>
 Herramientas estadísticas para el análisis de correlación
-</h3>
+</h2>
 <p>El análisis de correlación se apoya en diversas herramientas
 estadísticas que permiten visualizar y cuantificar la relación entre dos
 variables. Entre las principales se encuentran:</p>
@@ -547,31 +547,30 @@ visual de los pares de valores <span class="math inline">\((X,
 Y)\)</span> observados para dos variables cuantitativas. La distribución
 de los puntos en el gráfico proporciona información sobre la posible
 asociación entre las variables.</p>
-<p>Dependiendo de la forma que adopten los puntos, es posible
-identificar patrones de relación, como asociaciones lineales, no
-lineales o la ausencia de relación entre las variables.</p>
 <br/><br/>
 <center>
 <img src="img/fig31.png" width="80%" style="display: block; margin: auto;" />
 <strong>Figura 3.1</strong> Gráficos de dispersión.
 </center>
 <p><br/><br/></p>
-<p>La <strong>Figura 3.1</strong> ilustra que los gráficos (a), (b) y
-(c) muestran ejemplos de correlación positiva, negativa y nula. El
-gráfico (d) muestra otro tipo de asociación diferente a la lineal.</p>
+<p>La <strong>Figura 3.1</strong> ilustra que los gráficos (a) y (b)
+muestran ejemplos de correlación lineal positiva y negativa. El gráfio
+(c) muestra asociación nula entre las variables. El gráfico (d) muestra
+otro tipo de asociación diferente a la lineal, esta es parabólica.</p>
 <p><strong>Gráfico (a): Correlación positiva fuerte</strong></p>
 <ul>
-<li><p>Los puntos siguen una tendencia ascendente clara, indicando que a
-medida que <span class="math inline">\(x\)</span> aumenta, <span
-class="math inline">\(y\)</span> también lo hace.</p></li>
-<li><p>Representa una correlación positiva fuerte (~ 0.8).</p></li>
+<li><p>Los puntos siguen una tendencia lineal ascendente clara,
+indicando que a medida que <span class="math inline">\(x\)</span>
+aumenta, <span class="math inline">\(y\)</span> también lo hace
+linealmente.</p></li>
+<li><p>Representa una correlación positiva fuerte.</p></li>
 </ul>
 <p><strong>Gráfico (b): Correlación negativa fuerte</strong></p>
 <ul>
-<li><p>Los puntos muestran una tendencia descendente clara, lo que
-indica que cuando <span class="math inline">\(x\)</span> aumenta, <span
-class="math inline">\(y\)</span> disminuye.</p></li>
-<li><p>Representa una correlación negativa fuerte (~ -0.7).</p></li>
+<li><p>Los puntos muestran una tendencia descendente lineal clara, lo
+que indica que cuando <span class="math inline">\(x\)</span> aumenta,
+<span class="math inline">\(y\)</span> disminuye linealmente.</p></li>
+<li><p>Representa una correlación negativa moderada.</p></li>
 </ul>
 <p><strong>Gráfico (c): Sin correlación</strong></p>
 <ul>
@@ -719,18 +718,18 @@ variables.</p>
 <ul>
 <li><p><span class="math inline">\(\sigma_{i}^2\)</span> representa la
 <strong>varianza</strong> de la variable <span
-class="math inline">\(x_i\)</span>, ubicada en la diagonal
+class="math inline">\(X_i\)</span>, ubicada en la diagonal
 principal.</p></li>
 <li><p><span class="math inline">\(\sigma_{ij}\)</span> representa la
 <strong>covarianza</strong> entre las variables <span
-class="math inline">\(x_i\)</span> y <span
-class="math inline">\(x_j\)</span>, ubicada fuera de la
+class="math inline">\(X_i\)</span> y <span
+class="math inline">\(X_j\)</span>, ubicada fuera de la
 diagonal.</p></li>
-<li><p>La relación <span class="math inline">\(\sigma_{x_i,x_i} =
-\sigma^2_{x_i}\)</span> indica que la <strong>covarianza de una variable
+<li><p>La relación <span class="math inline">\(\sigma_{i,i} =
+\sigma^2_{i}\)</span> indica que la <strong>covarianza de una variable
 consigo misma</strong> es su propia varianza.</p></li>
-<li><p>La propiedad <span class="math inline">\(\sigma_{x_i,x_j} =
-\sigma_{x_j,x_i}\)</span> para todo <span class="math inline">\(i \neq
+<li><p>La propiedad <span class="math inline">\(\sigma_{i,j} =
+\sigma_{j,i}\)</span> para todo <span class="math inline">\(i \neq
 j\)</span> confirma que la <strong>matriz es simétrica</strong>,
 reflejando la igualdad de la covarianza en ambas direcciones.</p></li>
 </ul>
@@ -740,10 +739,10 @@ Matriz de correlación
 </h3>
 <p>A partir de la matriz de covarianza, se puede calcular la
 <strong>matriz de correlación</strong> <span
-class="math inline">\(\mathbf{R}\)</span>, normalizando cada elemento
+class="math inline">\(\mathbf{P}\)</span>, normalizando cada elemento
 por la desviación estándar de las variables involucradas:</p>
 <p><span class="math display">\[
-\mathbf{R} =
+\mathbf{P} =
 \begin{bmatrix}
   1 &amp; \rho_{12} &amp; \rho_{13} &amp; \ldots &amp; \rho_{1n} \\
   \rho_{21} &amp; 1 &amp; \rho_{23} &amp; \ldots &amp; \rho_{2n} \\
@@ -756,25 +755,27 @@ por la desviación estándar de las variables involucradas:</p>
 <ul>
 <li><p><span class="math inline">\(\rho_{ij}\)</span> representa el
 <strong>coeficiente de correlación de Pearson</strong> entre las
-variables <span class="math inline">\(x_i\)</span> y <span
-class="math inline">\(x_j\)</span>, calculado como:</p>
+variables <span class="math inline">\(X_i\)</span> y <span
+class="math inline">\(X_j\)</span>, calculado como:</p>
 <p><span class="math display">\[
 \rho_{ij} = \frac{\sigma_{ij}}{\sigma_{i} \sigma_{j}}
 \]</span></p></li>
 <li><p>La diagonal principal contiene <strong>unos (1)</strong>, ya que
-cada variable está perfectamente correlacionada consigo misma: <span
-class="math inline">\(\rho_{x_i, x_i} = 1\)</span>.</p></li>
+cada variable está perfectamente correlacionada consigo misma, asi para
+cualquier <span class="math inline">\(X_i\)</span>, el coeficiente de
+correlación está dado por <span class="math inline">\(\rho_{i,i} =
+1\)</span>.</p></li>
 <li><p>Los elementos fuera de la diagonal muestran la
 <strong>correlación entre pares de variables</strong>, con valores entre
 <span class="math inline">\(-1\)</span> y <span
 class="math inline">\(1\)</span>, donde:</p>
 <ul>
-<li><span class="math inline">\(\rho_{ij} &gt; 0\)</span> indica una
-<strong>correlación positiva</strong>.</li>
-<li><span class="math inline">\(\rho_{ij} &lt; 0\)</span> indica una
-<strong>correlación negativa</strong>.</li>
-<li><span class="math inline">\(\rho_{ij} = 0\)</span> indica
-<strong>ausencia de correlación lineal</strong>.</li>
+<li><p><span class="math inline">\(\rho_{ij} &gt; 0\)</span> indica una
+<strong>correlación positiva</strong>.</p></li>
+<li><p><span class="math inline">\(\rho_{ij} &lt; 0\)</span> indica una
+<strong>correlación negativa</strong>.</p></li>
+<li><p><span class="math inline">\(\rho_{ij} = 0\)</span> indica
+<strong>ausencia de correlación lineal</strong>.</p></li>
 </ul></li>
 </ul>
 <p></br> <strong>Relación entre ambas matrices:</strong></p>
@@ -847,7 +848,7 @@ rugosidad superficial</strong>.</p></li>
 </ul>
 <p><br/> <strong>Matriz de covarianza</strong></p>
 <p>En la normal bivariada se cumple que <span
-class="math inline">\(\text{Cov}(X, Y) = \rho \sigma_X
+class="math inline">\(\text{Cov}(X, Y)=\sigma_{XY} = \rho \sigma_X
 \sigma_Y\)</span>, por tanto:</p>
 <p><span class="math display">\[
 \begin{align}
@@ -938,9 +939,8 @@ la correlación:</p>
 <li><p><strong>Si <span class="math inline">\(X\)</span> e <span
 class="math inline">\(Y\)</span> son independientes, entonces <span
 class="math inline">\(\rho = 0\)</span> y <span
-class="math inline">\(\text{Cov}(X, Y) = 0\)</span></strong>. En una
-normal bivariada, la independencia implica ausencia de
-correlación.</p></li>
+class="math inline">\(\text{Cov}(X, Y) = 0\)</span></strong>. La
+independencia implica ausencia de correlación.</p></li>
 <li><p><strong>Si <span class="math inline">\(\rho = 1\)</span> o <span
 class="math inline">\(\rho = -1\)</span>, entonces <span
 class="math inline">\(X\)</span> e <span
@@ -964,7 +964,7 @@ seleccionado:</p>
 <li><p><code>cor(mis_datos, method = "pearson")</code>: La matriz de
 correlación de <strong>Pearson</strong> obtenida con
 <code>method = "pearson"</code> es la equivalente a la matriz teórica de
-correlación <span class="math inline">\(\mathbf{R}\)</span>.</p></li>
+correlación <span class="math inline">\(\mathbf{P}\)</span>.</p></li>
 <li><p><code>cor(mis_datos, method = "spearman")</code></p></li>
 <li><p><code>cor(mis_datos, method = "kendall")</code></p></li>
 </ul>
@@ -972,11 +972,6 @@ correlación <span class="math inline">\(\mathbf{R}\)</span>.</p></li>
 <strong>Kendall</strong> no se derivan de la matriz de covarianza, sino
 que usan transformaciones distintas (rangos en Spearman y pares
 ordenados en Kendall).</p>
-<p>Si los datos cumplen <strong>normalidad</strong> y
-<strong>linealidad</strong>, la matriz de <strong>Pearson</strong> es
-adecuada. Si los datos <strong>no cumplen estos supuestos</strong>,
-<strong>Spearman</strong> o <strong>Kendall</strong> pueden ser
-alternativas más robustas.</p>
 
 
 
