@@ -458,18 +458,18 @@ electorales.</p></li>
 </ul>
 <div class="caja-nota">
 <blockquote>
-<p><em>“En esta unidad, el análisis se centrará en la <strong>regresión
-lineal simple</strong>, donde se modelará una única variable respuesta
-en función de una sola variable predictora. No se abordarán relaciones
-más complejas ni modelos con múltiples predictores.”</em></p>
+<p><em>“En esta unidad, el análisis se centrará en el <strong>Modelo de
+Regresión Lineal Simple</strong>, donde se modelará una única variable
+respuesta en función de una sola variable predictora. No se abordarán
+relaciones más complejas ni modelos con múltiples predictores.”</em></p>
 </blockquote>
 </div>
 <div class="caja-nota">
 <blockquote>
-<p><em>“En el siguiente curso de <strong>Estadística de la Maestría en
-Ciencia de Datos</strong>, se estudiará el <strong>modelo de regresión
-múltiple</strong>, el cual permite modelar una variable respuesta en
-términos de varias variables predictoras. Este modelo amplía las
+<p><em>“En el siguiente curso <strong>Modelos Estadísticos para la Toma
+de Decisiones</strong>, se estudiará el <strong>Modelo de Regresión
+Lineal Múltiple</strong>, el cual permite modelar una variable respuesta
+en términos de varias variables predictoras. Este modelo amplía las
 capacidades de análisis al considerar múltiples factores que pueden
 influir simultáneamente en la variable de interés.”</em></p>
 </blockquote>
@@ -528,6 +528,16 @@ X_i\)</span>.</p></li>
 <strong>la aleatoriedad proviene exclusivamente de <span
 class="math inline">\(\varepsilon_i\)</span></strong>.</p></li>
 </ul>
+<div class="caja-nota">
+<blockquote>
+<p><em>Los errores representan la diferencia entre los valores
+observados <span class="math inline">\(Y_i\)</span> y la verdadera
+relación lineal de la población. <strong>No son observables</strong>, ya
+que dependen de los coeficientes poblacionales <span
+class="math inline">\(\beta_0\)</span> y <span
+class="math inline">\(\beta_1\)</span>, que son desconocidos.</em></p>
+</blockquote>
+</div>
 <br/><br/>
 <h3>
 Segunda forma: Expresión en términos de la distribución de <span
@@ -540,7 +550,7 @@ condicional depende de</strong> <span
 class="math inline">\(X_i\)</span>, mientras que su <strong>varianza
 permanece constante</strong>:</p>
 <p><span class="math display">\[
-Y_i \mid X_i \sim N(E[Y_i | X_i], \sigma^2) \\
+Y_i \mid X_i \sim N(\mu_i, \sigma^2) \\
 \mu_i=E[Y_i | X_i] = \beta_0 + \beta_1 X_i \\ \sigma^2 =
 \text{constante}
 \]</span></p>
@@ -561,12 +571,12 @@ class="math inline">\(X_i\)</span>.</p></li>
 </ul>
 <div class="caja-nota">
 <blockquote>
-<p><em>“En ambos enfoques, el vector de parámetros del modelo está dado
+<p><em>En ambos enfoques, el vector de parámetros del modelo está dado
 por<br />
 <span class="math inline">\(\theta = (\beta_0, \beta_1,
 \sigma)^\top\)</span>. Para estimar estos parámetros, se emplean
 comúnmente dos métodos: <strong>mínimos cuadrados</strong> y
-<strong>máxima verosimilitud</strong>”</em></p>
+<strong>máxima verosimilitud</strong></em></p>
 </blockquote>
 </div>
 <hr />
@@ -774,7 +784,7 @@ siguiente:</p>
 Sys.setlocale("LC_ALL", "es_ES.UTF-8")
 
 # Definir la URL del archivo con los datos
-file <- "https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_reg1.txt"
+file <- "https://github.com/Centromagis/metodosySIM3_V2/blob/main/datos_MetySim/dat_reg1.txt"
 
 # Cargar el conjunto de datos desde la URL
 datos <- read.table(file = file, header = TRUE)
@@ -805,7 +815,7 @@ print(mod1)
 <pre class="r"><code>Sys.setlocale(&quot;LC_ALL&quot;, &quot;es_ES.UTF-8&quot;)
 
 # Definir la URL del archivo con los datos
-file &lt;- &quot;https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_reg1.txt&quot;
+file &lt;- &quot;https://github.com/Centromagis/metodosySIM3_V2/blob/main/datos_MetySim/dat_reg1.txt&quot;
 
 # Cargar el conjunto de datos desde la URL
 datos &lt;- read.table(file = file, header = TRUE)
@@ -878,19 +888,19 @@ F-statistic: 165.4 on 1 and 18 DF,  p-value: 1.643e-10
 estimados</strong> del modelo de regresión lineal simple, junto con la
 estimación de la <strong>desviación estándar del error</strong>.</p>
 <ul>
-<li><p><strong>Intercepto estimado (<span
-class="math inline">\(\hat{\beta}_0 = 2627.82\)</span>)</strong>: La
-resistencia esperada de la soldadura cuando la <strong>edad es
-cero</strong> es de 2627.82 psi.</p></li>
-<li><p><strong>Pendiente estimada (<span
-class="math inline">\(\hat{\beta}_1 = -37.15\)</span>)</strong>: Indica
-que, por cada <strong>semana de aumento en la edad de la
-soldadura</strong>, la resistencia disminuye en promedio en 37.15
-psi.</p></li>
-<li><p><strong>Desviación estándar estimada de los errores (<span
-class="math inline">\(\hat{\sigma} = 96.11\)</span>)</strong>: La
-dispersión estimada de los errores en torno a la línea de regresión es
-de aproximadamente 96.11 psi.</p></li>
+<li><p><strong>Intercepto estimado <span
+class="math inline">\(\left(\hat{\beta}_0 = 2627.82
+\right)\)</span></strong>: La resistencia esperada de la soldadura
+cuando la <strong>edad es cero</strong> es de 2627.82 psi.</p></li>
+<li><p><strong>Pendiente estimada <span
+class="math inline">\(\left(\hat{\beta}_1 = -37.15
+\right)\)</span></strong>: Indica que, por cada <strong>semana de
+aumento en la edad de la soldadura</strong>, la resistencia disminuye en
+promedio en 37.15 psi.</p></li>
+<li><p><strong>Desviación estándar estimada de los errores <span
+class="math inline">\(\left(\hat{\sigma} = 96.11
+\right)\)</span></strong>: La dispersión estimada de los errores en
+torno a la línea de regresión es de aproximadamente 96.11 psi.</p></li>
 </ul>
 <p>A partir de estos valores, el modelo de regresión se puede expresar
 de dos maneras:</p>
@@ -931,7 +941,8 @@ ajustados</strong></p>
 <strong>predichos</strong> en el modelo de regresión se expresan
 como:</p>
 <p><span class="math display">\[
-\widehat{Y}_i = \widehat{\beta}_0 + \widehat{\beta}_1 \times X_i
+\widehat{\mu}_i=\widehat{Y}_i = \widehat{\beta}_0 + \widehat{\beta}_1
+\times X_i
 \]</span></p>
 <p>Sustituyendo los valores estimados:</p>
 <p><span class="math display">\[
@@ -948,9 +959,9 @@ observación en los datos.</p>
 <p><strong>Expresión matemática de los residuales</strong></p>
 <p>Los <strong>residuales del modelo ajustado</strong> permiten analizar
 el comportamiento de los <strong>errores del modelo</strong>.
-Matemáticamente, los <strong>residuales (<span
-class="math inline">\(e_i\)</span>)</strong> en un modelo de regresión
-lineal se definen como:</p>
+Matemáticamente, los <strong>residuales <span
+class="math inline">\(\left(\widehat{\varepsilon}_i=e_i\right)\)</span></strong>
+en un modelo de regresión lineal se definen como:</p>
 <p><span class="math display">\[
 \widehat{\varepsilon}_i =e_i= Y_i - \widehat{Y}_i
 \]</span></p>
@@ -965,7 +976,7 @@ obtenidas sean confiables.</p>
 modelo</strong> de regresión después de su ajuste:</p>
 <pre>
 # Definir la URL del archivo con los datos
-file <- "https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_reg1.txt"
+file <- "https://github.com/Centromagis/metodosySIM3_V2/blob/main/datos_MetySim/dat_reg1.txt"
 
 # Cargar el conjunto de datos desde la URL en un data frame
 datos <- read.table(file = file, header = TRUE)
@@ -1003,7 +1014,7 @@ ggplot(datos, aes(x = Edad, y = Resistencia)) +
   theme_light()  # Aplicar un tema ligero para mejorar la visualización
 </pre>
 <pre class="r"><code># Definir la URL del archivo con los datos
-file &lt;- &quot;https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_reg1.txt&quot;
+file &lt;- &quot;https://github.com/Centromagis/metodosySIM3_V2/blob/main/datos_MetySim/dat_reg1.txt&quot;
 
 # Cargar el conjunto de datos desde la URL en un data frame
 datos &lt;- read.table(file = file, header = TRUE)
@@ -1078,9 +1089,9 @@ en negro y predicciones con el modelo ajustado en rojo.
 <p>La <strong>Figura 3.14</strong> muestra lo siguiente:</p>
 <ul>
 <li><p><strong>Los puntos negros</strong> representan las observaciones
-originales <span class="math inline">\((X_i, Y_i)\)</span>.</p></li>
+originales <span class="math inline">\((x_i, y_i)\)</span>.</p></li>
 <li><p><strong>Los puntos rojos</strong> corresponden a las estimaciones
-<span class="math inline">\((X_i, \widehat{Y}_i)\)</span>, los cuales
+<span class="math inline">\((x_i, \widehat{y}_i)\)</span>, los cuales
 coinciden con la <strong>recta de regresión estimada</strong> en color
 <strong>gris</strong>.</p></li>
 <li><p><strong>Los residuales <span

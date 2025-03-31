@@ -447,7 +447,10 @@ E[\varepsilon_i] = 0
 <span class="math display">\[
 \text{Var}(\varepsilon_i) = \sigma^2, \quad \forall i.
 \]</span></p></li>
-<li><p>No hay correlación entre los errores (independencia).</p></li>
+<li><p>No hay correlación entre los errores, lo que se conoce como
+<strong>independencia de los errores</strong>. Esto indica que al
+conocer el valor de un error no proporciona información sobre
+otro.</p></li>
 </ol>
 <hr />
 </br></br>
@@ -470,8 +473,18 @@ class="math inline">\(X_i\)</span> (homocedasticidad):<br />
 <span class="math display">\[
 \text{Var}(Y_i | X_i) = \sigma^2.
 \]</span></p></li>
-<li><p>Las observaciones de <span class="math inline">\(Y_i\)</span> son
-<strong>independientes</strong> entre sí.</p></li>
+<li><p>Las <strong>variables aleatorias <span
+class="math inline">\(Y_i\)</span> son condicionalmente
+independientes</strong> dado el conjunto de valores fijos <span
+class="math inline">\(X_1, \dots, X_n\)</span>. Esto significa que, una
+vez que se conocen los valores de <span class="math inline">\(X_1,
+\dots, X_n\)</span>, las variables <span
+class="math inline">\(Y_i\)</span> no influyen entre sí en términos
+probabilísticos. En particular, al conocer <span
+class="math inline">\(X\)</span>, la información sobre <span
+class="math inline">\(Y_1\)</span> no proporciona ninguna información
+adicional sobre <span class="math inline">\(Y_2\)</span>, y
+viceversa.</p></li>
 <li><p>Existe una <strong>relación lineal</strong> entre la variable
 respuesta <span class="math inline">\(Y\)</span> y las variables
 predictoras <span class="math inline">\(X\)</span>.</p></li>

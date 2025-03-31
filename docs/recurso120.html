@@ -500,11 +500,14 @@ cálculo de los rangos:</p>
 posiciones relativas dentro del conjunto de datos, facilitando su uso en
 métodos no paramétricos como el coeficiente de correlación de
 Spearman.</p>
-<p>El coeficiente de <strong>correlación de Spearman</strong> para las
-variables <span class="math inline">\((X,Y)\)</span>, donde <span
-class="math inline">\(X = (x_1, ..., x_n)\)</span> y <span
-class="math inline">\(Y = (y_1, ..., y_n)\)</span>, se calcula
-utilizando la siguiente expresión:</p>
+<p>El <strong>coeficiente de correlación de Spearman muestral</strong>
+para las variables <span class="math inline">\(X\)</span> y <span
+class="math inline">\(Y\)</span>, dadas las <span
+class="math inline">\(n\)</span> observaciones <span
+class="math inline">\((x_1, y_1), (x_2, y_2), \dots, (x_n,
+y_n)\)</span>, se denota con la letra <span
+class="math inline">\(\gamma_{s}\)</span> y se calcula mediante la
+siguiente expresión:</p>
 <p><span class="math display">\[
 \gamma_{s} = \dfrac{ \sum_{i=1}^{n} \Big( R_{i}(x) - \overline{R}(x)
 \Big) \Big( R_{i}(y) - \overline{R}(y) \Big)}
@@ -581,17 +584,15 @@ Pruebas de hipótesis
 <p>Para evaluar la existencia de una <strong>relación monótona</strong>
 significativa entre dos variables las variables <span
 class="math inline">\(X\)</span> y <span
-class="math inline">\(Y\)</span>, donde <span class="math inline">\(X =
-(x_1, ..., x_n)\)</span> y <span class="math inline">\(Y = (y_1, ...,
-y_n)\)</span>, la prueba de Spearman se formula de la siguiente
-manera:</p>
+class="math inline">\(Y\)</span>, la prueba de Spearman se formula de la
+siguiente manera:</p>
 <ul>
-<li><p><strong>Hipótesis nula (<span
-class="math inline">\(H_0\)</span>)</strong>: No existe asociación
+<li><p>Hipótesis nula <span
+class="math inline">\(\left(H_0\right)\)</span>: No existe asociación
 monótona entre las variables <span class="math inline">\(X\)</span> y
 <span class="math inline">\(Y\)</span>.</p></li>
-<li><p><strong>Hipótesis alternativa (<span
-class="math inline">\(H_1\)</span>)</strong>: Existe una asociación
+<li><p>Hipótesis alternativa <span
+class="math inline">\(\left(H_1\right)\)</span>: Existe una asociación
 monótona significativa entre las variables <span
 class="math inline">\(X\)</span> y <span
 class="math inline">\(Y\)</span>.</p></li>
@@ -653,14 +654,14 @@ library(ggplot2)         # Para visualización de datos
 # Cargar la base de datos "biomasa"
 data(biomasa)
 
-# **Calcular la matriz de correlación de Spearman**
+# Calcular la matriz de correlación de Spearman
 correlacion_spearman <- cor(biomasa[, 3:8], method = "spearman", use = "pairwise.complete.obs") %>% round(3)
 
 # Mostrar la matriz de correlación de Spearman
 print("Matriz de correlación de Spearman:")
 print(correlacion_spearman)
 
-# **Prueba de correlación de Spearman sin advertencias**
+# Prueba de correlación de Spearman sin advertencias
 print("Resultados de la prueba de correlación de Spearman:")
 for (i in 3:7) {
   for (j in (i+1):8) {
@@ -675,7 +676,7 @@ for (i in 3:7) {
   }
 }
 
-# **Matriz de gráficos de dispersión con correlaciones de Spearman**
+# Matriz de gráficos de dispersión con correlaciones de Spearman
 ggpairs(
   biomasa[, 3:8],  # Seleccionamos las 6 variables
   title = "Matriz de Dispersion y Correlacion - Spearman",
@@ -700,7 +701,7 @@ correlacion_spearman &lt;- cor(biomasa[, 3:8], method = &quot;spearman&quot;, us
 print(&quot;Matriz de correlación de Spearman:&quot;)
 print(correlacion_spearman)
 
-# **Prueba de correlación de Spearman sin advertencias**
+# Prueba de correlación de Spearman sin advertencias
 print(&quot;Resultados de la prueba de correlación de Spearman:&quot;)
 for (i in 3:7) {
   for (j in (i+1):8) {
@@ -715,7 +716,7 @@ for (i in 3:7) {
   }
 }
 
-# **Matriz de gráficos de dispersión con correlaciones de Spearman**
+# Matriz de gráficos de dispersión con correlaciones de Spearman
 ggpairs(
   biomasa[, 3:8],  # Seleccionamos las 6 variables
   title = &quot;Matriz de Dispersion y Correlacion - Spearman&quot;,

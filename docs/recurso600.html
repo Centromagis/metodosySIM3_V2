@@ -12,7 +12,7 @@
 <meta name="author" content="Métodos y Simulación Estadística" />
 
 
-<title> Modelos polinomiales</title>
+<title> Regresión Polinómica</title>
 
 <script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -337,7 +337,7 @@ $(document).ready(function () {
       <a href="recurso500.html">Transformaciones</a>
     </li>
     <li>
-      <a href="recurso600.html">Modelos Polinomiales</a>
+      <a href="recurso600.html">Variables Explicativas como Polinomios</a>
     </li>
   </ul>
 </li>
@@ -413,16 +413,63 @@ $(document).ready(function () {
 
 
 <h1 class="title toc-ignore"><span style="color:#686868">
-<strong>Modelos polinomiales</strong></span></h1>
+<strong>Regresión Polinómica</strong></span></h1>
 <h4 class="author">Métodos y Simulación Estadística</h4>
 
 </div>
 
 
 </br></br>
+<h2>
+Introducción
+</h2>
+</br></br>
 <h3>
-Modelos polinomiales
+¿Es un modelo de regresión lineal?
 </h3>
+<p><span class="math display">\[
+Y = \beta_0 + \beta_1 X^2 + \varepsilon
+\]</span></p>
+<p>Si, sigue siendo lineal, porque:</p>
+<ul>
+<li><p>La <strong>linealidad en regresión</strong> se refiere a que los
+coeficientes <span class="math inline">\(\beta_0\)</span> y <span
+class="math inline">\(\beta_1\)</span> aparecen de forma simple (no
+están elevados a una potencia, multiplicados entre sí ni dentro de
+funciones no lineales como logaritmos o exponenciales).</p></li>
+<li><p>En este caso, <span class="math inline">\(X^2\)</span> es
+simplemente una transformación de la variable <span
+class="math inline">\(X\)</span>, pero los coeficientes del modelo
+siguen teniendo una estructura lineal.</p></li>
+</ul>
+<p>Aunque el modelo es lineal en los <strong>parámetros</strong>,
+<strong>no es lineal en la variable</strong> <span
+class="math inline">\(X\)</span>, porque incluye <span
+class="math inline">\(X^2\)</span>. Este tipo de modelo se denomina
+<strong>regresión polinómica</strong> de segundo grado, pero sigue
+resolviéndose con métodos de regresión lineal (como mínimos cuadrados
+ordinarios).</p>
+</br></br>
+<h3>
+¿Cuándo un modelo ya no es lineal?
+</h3>
+<p>Si la ecuación fuera algo como:</p>
+<p><span class="math display">\[
+Y = e^{\beta_0 + \beta_1 X} + \varepsilon
+\]</span></p>
+<p>o</p>
+<p><span class="math display">\[
+Y = \beta_0 + \beta_1 X^{\beta_2} + \varepsilon
+\]</span></p>
+<p>entonces <strong>no sería una regresión lineal</strong>, porque los
+parámetros <span class="math inline">\(\beta_0\)</span>, <span
+class="math inline">\(\beta_1\)</span> o <span
+class="math inline">\(\beta_2\)</span> aparecen en relaciones no
+lineales.</p>
+</br></br>
+<h2>
+Regresión polinómica
+</h2>
 <p>Cuando se construyen modelos para explicar la media de una variable
 respuesta <span class="math inline">\(Y\)</span>, en ocasiones
 <strong>no es suficiente incluir las covariables</strong> <span
@@ -463,7 +510,7 @@ calidad del ajuste del modelo.</p>
 <p>Los datos utilizados en este análisis están disponibles en el
 siguiente enlace:</p>
 <p><a
-href="https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_conc_resis.txt">Base
+href="https://raw.githubusercontent.com/Centromagis/metodosySIM3_V2/refs/heads/main/datos_MetySim/dat_conc_resis.txt">Base
 de datos - Resistencia y Madera Dura</a></p>
 <hr />
 <p>A continuación, se presentan los códigos para la lectura de datos, la
@@ -479,7 +526,7 @@ Sys.setlocale("LC_ALL", "es_ES.UTF-8")
 
 ## Lectura de datos
 # Se define la URL del archivo que contiene los datos
-file <- "https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_conc_resis.txt"
+file <- "https://raw.githubusercontent.com/Centromagis/metodosySIM3_V2/refs/heads/main/datos_MetySim/dat_conc_resis.txt"
 
 # Se carga el conjunto de datos en un dataframe
 datos <- read.table(file = file, header = TRUE)
@@ -504,7 +551,7 @@ Sys.setlocale(&quot;LC_ALL&quot;, &quot;es_ES.UTF-8&quot;)
 
 ## Lectura de datos
 # Se define la URL del archivo que contiene los datos
-file &lt;- &quot;https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_conc_resis.txt&quot;
+file &lt;- &quot;https://raw.githubusercontent.com/Centromagis/metodosySIM3_V2/refs/heads/main/datos_MetySim/dat_conc_resis.txt&quot;
 
 # Se carga el conjunto de datos en un dataframe
 datos &lt;- read.table(file = file, header = TRUE)
@@ -550,7 +597,7 @@ Sys.setlocale("LC_ALL", "es_ES.UTF-8")
 
 ## Lectura de datos
 # Se define la URL del archivo que contiene los datos
-file <- "https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_conc_resis.txt"
+file <- "https://raw.githubusercontent.com/Centromagis/metodosySIM3_V2/refs/heads/main/datos_MetySim/dat_conc_resis.txt"
 
 # Se carga el conjunto de datos en un dataframe
 datos <- read.table(file = file, header = TRUE)
@@ -580,7 +627,7 @@ Sys.setlocale(&quot;LC_ALL&quot;, &quot;es_ES.UTF-8&quot;)
 
 ## Lectura de datos
 # Se define la URL del archivo que contiene los datos
-file &lt;- &quot;https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_conc_resis.txt&quot;
+file &lt;- &quot;https://raw.githubusercontent.com/Centromagis/metodosySIM3_V2/refs/heads/main/datos_MetySim/dat_conc_resis.txt&quot;
 
 # Se carga el conjunto de datos en un dataframe
 datos &lt;- read.table(file = file, header = TRUE)
@@ -612,8 +659,9 @@ modelos.
 no logra capturar adecuadamente la relación entre las variables. Se
 pueden identificar regiones en las que el modelo subestima
 sistemáticamente los valores observados y otras en las que sobrestima de
-manera consistente. Esto sugiere que un modelo más flexible, como el
-cuadrático, podría proporcionar un mejor ajuste a los datos.</p>
+manera consistente. Esto sugiere que un modelo con un términos
+polinomial de grado 2 para la variable explicativa podría proporcionar
+un mejor ajuste a los datos.</p>
 </p>
 </div>
 

@@ -1,5 +1,5 @@
 ---
-title: <span style="color:#686868"> **Modelos polinomiales**</span>
+title: <span style="color:#686868"> **Regresión Polinómica**</span>
 author: "Métodos y Simulación Estadística"
 output:
   html_document:
@@ -7,8 +7,55 @@ output:
     css: style.css
 ---
 
+
 </br></br>
-<h3>Modelos polinomiales</h3>
+<h2>Introducción</h2>
+
+
+
+
+</br></br>
+<h3>¿Es un modelo de regresión lineal?</h3>
+
+
+\[
+Y = \beta_0 + \beta_1 X^2 + \varepsilon
+\]
+
+Si,  sigue siendo lineal, porque:
+
+- La **linealidad en regresión** se refiere a que los coeficientes \( \beta_0 \) y \( \beta_1 \) aparecen de forma simple (no están elevados a una potencia, multiplicados entre sí ni dentro de funciones no lineales como logaritmos o exponenciales). 
+
+- En este caso, \( X^2 \) es simplemente una transformación de la variable \( X \), pero los coeficientes del modelo siguen teniendo una estructura lineal.  
+
+
+
+Aunque el modelo es lineal en los **parámetros**, **no es lineal en la variable** \( X \), porque incluye \( X^2 \). Este tipo de modelo se denomina **regresión polinómica** de segundo grado, pero sigue resolviéndose con métodos de regresión lineal (como mínimos cuadrados ordinarios).  
+
+
+</br></br>
+<h3>¿Cuándo un modelo ya no es lineal?</h3> 
+
+Si la ecuación fuera algo como:  
+
+\[
+Y = e^{\beta_0 + \beta_1 X} + \varepsilon
+\]
+
+o  
+
+\[
+Y = \beta_0 + \beta_1 X^{\beta_2} + \varepsilon
+\]
+
+entonces **no sería una regresión lineal**, porque los parámetros \( \beta_0 \), \( \beta_1 \) o \( \beta_2 \) aparecen en relaciones no lineales.
+
+
+
+
+
+</br></br>
+<h2>Regresión polinómica</h2>
 
 Cuando se construyen modelos para explicar la media de una variable respuesta \( Y \), en ocasiones **no es suficiente incluir las covariables** \( X_1, \dots, X_k \) de manera lineal. En estos casos, puede ser necesario **incluir potencias de estas variables** para mejorar la capacidad del modelo de capturar relaciones no lineales en los datos.
 
@@ -40,7 +87,7 @@ En este ejemplo, se busca desarrollar un **modelo de regresión** que explique l
 
 Los datos utilizados en este análisis están disponibles en el siguiente enlace:
 
-[Base de datos - Resistencia y Madera Dura](https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_conc_resis.txt)
+[Base de datos - Resistencia y Madera Dura](https://raw.githubusercontent.com/Centromagis/metodosySIM3_V2/refs/heads/main/datos_MetySim/dat_conc_resis.txt)
 
 
 ---
@@ -58,7 +105,7 @@ Sys.setlocale("LC_ALL", "es_ES.UTF-8")
 
 ## Lectura de datos
 # Se define la URL del archivo que contiene los datos
-file <- "https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_conc_resis.txt"
+file <- "https://raw.githubusercontent.com/Centromagis/metodosySIM3_V2/refs/heads/main/datos_MetySim/dat_conc_resis.txt"
 
 # Se carga el conjunto de datos en un dataframe
 datos <- read.table(file = file, header = TRUE)
@@ -86,7 +133,7 @@ Sys.setlocale("LC_ALL", "es_ES.UTF-8")
 
 ## Lectura de datos
 # Se define la URL del archivo que contiene los datos
-file <- "https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_conc_resis.txt"
+file <- "https://raw.githubusercontent.com/Centromagis/metodosySIM3_V2/refs/heads/main/datos_MetySim/dat_conc_resis.txt"
 
 # Se carga el conjunto de datos en un dataframe
 datos <- read.table(file = file, header = TRUE)
@@ -132,7 +179,7 @@ Sys.setlocale("LC_ALL", "es_ES.UTF-8")
 
 ## Lectura de datos
 # Se define la URL del archivo que contiene los datos
-file <- "https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_conc_resis.txt"
+file <- "https://raw.githubusercontent.com/Centromagis/metodosySIM3_V2/refs/heads/main/datos_MetySim/dat_conc_resis.txt"
 
 # Se carga el conjunto de datos en un dataframe
 datos <- read.table(file = file, header = TRUE)
@@ -165,7 +212,7 @@ Sys.setlocale("LC_ALL", "es_ES.UTF-8")
 
 ## Lectura de datos
 # Se define la URL del archivo que contiene los datos
-file <- "https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_conc_resis.txt"
+file <- "https://raw.githubusercontent.com/Centromagis/metodosySIM3_V2/refs/heads/main/datos_MetySim/dat_conc_resis.txt"
 
 # Se carga el conjunto de datos en un dataframe
 datos <- read.table(file = file, header = TRUE)
@@ -200,7 +247,7 @@ knitr::include_graphics("img/fig342.png")
 <br/><br/>
 
 
-En la **Figura 3.42** se evidencia que el modelo lineal no logra capturar adecuadamente la relación entre las variables. Se pueden identificar regiones en las que el modelo subestima sistemáticamente los valores observados y otras en las que sobrestima de manera consistente. Esto sugiere que un modelo más flexible, como el cuadrático, podría proporcionar un mejor ajuste a los datos.
+En la **Figura 3.42** se evidencia que el modelo lineal no logra capturar adecuadamente la relación entre las variables. Se pueden identificar regiones en las que el modelo subestima sistemáticamente los valores observados y otras en las que sobrestima de manera consistente. Esto sugiere que un modelo con un términos polinomial de grado 2 para la variable explicativa podría proporcionar un mejor ajuste a los datos.
 
 
 

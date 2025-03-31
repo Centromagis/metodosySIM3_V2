@@ -536,9 +536,9 @@ es la siguiente:</p>
 \hat{\boldsymbol{\beta}} = (\mathbf{X}^\top \mathbf{X})^{-1}
 \mathbf{X}^\top \mathbf{Y}
 \]</span></p>
-<p>Con esta estimación, los valores ajustados (<span
-class="math inline">\(\hat{\mathbf{Y}}\)</span>) y los residuales (<span
-class="math inline">\(\hat{\boldsymbol{\varepsilon}}\)</span>) se
+<p>Con esta estimación, los valores ajustados <span
+class="math inline">\(\hat{\mathbf{Y}}\)</span> y los residuales <span
+class="math inline">\(\hat{\boldsymbol{\varepsilon}}\)</span> se
 calculan como:</p>
 <p><span class="math display">\[
 \hat{\mathbf{Y}} = \mathbf{X} \hat{\boldsymbol{\beta}}
@@ -576,9 +576,10 @@ el <strong>vector de errores</strong>.</p></li>
 </ul>
 <hr />
 <p><br/> 1. <strong>Matriz de diseño <span
-class="math inline">\(\mathbf{X}\)</span></strong></p>
-<p>Matemáticamente, la <strong>matriz de diseño</strong> <span
-class="math inline">\(\mathbf{X}\)</span> se expresa como:</p>
+class="math inline">\(\mathbf{X}\)</span></strong>: Matemáticamente, la
+<strong>matriz de diseño</strong> <span
+class="math inline">\(\mathbf{X}\)</span> se expresa como se muestra a
+continuación,</p>
 <p><span class="math display">\[
 \mathbf{X} =
 \begin{bmatrix}
@@ -627,12 +628,11 @@ class="math inline">\(\mathbf{X}\)</span> se expresa como:</p>
 \end{bmatrix}
 \]</span></p>
 <p><br/> 2. <strong>Vector de respuestas <span
-class="math inline">\(\mathbf{Y}\)</span></strong></p>
-<p>El <strong>vector de respuestas</strong> <span
-class="math inline">\(\mathbf{Y}\)</span> contiene las
-<strong>resistencias observadas</strong>, que representan la variable
-dependiente del modelo de <strong>regresión lineal simple</strong>.</p>
-<p>Matemáticamente, se expresa como:</p>
+class="math inline">\(\mathbf{Y}\)</span></strong>: El <strong>vector de
+respuestas</strong> <span class="math inline">\(\mathbf{Y}\)</span>
+contiene las <strong>resistencias observadas</strong>, que representan
+la variable dependiente del modelo de <strong>regresión lineal
+simple</strong>. Matemáticamente, se expresa como sigue,</p>
 <p><span class="math display">\[
 \mathbf{Y} =
 \begin{bmatrix}
@@ -680,8 +680,8 @@ Y_{20}
 1753.70
 \end{bmatrix}
 \]</span></p>
-<p><br/> 3. <strong>Vector de coeficientes</strong></p>
-<p>El <strong>vector de coeficientes</strong> <span
+<p><br/> 3. <strong>Vector de coeficientes</strong>: El <strong>vector
+de coeficientes</strong> <span
 class="math inline">\(\boldsymbol{\beta}\)</span> contiene los
 <strong>parámetros del modelo</strong>, que incluyen el
 <strong>intercepto</strong> (<span
@@ -705,16 +705,13 @@ class="math inline">\(\beta_0\)</span>) y la <strong>pendiente</strong>
 <p>donde:</p>
 <ul>
 <li><p><span class="math inline">\(\widehat{\beta}_0 = 2627.82\)</span>
-representa el <strong>intercepto</strong>, es decir, la resistencia
-estimada cuando la edad es cero.</p></li>
+representa el <strong>intercepto</strong>.</p></li>
 <li><p><span class="math inline">\(\widehat{\beta}_1 = -37.15\)</span>
-representa la <strong>pendiente</strong>, indicando que por cada unidad
-adicional en la <strong>edad</strong>, la resistencia disminuye en
-promedio 37.15 unidades.</p></li>
+representa la <strong>pendiente</strong> de la recta.</p></li>
 </ul>
-<p><br/> 4. <strong>Vector de residuos</strong></p>
-<p>Nuevamente, insistiendo en la diferencia, en un modelo de regresión,
-es importante diferenciar entre los <strong>errores</strong> y los
+<p><br/> 4. <strong>Vector de residuos</strong>: Nuevamente, insistiendo
+en la diferencia, en un modelo de regresión, es importante diferenciar
+entre los <strong>errores</strong> y los
 <strong>residuales</strong>:</p>
 <ul>
 <li><strong>Errores <span
@@ -724,104 +721,97 @@ class="math inline">\(Y_i\)</span> y la verdadera relación lineal de la
 población.</li>
 </ul>
 <p><span class="math display">\[
-\varepsilon_i = Y_i - \beta_0 - \beta_1 X_i
-\]</span></p>
+   \varepsilon_i = Y_i - \beta_0 - \beta_1 X_i
+   \]</span></p>
 <ul>
 <li><strong>Residuos o residuales <span
-class="math inline">\(\mathbf{e}\)</span></strong>: Son la diferencia
-entre los valores observados <span class="math inline">\(Y_i\)</span> y
-los valores ajustados <span class="math inline">\(\hat{Y}_i\)</span>
-obtenidos con los coeficientes estimados <span
-class="math inline">\(\hat{\beta}_0\)</span> y <span
+class="math inline">\(\hat{\boldsymbol{\varepsilon}}=\mathbf{e}\)</span></strong>:
+Son la diferencia entre los valores observados <span
+class="math inline">\(Y_i\)</span> y los valores ajustados <span
+class="math inline">\(\hat{Y}_i\)</span> obtenidos con los coeficientes
+estimados <span class="math inline">\(\hat{\beta}_0\)</span> y <span
 class="math inline">\(\hat{\beta}_1\)</span>. Los residuales se pueden
 calcular y analizar, a diferencia de los errores.</li>
 </ul>
 <p><span class="math display">\[
-\hat{\boldsymbol{\varepsilon}_i}= e_i = Y_i - \hat{Y}_i = Y_i -
+   \hat{\boldsymbol{\varepsilon}_i}= e_i = Y_i - \hat{Y}_i = Y_i -
 \hat{\beta}_0 - \hat{\beta}_1 X_i
-\]</span></p>
+   \]</span></p>
 <p>El vector de residuos se expresa como:</p>
 <p><span class="math display">\[
-\mathbf{e} =
-\begin{bmatrix}
-e_1    \\
-e_2    \\
-e_3    \\
-e_4    \\
-e_5    \\
-e_6    \\
-e_7    \\
-e_8    \\
-e_9    \\
-e_{10} \\
-e_{11} \\
-e_{12} \\
-e_{13} \\
-e_{14} \\
-e_{15} \\
-e_{16} \\
-e_{17} \\
-e_{18} \\
-e_{19} \\
-e_{20}
-\end{bmatrix}
-=
-\begin{bmatrix}
-Y_1 - \hat{\beta}_0 - \hat{\beta}_1 X_1 \\
-Y_2 - \hat{\beta}_0 - \hat{\beta}_1 X_2 \\
-Y_3 - \hat{\beta}_0 - \hat{\beta}_1 X_3 \\
-Y_4 - \hat{\beta}_0 - \hat{\beta}_1 X_4 \\
-Y_5 - \hat{\beta}_0 - \hat{\beta}_1 X_5 \\
-Y_6 - \hat{\beta}_0 - \hat{\beta}_1 X_6 \\
-Y_7 - \hat{\beta}_0 - \hat{\beta}_1 X_7 \\
-Y_8 - \hat{\beta}_0 - \hat{\beta}_1 X_8 \\
-Y_9 - \hat{\beta}_0 - \hat{\beta}_1 X_9 \\
-Y_{10} - \hat{\beta}_0 - \hat{\beta}_1 X_{10} \\
-Y_{11} - \hat{\beta}_0 - \hat{\beta}_1 X_{11} \\
-Y_{12} - \hat{\beta}_0 - \hat{\beta}_1 X_{12} \\
-Y_{13} - \hat{\beta}_0 - \hat{\beta}_1 X_{13} \\
-Y_{14} - \hat{\beta}_0 - \hat{\beta}_1 X_{14} \\
-Y_{15} - \hat{\beta}_0 - \hat{\beta}_1 X_{15} \\
-Y_{16} - \hat{\beta}_0 - \hat{\beta}_1 X_{16} \\
-Y_{17} - \hat{\beta}_0 - \hat{\beta}_1 X_{17} \\
-Y_{18} - \hat{\beta}_0 - \hat{\beta}_1 X_{18} \\
-Y_{19} - \hat{\beta}_0 - \hat{\beta}_1 X_{19} \\
-Y_{20} - \hat{\beta}_0 - \hat{\beta}_1 X_{20}
-\end{bmatrix}
-\]</span></p>
-<p>El vector de residuos se expresa como:</p>
+   \mathbf{e} =
+   \begin{bmatrix}
+   e_1    \\
+   e_2    \\
+   e_3    \\
+   e_4    \\
+   e_5    \\
+   e_6    \\
+   e_7    \\
+   e_8    \\
+   e_9    \\
+   e_{10} \\
+   e_{11} \\
+   e_{12} \\
+   e_{13} \\
+   e_{14} \\
+   e_{15} \\
+   e_{16} \\
+   e_{17} \\
+   e_{18} \\
+   e_{19} \\
+   e_{20}
+   \end{bmatrix}
+   =
+   \begin{bmatrix}
+   Y_1 - \hat{\beta}_0 - \hat{\beta}_1 X_1 \\
+   Y_2 - \hat{\beta}_0 - \hat{\beta}_1 X_2 \\
+   Y_3 - \hat{\beta}_0 - \hat{\beta}_1 X_3 \\
+   Y_4 - \hat{\beta}_0 - \hat{\beta}_1 X_4 \\
+   Y_5 - \hat{\beta}_0 - \hat{\beta}_1 X_5 \\
+   Y_6 - \hat{\beta}_0 - \hat{\beta}_1 X_6 \\
+   Y_7 - \hat{\beta}_0 - \hat{\beta}_1 X_7 \\
+   Y_8 - \hat{\beta}_0 - \hat{\beta}_1 X_8 \\
+   Y_9 - \hat{\beta}_0 - \hat{\beta}_1 X_9 \\
+   Y_{10} - \hat{\beta}_0 - \hat{\beta}_1 X_{10} \\
+   Y_{11} - \hat{\beta}_0 - \hat{\beta}_1 X_{11} \\
+   Y_{12} - \hat{\beta}_0 - \hat{\beta}_1 X_{12} \\
+   Y_{13} - \hat{\beta}_0 - \hat{\beta}_1 X_{13} \\
+   Y_{14} - \hat{\beta}_0 - \hat{\beta}_1 X_{14} \\
+   Y_{15} - \hat{\beta}_0 - \hat{\beta}_1 X_{15} \\
+   Y_{16} - \hat{\beta}_0 - \hat{\beta}_1 X_{16} \\
+   Y_{17} - \hat{\beta}_0 - \hat{\beta}_1 X_{17} \\
+   Y_{18} - \hat{\beta}_0 - \hat{\beta}_1 X_{18} \\
+   Y_{19} - \hat{\beta}_0 - \hat{\beta}_1 X_{19} \\
+   Y_{20} - \hat{\beta}_0 - \hat{\beta}_1 X_{20}
+   \end{bmatrix}
+   \]</span></p>
+<p>El vector de residuos queda como sigue:</p>
 <p><span class="math display">\[
-\mathbf{e} =
-\begin{bmatrix}
-106.7583  \\
--67.2746  \\
--14.5936  \\
-65.0887   \\
--215.9776 \\
--213.6041 \\
-48.5638   \\
-40.0616   \\
-8.7296    \\
-37.5671   \\
-20.3743   \\
--88.9464  \\
-80.8174   \\
-71.1752   \\
--45.1434  \\
-94.4423   \\
-9.4992    \\
-37.0975   \\
-100.6848  \\
--75.3202
-\end{bmatrix}
-\]</span></p>
-<p>donde cada residuo <span class="math inline">\(e_i\)</span> se
-obtiene como la diferencia entre la resistencia observada <span
-class="math inline">\(Y_i\)</span> y la predicción del modelo <span
-class="math inline">\(\hat{Y}_i\)</span>:</p>
-<p><span class="math display">\[
-e_i = Y_i - \hat{Y}_i
-\]</span></p>
+   \mathbf{e} =
+   \begin{bmatrix}
+   106.7583  \\
+   -67.2746  \\
+   -14.5936  \\
+   65.0887   \\
+   -215.9776 \\
+   -213.6041 \\
+   48.5638   \\
+   40.0616   \\
+   8.7296    \\
+   37.5671   \\
+   20.3743   \\
+   -88.9464  \\
+   80.8174   \\
+   71.1752   \\
+   -45.1434  \\
+   94.4423   \\
+   9.4992    \\
+   37.0975   \\
+   100.6848  \\
+   -75.3202
+   \end{bmatrix}
+   \]</span></p>
 </p>
 </div>
 

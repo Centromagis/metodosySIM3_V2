@@ -38,7 +38,7 @@ Finalmente, se ejecuta la aplicación con la función `shinyApp(ui, server)`.
 <p>
 En este ejemplo, se continúa con el análisis de regresión lineal utilizando un conjunto de datos de medidas antropométricas, disponible en el siguiente enlace:
 
-[Datos de medidas antropométricas](https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_atip.txt)
+[Datos de medidas antropométricas](https://raw.githubusercontent.com/Centromagis/metodosySIM3_V2/refs/heads/main/datos_MetySim/dat_atip.txt)
 
 
 A continuación, se describe el proceso para crear una interfaz interactiva con pestañas dinámicas, implementar elementos de entrada flexibles y generar gráficos y tablas interactivas. Estos elementos permiten explorar el modelo de regresión lineal que predice el peso de los estudiantes en función de distintas variables antropométricas.
@@ -57,7 +57,7 @@ library(shinythemes)
 library(GGally)
 
 # Cargar datos
-datos <- read.table("https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_atip.txt", header = TRUE)
+datos <- read.table("https://raw.githubusercontent.com/Centromagis/metodosySIM3_V2/refs/heads/main/datos_MetySim/dat_atip.txt", header = TRUE)
 </pre>
 
 
@@ -270,7 +270,7 @@ library(shinythemes)
 library(GGally)
 
 # Cargar datos
-datos <- read.table("https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_atip.txt", header = TRUE)
+datos <- read.table("https://raw.githubusercontent.com/Centromagis/metodosySIM3_V2/refs/heads/main/datos_MetySim/dat_atip.txt", header = TRUE)
 
 # Interfaz de usuario
 ui <- fluidPage(

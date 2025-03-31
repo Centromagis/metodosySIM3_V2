@@ -430,7 +430,8 @@ Gráficos
 <p>Para evaluar si los errores del modelo de regresión tienen una
 <strong>distribución aproximadamente normal</strong>, se analizan los
 <strong>residuales estandarizados</strong> <span
-class="math inline">\(d_i\)</span>:</p>
+class="math inline">\(d_i\)</span>, asumiendo <span
+class="math inline">\(W_i = 1\)</span>:</p>
 <p><span class="math display">\[
 d_i = \frac{e_i}{\hat{\sigma} \sqrt{1 - h_{ii}}}
 \]</span></p>
@@ -498,10 +499,12 @@ aplica un <strong>test de normalidad</strong> sobre los
 <strong>residuales ordinarios</strong> del modelo.</p>
 <p><strong>Hipótesis del test de normalidad:</strong></p>
 <ul>
-<li><p><strong><span class="math inline">\(H_0\)</span></strong>: Los
-errores siguen una <strong>distribución normal</strong>.</p></li>
-<li><p><strong><span class="math inline">\(H_1\)</span></strong>: Los
-errores <strong>no</strong> siguen una distribución normal.</p></li>
+<li><p>Hipótesis nula <span
+class="math inline">\(\left(H_0\right)\)</span>: Los errores siguen una
+<strong>distribución normal</strong>.</p></li>
+<li><p>Hipótesis alterna <span
+class="math inline">\(\left(H_1\right)\)</span>: Los errores
+<strong>no</strong> siguen una distribución normal.</p></li>
 </ul>
 <p>Si el <span class="math inline">\(valor-p\)</span> obtenido en el
 test es <strong>mayor</strong> que un nivel de significancia establecido
@@ -548,7 +551,7 @@ de Shapiro-Wilk</strong>.</li>
 <p>El conjunto de datos utilizado se encuentra disponible en el
 siguiente enlace:<br />
 <a
-href="https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_reg_norm.txt"><strong>Dataset
+href="https://github.com/Centromagis/metodosySIM3_V2/blob/main/datos_MetySim/dat_reg_norm.txt"><strong>Dataset
 - Normalidad en Regresión</strong></a>.</p>
 <hr />
 <p>Los códigos comentados para construir los gráficos y aplicar el test
@@ -558,7 +561,7 @@ son los siguientes:</p>
 # Sys.setlocale("LC_ALL", "es_ES.UTF-8")
 
 # Lectura de datos
-file <- "https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_reg_norm.txt"
+file <- "https://github.com/Centromagis/metodosySIM3_V2/blob/main/datos_MetySim/dat_reg_norm.txt"
 datos <- read.table(file=file, header=TRUE)
 
 # Ajustar un modelo de regresión lineal 
@@ -580,7 +583,7 @@ shapiro.test(ei)
 # Sys.setlocale(&quot;LC_ALL&quot;, &quot;es_ES.UTF-8&quot;)
 
 # Lectura de datos
-file &lt;- &quot;https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_reg_norm.txt&quot;
+file &lt;- &quot;https://github.com/Centromagis/metodosySIM3_V2/blob/main/datos_MetySim/dat_reg_norm.txt&quot;
 datos &lt;- read.table(file=file, header=TRUE)
 
 # Ajustar un modelo de regresión lineal 
@@ -614,11 +617,12 @@ Shapiro-Wilk</strong> aplicada a los residuos ordinarios del modelo de
 regresión son los siguientes:</p>
 <p><strong>Hipótesis</strong>:</p>
 <ul>
-<li><p><strong><span class="math inline">\(H_0\)</span></strong>: Los
-errores del modelo siguen una distribución normal.</p></li>
-<li><p><strong><span class="math inline">\(H_1\)</span></strong>: Los
-errores del modelo <strong>no</strong> siguen una distribución
-normal.</p></li>
+<li><p>Hipótesis nula <span
+class="math inline">\(\left(H_0\right)\)</span>: Los errores del modelo
+siguen una distribución normal.</p></li>
+<li><p>Hipótesis alterna <span
+class="math inline">\(\left(H_1\right)\)</span>: Los errores del modelo
+<strong>no</strong> siguen una distribución normal.</p></li>
 </ul>
 <p><strong>Salidas computacionales</strong>:</p>
 <pre>
@@ -694,39 +698,39 @@ Pruebas de hipótesis
 <p>Para verificar este supuesto, se aplican pruebas estadísticas de
 homocedasticidad, cuyas hipótesis son:</p>
 <ul>
-<li><p><strong>Hipótesis nula (<span
-class="math inline">\(H_0\)</span>)</strong>: Los errores tienen
+<li><p>Hipótesis nula <span
+class="math inline">\(\left(H_0\right)\)</span>: Los errores tienen
 varianza constante (homocedasticidad).</p></li>
-<li><p><strong>Hipótesis alternativa (<span
-class="math inline">\(H_1\)</span>)</strong>: Los errores no tienen
+<li><p>Hipótesis alterna <span
+class="math inline">\(\left(H_1\right)\)</span>: Los errores no tienen
 varianza constante (heterocedasticidad).</p></li>
 </ul>
 <p>Entre las pruebas más utilizadas para evaluar este supuesto se
 encuentran:</p>
 <ul>
-<li><p><strong>Prueba de Breusch-Pagan</strong>: Evalúa si la varianza
-de los errores está relacionada con las variables explicativas o los
+<li><p><strong>Test de Breusch-Pagan</strong>: Evalúa si la varianza de
+los errores está relacionada con las variables explicativas o los
 valores ajustados. Se basa en una <strong>regresión auxiliar</strong>
 donde la <strong>variable respuesta</strong> son los <strong>residuos al
 cuadrado</strong>.</p></li>
-<li><p><strong>Prueba de White</strong>: Permite detectar no solo
+<li><p><strong>Test de White</strong>: Permite detectar no solo
 dependencia de la varianza de los errores con los valores ajustados,
 sino también <strong>relaciones no lineales</strong>. Es una extensión
 de la prueba de Breusch-Pagan que incluye términos cuadráticos y
 productos cruzados.</p></li>
-<li><p><strong>Prueba de Goldfeld-Quandt</strong>: Divide los datos en
-dos grupos y compara la varianza de los errores en cada uno. Es útil
-cuando se sospecha que la heterocedasticidad está relacionada con el
+<li><p><strong>Test de Goldfeld-Quandt</strong>: Divide los datos en dos
+grupos y compara la varianza de los errores en cada uno. Es útil cuando
+se sospecha que la heterocedasticidad está relacionada con el
 <strong>tamaño de las observaciones</strong> o el <strong>orden de los
 datos</strong>.</p></li>
-<li><p><strong>Score test for Nonconstant Error Variance</strong>:
+<li><p><strong>Test Score for Nonconstant Error Variance</strong>:
 Evalúa si la varianza de los errores varía con los valores ajustados. Su
 ventaja es que no requiere una especificación funcional precisa de la
 heterocedasticidad.</p></li>
-<li><p><strong>Prueba de Harrison-McCabe</strong>: Analiza si los
-residuos tienen una variabilidad constante a lo largo del conjunto de
-datos. Se basa en la comparación de la varianza de los residuos en
-diferentes segmentos de la muestra.</p></li>
+<li><p><strong>Test de Harrison-McCabe</strong>: Analiza si los residuos
+tienen una variabilidad constante a lo largo del conjunto de datos. Se
+basa en la comparación de la varianza de los residuos en diferentes
+segmentos de la muestra.</p></li>
 </ul>
 </br></br>
 <h4>
@@ -829,7 +833,7 @@ los errores depende de las variables predictoras.</p></li>
 <p>El conjunto de datos utilizado se encuentra disponible en el
 siguiente enlace:<br />
 <a
-href="https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_reg_hom.txt"><strong>Dataset
+href="https://github.com/Centromagis/metodosySIM3_V2/blob/main/datos_MetySim/dat_reg_hom.txt"><strong>Dataset
 - Homocedasticidad en Regresión</strong></a>.</p>
 <hr />
 <p>El siguiente análisis ajusta un <strong>modelo de regresión lineal
@@ -850,10 +854,10 @@ heterocedasticidad:</p>
 <ol style="list-style-type: decimal">
 <li><p><strong>Diagrama de residuales <span
 class="math inline">\(e_i\)</span> vs. valores ajustados <span
-class="math inline">\(\hat{\mu}_i\)</span></strong></p></li>
+class="math inline">\(\hat{y}_i\)</span></strong></p></li>
 <li><p><strong>Diagrama de <span
 class="math inline">\(\sqrt{|e_i|}\)</span> vs. valores ajustados <span
-class="math inline">\(\hat{\mu}_i\)</span></strong></p></li>
+class="math inline">\(\hat{y}_i\)</span></strong></p></li>
 </ol>
 <p>Los códigos comentados para construir los gráficos y aplicar el test
 son los siguientes:</p>
@@ -867,7 +871,7 @@ library(lmtest)
 
 
 # Lectura de datos
-file <- "https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_reg_hom.txt"
+file <- "https://github.com/Centromagis/metodosySIM3_V2/blob/main/datos_MetySim/dat_reg_hom.txt"
 datos <- read.table(file=file, header=TRUE)
 
 
@@ -924,7 +928,7 @@ library(lmtest)
 
 
 # Lectura de datos
-file &lt;- &quot;https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_reg_hom.txt&quot;
+file &lt;- &quot;https://github.com/Centromagis/metodosySIM3_V2/blob/main/datos_MetySim/dat_reg_hom.txt&quot;
 datos &lt;- read.table(file=file, header=TRUE)
 
 
@@ -985,7 +989,7 @@ BP = 8.514, df = 2, p-value = 0.01416
 <img src="img/fig320.png" width="80%" style="display: block; margin: auto;" />
 <strong>Figura 3.20</strong> Diagrama de residuales <span
 class="math inline">\(e_i\)</span> vs. valores ajustados <span
-class="math inline">\(\hat{\mu}_i\)</span>.
+class="math inline">\(\hat{y}_i\)</span>.
 </center>
 <p><br/><br/></p>
 <br/><br/>
@@ -993,7 +997,7 @@ class="math inline">\(\hat{\mu}_i\)</span>.
 <img src="img/fig321.png" width="80%" style="display: block; margin: auto;" />
 <strong>Figura 3.21</strong> Diagrama de <span
 class="math inline">\(\sqrt{|e_i|}\)</span> vs. valores ajustados <span
-class="math inline">\(\hat{\mu}_i\)</span>.
+class="math inline">\(\hat{y}_i\)</span>.
 </center>
 <p><br/><br/></p>
 <p>Los gráficos de las <strong>Figura 3.20</strong> y
@@ -1114,7 +1118,7 @@ library(lmtest)   # Para realizar pruebas de heterocedasticidad, incluyendo el t
 
 # Lectura de datos
 # URL del archivo de datos
-file <- "https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_reg_hom.txt"
+file <- "https://github.com/Centromagis/metodosySIM3_V2/blob/main/datos_MetySim/dat_reg_hom.txt"
 
 # Cargar el conjunto de datos desde la URL
 datos <- read.table(file = file, header = TRUE)
@@ -1155,7 +1159,7 @@ library(lmtest)   # Para realizar pruebas de heterocedasticidad, incluyendo el t
 
 # Lectura de datos
 # URL del archivo de datos
-file &lt;- &quot;https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_reg_hom.txt&quot;
+file &lt;- &quot;https://github.com/Centromagis/metodosySIM3_V2/blob/main/datos_MetySim/dat_reg_hom.txt&quot;
 
 # Cargar el conjunto de datos desde la URL
 datos &lt;- read.table(file = file, header = TRUE)
@@ -1230,7 +1234,7 @@ library(lmtest)    # Para realizar pruebas de heterocedasticidad
 library(patchwork) # Para combinar gráficos
 
 # Lectura de datos
-file <- "https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_reg_hom.txt"
+file <- "https://github.com/Centromagis/metodosySIM3_V2/blob/main/datos_MetySim/dat_reg_hom.txt
 datos <- read.table(file = file, header = TRUE)
 
 # Ajustar el modelo de regresión principal con ambas variables predictoras
@@ -1271,7 +1275,7 @@ grafico_x2 <- ggplot(datos, aes(x = x2, y = residuos^2)) +
        x = bquote(X[2]), 
        y = bquote(e[i]^2))
 
-# Combinar ambos gráficos ----
+# Combinar ambos gráficos
 grafico_x1 + grafico_x2  # Mostrar gráficos lado a lado
 
 </pre>
@@ -1285,7 +1289,7 @@ library(lmtest)    # Para realizar pruebas de heterocedasticidad
 library(patchwork) # Para combinar gráficos
 
 # Lectura de datos
-file &lt;- &quot;https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_reg_hom.txt&quot;
+file &lt;- &quot;https://github.com/Centromagis/metodosySIM3_V2/blob/main/datos_MetySim/dat_reg_hom.txt&quot;
 datos &lt;- read.table(file = file, header = TRUE)
 
 # Ajustar el modelo de regresión principal con ambas variables predictoras
@@ -1326,7 +1330,7 @@ grafico_x2 &lt;- ggplot(datos, aes(x = x2, y = residuos^2)) +
        x = bquote(X[2]), 
        y = bquote(e[i]^2))
 
-# Combinar ambos gráficos ----
+# Combinar ambos gráficos 
 grafico_x1 + grafico_x2  # Mostrar gráficos lado a lado</code></pre>
 <p>Los resultados obtenidos para el análisis de heterocedasticidad
 mediante el test de White aplicado a cada variable predictora de forma
@@ -1473,9 +1477,9 @@ Ejemplo:
 examina el supuesto de <strong>homocedasticidad de los errores</strong>
 utilizando las siguientes pruebas estadísticas:</p>
 <ul>
-<li><p><strong>Non-constant Variance Score test</strong></p></li>
-<li><p><strong>Goldfeld-Quandt test</strong></p></li>
-<li><p><strong>Harrison-McCabe test</strong></p></li>
+<li><p>Test Non-constant Variance Score</p></li>
+<li><p>Test Goldfeld-Quandt</p></li>
+<li><p>Test Harrison-McCabe</p></li>
 </ul>
 <p>A continuación, se presentan los códigos en <strong>R</strong> para
 la implementación de estas pruebas, permitiendo evaluar si los errores
@@ -1493,7 +1497,7 @@ library(car)       # Para aplicar el test ncvTest
 
 # Lectura de datos 
 # Se carga el conjunto de datos desde un archivo en línea
-file <- "https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_reg_hom.txt"
+file <- "https://github.com/Centromagis/metodosySIM3_V2/blob/main/datos_MetySim/dat_reg_hom.txt"
 datos <- read.table(file = file, header = TRUE)  # Leer el archivo con nombres de columnas
 
 # Ajustar el modelo de regresión lineal múltiple 
@@ -1503,17 +1507,17 @@ mod <- lm(y ~ x1 + x2, data = datos)
 
 # Aplicación de pruebas de homocedasticidad 
 
-# Non-constant Variance Score Test (Test de variancia no constante)
+# Test de variancia no constante
 # Evalúa la presencia de heterocedasticidad en los errores del modelo
 ncv_result <- car::ncvTest(mod)
 print(ncv_result)
 
-# Goldfeld-Quandt Test (Prueba de heterocedasticidad basada en subgrupos)
+# Test Goldfeld-Quandt (Prueba de heterocedasticidad basada en subgrupos)
 # Divide la muestra en dos partes y compara la varianza de los errores en cada una
 gq_result <- lmtest::gqtest(mod)
 print(gq_result)
 
-# Harrison-McCabe Test (Prueba para detectar heterocedasticidad)
+# Test Harrison-McCabe  (Prueba para detectar heterocedasticidad)
 # Se basa en una regresión auxiliar que evalúa la varianza de los errores en función de los valores ajustados
 hmc_result <- lmtest::hmctest(mod)
 print(hmc_result)
@@ -1529,7 +1533,7 @@ library(car)       # Para aplicar el test ncvTest
 
 # Lectura de datos 
 # Se carga el conjunto de datos desde un archivo en línea
-file &lt;- &quot;https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_reg_hom.txt&quot;
+file &lt;- &quot;https://github.com/Centromagis/metodosySIM3_V2/blob/main/datos_MetySim/dat_reg_hom.txt
 datos &lt;- read.table(file = file, header = TRUE)  # Leer el archivo con nombres de columnas
 
 # Ajustar el modelo de regresión lineal múltiple 
@@ -1539,30 +1543,30 @@ mod &lt;- lm(y ~ x1 + x2, data = datos)
 
 # Aplicación de pruebas de homocedasticidad 
 
-# Non-constant Variance Score Test (Test de variancia no constante)
+# Test Non-constant Variance Score (Test de variancia no constante)
 # Evalúa la presencia de heterocedasticidad en los errores del modelo
 ncv_result &lt;- car::ncvTest(mod)
 print(ncv_result)
 
-# Goldfeld-Quandt Test (Prueba de heterocedasticidad basada en subgrupos)
+# Test Goldfeld-Quandt (Prueba de heterocedasticidad basada en subgrupos)
 # Divide la muestra en dos partes y compara la varianza de los errores en cada una
 gq_result &lt;- lmtest::gqtest(mod)
 print(gq_result)
 
-# Harrison-McCabe Test (Prueba para detectar heterocedasticidad)
+# Test Harrison-McCabe (Prueba para detectar heterocedasticidad)
 # Se basa en una regresión auxiliar que evalúa la varianza de los errores en función de los valores ajustados
 hmc_result &lt;- lmtest::hmctest(mod)
 print(hmc_result)</code></pre>
 <p>Los resultados de las pruebas de homocedasticidad se presentan a
 continuación:</p>
 <ul>
-<li><p><strong>Goldfeld-Quandt test</strong> y <strong>Non-constant
-Variance Score test</strong> rechazan la hipótesis nula de
-homocedasticidad con niveles de significancia del <strong>1%</strong> y
+<li><p>Los tests <strong>Goldfeld-Quandt</strong> y <strong>Non-constant
+Variance Score</strong> rechazan la hipótesis nula de homocedasticidad
+con niveles de significancia del <strong>1%</strong> y
 <strong>5%</strong>, respectivamente. Esto indica que existe evidencia
 de que los errores del modelo presentan
 <strong>heterocedasticidad</strong>.</p></li>
-<li><p><strong>Harrison-McCabe test</strong> no rechaza la
+<li><p>El test de <strong>Harrison-McCabe</strong> no rechaza la
 homocedasticidad con un nivel de significancia del <strong>5%</strong>,
 lo que sugiere que, bajo este test, no se encuentra suficiente evidencia
 para afirmar que los errores presentan variabilidad no
@@ -1587,11 +1591,12 @@ alternative hypothesis: variance increases from segment 1 to 2
 data:  mod
 HMC = 0.34793, p-value = 0.066
 </pre>
-<p>El <strong>Harrison-McCabe test</strong> evalúa la heterocedasticidad
-mediante una <strong>regresión auxiliar basada en los valores
-ajustados</strong> del modelo. Esto significa que el test <strong>asume
-que la heterocedasticidad es monótona</strong> y está relacionada con
-los valores ajustados <span class="math inline">\(\hat{Y}\)</span>.</p>
+<p>El test de <strong>Harrison-McCabe</strong> evalúa la
+heterocedasticidad mediante una <strong>regresión auxiliar basada en los
+valores ajustados</strong> del modelo. Esto significa que el test
+<strong>asume que la heterocedasticidad es monótona</strong> y está
+relacionada con los valores ajustados <span
+class="math inline">\(\hat{Y}\)</span>.</p>
 <p>Sin embargo, en este caso, la heterocedasticidad está
 <strong>fuertemente asociada con una única variable predictora</strong>,
 específicamente <strong><span
@@ -1654,22 +1659,22 @@ detectar la presencia de <strong>autocorrelación</strong> en los
 residuos del modelo de regresión.</p>
 <p>Las hipótesis de estas pruebas son:</p>
 <ul>
-<li><p><strong>Hipótesis nula (<span
-class="math inline">\(H_0\)</span>)</strong>: Los errores son
+<li><p>Hipótesis nula <span
+class="math inline">\(\left(H_0\right)\)</span>: Los errores son
 independientes, es decir, no presentan autocorrelación.</p></li>
-<li><p><strong>Hipótesis alternativa (<span
-class="math inline">\(H_1\)</span>)</strong>: Los errores
+<li><p>Hipótesis alterna <span
+class="math inline">\(\left(H_1\right)\)</span>: Los errores
 <strong>no</strong> son independientes, es decir, presentan
 autocorrelación.</p></li>
 </ul>
 <p>Entre las pruebas más utilizadas para evaluar este supuesto se
 encuentran:</p>
 <ul>
-<li><p><strong>Durbin-Watson Test</strong>: Evalúa la presencia de
+<li><p>Test de <strong>Durbin-Watson</strong>: Evalúa la presencia de
 <strong>autocorrelación de primer orden</strong> en los errores del
 modelo. Es especialmente útil en datos ordenados temporalmente.</p></li>
-<li><p><strong>Breusch-Godfrey Test</strong>: Es una generalización del
-<strong>Durbin-Watson Test</strong>, que permite detectar
+<li><p>Test de <strong>Breusch-Godfrey</strong>: Es una generalización
+del <strong>Durbin-Watson Test</strong>, que permite detectar
 autocorrelación de <strong>orden superior</strong> en los
 errores.</p></li>
 </ul>
@@ -1687,10 +1692,10 @@ class="math inline">\(Y\)</span></strong> a partir de la variable
 conjuntos de datos disponibles en los siguientes enlaces:</p>
 <ul>
 <li><p><a
-href="https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_reg_ind1.txt">Base
+href="https://raw.githubusercontent.com/Centromagis/metodosySIM3_V2/refs/heads/main/datos_MetySim/dat_reg_ind1.txt">Base
 de datos 1</a></p></li>
 <li><p><a
-href="https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_reg_ind2.txt">Base
+href="https://raw.githubusercontent.com/Centromagis/metodosySIM3_V2/refs/heads/main/datos_MetySim/dat_reg_ind2.txt">Base
 de datos 2</a></p></li>
 </ul>
 <p>Se ajusta un <strong>modelo de regresión lineal simple</strong> en
@@ -1699,10 +1704,10 @@ si los errores del modelo cumplen con el supuesto de
 <strong>independencia</strong>.</p>
 <p>Para ello, se utilizan las siguientes pruebas:</p>
 <ul>
-<li><p><strong>Durbin-Watson Test</strong>: Evalúa la presencia de
+<li><p><strong>Test de Durbin-Watson</strong>: Evalúa la presencia de
 autocorrelación de primer orden en los errores.</p></li>
-<li><p><strong>Breusch-Godfrey Test</strong>: Evalúa la autocorrelación
-de orden superior en los errores.</p></li>
+<li><p><strong>Test de Breusch-Godfrey</strong>: Evalúa la
+autocorrelación de orden superior en los errores.</p></li>
 </ul>
 <p>A continuación, se presentan los códigos en <strong>R</strong>, los
 resultados obtenidos y su interpretación.</p>
@@ -1720,7 +1725,7 @@ library(lmtest)   # Para las pruebas de independencia de los errores
 
 # Lectura de datos 
 # URL del archivo de datos
-file <- "https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_reg_ind1.txt"
+file <- "https://raw.githubusercontent.com/Centromagis/metodosySIM3_V2/refs/heads/main/datos_MetySim/dat_reg_ind1.txt"
 
 # Cargar el conjunto de datos desde la URL
 datos <- read.table(file = file, header = TRUE)
@@ -1748,12 +1753,12 @@ ggplot(resid_data, aes(x = Observacion, y = Residuales)) +
 
 # Pruebas de independencia de los errores 
 
-# Durbin-Watson Test
+# Test de Durbin-Watson
 # Evalúa si los errores presentan autocorrelación de primer orden
 dw_test <- dwtest(mod1)
 print(dw_test)
 
-# Breusch-Godfrey Test
+# Test de Breusch-Godfrey
 # Permite evaluar autocorrelación de orden superior en los errores
 bg_test <- bgtest(mod1)
 print(bg_test)
@@ -1768,7 +1773,7 @@ library(lmtest)   # Para las pruebas de independencia de los errores
 
 # Lectura de datos 
 # URL del archivo de datos
-file &lt;- &quot;https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_reg_ind1.txt&quot;
+file &lt;- &quot;https://raw.githubusercontent.com/Centromagis/metodosySIM3_V2/refs/heads/main/datos_MetySim/dat_reg_ind1.txt&quot;
 
 # Cargar el conjunto de datos desde la URL
 datos &lt;- read.table(file = file, header = TRUE)
@@ -1796,19 +1801,19 @@ ggplot(resid_data, aes(x = Observacion, y = Residuales)) +
 
 # Pruebas de independencia de los errores 
 
-# Durbin-Watson Test
+# Test Durbin-Watson
 # Evalúa si los errores presentan autocorrelación de primer orden
 dw_test &lt;- dwtest(mod1)
 print(dw_test)
 
-# Breusch-Godfrey Test
+# Test Breusch-Godfrey
 # Permite evaluar autocorrelación de orden superior en los errores
 bg_test &lt;- bgtest(mod1)
 print(bg_test)</code></pre>
-<p>Los valores-p obtenidos en ambas pruebas son mayores a
-<strong>0.05</strong>, lo que indica que con un nivel de significancia
-del <strong>5%</strong>, <strong>no se rechaza la hipótesis nula de
-independencia de los errores</strong>.</p>
+<p>Los <span class="math inline">\(valores-p\)</span> obtenidos en ambas
+pruebas son mayores a <strong>0.05</strong>, lo que indica que con un
+nivel de significancia del <strong>5%</strong>, <strong>no se rechaza la
+hipótesis nula de independencia de los errores</strong>.</p>
 <p>La <strong>Figura 3.24</strong> presenta la gráfica de los residuos
 del modelo en función del índice de observación. Se observa que los
 residuos oscilan aleatoriamente alrededor de cero, sin mostrar un patrón
@@ -1847,7 +1852,7 @@ library(lmtest)   # Para realizar pruebas de independencia de los errores
 
 # Lectura de datos 
 # URL del archivo de datos
-file <- "https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_reg_ind2.txt"
+file <- "https://raw.githubusercontent.com/Centromagis/metodosySIM3_V2/refs/heads/main/datos_MetySim/dat_reg_ind2.txt"
 
 # Cargar el conjunto de datos desde la URL
 datos <- read.table(file = file, header = TRUE)
@@ -1875,12 +1880,12 @@ ggplot(resid_data, aes(x = Observacion, y = Residuales)) +
 
 # Pruebas de independencia de los errores 
 
-# Durbin-Watson Test
+# Test de Durbin-Watson 
 # Evalúa la presencia de autocorrelación de primer orden en los errores
 dw_test <- dwtest(mod2)
 print(dw_test)
 
-# Breusch-Godfrey Test
+# Test de Breusch-Godfrey
 # Evalúa la autocorrelación de orden superior en los errores
 bg_test <- bgtest(mod2)
 print(bg_test)
@@ -1895,7 +1900,7 @@ library(lmtest)   # Para realizar pruebas de independencia de los errores
 
 # Lectura de datos 
 # URL del archivo de datos
-file &lt;- &quot;https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_reg_ind2.txt&quot;
+file &lt;- &quot;https://raw.githubusercontent.com/Centromagis/metodosySIM3_V2/refs/heads/main/datos_MetySim/dat_reg_ind2.txt&quot;
 
 # Cargar el conjunto de datos desde la URL
 datos &lt;- read.table(file = file, header = TRUE)
@@ -1923,19 +1928,19 @@ ggplot(resid_data, aes(x = Observacion, y = Residuales)) +
 
 # Pruebas de independencia de los errores 
 
-# Durbin-Watson Test
+# Test Durbin-Watson
 # Evalúa la presencia de autocorrelación de primer orden en los errores
 dw_test &lt;- dwtest(mod2)
 print(dw_test)
 
-# Breusch-Godfrey Test
+# Test Breusch-Godfrey
 # Evalúa la autocorrelación de orden superior en los errores
 bg_test &lt;- bgtest(mod2)
 print(bg_test)</code></pre>
-<p>Los valores-p obtenidos en ambas pruebas son menores a
-<strong>0.001</strong>, lo que indica que con un nivel de significancia
-del <strong>1%</strong>, <strong>se rechaza la hipótesis nula de
-independencia de los errores</strong>.</p>
+<p>Los <span class="math inline">\(valores-p\)</span> obtenidos en ambas
+pruebas son menores a <strong>0.001</strong>, lo que indica que con un
+nivel de significancia del <strong>1%</strong>, <strong>se rechaza la
+hipótesis nula de independencia de los errores</strong>.</p>
 <p>La <strong>Figura 3.25</strong> presenta la gráfica de los residuos
 del modelo en función del índice de observación. En un modelo con
 errores independientes, los residuos deberían oscilar de manera
@@ -1998,7 +2003,7 @@ class="math inline">\(Y\)</span></strong> en función de la variable
 conjunto de datos disponible en el siguiente enlace:</p>
 <ul>
 <li><a
-href="https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_ok.txt">Base
+href="https://raw.githubusercontent.com/Centromagis/metodosySIM3_V2/refs/heads/main/datos_MetySim/dat_ok.txt">Base
 de datos</a></li>
 </ul>
 <p>Se ajusta un <strong>modelo de regresión lineal simple</strong> y se
@@ -2009,20 +2014,20 @@ homocedasticidad e independencia</strong>.</p>
 <ul>
 <li><p><strong>Prueba de normalidad:</strong></p>
 <ul>
-<li><p>Shapiro-Wilk test.</p></li>
-<li><p>Anderson-Darling test.</p></li>
-<li><p>Kolmogorov-Smirnov test.</p></li>
+<li><p>Test de Shapiro-Wilk.</p></li>
+<li><p>Test de Anderson-Darling.</p></li>
+<li><p>Test de Kolmogorov-Smirnov.</p></li>
 </ul></li>
 <li><p><strong>Pruebas de homocedasticidad:</strong></p>
 <ul>
-<li><p>Breusch-Pagan test.</p></li>
-<li><p>White test.</p></li>
-<li><p>Goldfeld-Quandt test.</p></li>
+<li><p>Test de Breusch-Pagan.</p></li>
+<li><p>Test de White.</p></li>
+<li><p>Test de Goldfeld-Quandt.</p></li>
 </ul></li>
 <li><p><strong>Pruebas de independencia:</strong></p>
 <ul>
-<li><p>Durbin-Watson test.</p></li>
-<li><p>Breusch-Godfrey test.</p></li>
+<li><p>Test de Durbin-Watson.</p></li>
+<li><p>Test de Breusch-Godfrey.</p></li>
 </ul></li>
 </ul>
 <p>A continuación, se presentan los códigos en <strong>R</strong>, los
@@ -2041,7 +2046,7 @@ library(patchwork) # Para combinar gráficos en una sola figura
 
 
 # Lectura de datos
-file <- "https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_ok.txt"
+file <- "https://raw.githubusercontent.com/Centromagis/metodosySIM3_V2/refs/heads/main/datos_MetySim/dat_ok.txt"
 datos <- read.table(file = file, header = TRUE)
 
 # Ajuste del modelo de regresión
@@ -2144,7 +2149,7 @@ library(patchwork) # Para combinar gráficos en una sola figura
 
 
 # Lectura de datos
-file &lt;- &quot;https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_ok.txt&quot;
+file &lt;- &quot;https://raw.githubusercontent.com/Centromagis/metodosySIM3_V2/refs/heads/main/datos_MetySim/dat_ok.txt&quot;
 datos &lt;- read.table(file = file, header = TRUE)
 
 # Ajuste del modelo de regresión
@@ -2232,10 +2237,10 @@ grafico_residuos_index &lt;- ggplot(data = data.frame(indice_observacion, residu
 
 # Visualización combinada
 (grafico_residuos + grafico_qq + grafico_scale) / grafico_residuos_index  # Organiza los gráficos en filas</code></pre>
-<p>Los valores-p obtenidos en los tests de normalidad son
-<strong>mayores a 0.05</strong>, lo que indica que <strong>no hay
-suficiente evidencia para rechazar la hipótesis nula de normalidad de
-los errores</strong> con un nivel de significancia del
+<p>Los <span class="math inline">\(valores-p\)</span> obtenidos en los
+tests de normalidad son <strong>mayores a 0.05</strong>, lo que indica
+que <strong>no hay suficiente evidencia para rechazar la hipótesis nula
+de normalidad de los errores</strong> con un nivel de significancia del
 <strong>5%</strong>.</p>
 <p>La <strong>Figura 3.26</strong> y <strong>Figura 3.27</strong>
 presentan el <strong>QQ-plot</strong> de los residuos estandarizados del
@@ -2274,11 +2279,11 @@ alternative hypothesis: two-sided
 <strong>Figura 3.27</strong> Gráficos para análisis de residuales.
 </center>
 <p><br/><br/></p>
-<p>Los valores-p obtenidos en las pruebas de independencia son
-<strong>mayores a 0.05</strong>, lo que indica que <strong>no hay
-suficiente evidencia para rechazar la hipótesis nula de independencia de
-los errores</strong> con un nivel de significancia del
-<strong>5%</strong>.</p>
+<p>Los <span class="math inline">\(valores-p\)</span> obtenidos en las
+pruebas de independencia son <strong>mayores a 0.05</strong>, lo que
+indica que <strong>no hay suficiente evidencia para rechazar la
+hipótesis nula de independencia de los errores</strong> con un nivel de
+significancia del <strong>5%</strong>.</p>
 <p>El <strong>gráfico de residuos versus el índice de
 observación</strong> en la <strong>Figura 3.27</strong> no muestra un
 patrón o tendencia clara, y los puntos se distribuyen aleatoriamente
@@ -2298,16 +2303,17 @@ Breusch-Godfrey test for serial correlation of order up to 1
 data:  mod
 LM test = 1.1435, df = 1, p-value = 0.2849
 </pre>
-<p>Los valores-p obtenidos en las pruebas de
-<strong>homocedasticidad</strong> son <strong>mayores a 0.05</strong>,
-lo que indica que <strong>no hay suficiente evidencia para rechazar la
-hipótesis nula de homocedasticidad de los errores</strong> con un nivel
-de significancia del <strong>5%</strong>.</p>
+<p>Los <span class="math inline">\(valores-p\)</span> obtenidos en las
+pruebas de <strong>homocedasticidad</strong> son <strong>mayores a
+0.05</strong>, lo que indica que <strong>no hay suficiente evidencia
+para rechazar la hipótesis nula de homocedasticidad de los
+errores</strong> con un nivel de significancia del
+<strong>5%</strong>.</p>
 <p>Las <strong>Figuras 3.26 y 3.27</strong> presentan los residuos
-estandarizados frente a los valores ajustados del modelo. Se observa que
-los puntos no muestran ningún patrón o tendencia sistemática, lo que
-sugiere que los errores del modelo de regresión lineal ajustado cumplen
-con el supuesto de varianza constante.</p>
+frente a los valores ajustados del modelo. Se observa que los puntos no
+muestran ningún patrón o tendencia sistemática, lo que sugiere que los
+errores del modelo de regresión lineal ajustado cumplen con el supuesto
+de varianza constante.</p>
 <p>A continuación, se presentan los resultados de cada prueba:</p>
 <pre>
 studentized Breusch-Pagan test
@@ -2337,8 +2343,7 @@ de independencia, normalidad y homocedasticidad de los errores.</p>
 destacan las observaciones <strong>84, 382 y 463</strong>, cuyos
 residuos son notablemente diferentes al resto. Estos puntos atípicos
 pueden influir en la calidad del ajuste del modelo y en la validez de
-los supuestos. Aunque la presencia de estos valores extremos no invalida
-el modelo, es recomendable realizar una inspección más detallada para
+los supuestos. Es necesario realizar una inspección más detallada para
 determinar si corresponden a errores de medición, valores influenciales
 o simplemente a una variabilidad inherente en los datos.</p>
 </p>
