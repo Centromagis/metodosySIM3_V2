@@ -8,12 +8,14 @@ output:
 ---
 
 <div class="caja-nota">
+<h3>Nota:</h3>
 > *"RMarkdown: Se utiliza principalmente para generar reportes reproducibles en formato HTML, PDF o Word, combinando código R con texto explicativo. Permite incluir análisis de datos, visualizaciones y explicaciones detalladas en un solo documento."*  
 </div>
 
 
 
 <div class="caja-nota">
+<h3>Nota:</h3>
 > *"Shiny: Se usa para desarrollar aplicaciones interactivas en la web, donde los usuarios pueden explorar los datos y realizar análisis dinámicos sin necesidad de ejecutar código manualmente."*  
 </div>
 
@@ -245,12 +247,6 @@ shinyApp(ui, server)
 </div>
 
 
-</br></br>
-<h3>Tablero interactivo</h3>
-
-
-El tablero interactivo está disponible en:  
-<https://sandra-milena-ramirez-buelvas.shinyapps.io/tablero/>
 
 
 
@@ -346,7 +342,7 @@ server <- function(input, output) {
                  max = max(datos[[input$var_explicativa]], na.rm = TRUE))
   })
   
-  # **Ecuación del Modelo**
+  # Ecuación del Modelo
   output$modelo_equacion <- renderText({
     modelo <- modelo_regresion()
     coef <- coef(modelo)
@@ -355,7 +351,7 @@ server <- function(input, output) {
     paste0("Peso = ", intercepto, " + ", pendiente, " × ", input$var_explicativa)
   })
   
-  # **Tabla de hipótesis nulas y valores-p**
+  # Tabla de hipótesis nulas y valores-p
   output$tabla_hipotesis <- renderDT({
     modelo <- modelo_regresion()
     resumen <- summary(modelo)
@@ -378,7 +374,7 @@ server <- function(input, output) {
     datatable(tabla, options = list(dom = 't', paging = FALSE, searching = FALSE))
   })
   
-  # **Tabla con métricas del modelo**
+  # Tabla con métricas del modelo
   output$tabla_metricas <- renderDT({
     modelo <- modelo_regresion()
     resumen <- summary(modelo)
@@ -391,7 +387,7 @@ server <- function(input, output) {
     datatable(tabla, options = list(dom = 't', paging = FALSE, searching = FALSE))
   })
   
-  # **Tabla de intervalos de confianza para parámetros**
+  # Tabla de intervalos de confianza para parámetros
   output$tabla_ic_parametros <- renderDT({
     modelo <- modelo_regresion()
     resumen <- summary(modelo)
@@ -414,7 +410,7 @@ server <- function(input, output) {
     datatable(tabla_ic, options = list(dom = 't', paging = FALSE, searching = FALSE))
   })
   
-  # **Tabla de pruebas de supuestos**
+  # Tabla de pruebas de supuestos
   output$tabla_tests <- renderDT({
     modelo <- modelo_regresion()
     
@@ -431,7 +427,7 @@ server <- function(input, output) {
   
   
   
-  # **Gráficos de diagnóstico**
+  # Gráficos de diagnóstico
   output$diagnostico_residuos <- renderPlot({
     par(mfrow = c(2, 2))
     plot(modelo_regresion())
@@ -442,7 +438,7 @@ server <- function(input, output) {
     influencePlot(modelo, main = "Distancia de Cook vs. Leverage")
   })
   
-  # **Gráficos de correlaciones**
+  # Gráficos de correlaciones
   output$correlaciones_pearson <- renderPlot({
     ggpairs(datos[, c("Peso", "Estatura", "circun_cuello", "circun_muneca")], 
             title = "Correlaciones de Pearson")
@@ -453,14 +449,14 @@ server <- function(input, output) {
             title = "Correlaciones de Kendall", upper = list(continuous = "cor", method = "kendall"))
   })
   
-  # **Predicción de valores nuevos**
+  # Predicción de valores nuevos
   output$prediccion_resultado <- renderPrint({
     modelo <- modelo_regresion()
     nueva_obs <- setNames(list(input$pred_x), input$var_explicativa)
     predict(modelo, newdata = as.data.frame(nueva_obs), interval = "prediction")
   })
   
-  # **Gráfico de dispersión con intervalos de confianza y predicción**
+  # Gráfico de dispersión con intervalos de confianza y predicción
   output$intervalos_prediccion <- renderPlot({
     modelo <- modelo_regresion()
     nuevos_datos <- setNames(list(seq(min(datos[[input$var_explicativa]], na.rm = TRUE), 

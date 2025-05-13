@@ -51,12 +51,23 @@ El modelo de regresión lineal es ampliamente aplicado en diversos campos, entre
 
 
 <div class="caja-nota">
-> *"En esta unidad, el análisis se centrará en el **Modelo de Regresión Lineal Simple**, donde se modelará una única variable respuesta en función de una sola variable predictora. No se abordarán relaciones más complejas ni modelos con múltiples predictores."*  
+<h3>Alerta:</h3>
+> *"En esta unidad, el análisis se centrará en el **Modelo de Regresión Lineal Simple**, donde se modelará una única variable respuesta **cuantitativa** en función de una sola variable predictora **cuantitativa**. No se abordarán relaciones más complejas ni modelos con múltiples predictores."*  
 </div>
 
 <div class="caja-nota">
-> *"En el siguiente curso **Modelos Estadísticos para la Toma de Decisiones**, se estudiará el **Modelo de Regresión Lineal Múltiple**, el cual permite modelar una variable respuesta en términos de varias variables predictoras. Este modelo amplía las capacidades de análisis al considerar múltiples factores que pueden influir simultáneamente en la variable de interés."*  
+<h3>Alerta:</h3>
+> *"En el siguiente curso **Modelos Estadísticos para la Toma de Decisiones**, se estudiará el **Modelo de Regresión Lineal Múltiple**, el cual permite modelar una variable respuesta en términos de varias variables predictoras incluyendo variables **predictoras cualitativas, que no se estudian en este material**. Este modelo del siguiente semestre  amplía las capacidades de análisis al considerar múltiples factores que pueden influir simultáneamente en la variable de interés."*  
 </div>
+
+<br/><br/>
+<h3>Pasos para construir un modelo de Regresión Lineal Simple</h3>
+
+
+```{r, echo=FALSE, out.width="80%", fig.align = "center"}
+knitr::include_graphics("img/flujoMRLS.png")
+```
+
 
 
 <br/><br/>

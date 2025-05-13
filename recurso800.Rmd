@@ -1,5 +1,5 @@
 ---
-title: <span style="color:#686868"> **Coeficientes y Varianza**</span>
+title: <span style="color:#686868"> **Coeficientes y varianza**</span>
 author: "Métodos y Simulación Estadística"
 output:
   html_document:

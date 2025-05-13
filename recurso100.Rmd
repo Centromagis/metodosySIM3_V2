@@ -262,7 +262,7 @@ Para explorar esta relación, se construirá un **gráfico de dispersión**, el 
 
 Los datos utilizados en este estudio están disponibles en el siguiente enlace:
 
-[Datos de producción y tiempo de trabajo](https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_product.txt)
+[Datos de producción y tiempo de trabajo](https://raw.githubusercontent.com/Centromagis/metodosySIM3_V2/refs/heads/main/datos_MetySim/dat_product.txt)
 
 
 A continuación, se presenta el código en **R** para generar dicho gráfico:
@@ -274,7 +274,7 @@ library(ggplot2)
 
 # Crear un data frame con las observaciones de la muestra
 # 1. Lectura de datos
-file <- "https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_product.txt"
+file <- "https://raw.githubusercontent.com/Centromagis/metodosySIM3_V2/refs/heads/main/datos_MetySim/dat_product.txt"
 datos <- read.table(file = file, header = TRUE)
 
 data_produccion <- datos
@@ -304,7 +304,7 @@ library(ggplot2)
 
 # Crear un data frame con las observaciones de la muestra
 # 1. Lectura de datos
-file <- "https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_product.txt"
+file <- "https://raw.githubusercontent.com/Centromagis/metodosySIM3_V2/refs/heads/main/datos_MetySim/dat_product.txt"
 datos <- read.table(file = file, header = TRUE)
 
 data_produccion <- datos
@@ -499,7 +499,9 @@ $$
 Donde:
 
 - **$\sigma_X = 0.015$ mm** → **Desviación estándar del diámetro**.
+
 - **$\sigma_Y = 0.2$ $\mu m$** → **Desviación estándar de la rugosidad**.
+
 - **$\rho = -0.6$** → **Correlación de Pearson entre diámetro y rugosidad**.
 
 

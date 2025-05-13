@@ -170,6 +170,7 @@ En este análisis, se busca modelar la variable respuesta \( Y \) en función de
 Para ello, se utilizarán dos enfoques:
 
 1. **Análisis gráfico**: Se generará un gráfico **Q-Q Plot (Quantile-Quantile Plot)**.
+
 2. **Prueba de hipótesis**: Se aplicará la **prueba de Shapiro-Wilk**.
 
 El conjunto de datos utilizado se encuentra disponible en el siguiente enlace:  

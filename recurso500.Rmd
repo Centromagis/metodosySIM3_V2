@@ -46,7 +46,7 @@ La **Tabla 3.9** muestra algunos ejemplos de modelos que pueden ser **linealizad
 **Tabla 3.9** Ejemplos de transformaciones.
 </center>
 
-| **Modelo** | **Denominación** | **Transformación** | **Forma Lineal** |
+| **Modelo** | **Denominación** | **Transformación** | **Forma lineal** |
 |------------|-----------------|---------------------|------------------|
 | \( Y = \beta_0 e^{\beta_1 X} \varepsilon \) | Modelo exponencial multiplicativo | \( Y^* = \ln(Y) \) | \( Y^* = \beta_0^* + \beta_1 X + \varepsilon^* \) con \( \beta_0^* = \ln(\beta_0) \) y \( \varepsilon^* = \ln(\varepsilon) \) |
 | \( Y = \beta_0 X^{\beta_1} \varepsilon \) | Modelo potencial multiplicativo | \( Y^* = \ln(Y) \), \( X^* = \ln(X) \) | \( Y^* = \beta_0^* + \beta_1 X^* + \varepsilon^* \) con \( \beta_0^* = \ln(\beta_0) \) y \( \varepsilon^* = \ln(\varepsilon) \) |
@@ -246,11 +246,11 @@ La **Figura 3.32** muestra  que la cantidad de sustancia (mg) **decrece** a medi
 
 La **Figura 3.33** muestra los gráficos de diagnóstico de los residuos del modelo de regresión lineal $M_1$. Vamos a analizar cada uno:
 
-- **Residuals vs Fitted (Residuos vs Valores Ajustados)**:  La forma de "U" en el gráfico indica que hay una relación no lineal entre las variables. Esto sugiere que el modelo lineal no es adecuado, ya que los residuos deberían estar distribuidos aleatoriamente alrededor de la línea horizontal (cero).
+- **Residuals vs fitted (residuos vs. valores Ajustados)**:  La forma de "U" en el gráfico indica que hay una relación no lineal entre las variables. Esto sugiere que el modelo lineal no es adecuado, ya que los residuos deberían estar distribuidos aleatoriamente alrededor de la línea horizontal (cero).
 
-- **Q-Q Residuals (Gráfico de Cuantiles-Cuantiles)**: Se observa una desviación de los puntos con respecto a la línea diagonal en los extremos.Esto indica que los residuos no siguen completamente una distribución normal, lo cual puede afectar la validez de los resultados asociados al modelo debido al no cumplimiento de la normalidad de los errores.
+- **Q-Q Residuals (gráfico de cuantiles-cuantiles)**: Se observa una desviación de los puntos con respecto a la línea diagonal en los extremos.Esto indica que los residuos no siguen completamente una distribución normal, lo cual puede afectar la validez de los resultados asociados al modelo debido al no cumplimiento de la normalidad de los errores.
 
-- **Scale-Location (Residuos Estandarizados vs Valores Ajustados)**: La tendencia en forma de "U" muestra que la varianza de los residuos no es constante (presencia de heterocedasticidad). Esto significa que el modelo puede no ser el más adecuado debido a la falta de homocedasticidad de los errores.
+- **Scale-Location (residuos estandarizados vs. valores ajustados)**: La tendencia en forma de "U" muestra que la varianza de los residuos no es constante (presencia de heterocedasticidad). Esto significa que el modelo puede no ser el más adecuado debido a la falta de homocedasticidad de los errores.
 
 
 
@@ -446,15 +446,15 @@ knitr::include_graphics("img/fig335.png")
 
 La **Figura 3.35** muestra los gráficos de diagnóstico de los residuos del modelo de regresión lineal $M_2$. A continuación se analiza cada uno:
 
-- **Residuals vs Fitted (Residuos vs Valores Ajustados)**: Los residuos están distribuidos aleatoriamente alrededor de la línea horizontal, sin una tendencia clara, lo que indica que la relación entre las variables es adecuadamente modelada por una regresión lineal. Algunos valores atípicos (puntos 44, 45 y 48) podrían indicar observaciones con mayor influencia en el modelo.
+- **Residuals vs fitted (residuos vs. valores ajustados)**: Los residuos están distribuidos aleatoriamente alrededor de la línea horizontal, sin una tendencia clara, lo que indica que la relación entre las variables es adecuadamente modelada por una regresión lineal. Algunos valores atípicos (puntos 44, 45 y 48) podrían indicar observaciones con mayor influencia en el modelo.
 
-- **Q-Q Residuals (Gráfico de Cuantiles-Cuantiles)**: Los residuos siguen aproximadamente la línea diagonal, lo que sugiere que la normalidad de los errores se cumple en gran medida. Sin embargo, en los extremos hay algunas desviaciones, lo que indica la presencia de valores atípicos que podrían afectar la normalidad de los errores.
+- **Q-Q Residuals (gráfico de cuantiles-cuantiles)**: Los residuos siguen aproximadamente la línea diagonal, lo que sugiere que la normalidad de los errores se cumple en gran medida. Sin embargo, en los extremos hay algunas desviaciones, lo que indica la presencia de valores atípicos que podrían afectar la normalidad de los errores.
 
-- **Scale-Location (Residuos Estandarizados vs Valores Ajustados)**: No se observa una tendencia clara en los residuos estandarizados, sin embargo los puntos a la izquiera de 3.6 en el eje $X$ parecen mostrar mayor variabilidad. Los valores en los extremos (puntos 44, 45 y 48) podrían generar cierta variabilidad, en general la transformación logarítmica parece haber estabilizado la varianza.
+- **Scale-Location (residuos estandarizados vs. valores ajustados)**: No se observa una tendencia clara en los residuos estandarizados, sin embargo los puntos a la izquiera de 3.6 en el eje $X$ parecen mostrar mayor variabilidad. Los valores en los extremos (puntos 44, 45 y 48) podrían generar cierta variabilidad, en general la transformación logarítmica parece haber estabilizado la varianza.
 
 Los resultados de las pruebas estadísticas indican que los errores cumplen con los supuestos de **normalidad** e **independencia**, ya que los $valores-p$ obtenidos en las pruebas de **Shapiro-Wilk** y **Durbin-Watson** son mayores a 0.10, lo que significa que no hay suficiente evidencia para rechazar la hipótesis nula en cada caso.
 
-Sin embargo, la prueba de **Breusch-Pagan** detecta la presencia de **heterocedasticidad** en los residuos, con un \(valor-p \) de **0.0019**, lo que indica que la varianza de los errores no es constante con un nivel de significancia del **1%**.
+Sin embargo, la prueba de **Breusch-Pagan** detecta la presencia de **heterocedasticidad** en los residuos, con un \(valor-p \) de 0.0019, lo que indica que la varianza de los errores no es constante con un nivel de significancia del **1%**.
 
 <pre>
 Shapiro-Wilk normality test

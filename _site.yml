@@ -9,7 +9,7 @@ navbar:
           href: index.html
     - text: "Correlación"
       menu:
-        - text: "Análisis de Correlación"
+        - text: "Análisis de correlación"
           href: recurso100.html
         - text: "Coeficiente de Pearson"
           href: recurso110.html  
@@ -19,23 +19,23 @@ navbar:
           href: recurso130.html    
     - text: "Modelo"
       menu:
-        - text: "Modelo de Regresión Lineal Simple"
+        - text: "Modelo de regresión lineal simple"
           href: recurso200.html
-        - text: "Estimación Mínimos Cuadrados Ordinarios"
+        - text: "Estimación mínimos cuadrados ordinarios"
           href: recurso210.html            
-        - text: "Estimación de Máxima Verosimilitud"
+        - text: "Estimación de máxima verosimilitud"
           href: recurso220.html 
-        - text: "Forma Matricial del Modelo"
+        - text: "Forma matricial del modelo"
           href: recurso230.html           
         - text: "Supuestos"
           href: recurso300.html
         - text: "Residuales"
           href: recurso310.html 
-        - text: "Revisión de Supuestos"
+        - text: "Revisión de supuestos"
           href: recurso320.html  
     - text: "Tests y R Cuadrado"
       menu:
-        - text: "Pruebas de Hipótesis"
+        - text: "Pruebas de hipótesis"
           href: recurso400.html 
         - text: "R Cuadrado"
           href: recurso410.html   
@@ -43,17 +43,17 @@ navbar:
       menu:
         - text: "Transformaciones"
           href: recurso500.html  
-        - text: "Variables Explicativas como Polinomios"
+        - text: "Variables explicativas como polinomios"
           href: recurso600.html  
-    - text: "Predicción e Intervalos"
+    - text: "Predicción e intervalos"
       menu:
-        - text: "Intervalo de Confianza"
+        - text: "Intervalo de confianza"
           href: recurso700.html                 
-        - text: "Intervalos de C. de Coeficientes y Varianza"
+        - text: "Intervalos de C. de coeficientes y varianza"
           href: recurso800.html         
-    - text: "Atípicos e Influyentes"
+    - text: "Atípicos e influyentes"
       menu:
-        - text: "Punto Atípico e Influyente"
+        - text: "Punto atípico e influyente"
           href: recurso900.html
     - text: "Tablero"
       menu:
