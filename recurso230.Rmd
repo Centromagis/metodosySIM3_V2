@@ -1,5 +1,5 @@
 ---
-title: <span style="color:#686868"> **Forma Matricial del Modelo**</span>
+title: <span style="color:#686868"> **Forma matricial del modelo**</span>
 author: "Métodos y Simulación Estadística"
 output:
   html_document:
@@ -8,13 +8,11 @@ output:
 ---
 
 </br></br>
-<h2>Introducción</h2>
+<h2>Regresión lineal simple en forma matricial</h2>
 
 La formulación matricial del modelo de **regresión lineal simple** permite expresar el problema de manera compacta y eficiente. Esto facilita la estimación de los coeficientes, el cálculo de valores ajustados y el análisis de los residuales.
 
 
-</br></br>
-<h2>Regresión Lineal Simple en Forma Matricial</h2>
 
 La **regresión lineal simple** en forma matricial se expresa como:  
 
@@ -32,10 +30,6 @@ donde:
 
 - \( \boldsymbol{\varepsilon} \) es el **vector de errores** de dimensión \( n \times 1 \).
 
-
-
-</br></br>
-<h2>Matrices en detalle</h2>
 
 </br></br>
 <h3>Matriz de diseño \( \mathbf{X} \)</h3>

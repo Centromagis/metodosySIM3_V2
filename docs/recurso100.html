@@ -268,7 +268,7 @@ $(document).ready(function () {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="recurso100.html">Análisis de Correlación</a>
+      <a href="recurso100.html">Análisis de correlación</a>
     </li>
     <li>
       <a href="recurso110.html">Coeficiente de Pearson</a>
@@ -289,16 +289,16 @@ $(document).ready(function () {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="recurso200.html">Modelo de Regresión Lineal Simple</a>
+      <a href="recurso200.html">Modelo de regresión lineal simple</a>
     </li>
     <li>
-      <a href="recurso210.html">Estimación Mínimos Cuadrados Ordinarios</a>
+      <a href="recurso210.html">Estimación mínimos cuadrados ordinarios</a>
     </li>
     <li>
-      <a href="recurso220.html">Estimación de Máxima Verosimilitud</a>
+      <a href="recurso220.html">Estimación de máxima verosimilitud</a>
     </li>
     <li>
-      <a href="recurso230.html">Forma Matricial del Modelo</a>
+      <a href="recurso230.html">Forma matricial del modelo</a>
     </li>
     <li>
       <a href="recurso300.html">Supuestos</a>
@@ -307,7 +307,7 @@ $(document).ready(function () {
       <a href="recurso310.html">Residuales</a>
     </li>
     <li>
-      <a href="recurso320.html">Revisión de Supuestos</a>
+      <a href="recurso320.html">Revisión de supuestos</a>
     </li>
   </ul>
 </li>
@@ -319,7 +319,7 @@ $(document).ready(function () {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="recurso400.html">Pruebas de Hipótesis</a>
+      <a href="recurso400.html">Pruebas de hipótesis</a>
     </li>
     <li>
       <a href="recurso410.html">R Cuadrado</a>
@@ -337,7 +337,7 @@ $(document).ready(function () {
       <a href="recurso500.html">Transformaciones</a>
     </li>
     <li>
-      <a href="recurso600.html">Variables Explicativas como Polinomios</a>
+      <a href="recurso600.html">Variables explicativas como polinomios</a>
     </li>
   </ul>
 </li>
@@ -349,22 +349,22 @@ $(document).ready(function () {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="recurso700.html">Intervalo de Confianza</a>
+      <a href="recurso700.html">Intervalo de confianza</a>
     </li>
     <li>
-      <a href="recurso800.html">Intervalos de C. de Coeficientes y Varianza</a>
+      <a href="recurso800.html">Intervalos de C. de coeficientes y varianza</a>
     </li>
   </ul>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Atípicos e Influyentes
+    Atípicos e influyentes
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="recurso900.html">Punto Atípico e Influyente</a>
+      <a href="recurso900.html">Punto atípico e influyente</a>
     </li>
   </ul>
 </li>
@@ -611,7 +611,7 @@ asociación entre las variables.</p>
 <p>Los datos utilizados en este estudio están disponibles en el
 siguiente enlace:</p>
 <p><a
-href="https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_product.txt">Datos
+href="https://raw.githubusercontent.com/Centromagis/metodosySIM3_V2/refs/heads/main/datos_MetySim/dat_product.txt">Datos
 de producción y tiempo de trabajo</a></p>
 <p>A continuación, se presenta el código en <strong>R</strong> para
 generar dicho gráfico:</p>
@@ -621,7 +621,7 @@ library(ggplot2)
 
 # Crear un data frame con las observaciones de la muestra
 # 1. Lectura de datos
-file <- "https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_product.txt"
+file <- "https://raw.githubusercontent.com/Centromagis/metodosySIM3_V2/refs/heads/main/datos_MetySim/dat_product.txt"
 datos <- read.table(file = file, header = TRUE)
 
 data_produccion <- datos
@@ -648,7 +648,7 @@ library(ggplot2)
 
 # Crear un data frame con las observaciones de la muestra
 # 1. Lectura de datos
-file &lt;- &quot;https://raw.githubusercontent.com/smramirezb/datos_ejemplos/refs/heads/main/dat_product.txt&quot;
+file &lt;- &quot;https://raw.githubusercontent.com/Centromagis/metodosySIM3_V2/refs/heads/main/datos_MetySim/dat_product.txt&quot;
 datos &lt;- read.table(file = file, header = TRUE)
 
 data_produccion &lt;- datos
@@ -876,13 +876,15 @@ class="math inline">\(\text{Cov}(X, Y)=\sigma_{XY} = \rho \sigma_X
 \]</span></p>
 <p>Donde:</p>
 <ul>
-<li><strong><span class="math inline">\(\sigma_X = 0.015\)</span>
-mm</strong> → <strong>Desviación estándar del diámetro</strong>.</li>
-<li><strong><span class="math inline">\(\sigma_Y = 0.2\)</span> <span
+<li><p><strong><span class="math inline">\(\sigma_X = 0.015\)</span>
+mm</strong> → <strong>Desviación estándar del
+diámetro</strong>.</p></li>
+<li><p><strong><span class="math inline">\(\sigma_Y = 0.2\)</span> <span
 class="math inline">\(\mu m\)</span></strong> → <strong>Desviación
-estándar de la rugosidad</strong>.</li>
-<li><strong><span class="math inline">\(\rho = -0.6\)</span></strong> →
-<strong>Correlación de Pearson entre diámetro y rugosidad</strong>.</li>
+estándar de la rugosidad</strong>.</p></li>
+<li><p><strong><span class="math inline">\(\rho = -0.6\)</span></strong>
+→ <strong>Correlación de Pearson entre diámetro y
+rugosidad</strong>.</p></li>
 </ul>
 <p>Esta matriz describe la <strong>dispersión conjunta de ambas
 variables</strong>, donde la <strong>covarianza negativa indica que un

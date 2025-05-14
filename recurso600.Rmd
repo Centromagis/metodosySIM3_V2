@@ -1,5 +1,5 @@
 ---
-title: <span style="color:#686868"> **Regresión Polinómica**</span>
+title: <span style="color:#686868"> **Regresión polinómica**</span>
 author: "Métodos y Simulación Estadística"
 output:
   html_document:

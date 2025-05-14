@@ -265,7 +265,7 @@ for (i in 1:length(correlations)) {
   data <- generate_data(150, correlations[i])
   p <- ggplot(data, aes(x = x, y = y)) +
     geom_point(color = "pink") +
-    ggtitle(paste(labels[i], "r =", correlations[i])) +
+    ggtitle(paste(labels[i], "Correlación ", correlations[i])) +
     theme_minimal()
   plots[[i]] <- p
 }

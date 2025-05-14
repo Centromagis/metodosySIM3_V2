@@ -327,7 +327,8 @@ Para calcular la **Distancia de Cook** en **R**, se usa la función `cooks.dista
 Si se desea evaluar la influencia de cada observación, se recomienda calcular la distancia de Cook y analizarla en conjunto con el **leverage** y los **residuos estandarizados**.
 
 <div class="caja-nota">
->*En esta unidad, el análisis se centra en la **Regresión Lineal Simple**, la cual permite modelar la relación entre una **única variable explicativa** y una **variable respuesta**. Sin embargo, en muchos casos, los fenómenos de interés involucran **múltiples factores** que afectan la variable respuesta. Por ello, en el curso de **Modelos Estadísticos para la Toma de Decisiones**, que se estudiará el siguiente semestre, se explorará la **Regresión Lineal Múltiple**. Este modelo amplía las herramientas de análisis al considerar **varias variables explicativas simultáneamente**.*  
+<h3>Nota:</h3>
+>*En esta unidad, el análisis se centra en la **Regresión Lineal Simple**, que permite modelar la relación entre una **única variable explicativa cuantitativa** y una **variable respuesta cuantitativa**. Sin embargo, en muchos casos, los fenómenos de interés involucran **múltiples factores o variables cualitativas** que afectan la variable respuesta. Por ello, en el curso de **Modelos Estadísticos para la Toma de Decisiones**, que se estudiará el siguiente semestre, se explorará la **Regresión Lineal Múltiple**. Este modelo amplía las herramientas de análisis al considerar **varias variables explicativas simultáneamente**.*  
 </div>
 
 
@@ -1037,6 +1038,7 @@ print(resultados_df)
 
 
 <div class="caja-nota">
+<h3>Nota:</h3>
 >*"Las observaciones sospechosas **no** se deben sacar inmediatamente del modelo. Antes se deben estudiar para ver si hay algo raro con ellas, en caso afirmativo se sacan de la base y se ajusta nuevamente el modelo."*  
 </div>
 

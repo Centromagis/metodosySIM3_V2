@@ -1,5 +1,5 @@
 ---
-title: <span style="color:#686868"> **Pruebas de Hipótesis y R Cuadrado**</span>
+title: <span style="color:#686868"> **Pruebas de hipótesis y R cuadrado**</span>
 author: "Métodos y Simulación Estadística"
 output:
   html_document:

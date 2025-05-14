@@ -268,7 +268,7 @@ $(document).ready(function () {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="recurso100.html">Análisis de Correlación</a>
+      <a href="recurso100.html">Análisis de correlación</a>
     </li>
     <li>
       <a href="recurso110.html">Coeficiente de Pearson</a>
@@ -289,16 +289,16 @@ $(document).ready(function () {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="recurso200.html">Modelo de Regresión Lineal Simple</a>
+      <a href="recurso200.html">Modelo de regresión lineal simple</a>
     </li>
     <li>
-      <a href="recurso210.html">Estimación Mínimos Cuadrados Ordinarios</a>
+      <a href="recurso210.html">Estimación mínimos cuadrados ordinarios</a>
     </li>
     <li>
-      <a href="recurso220.html">Estimación de Máxima Verosimilitud</a>
+      <a href="recurso220.html">Estimación de máxima verosimilitud</a>
     </li>
     <li>
-      <a href="recurso230.html">Forma Matricial del Modelo</a>
+      <a href="recurso230.html">Forma matricial del modelo</a>
     </li>
     <li>
       <a href="recurso300.html">Supuestos</a>
@@ -307,7 +307,7 @@ $(document).ready(function () {
       <a href="recurso310.html">Residuales</a>
     </li>
     <li>
-      <a href="recurso320.html">Revisión de Supuestos</a>
+      <a href="recurso320.html">Revisión de supuestos</a>
     </li>
   </ul>
 </li>
@@ -319,7 +319,7 @@ $(document).ready(function () {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="recurso400.html">Pruebas de Hipótesis</a>
+      <a href="recurso400.html">Pruebas de hipótesis</a>
     </li>
     <li>
       <a href="recurso410.html">R Cuadrado</a>
@@ -337,34 +337,34 @@ $(document).ready(function () {
       <a href="recurso500.html">Transformaciones</a>
     </li>
     <li>
-      <a href="recurso600.html">Variables Explicativas como Polinomios</a>
+      <a href="recurso600.html">Variables explicativas como polinomios</a>
     </li>
   </ul>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Predicción e Intervalos
+    Predicción e intervalos
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="recurso700.html">Intervalo de Confianza</a>
+      <a href="recurso700.html">Intervalo de confianza</a>
     </li>
     <li>
-      <a href="recurso800.html">Intervalos de C. de Coeficientes y Varianza</a>
+      <a href="recurso800.html">Intervalos de C. de coeficientes y varianza</a>
     </li>
   </ul>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Atípicos e Influyentes
+    Atípicos e influyentes
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="recurso900.html">Punto Atípico e Influyente</a>
+      <a href="recurso900.html">Punto atípico e influyente</a>
     </li>
   </ul>
 </li>
@@ -420,6 +420,9 @@ $(document).ready(function () {
 
 
 <div class="caja-nota">
+<h3>
+Nota:
+</h3>
 <blockquote>
 <p><em>“RMarkdown: Se utiliza principalmente para generar reportes
 reproducibles en formato HTML, PDF o Word, combinando código R con texto
@@ -428,6 +431,9 @@ explicaciones detalladas en un solo documento.”</em></p>
 </blockquote>
 </div>
 <div class="caja-nota">
+<h3>
+Nota:
+</h3>
 <blockquote>
 <p><em>“Shiny: Se usa para desarrollar aplicaciones interactivas en la
 web, donde los usuarios pueden explorar los datos y realizar análisis
@@ -675,13 +681,6 @@ shinyApp(ui, server)
 </div>
 </br></br>
 <h3>
-Tablero interactivo
-</h3>
-<p>El tablero interactivo está disponible en:<br />
-<a href="https://sandra-milena-ramirez-buelvas.shinyapps.io/tablero/"
-class="uri">https://sandra-milena-ramirez-buelvas.shinyapps.io/tablero/</a></p>
-</br></br>
-<h3>
 Código del tablero interactivo
 </h3>
 <p>El código completo que se debe renderizar en <strong>R</strong> es el
@@ -773,7 +772,7 @@ server <- function(input, output) {
                  max = max(datos[[input$var_explicativa]], na.rm = TRUE))
   })
   
-  # **Ecuación del Modelo**
+  # Ecuación del Modelo
   output$modelo_equacion <- renderText({
     modelo <- modelo_regresion()
     coef <- coef(modelo)
@@ -782,7 +781,7 @@ server <- function(input, output) {
     paste0("Peso = ", intercepto, " + ", pendiente, " × ", input$var_explicativa)
   })
   
-  # **Tabla de hipótesis nulas y valores-p**
+  # Tabla de hipótesis nulas y valores-p
   output$tabla_hipotesis <- renderDT({
     modelo <- modelo_regresion()
     resumen <- summary(modelo)
@@ -805,7 +804,7 @@ server <- function(input, output) {
     datatable(tabla, options = list(dom = 't', paging = FALSE, searching = FALSE))
   })
   
-  # **Tabla con métricas del modelo**
+  # Tabla con métricas del modelo
   output$tabla_metricas <- renderDT({
     modelo <- modelo_regresion()
     resumen <- summary(modelo)
@@ -818,7 +817,7 @@ server <- function(input, output) {
     datatable(tabla, options = list(dom = 't', paging = FALSE, searching = FALSE))
   })
   
-  # **Tabla de intervalos de confianza para parámetros**
+  # Tabla de intervalos de confianza para parámetros
   output$tabla_ic_parametros <- renderDT({
     modelo <- modelo_regresion()
     resumen <- summary(modelo)
@@ -841,7 +840,7 @@ server <- function(input, output) {
     datatable(tabla_ic, options = list(dom = 't', paging = FALSE, searching = FALSE))
   })
   
-  # **Tabla de pruebas de supuestos**
+  # Tabla de pruebas de supuestos
   output$tabla_tests <- renderDT({
     modelo <- modelo_regresion()
     
@@ -858,7 +857,7 @@ server <- function(input, output) {
   
   
   
-  # **Gráficos de diagnóstico**
+  # Gráficos de diagnóstico
   output$diagnostico_residuos <- renderPlot({
     par(mfrow = c(2, 2))
     plot(modelo_regresion())
@@ -869,7 +868,7 @@ server <- function(input, output) {
     influencePlot(modelo, main = "Distancia de Cook vs. Leverage")
   })
   
-  # **Gráficos de correlaciones**
+  # Gráficos de correlaciones
   output$correlaciones_pearson <- renderPlot({
     ggpairs(datos[, c("Peso", "Estatura", "circun_cuello", "circun_muneca")], 
             title = "Correlaciones de Pearson")
@@ -880,14 +879,14 @@ server <- function(input, output) {
             title = "Correlaciones de Kendall", upper = list(continuous = "cor", method = "kendall"))
   })
   
-  # **Predicción de valores nuevos**
+  # Predicción de valores nuevos
   output$prediccion_resultado <- renderPrint({
     modelo <- modelo_regresion()
     nueva_obs <- setNames(list(input$pred_x), input$var_explicativa)
     predict(modelo, newdata = as.data.frame(nueva_obs), interval = "prediction")
   })
   
-  # **Gráfico de dispersión con intervalos de confianza y predicción**
+  # Gráfico de dispersión con intervalos de confianza y predicción
   output$intervalos_prediccion <- renderPlot({
     modelo <- modelo_regresion()
     nuevos_datos <- setNames(list(seq(min(datos[[input$var_explicativa]], na.rm = TRUE), 
